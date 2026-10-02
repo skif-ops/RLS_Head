@@ -1,4 +1,4 @@
-name: HIL Core CI
+name: Sensor Core CI
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   c-golden:
-    name: CMake / CTest HIL-R1 + HIL-R2
+    name: CMake / CTest HIL + SYS-ERR
     runs-on: ubuntu-latest
 
     steps:
