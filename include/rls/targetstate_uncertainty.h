@@ -19,6 +19,7 @@ typedef struct {
 } TargetStateSysErrInputs;
 
 typedef struct {
+    SysErrMat3f base_position_cov_m2;
     SysErrMat3f attitude_position_cov_m2;
     SysErrMat3f timestamp_position_cov_m2;
     SysErrMat3f extrinsic_position_cov_m2;
