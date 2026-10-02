@@ -12,15 +12,26 @@ add_library(hil_r1 STATIC
     src/hil_r1.c
 )
 
+add_library(hil_r2 STATIC
+    src/hil_r2.c
+)
+
 target_include_directories(hil_r1 PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_include_directories(hil_r2 PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 if(MSVC)
     target_compile_options(hil_r1 PRIVATE /W4 /WX)
+    target_compile_options(hil_r2 PRIVATE /W4 /WX)
 else()
     target_compile_options(hil_r1 PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(hil_r2 PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_link_libraries(hil_r1 PUBLIC m)
+    target_link_libraries(hil_r2 PUBLIC m)
 endif()
 
 if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
@@ -39,6 +50,20 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     endif()
 
     add_test(NAME hil_r1_golden COMMAND test_hil_r1)
+
+    add_executable(test_hil_r2
+        tests/test_hil_r2.c
+    )
+
+    target_link_libraries(test_hil_r2 PRIVATE hil_r2)
+
+    if(MSVC)
+        target_compile_options(test_hil_r2 PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_hil_r2 PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+
+    add_test(NAME hil_r2_deterministic COMMAND test_hil_r2)
 endif()
 
 if(HIL_BUILD_STM32H753_SMOKE)
@@ -69,6 +94,7 @@ if(HIL_BUILD_STM32H753_SMOKE)
 
     target_link_libraries(stm32h753_link_smoke PRIVATE
         hil_r1
+        hil_r2
         c
         nosys
     )
