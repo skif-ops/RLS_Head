@@ -2,6 +2,7 @@
 #include "rls/hil_r2.h"
 #include "rls/sys_err.h"
 #include "rls/targetstate_uncertainty.h"
+#include "rls/targetstate_error_ledger.h"
 #include "stm32h753_memory.h"
 
 #include <stddef.h>
@@ -97,6 +98,13 @@ int main(void)
             &sys_err_inputs,
             &sys_err_result);
 
+    TargetStateErrorLedger error_ledger;
+    const bool ledger_ok =
+        targetstate_syserr_ok &&
+        targetstate_build_error_ledger(
+            &sys_err_result,
+            &error_ledger);
+
     g_smoke_status =
         (uint32_t)result ^
         (uint32_t)g_stm32h753_mpu_plan_count ^
@@ -105,6 +113,9 @@ int main(void)
         (uint32_t)(timing_rms * 1000.0f) ^
         (targetstate_syserr_ok
             ? (uint32_t)(sys_err_result.total_position_rms_m * 1000.0f)
+            : 0u) ^
+        (ledger_ok
+            ? (uint32_t)error_ledger.dominant_overall_source
             : 0u);
 
     g_smoke_response_len =
