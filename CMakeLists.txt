@@ -28,6 +28,10 @@ add_library(targetstate_error_ledger STATIC
     src/targetstate_error_ledger.c
 )
 
+add_library(time_service STATIC
+    src/time_service.c
+)
+
 target_include_directories(hil_r1 PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -48,18 +52,24 @@ target_include_directories(targetstate_error_ledger PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_include_directories(time_service PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 if(MSVC)
     target_compile_options(hil_r1 PRIVATE /W4 /WX)
     target_compile_options(hil_r2 PRIVATE /W4 /WX)
     target_compile_options(sys_err PRIVATE /W4 /WX)
     target_compile_options(targetstate_uncertainty PRIVATE /W4 /WX)
     target_compile_options(targetstate_error_ledger PRIVATE /W4 /WX)
+    target_compile_options(time_service PRIVATE /W4 /WX)
 else()
     target_compile_options(hil_r1 PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(hil_r2 PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(sys_err PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(targetstate_uncertainty PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(targetstate_error_ledger PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(time_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_link_libraries(hil_r1 PUBLIC m)
     target_link_libraries(hil_r2 PUBLIC m)
 endif()
@@ -140,6 +150,20 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     endif()
 
     add_test(NAME targetstate_error_ledger COMMAND test_targetstate_error_ledger)
+
+    add_executable(test_time_service
+        tests/test_time_service.c
+    )
+
+    target_link_libraries(test_time_service PRIVATE time_service)
+
+    if(MSVC)
+        target_compile_options(test_time_service PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_time_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+
+    add_test(NAME time_service_discipline COMMAND test_time_service)
 endif()
 
 if(HIL_BUILD_STM32H753_SMOKE)
@@ -174,6 +198,7 @@ if(HIL_BUILD_STM32H753_SMOKE)
         sys_err
         targetstate_uncertainty
         targetstate_error_ledger
+        time_service
         c
         nosys
     )
