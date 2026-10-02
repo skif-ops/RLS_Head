@@ -1,0 +1,89 @@
+name: HIL-R1 CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  c-golden:
+    name: CMake / CTest golden suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Run C golden tests
+        run: ctest --test-dir build --output-on-failure
+
+  python-wire:
+    name: Python wire-format tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pytest
+        run: python -m pip install --upgrade pytest
+
+      - name: Run Python tests
+        run: python -m pytest -q tests/python
+
+  stm32h753-cross:
+    name: STM32H753 Cortex-M7 cross-build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install ARM GNU toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi
+          arm-none-eabi-gcc --version
+          arm-none-eabi-size --version
+
+      - name: Configure STM32H753 link-smoke
+        run: |
+          cmake -S . -B build-stm32             -DCMAKE_TOOLCHAIN_FILE=cmake/toolchains/arm-none-eabi-gcc.cmake             -DHIL_BUILD_HOST_TESTS=OFF             -DHIL_BUILD_STM32H753_SMOKE=ON             -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build STM32H753 ELF
+        run: cmake --build build-stm32 --parallel
+
+      - name: Inspect memory and sections
+        run: |
+          arm-none-eabi-size build-stm32/stm32h753_link_smoke.elf
+          arm-none-eabi-objdump -h build-stm32/stm32h753_link_smoke.elf | tee build-stm32/sections.txt
+          arm-none-eabi-nm -C --defined-only build-stm32/stm32h753_link_smoke.elf | tee build-stm32/symbols.txt
+          test -s build-stm32/stm32h753_link_smoke.map
+          grep -q "hil_runtime_process_packet" build-stm32/symbols.txt
+          grep -q "targetstate_v1_serialize" build-stm32/symbols.txt
+          grep -q "cv_tracker_update" build-stm32/symbols.txt
+          python3 tools/check_stm32_layout.py build-stm32/sections.txt
+
+      - name: Upload STM32H753 link evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: stm32h753-link-evidence
+          path: |
+            build-stm32/stm32h753_link_smoke.elf
+            build-stm32/stm32h753_link_smoke.map
+            build-stm32/sections.txt
+            build-stm32/symbols.txt
