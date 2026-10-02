@@ -98,6 +98,15 @@ SECTIONS
     } > DTCM AT > FLASH
     _sdtcm_load = LOADADDR(.dtcm_data);
 
+    .dtcm_bss (NOLOAD) :
+    {
+        . = ALIGN(8);
+        _sdtcm_bss = .;
+        *(.dtcm_bss*)
+        . = ALIGN(8);
+        _edtcm_bss = .;
+    } > DTCM
+
     .dma_rx (NOLOAD) :
     {
         . = ALIGN(32);
