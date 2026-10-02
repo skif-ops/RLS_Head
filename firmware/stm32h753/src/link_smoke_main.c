@@ -1,6 +1,7 @@
 #include "rls/hil_r1.h"
 #include "rls/hil_r2.h"
 #include "rls/sys_err.h"
+#include "rls/targetstate_uncertainty.h"
 #include "stm32h753_memory.h"
 
 #include <stddef.h>
@@ -79,12 +80,32 @@ int main(void)
             ? sys_err_position_rms(&timing_cov)
             : 0.0f;
 
+    TargetStateV1 synthetic_state = {0};
+    synthetic_state.relative_position_m[0] = 300.0f;
+    synthetic_state.position_cov_ut[0] = 0.25f;
+    synthetic_state.position_cov_ut[3] = 0.04f;
+    synthetic_state.position_cov_ut[5] = 0.09f;
+
+    TargetStateSysErrInputs sys_err_inputs = {0};
+    sys_err_inputs.angular_rate_rad_s.z = 3.14159265358979323846f;
+    sys_err_inputs.timestamp_sigma_s = 0.0005f;
+
+    TargetStateSysErrResult sys_err_result;
+    const bool targetstate_syserr_ok =
+        targetstate_apply_sys_err(
+            &synthetic_state,
+            &sys_err_inputs,
+            &sys_err_result);
+
     g_smoke_status =
         (uint32_t)result ^
         (uint32_t)g_stm32h753_mpu_plan_count ^
         (uint32_t)(timing_error_m * 1000.0f) ^
         (uint32_t)(sensor_velocity.y * 1000.0f) ^
-        (uint32_t)(timing_rms * 1000.0f);
+        (uint32_t)(timing_rms * 1000.0f) ^
+        (targetstate_syserr_ok
+            ? (uint32_t)(sys_err_result.total_position_rms_m * 1000.0f)
+            : 0u);
 
     g_smoke_response_len =
         (uint32_t)response_len;
