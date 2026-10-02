@@ -19,6 +19,8 @@
 .extern _sdtcm_load
 .extern _sdtcm_start
 .extern _sdtcm_end
+.extern _sdtcm_bss
+.extern _edtcm_bss
 
 .section .isr_vector,"a",%progbits
 .type g_pfnVectors, %object
@@ -73,10 +75,10 @@ Reset_Handler:
     b 5b
 
 6:
-    /* Clear AXI .bss. */
+    /* Clear DTCM .dtcm_bss. */
     movs r0, #0
-    ldr r1, =_sbss
-    ldr r2, =_ebss
+    ldr r1, =_sdtcm_bss
+    ldr r2, =_edtcm_bss
 7:
     cmp r1, r2
     bcs 8f
@@ -84,10 +86,20 @@ Reset_Handler:
     b 7b
 
 8:
+    /* Clear AXI .bss. */
+    ldr r1, =_sbss
+    ldr r2, =_ebss
+9:
+    cmp r1, r2
+    bcs 10f
+    str r0, [r1], #4
+    b 9b
+
+10:
     bl main
 
-9:
-    b 9b
+11:
+    b 11b
 
 .size Reset_Handler, .-Reset_Handler
 
