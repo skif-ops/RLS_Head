@@ -1,5 +1,6 @@
 #include "rls/hil_r1.h"
 #include "rls/hil_r2.h"
+#include "rls/sys_err.h"
 #include "stm32h753_memory.h"
 
 #include <stddef.h>
@@ -63,11 +64,27 @@ int main(void)
             (HilR2Vec3f){0.0f, 0.0f, 1.5707963267948966f},
             (HilR2Vec3f){0.2f, 0.0f, 0.0f});
 
+    SysErrMat3f timing_cov;
+
+    const bool timing_cov_ok =
+        sys_err_timing_position_covariance(
+            (HilR2Vec3f){300.0f, 0.0f, 0.0f},
+            (HilR2Vec3f){0.0f, 0.0f, 0.0f},
+            (HilR2Vec3f){0.0f, 0.0f, 3.14159265358979323846f},
+            0.0005f,
+            &timing_cov);
+
+    const float timing_rms =
+        timing_cov_ok
+            ? sys_err_position_rms(&timing_cov)
+            : 0.0f;
+
     g_smoke_status =
         (uint32_t)result ^
         (uint32_t)g_stm32h753_mpu_plan_count ^
         (uint32_t)(timing_error_m * 1000.0f) ^
-        (uint32_t)(sensor_velocity.y * 1000.0f);
+        (uint32_t)(sensor_velocity.y * 1000.0f) ^
+        (uint32_t)(timing_rms * 1000.0f);
 
     g_smoke_response_len =
         (uint32_t)response_len;
