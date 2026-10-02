@@ -24,6 +24,10 @@ add_library(targetstate_uncertainty STATIC
     src/targetstate_uncertainty.c
 )
 
+add_library(targetstate_error_ledger STATIC
+    src/targetstate_error_ledger.c
+)
+
 target_include_directories(hil_r1 PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -40,22 +44,29 @@ target_include_directories(targetstate_uncertainty PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_include_directories(targetstate_error_ledger PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 if(MSVC)
     target_compile_options(hil_r1 PRIVATE /W4 /WX)
     target_compile_options(hil_r2 PRIVATE /W4 /WX)
     target_compile_options(sys_err PRIVATE /W4 /WX)
     target_compile_options(targetstate_uncertainty PRIVATE /W4 /WX)
+    target_compile_options(targetstate_error_ledger PRIVATE /W4 /WX)
 else()
     target_compile_options(hil_r1 PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(hil_r2 PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(sys_err PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(targetstate_uncertainty PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(targetstate_error_ledger PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_link_libraries(hil_r1 PUBLIC m)
     target_link_libraries(hil_r2 PUBLIC m)
 endif()
 
 target_link_libraries(sys_err PUBLIC hil_r2)
 target_link_libraries(targetstate_uncertainty PUBLIC hil_r1 sys_err)
+target_link_libraries(targetstate_error_ledger PUBLIC targetstate_uncertainty)
 
 if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     enable_testing()
@@ -115,6 +126,20 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     endif()
 
     add_test(NAME targetstate_syserr COMMAND test_targetstate_uncertainty)
+
+    add_executable(test_targetstate_error_ledger
+        tests/test_targetstate_error_ledger.c
+    )
+
+    target_link_libraries(test_targetstate_error_ledger PRIVATE targetstate_error_ledger)
+
+    if(MSVC)
+        target_compile_options(test_targetstate_error_ledger PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_targetstate_error_ledger PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+
+    add_test(NAME targetstate_error_ledger COMMAND test_targetstate_error_ledger)
 endif()
 
 if(HIL_BUILD_STM32H753_SMOKE)
@@ -148,6 +173,7 @@ if(HIL_BUILD_STM32H753_SMOKE)
         hil_r2
         sys_err
         targetstate_uncertainty
+        targetstate_error_ledger
         c
         nosys
     )
