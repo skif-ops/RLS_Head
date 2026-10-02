@@ -1,4 +1,5 @@
 #include "rls/hil_r1.h"
+#include "rls/hil_r2.h"
 #include "stm32h753_memory.h"
 
 #include <stddef.h>
@@ -51,9 +52,22 @@ int main(void)
             sizeof(g_targetstate_response),
             &response_len);
 
+    const float timing_error_m =
+        hil_r2_timing_position_error_m(
+            300.0f,
+            3.14159265358979323846f,
+            0.001f);
+
+    const HilR2Vec3f sensor_velocity =
+        hil_r2_lever_arm_velocity(
+            (HilR2Vec3f){0.0f, 0.0f, 1.5707963267948966f},
+            (HilR2Vec3f){0.2f, 0.0f, 0.0f});
+
     g_smoke_status =
         (uint32_t)result ^
-        (uint32_t)g_stm32h753_mpu_plan_count;
+        (uint32_t)g_stm32h753_mpu_plan_count ^
+        (uint32_t)(timing_error_m * 1000.0f) ^
+        (uint32_t)(sensor_velocity.y * 1000.0f);
 
     g_smoke_response_len =
         (uint32_t)response_len;
