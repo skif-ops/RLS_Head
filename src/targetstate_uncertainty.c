@@ -141,12 +141,12 @@ bool targetstate_apply_sys_err(
         return false;
     }
 
-    const SysErrMat3f base =
+    local.base_position_cov_m2 =
         ut6_to_mat3(
             state->position_cov_ut);
 
     if (!sys_err_covariance_add(
-            &base,
+            &local.base_position_cov_m2,
             &local.added_position_cov_m2,
             &local.total_position_cov_m2)) {
         return false;
