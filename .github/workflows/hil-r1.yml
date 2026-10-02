@@ -1,4 +1,4 @@
-name: HIL-R1 CI
+name: HIL Core CI
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   c-golden:
-    name: CMake / CTest golden suite
+    name: CMake / CTest HIL-R1 + HIL-R2
     runs-on: ubuntu-latest
 
     steps:
