@@ -16,6 +16,10 @@ add_library(hil_r2 STATIC
     src/hil_r2.c
 )
 
+add_library(sys_err STATIC
+    src/sys_err.c
+)
+
 target_include_directories(hil_r1 PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -24,15 +28,23 @@ target_include_directories(hil_r2 PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_include_directories(sys_err PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 if(MSVC)
     target_compile_options(hil_r1 PRIVATE /W4 /WX)
     target_compile_options(hil_r2 PRIVATE /W4 /WX)
+    target_compile_options(sys_err PRIVATE /W4 /WX)
 else()
     target_compile_options(hil_r1 PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(hil_r2 PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(sys_err PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_link_libraries(hil_r1 PUBLIC m)
     target_link_libraries(hil_r2 PUBLIC m)
 endif()
+
+target_link_libraries(sys_err PUBLIC hil_r2)
 
 if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     enable_testing()
@@ -64,6 +76,20 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     endif()
 
     add_test(NAME hil_r2_deterministic COMMAND test_hil_r2)
+
+    add_executable(test_sys_err
+        tests/test_sys_err.c
+    )
+
+    target_link_libraries(test_sys_err PRIVATE sys_err)
+
+    if(MSVC)
+        target_compile_options(test_sys_err PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_sys_err PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+
+    add_test(NAME sys_err_covariance COMMAND test_sys_err)
 endif()
 
 if(HIL_BUILD_STM32H753_SMOKE)
@@ -95,6 +121,7 @@ if(HIL_BUILD_STM32H753_SMOKE)
     target_link_libraries(stm32h753_link_smoke PRIVATE
         hil_r1
         hil_r2
+        sys_err
         c
         nosys
     )
