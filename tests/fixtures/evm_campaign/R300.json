@@ -1,0 +1,45 @@
+{
+  "schema": "EVM-RUN-MANIFEST-001",
+  "run_id": "CI-EVM-R300-001",
+  "mode": "QUALIFY",
+  "profile_id": "PF-TRACK-CFG-001",
+  "profile_config_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "source_commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "target_id": "REF-TARGET-001",
+  "range_nominal_m": 300,
+  "rcs_m2": 0.1,
+  "start_time_us": 1000000,
+  "end_time_us": 2000000,
+  "truth_status": "VALID",
+  "time_alignment_valid": true,
+  "config_locked": true,
+  "evidence_level": "SOFTWARE_CI",
+  "synthetic_fixture": true,
+  "raw_capture_enabled": true,
+  "environment": {
+    "temperature_c": 20,
+    "precipitation_state": "DRY"
+  },
+  "files": [
+    {
+      "path": "R300/truth.csv",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "truth"
+    },
+    {
+      "path": "R300/radar.bin",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "radar"
+    },
+    {
+      "path": "R300/diag.json",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "diagnostics"
+    },
+    {
+      "path": "R300/raw.bin",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kind": "raw_capture"
+    }
+  ]
+}
