@@ -202,6 +202,27 @@ jobs:
           print("HW-SENSOR-PROTOTYPE-GATE logic smoke PASS")
           PY
 
+      - name: Validate physical antenna measurement tooling
+        run: |
+          python -m tools.physical_antenna_measurement \
+            --manifest tests/fixtures/physical_antenna_measurement_manifest_ci.json \
+            --config config/physical_antenna_measurement_evt.json \
+            --repository-root . \
+            --output physical_antenna_measurement_result.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("physical_antenna_measurement_result.json").read_text())
+          assert data["schema"] == "ANT-MEASUREMENT-001"
+          assert data["status"] == "TEST_READY"
+          assert data["measurement_status"] == "PASS"
+          assert data["synthetic_fixture"] is True
+          assert data["track_usable_point_count"] >= 1
+          assert data["high_acc_usable_point_count"] >= 1
+          print("Physical antenna measurement tooling smoke PASS")
+          PY
+
       - name: Evaluate AWR EVM profile gate
         run: |
           python -m tools.evm_profile_gate \
@@ -283,6 +304,7 @@ jobs:
           assert data["milestones"]["HW_SENSOR_PROTOTYPE_GATE_INPUTS"]["status"] == "OPEN"
           assert "M300_MEASURED" in data["measured_open_items"]
           assert "SYS_ERR_MEASURED" in data["measured_open_items"]
+          assert "PHYSICAL_ANT_MEASUREMENT_TOOLING" in data["passed_items"]
           assert "EVIDENCE_PROMOTION_TOOLING" in data["passed_items"]
           assert "AWR_EVM_PROFILE_TOOLING" in data["passed_items"]
           assert "CARRIER_DESIGN_INPUTS" in data["passed_items"]
