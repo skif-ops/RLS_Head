@@ -30,7 +30,7 @@
   ],
   "erc_policy": {
     "errors_allowed": 0,
-    "unexplained_warnings": 0
+    "warnings_allowed": 0
   },
   "audits": {
     "power": "PASS",
