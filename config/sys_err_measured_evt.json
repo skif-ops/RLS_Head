@@ -1,0 +1,7 @@
+{
+  "mandatory_range_m": 300.0,
+  "mandatory_max_position_rms_m": 2.10,
+  "max_timestamp_rms_us": 200.0,
+  "max_timestamp_abs_us": 250.0,
+  "min_cells": 3
+}
