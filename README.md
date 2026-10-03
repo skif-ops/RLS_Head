@@ -16,6 +16,8 @@ Radar sensing/tracking project. The implemented software boundary in this reposi
 - ANT-SIM-GATE and HW sensor measurement-prototype gate logic
 - System Carrier authoritative design inputs and Review A tooling (real CAD/ERC evidence still open)
 
+- hash-verified measured-evidence promotion guard
+
 ## Evidence status
 
 The authoritative evidence state is tracked in:
