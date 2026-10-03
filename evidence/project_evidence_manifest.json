@@ -50,6 +50,14 @@
       "note": "Rev.A/Rev.B and ANT-SIM gate logic pass synthetic CI fixtures."
     },
     {
+      "id": "EVIDENCE_PROMOTION_TOOLING",
+      "status": "PASS",
+      "evidence_level": "SOFTWARE_CI",
+      "synthetic": false,
+      "requires_measured_evidence": false,
+      "note": "Hash-verified evidence promotion guard rejects synthetic/fixture provenance and derives project status through item-specific rules."
+    },
+    {
       "id": "REFERENCE_RANGE_MEASURED",
       "status": "OPEN",
       "evidence_level": "OPEN",
