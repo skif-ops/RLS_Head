@@ -90,3 +90,49 @@ if(HIL_BUILD_STM32H753_SMOKE)
         )
     endif()
 endif()
+
+
+option(BUILD_STM32H753_HIL "Build STM32H753 HIL cross target" OFF)
+
+if(BUILD_STM32H753_HIL)
+    add_executable(stm32h753_hil
+        firmware/stm32h753/startup_minimal.c
+        firmware/stm32h753/main_hil_stub.c
+        src/hil_r1.c
+    )
+
+    target_include_directories(stm32h753_hil PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+    )
+
+    target_compile_options(stm32h753_hil PRIVATE
+        -mcpu=cortex-m7
+        -mthumb
+        -mfpu=fpv5-d16
+        -mfloat-abi=hard
+        -ffunction-sections
+        -fdata-sections
+        -Wall
+        -Wextra
+        -Wpedantic
+        -Werror
+    )
+
+    target_link_options(stm32h753_hil PRIVATE
+        -mcpu=cortex-m7
+        -mthumb
+        -mfpu=fpv5-d16
+        -mfloat-abi=hard
+        -nostartfiles
+        -Wl,--gc-sections
+        -Wl,-Map=${CMAKE_CURRENT_BINARY_DIR}/stm32h753_hil.map
+        -T${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/linker/STM32H753IIT6_HIL.ld
+    )
+
+    target_link_libraries(stm32h753_hil PRIVATE m)
+
+    add_custom_command(TARGET stm32h753_hil POST_BUILD
+        COMMAND ${CMAKE_SIZE} $<TARGET_FILE:stm32h753_hil>
+        VERBATIM
+    )
+endif()
