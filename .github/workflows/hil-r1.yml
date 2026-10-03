@@ -138,6 +138,21 @@ jobs:
           print("RAD-LB-006 Rev.B antenna smoke PASS")
           PY
 
+      - name: Validate D1 antenna-map evidence
+        run: |
+          python -m tools.antenna_map_validate             tests/fixtures/d1_antenna_map_3freq.csv             --config config/d1_map_validation_evt.json             --output antenna_map_validation.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("antenna_map_validation.json").read_text())
+          assert data["schema"] == "ANT-D1-MAP-VALIDATION-001"
+          assert data["status"] == "DATA_READY"
+          assert data["row_count"] == 9
+          assert len(data["groups"]) == 3
+          print("D1 antenna-map validation smoke PASS")
+          PY
+
   stm32h753-cross:
     name: STM32H753 Cortex-M7 cross-build
     runs-on: ubuntu-latest
