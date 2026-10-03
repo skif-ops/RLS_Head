@@ -26,6 +26,32 @@ jobs:
       - name: Run C golden tests
         run: ctest --test-dir build --output-on-failure
 
+  stm32-cross:
+    name: STM32H753 cross-build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install ARM GCC
+        run: sudo apt-get update && sudo apt-get install -y gcc-arm-none-eabi
+
+      - name: Configure
+        run: >
+          cmake -S . -B build-stm32
+          -DCMAKE_TOOLCHAIN_FILE=cmake/arm-none-eabi-toolchain.cmake
+          -DBUILD_STM32H753_HIL=ON
+          -DBUILD_TESTING=OFF
+
+      - name: Build STM32H753 target
+        run: cmake --build build-stm32 --target stm32h753_hil --parallel
+
+      - name: Inspect memory map
+        run: |
+          test -f build-stm32/stm32h753_hil.map
+          arm-none-eabi-size build-stm32/stm32h753_hil
+
   python-wire:
     name: Python wire-format tests
     runs-on: ubuntu-latest
