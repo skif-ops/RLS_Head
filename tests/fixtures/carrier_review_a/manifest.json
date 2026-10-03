@@ -1,0 +1,44 @@
+{
+  "schema": "CARRIER-REVIEW-A-MANIFEST-001",
+  "board_id": "EVT-SYS-CARRIER",
+  "hardware_revision": "A",
+  "cad_tool": "KiCad",
+  "cad_version": "9.0.9",
+  "synthetic_fixture": true,
+  "evidence_level": "SOFTWARE_CI",
+  "artifacts": [
+    {
+      "id": "schematic",
+      "path": "tests/fixtures/carrier_review_a/EVT_SYS_CARRIER.kicad_sch",
+      "sha256": "91074b89e9308fb6cd158e9ca5b62e2490811fcaaa7484894513ed90def1f597"
+    },
+    {
+      "id": "erc_json",
+      "path": "tests/fixtures/carrier_review_a/erc.json",
+      "sha256": "059debfbcb48f87c30ec399f8847b09bcf365c6551ea8a0a946ce30f581ac204"
+    },
+    {
+      "id": "pinmap",
+      "path": "tests/fixtures/carrier_review_a/pinmap.csv",
+      "sha256": "153d80cdf02da37cd65b72c7e6feedc4a2cc1849b517ff7a858c0b92cb0d7125"
+    },
+    {
+      "id": "bom",
+      "path": "tests/fixtures/carrier_review_a/bom.csv",
+      "sha256": "6f74f05c2218b99e4b238cf0507396bed4a1ace38edfbc0bb7960aa65d83ad64"
+    }
+  ],
+  "erc_policy": {
+    "errors_allowed": 0,
+    "unexplained_warnings": 0
+  },
+  "audits": {
+    "power": "PASS",
+    "clock": "PASS",
+    "reset_boot": "PASS",
+    "timing_capture": "PASS",
+    "imu": "PASS",
+    "ethernet": "PASS",
+    "can_fd": "PASS"
+  }
+}
