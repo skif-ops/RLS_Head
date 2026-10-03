@@ -1,0 +1,13 @@
+{
+  "coordinate_units": "mm",
+  "date": "2026-10-03T00:00:00+0000",
+  "kicad_version": "9.0.9",
+  "sheets": [
+    {
+      "path": "/",
+      "uuid_path": "/00000000-0000-0000-0000-000000000001",
+      "violations": []
+    }
+  ],
+  "source": "EVT_SYS_CARRIER.kicad_sch"
+}
