@@ -202,6 +202,28 @@ jobs:
           print("HW-SENSOR-PROTOTYPE-GATE logic smoke PASS")
           PY
 
+      - name: Validate System Carrier Review A tooling
+        run: |
+          python -m tools.carrier_review_a \
+            tests/fixtures/carrier_review_a/manifest.json \
+            --repository-root . \
+            --output carrier_review_a_result.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("carrier_review_a_result.json").read_text())
+          assert data["schema"] == "CARRIER-REVIEW-A-RESULT-001"
+          assert data["status"] == "TEST_READY"
+          assert data["synthetic_fixture"] is True
+          assert data["erc"]["errors"] == 0
+          assert data["erc"]["warnings"] == 0
+          assert data["pinmap"]["status"] == "PASS"
+          assert data["bom"]["status"] == "PASS"
+          assert all(v == "PASS" for v in data["audits"].values())
+          print("Carrier Review A tooling smoke PASS")
+          PY
+
       - name: Validate project evidence status
         run: |
           python -m tools.evidence_status             evidence/project_evidence_manifest.json             --output project_evidence_status.json
@@ -216,6 +238,8 @@ jobs:
           assert data["milestones"]["HW_SENSOR_PROTOTYPE_GATE_INPUTS"]["status"] == "OPEN"
           assert "M300_MEASURED" in data["measured_open_items"]
           assert "SYS_ERR_MEASURED" in data["measured_open_items"]
+          assert "CARRIER_REVIEW_A_TOOLING" in data["passed_items"]
+          assert data["milestones"]["M1"]["status"] == "OPEN"
           print("Project evidence status smoke PASS")
           PY
 
