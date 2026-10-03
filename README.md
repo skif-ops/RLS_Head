@@ -6,6 +6,7 @@ Radar sensing/tracking project. The implemented software boundary in this reposi
 
 - HIL-R1 host-native golden suite and TargetStateV1 wire contract
 - HIL-R2 deterministic timing/host-state math
+- disciplined PPS Time Service with holdover logic
 - SYS-ERR covariance propagation and TargetState uncertainty ledger
 - STM32H753 Cortex-M7 cross-link/memory-layout gate
 - HIL-R2 bench evidence ingest
