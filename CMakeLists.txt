@@ -28,6 +28,10 @@ add_library(targetstate_error_ledger STATIC
     src/targetstate_error_ledger.c
 )
 
+add_library(hil_r2_evidence STATIC
+    src/hil_r2_evidence.c
+)
+
 target_include_directories(hil_r1 PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -48,18 +52,24 @@ target_include_directories(targetstate_error_ledger PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_include_directories(hil_r2_evidence PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 if(MSVC)
     target_compile_options(hil_r1 PRIVATE /W4 /WX)
     target_compile_options(hil_r2 PRIVATE /W4 /WX)
     target_compile_options(sys_err PRIVATE /W4 /WX)
     target_compile_options(targetstate_uncertainty PRIVATE /W4 /WX)
     target_compile_options(targetstate_error_ledger PRIVATE /W4 /WX)
+    target_compile_options(hil_r2_evidence PRIVATE /W4 /WX)
 else()
     target_compile_options(hil_r1 PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(hil_r2 PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(sys_err PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(targetstate_uncertainty PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(targetstate_error_ledger PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(hil_r2_evidence PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_link_libraries(hil_r1 PUBLIC m)
     target_link_libraries(hil_r2 PUBLIC m)
 endif()
@@ -67,6 +77,7 @@ endif()
 target_link_libraries(sys_err PUBLIC hil_r2)
 target_link_libraries(targetstate_uncertainty PUBLIC hil_r1 sys_err)
 target_link_libraries(targetstate_error_ledger PUBLIC targetstate_uncertainty)
+target_link_libraries(hil_r2_evidence PUBLIC m)
 
 if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     enable_testing()
@@ -140,6 +151,20 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     endif()
 
     add_test(NAME targetstate_error_ledger COMMAND test_targetstate_error_ledger)
+
+    add_executable(test_hil_r2_evidence
+        tests/test_hil_r2_evidence.c
+    )
+
+    target_link_libraries(test_hil_r2_evidence PRIVATE hil_r2_evidence)
+
+    if(MSVC)
+        target_compile_options(test_hil_r2_evidence PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_hil_r2_evidence PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+
+    add_test(NAME hil_r2_runtime_evidence COMMAND test_hil_r2_evidence)
 endif()
 
 if(HIL_BUILD_STM32H753_SMOKE)
@@ -174,6 +199,7 @@ if(HIL_BUILD_STM32H753_SMOKE)
         sys_err
         targetstate_uncertainty
         targetstate_error_ledger
+        hil_r2_evidence
         c
         nosys
     )

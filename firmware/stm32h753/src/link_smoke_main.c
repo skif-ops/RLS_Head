@@ -1,5 +1,6 @@
 #include "rls/hil_r1.h"
 #include "rls/hil_r2.h"
+#include "rls/hil_r2_evidence.h"
 #include "rls/sys_err.h"
 #include "rls/targetstate_uncertainty.h"
 #include "rls/targetstate_error_ledger.h"
@@ -98,6 +99,21 @@ int main(void)
             &sys_err_inputs,
             &sys_err_result);
 
+    HilR2Evidence runtime_evidence;
+    hil_r2_evidence_reset(&runtime_evidence);
+
+    (void)hil_r2_evidence_record_radar_imu(
+        &runtime_evidence,
+        100.0f);
+
+    (void)hil_r2_evidence_record_pps(
+        &runtime_evidence,
+        20.0f);
+
+    (void)hil_r2_evidence_update_holdover(
+        &runtime_evidence,
+        120.0f);
+
     TargetStateErrorLedger error_ledger;
     const bool ledger_ok =
         targetstate_syserr_ok &&
@@ -116,7 +132,9 @@ int main(void)
             : 0u) ^
         (ledger_ok
             ? (uint32_t)error_ledger.dominant_overall_source
-            : 0u);
+            : 0u) ^
+        (uint32_t)runtime_evidence.radar_imu_us.count ^
+        (uint32_t)runtime_evidence.pps_us.count;
 
     g_smoke_response_len =
         (uint32_t)response_len;
