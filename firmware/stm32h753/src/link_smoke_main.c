@@ -4,6 +4,7 @@
 #include "rls/sys_err.h"
 #include "rls/targetstate_uncertainty.h"
 #include "rls/targetstate_error_ledger.h"
+#include "rls/time_service.h"
 #include "stm32h753_memory.h"
 
 #include <stddef.h>
@@ -114,6 +115,39 @@ int main(void)
         &runtime_evidence,
         120.0f);
 
+    TimeService time_service;
+    const bool time_init_ok =
+        time_service_init(
+            &time_service,
+            0.25f,
+            2.0f,
+            100.0f);
+
+    const TimeObserveResult pps1 =
+        time_init_ok
+            ? time_service_observe_pps(
+                &time_service,
+                1000000u,
+                10000000)
+            : TIME_OBSERVE_REJECTED_ARGUMENT;
+
+    const TimeObserveResult pps2 =
+        time_init_ok
+            ? time_service_observe_pps(
+                &time_service,
+                2000000u,
+                11000002)
+            : TIME_OBSERVE_REJECTED_ARGUMENT;
+
+    int64_t disciplined_time = 0;
+
+    const bool time_map_ok =
+        time_init_ok &&
+        time_service_map_us(
+            &time_service,
+            2500000u,
+            &disciplined_time);
+
     TargetStateErrorLedger error_ledger;
     const bool ledger_ok =
         targetstate_syserr_ok &&
@@ -134,7 +168,12 @@ int main(void)
             ? (uint32_t)error_ledger.dominant_overall_source
             : 0u) ^
         (uint32_t)runtime_evidence.radar_imu_us.count ^
-        (uint32_t)runtime_evidence.pps_us.count;
+        (uint32_t)runtime_evidence.pps_us.count ^
+        (uint32_t)pps1 ^
+        ((uint32_t)pps2 << 4) ^
+        (time_map_ok
+            ? (uint32_t)(disciplined_time & 0xFFFF)
+            : 0u);
 
     g_smoke_response_len =
         (uint32_t)response_len;
