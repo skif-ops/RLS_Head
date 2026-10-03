@@ -93,6 +93,14 @@
       "requires_measured_evidence": true
     },
     {
+      "id": "CARRIER_DESIGN_INPUTS",
+      "status": "PASS",
+      "evidence_level": "DESIGN_INPUT",
+      "synthetic": false,
+      "requires_measured_evidence": false,
+      "note": "Authoritative System Carrier BOM/pinmap/clock/power/netlist inputs pass internal consistency validation. KiCad schematic/ERC Review A remains open."
+    },
+    {
       "id": "CARRIER_REVIEW_A_TOOLING",
       "status": "PASS",
       "evidence_level": "SOFTWARE_CI",
