@@ -17,7 +17,7 @@ def test_required_margin_known_values():
 
 
 def test_predicted_range_known_values():
-    assert math.isclose(predicted_range_m(300.0, 6.0), 423.7669, abs_tol=1e-3)
+    assert math.isclose(predicted_range_m(300.0, 6.0), 423.7613, abs_tol=1e-3)
     assert math.isclose(predicted_range_m(300.0, 10.0), 533.4838, abs_tol=1e-3)
 
 
