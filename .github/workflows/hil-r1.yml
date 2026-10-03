@@ -45,6 +45,21 @@ jobs:
       - name: Run Python tests
         run: python -m pytest -q tests/python
 
+      - name: Run HIL-R2 bench CLI smoke
+        run: |
+          python -m tools.hil_host.r2_evidence             tests/fixtures/hil_r2_bench_pass.csv             --config config/hil_r2_evidence_evt.json             --output hil_r2_evidence.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("hil_r2_evidence.json").read_text())
+          assert data["schema"] == "HIL-R2-BENCH-EVIDENCE-001"
+          assert data["gate_status"] == "PASS"
+          assert data["radar_imu"]["count"] == 100
+          assert data["pps"]["count"] == 30
+          print("HIL-R2 CLI smoke PASS")
+          PY
+
   stm32h753-cross:
     name: STM32H753 Cortex-M7 cross-build
     runs-on: ubuntu-latest
