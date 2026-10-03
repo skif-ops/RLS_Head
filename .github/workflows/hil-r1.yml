@@ -290,6 +290,25 @@ jobs:
           print("Carrier Review A tooling smoke PASS")
           PY
 
+      - name: Evaluate integrated radar gate
+        run: |
+          python -m tools.integrated_radar_gate \
+            evidence/project_evidence_manifest.json \
+            --output integrated_radar_gate.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("integrated_radar_gate.json").read_text())
+          assert data["schema"] == "INTEGRATED-RADAR-GATE-001"
+          assert data["status"] == "HOLD"
+          assert data["prototype_authorization"] == "NOT_AUTHORIZED"
+          assert "not_ready:AWR_EVM_PROFILE_MEASURED" in data["reason_codes"]
+          assert "not_ready:PHYSICAL_ANT_MEASUREMENT" in data["reason_codes"]
+          assert "not_ready:SYS_ERR_MEASURED" in data["reason_codes"]
+          print("Integrated radar gate smoke HOLD as expected")
+          PY
+
       - name: Validate project evidence status
         run: |
           python -m tools.evidence_status             evidence/project_evidence_manifest.json             --output project_evidence_status.json
@@ -305,6 +324,7 @@ jobs:
           assert "M300_MEASURED" in data["measured_open_items"]
           assert "SYS_ERR_MEASURED" in data["measured_open_items"]
           assert "PHYSICAL_ANT_MEASUREMENT_TOOLING" in data["passed_items"]
+          assert "INTEGRATED_RADAR_GATE_TOOLING" in data["passed_items"]
           assert "EVIDENCE_PROMOTION_TOOLING" in data["passed_items"]
           assert "AWR_EVM_PROFILE_TOOLING" in data["passed_items"]
           assert "CARRIER_DESIGN_INPUTS" in data["passed_items"]
