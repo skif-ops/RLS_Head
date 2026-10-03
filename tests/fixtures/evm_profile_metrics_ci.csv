@@ -1,0 +1,5 @@
+run_id,profile_id,profile_class,range_m,rcs_m2,dynamics_class,fov_class,pd,track_availability,fresh_fraction,margin_db,sigma_az_deg,sigma_el_deg,update_hz,radar_latency_p99_ms,compute_util_p99_pct,ram_peak_pct,overrun_count,deadline_miss_count,edma_error_count,angle_status
+CI-PROFILE-TRACK-001,PF-TRACK-CFG-001,TRACK,300,0.01,DYN-LOW,BORESIGHT,0.94,0.97,0.96,0.0,0.22,0.24,20.0,35.0,60.0,55.0,0,0,0,PASS
+CI-PROFILE-LR1-001,PF-LR1-CFG-001,LR1,300,0.01,DYN-LOW,BORESIGHT,0.95,0.97,0.96,3.2,0.23,0.25,20.0,45.0,75.0,70.0,0,0,0,PASS
+CI-PROFILE-LR2-001,PF-LR2-CFG-001,LR2,300,0.01,DYN-LOW,BORESIGHT,0.94,0.96,0.95,5.0,0.27,0.30,20.0,60.0,85.0,82.0,0,0,0,RESTRICTED
+CI-PROFILE-LRX-001,PF-LRX-CFG-001,LRX,300,0.01,DYN-LOW,BORESIGHT,0.96,0.98,0.94,8.5,0.30,0.33,10.0,90.0,92.0,88.0,0,0,0,PASS
