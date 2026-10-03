@@ -1,0 +1,40 @@
+{
+  "schema": "EVM-RUN-MANIFEST-001",
+  "run_id": "CI-PROFILE-LRX-001",
+  "mode": "QUALIFY",
+  "profile_id": "PF-LRX-CFG-001",
+  "profile_config_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  "source_commit": "4444444444444444444444444444444444444444",
+  "target_id": "RCS-A-001",
+  "range_nominal_m": 300,
+  "rcs_m2": 0.01,
+  "start_time_us": 1000000,
+  "end_time_us": 2000000,
+  "truth_status": "VALID",
+  "time_alignment_valid": true,
+  "config_locked": true,
+  "evidence_level": "SOFTWARE_CI",
+  "synthetic_fixture": true,
+  "raw_capture_enabled": false,
+  "environment": {
+    "temperature_c": 20,
+    "precipitation_state": "DRY"
+  },
+  "files": [
+    {
+      "path": "CI-PROFILE-LRX-001/truth.csv",
+      "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "kind": "truth"
+    },
+    {
+      "path": "CI-PROFILE-LRX-001/radar.bin",
+      "sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "kind": "radar"
+    },
+    {
+      "path": "CI-PROFILE-LRX-001/diag.json",
+      "sha256": "9999999999999999999999999999999999999999999999999999999999999999",
+      "kind": "diagnostics"
+    }
+  ]
+}

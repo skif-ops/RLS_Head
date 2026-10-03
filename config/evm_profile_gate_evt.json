@@ -1,0 +1,12 @@
+{
+  "pd_min": 0.90,
+  "track_availability_min": 0.95,
+  "update_min_hz": 20.0,
+  "latency_operational_max_ms": 50.0,
+  "latency_conditional_max_ms": 75.0,
+  "compute_operational_max_pct": 80.0,
+  "compute_conditional_max_pct": 90.0,
+  "ram_operational_max_pct": 80.0,
+  "ram_conditional_max_pct": 90.0,
+  "gain_min_db": 0.0
+}

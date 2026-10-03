@@ -202,6 +202,30 @@ jobs:
           print("HW-SENSOR-PROTOTYPE-GATE logic smoke PASS")
           PY
 
+      - name: Evaluate AWR EVM profile gate
+        run: |
+          python -m tools.evm_profile_gate \
+            --metrics tests/fixtures/evm_profile_metrics_ci.csv \
+            --manifest tests/fixtures/evm_profiles/TRACK.json \
+            --manifest tests/fixtures/evm_profiles/LR1.json \
+            --manifest tests/fixtures/evm_profiles/LR2.json \
+            --manifest tests/fixtures/evm_profiles/LRX.json \
+            --config config/evm_profile_gate_evt.json \
+            --output evm_profile_result.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("evm_profile_result.json").read_text())
+          assert data["schema"] == "EVM-PROFILE-RESULT-001"
+          assert data["status"] == "TEST_READY"
+          assert data["profiles"]["TRACK"]["status"] == "OPERATIONAL"
+          assert data["profiles"]["LR1"]["status"] == "OPERATIONAL"
+          assert data["profiles"]["LR2"]["status"] == "CONDITIONAL"
+          assert data["profiles"]["LRX"]["status"] == "RESEARCH_ONLY"
+          print("AWR EVM profile gate smoke PASS")
+          PY
+
       - name: Validate System Carrier design inputs
         run: |
           python -m tools.carrier_design_inputs \
@@ -259,6 +283,7 @@ jobs:
           assert data["milestones"]["HW_SENSOR_PROTOTYPE_GATE_INPUTS"]["status"] == "OPEN"
           assert "M300_MEASURED" in data["measured_open_items"]
           assert "SYS_ERR_MEASURED" in data["measured_open_items"]
+          assert "AWR_EVM_PROFILE_TOOLING" in data["passed_items"]
           assert "CARRIER_DESIGN_INPUTS" in data["passed_items"]
           assert "CARRIER_REVIEW_A_TOOLING" in data["passed_items"]
           assert "TIME_SERVICE_LOGIC" in data["passed_items"]
