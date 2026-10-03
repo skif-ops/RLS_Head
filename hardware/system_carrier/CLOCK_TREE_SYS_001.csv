@@ -1,0 +1,7 @@
+clock_id,source,target,frequency_hz,mode,criticality,notes
+MCU_HSE_25M,Y1,STM32H753_PH0,25000000,CMOS_OSC,P0,MCU external high-speed clock
+ETH_50M,Y2,STM32H753_PA1,50000000,RMII_REF_CLK,P0,Shared 50MHz branch to MCU
+ETH_50M,Y2,LAN8742A_REF_CLK,50000000,RMII_REF_CLK,P0,Shared 50MHz branch to PHY
+GNSS_PPS,GNSS_CONNECTOR,STM32H753_PA0,1,TIM2_CAPTURE,P0,Absolute time observation
+RADAR_REF,RADAR_CONNECTOR,STM32H753_PB10,0,TIM2_CAPTURE,P0,Radar measurement reference capture
+IMU_DRDY,ICM-42688-P,STM32H753_PB11,0,TIM2_CAPTURE,P0,IMU sample/data-ready capture
