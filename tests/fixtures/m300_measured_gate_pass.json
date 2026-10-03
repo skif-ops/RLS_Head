@@ -1,0 +1,7 @@
+{
+  "schema": "M300-REPORT-001",
+  "track_status": "TRACK_PASS",
+  "evidence_level": "MEASURED_EVM",
+  "m300_track_db": 2.0,
+  "fixture_note": "CI logic fixture only; not real measured EVM evidence"
+}
