@@ -1,0 +1,7 @@
+{
+  "required_cases": ["NOMINAL"],
+  "required_frequencies_hz": [76000000000, 78500000000, 81000000000],
+  "min_points_per_group": 3,
+  "require_boresight": true,
+  "boresight_tolerance_deg": 0.001
+}
