@@ -413,7 +413,7 @@ def test_carrier_review_a_promotion_pass(tmp_path):
     assert updated["items"][0]["evidence_level"] == "CAD_REVIEW"
 
 
-def test_unsupported_physical_antenna_item_rejected(
+def test_physical_antenna_measurement_promotion_pass(
     tmp_path,
 ):
     result_path = tmp_path / "ant.json"
@@ -422,6 +422,8 @@ def test_unsupported_physical_antenna_item_rejected(
         {
             "schema": "ANT-MEASUREMENT-001",
             "status": "PASS",
+            "synthetic_fixture": False,
+            "evidence_level": "MEASURED_EM",
         },
     )
 
@@ -452,7 +454,62 @@ def test_unsupported_physical_antenna_item_rejected(
         },
     }
 
-    result, _ = promote_claim(
+    result, updated = promote_claim(
+        project_manifest=project_manifest(
+            "PHYSICAL_ANT_MEASUREMENT"
+        ),
+        claim=claim,
+        repository_root=tmp_path,
+    )
+
+    assert result["promotion_allowed"] is True
+    assert result["derived_status"] == "PASS"
+    assert updated["items"][0]["status"] == "PASS"
+    assert updated["items"][0]["evidence_level"] == "MEASURED_EM"
+
+
+def test_synthetic_physical_antenna_result_rejected(
+    tmp_path,
+):
+    result_path = tmp_path / "ant.json"
+    write_json(
+        result_path,
+        {
+            "schema": "ANT-MEASUREMENT-001",
+            "status": "TEST_READY",
+            "synthetic_fixture": True,
+            "evidence_level": "SOFTWARE_CI",
+        },
+    )
+
+    capture = tmp_path / "pattern.csv"
+    capture.write_text(
+        "az_deg,gain_db\n0,10\n",
+        encoding="utf-8",
+    )
+
+    claim = {
+        "schema": "MEASURED-EVIDENCE-CLAIM-001",
+        "item_id": "PHYSICAL_ANT_MEASUREMENT",
+        "result": {
+            "path": result_path.name,
+            "sha256": sha256(result_path),
+            "schema": "ANT-MEASUREMENT-001",
+        },
+        "provenance": {
+            "evidence_level": "MEASURED_EM",
+            "synthetic": False,
+            "artifacts": [
+                {
+                    "kind": "pattern_capture",
+                    "path": capture.name,
+                    "sha256": sha256(capture),
+                }
+            ],
+        },
+    }
+
+    result, updated = promote_claim(
         project_manifest=project_manifest(
             "PHYSICAL_ANT_MEASUREMENT"
         ),
@@ -461,4 +518,6 @@ def test_unsupported_physical_antenna_item_rejected(
     )
 
     assert result["promotion_allowed"] is False
-    assert "unsupported_item" in result["errors"]
+    assert result["derived_status"] == "INVALID"
+    assert "result_fixture_marker:synthetic_fixture" in result["errors"]
+    assert updated["items"][0]["status"] == "OPEN"

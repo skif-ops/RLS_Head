@@ -1,0 +1,10 @@
+{
+  "required_frequencies_hz": [76000000000, 78500000000, 81000000000],
+  "min_points_per_frequency": 3,
+  "require_boresight": true,
+  "boresight_tolerance_deg": 0.001,
+  "max_gain_uncertainty_db": 1.0,
+  "min_repeat_count": 3,
+  "min_track_usable_points": 1,
+  "min_high_acc_usable_points": 1
+}

@@ -139,6 +139,14 @@
       "requires_measured_evidence": true
     },
     {
+      "id": "PHYSICAL_ANT_MEASUREMENT_TOOLING",
+      "status": "PASS",
+      "evidence_level": "SOFTWARE_CI",
+      "synthetic": false,
+      "requires_measured_evidence": false,
+      "note": "Physical antenna gain/FOV/angle/ambiguity measurement contract, validator and promotion path are executable in CI. Real antenna measurement remains open."
+    },
+    {
       "id": "PHYSICAL_ANT_MEASUREMENT",
       "status": "OPEN",
       "evidence_level": "OPEN",

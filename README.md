@@ -17,6 +17,7 @@ Radar sensing/tracking project. The implemented software boundary in this reposi
 - System Carrier authoritative design inputs and Review A tooling (real CAD/ERC evidence still open)
 
 - hash-verified measured-evidence promotion guard
+- physical antenna measurement evidence tooling
 
 ## Evidence status
 
