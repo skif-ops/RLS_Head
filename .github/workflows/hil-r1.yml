@@ -60,6 +60,23 @@ jobs:
           print("HIL-R2 CLI smoke PASS")
           PY
 
+      - name: Run reference-range ingest smoke
+        run: |
+          python -m tools.reference_range             tests/fixtures/reference_range_r4.csv             --output reference_range_result.json
+          python - <<'PY'
+          import json
+          import math
+          from pathlib import Path
+
+          data = json.loads(Path("reference_range_result.json").read_text())
+          assert data["schema"] == "REFERENCE-RANGE-RESULT-001"
+          assert data["status"] == "DATA_READY"
+          assert len(data["points"]) == 6
+          assert math.isclose(data["fit"]["n_hat"], 4.0, abs_tol=1e-9)
+          assert data["fit"]["rms_residual_db"] < 1e-9
+          print("Reference-range ingest smoke PASS")
+          PY
+
   stm32h753-cross:
     name: STM32H753 Cortex-M7 cross-build
     runs-on: ubuntu-latest
