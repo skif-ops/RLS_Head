@@ -234,6 +234,28 @@ jobs:
           print("EVM run integrity smoke PASS")
           PY
 
+      - name: Assemble synthetic EVM reference campaign
+        run: |
+          python -m tools.evm_campaign \
+            --manifest tests/fixtures/evm_campaign/R050.json \
+            --manifest tests/fixtures/evm_campaign/R100.json \
+            --manifest tests/fixtures/evm_campaign/R150.json \
+            --manifest tests/fixtures/evm_campaign/R200.json \
+            --manifest tests/fixtures/evm_campaign/R250.json \
+            --manifest tests/fixtures/evm_campaign/R300.json \
+            --output evm_reference_campaign.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("evm_reference_campaign.json").read_text())
+          assert data["schema"] == "EVM-REFERENCE-CAMPAIGN-001"
+          assert data["status"] == "TEST_READY"
+          assert data["measured_ranges_m"] == []
+          assert data["test_ranges_m"] == [50.0, 100.0, 150.0, 200.0, 250.0, 300.0]
+          print("EVM campaign assembler smoke PASS")
+          PY
+
   stm32h753-cross:
     name: STM32H753 Cortex-M7 cross-build
     runs-on: ubuntu-latest
