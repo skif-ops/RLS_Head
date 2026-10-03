@@ -1,0 +1,4 @@
+cell_id,range_m,sigma_range_m,sigma_az_deg,sigma_el_deg,host_attitude_sigma_deg,extrinsic_sigma_deg,angular_rate_deg_s
+R100,100,0.30,0.10,0.10,0.05,0.03,90
+R200,200,0.30,0.10,0.10,0.05,0.03,90
+R300,300,0.30,0.10,0.10,0.05,0.03,90

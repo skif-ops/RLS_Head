@@ -1,0 +1,27 @@
+{
+  "gate_status": "PASS",
+  "holdover_max_abs_us": 120.0,
+  "missed_events": {
+    "imu_drdy": 0,
+    "pps": 0,
+    "radar_ref": 0
+  },
+  "monotonic_failures": 0,
+  "pps": {
+    "count": 30,
+    "max_abs_us": 40.0,
+    "rms_us": 20.0
+  },
+  "radar_imu": {
+    "count": 100,
+    "m2_us2": 1000000,
+    "max_abs_us": 150.0,
+    "max_us": 150.0,
+    "mean_us": 0.0,
+    "min_us": -150.0,
+    "rms_us": 100.0,
+    "stddev_us": 100.5
+  },
+  "reason_codes": [],
+  "schema": "HIL-R2-BENCH-EVIDENCE-001"
+}

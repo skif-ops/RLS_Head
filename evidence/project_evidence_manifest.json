@@ -94,6 +94,14 @@
       "requires_measured_evidence": true
     },
     {
+      "id": "SYS_ERR_MEASURED_TOOLING",
+      "status": "PASS",
+      "evidence_level": "SOFTWARE_CI",
+      "synthetic": false,
+      "requires_measured_evidence": false,
+      "note": "Measured SYS-ERR gate assembler combines HIL-R2 timing residuals with range/angle/attitude/extrinsic uncertainty cells and keeps synthetic evidence separate from real SYS_ERR_MEASURED."
+    },
+    {
       "id": "SYS_ERR_MEASURED",
       "status": "OPEN",
       "evidence_level": "OPEN",
