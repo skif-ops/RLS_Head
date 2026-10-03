@@ -104,6 +104,40 @@ jobs:
           print("RAD-LB-006 Rev.A smoke PASS")
           PY
 
+      - name: Run RAD-LB-006 Rev.B antenna smoke
+        run: |
+          python -m tools.rad_lb006_revb             --reva rad_lb_006_reva.json             --antenna tests/fixtures/d1_antenna_map_nominal.csv             --case-id NOMINAL             --frequency-hz 78500000000             --output rad_lb_006_revb.json
+          python - <<'PY'
+          import json
+          import math
+          from pathlib import Path
+
+          data = json.loads(Path("rad_lb_006_revb.json").read_text())
+          assert data["schema"] == "RAD-LB-006-REVB"
+          assert data["status"] == "PROJECTED"
+          assert data["antenna_selection"]["map_points"] == 3
+
+          cell = next(
+              c for c in data["cells"]
+              if c["range_m"] == 600.0
+              and c["rcs_m2"] == 0.10
+              and c["az_deg"] == 0.0
+          )
+          assert math.isclose(cell["m_ant_db"], 2.0, abs_tol=1e-12)
+          assert cell["projected_track_r4"] is True
+
+          ambiguous = next(
+              c for c in data["cells"]
+              if c["range_m"] == 300.0
+              and c["rcs_m2"] == 0.01
+              and c["az_deg"] == 45.0
+          )
+          assert ambiguous["ambiguity_flag"] is True
+          assert ambiguous["projected_track_r4"] is False
+
+          print("RAD-LB-006 Rev.B antenna smoke PASS")
+          PY
+
   stm32h753-cross:
     name: STM32H753 Cortex-M7 cross-build
     runs-on: ubuntu-latest
