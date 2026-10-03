@@ -1,0 +1,7 @@
+stage,input_net,output_net,device,setting,criticality,notes
+1,J1_POWER,VIN_RAW,CONNECTOR,Micro-Fit_3.0,P0,External system power entry
+2,VIN_RAW,VIN_TVS,SMAJ15CA,BIDIRECTIONAL,P0,Input transient clamp
+3,VIN_TVS,VIN_PROTECTED,TPS259470ARPWR,UVLO_4.338V_OVLO_15V_ILIM_3.03A,P0,eFuse reverse polarity and protection
+4,VIN_PROTECTED,3V3,TPS62130ARGTR,3.3V_3A,P0,Primary System Carrier rail
+5,3V3,VDDA_FILTERED,BLM18BD601SH1,FERRITE,P1,Precision/analog supply filtering
+6,3V3,IO_HIGH_CURRENT,BLM18KG221SN1,FERRITE,P1,High-current branch filtering

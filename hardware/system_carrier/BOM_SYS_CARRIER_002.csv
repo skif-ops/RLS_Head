@@ -1,0 +1,16 @@
+ref,qty,manufacturer,mpn,description,status
+U1,1,STMicroelectronics,STM32H753IIT6,System MCU LQFP176,SELECTED
+U2,1,TDK InvenSense,ICM-42688-P,6-axis IMU,SELECTED
+U3,1,Microchip,LAN8742Ai-CZ-TR,10/100 RMII Ethernet PHY,SELECTED
+U4,1,Texas Instruments,TCAN3404DRBRQ1,3.3V CAN FD transceiver,SELECTED
+U5,1,Texas Instruments,TPS62130ARGTR,3V3 3A buck regulator,SELECTED
+U6,1,Texas Instruments,TPS259470ARPWR,eFuse reverse-polarity protection,SELECTED
+Y1,1,ECS,ECS-2520S33-250-FN-TR,25MHz 3.3V MCU oscillator,SELECTED
+Y2,1,ECS,ECS-2520S33-500-FN-TR,50MHz 3.3V RMII oscillator,SELECTED
+J_ETH,1,Bel,P01-0006-01,RJ45 MagJack,SELECTED
+D_ETH,1,Texas Instruments,TPD4E05U06DQAR,Ethernet ESD array,SELECTED
+D_CAN,1,Texas Instruments,ESD2CANFD24-Q1,CAN FD ESD protection,SELECTED
+FB1,1,Murata,BLM18BD601SH1,Precision ferrite bead,SELECTED
+FB2,1,Murata,BLM18KG221SN1,High-current ferrite bead,SELECTED
+L1,1,Coilcraft,XFL4020-222MEC,2.2uH buck inductor,SELECTED
+D_IN,1,MULTISOURCE,SMAJ15CA,Bidirectional input TVS,SELECTED
