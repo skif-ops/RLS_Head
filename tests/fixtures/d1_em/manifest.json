@@ -1,0 +1,31 @@
+{
+  "schema": "ANT-D1-EM-MANIFEST-001",
+  "model_id": "D1-CI",
+  "model_revision": "A",
+  "solver_name": "CI_EM_SOLVER",
+  "solver_version": "1.0",
+  "synthetic_fixture": true,
+  "evidence_level": "SOFTWARE_CI",
+  "artifacts": [
+    {
+      "kind": "solver_export",
+      "path": "tests/fixtures/d1_em/solver_export.txt",
+      "sha256": "979c764179aacd26bfcad8b5e6e67e4088446b2ee016f90aa89876435429c81f"
+    },
+    {
+      "kind": "model_input",
+      "path": "tests/fixtures/d1_em/model.json",
+      "sha256": "9fba244cda9cb9e37c8e45b03f21f28df87cd478c64d144a054cb8b659ef343f"
+    },
+    {
+      "kind": "material_definition",
+      "path": "tests/fixtures/d1_em/material.json",
+      "sha256": "271dcf0444fc6a544879d698616bd210ba20fea4e26483b99ec36ea46e6ea216"
+    },
+    {
+      "kind": "antenna_map",
+      "path": "tests/fixtures/d1_em/antenna_map.csv",
+      "sha256": "d573694bde667c735e5169d5c359eb3dcab25487d7e7a8feccff47fb94bebd58"
+    }
+  ]
+}
