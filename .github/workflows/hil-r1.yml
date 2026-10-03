@@ -309,6 +309,29 @@ jobs:
           print("Integrated radar gate smoke HOLD as expected")
           PY
 
+      - name: Evaluate measured SYS-ERR gate
+        run: |
+          python -m tools.sys_err_measured_gate \
+            --manifest tests/fixtures/sys_err_measured_manifest_ci.json \
+            --config config/sys_err_measured_evt.json \
+            --repository-root . \
+            --output sys_err_measured_gate.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("sys_err_measured_gate.json").read_text())
+          assert data["schema"] == "SYS-ERR-GATE-001"
+          assert data["status"] == "TEST_READY"
+          assert data["gate_status"] == "PASS"
+          assert data["synthetic_fixture"] is True
+          assert len(data["cells"]) == 3
+          assert len(data["mandatory_cells"]) == 1
+          assert data["mandatory_cells"][0]["range_m"] == 300.0
+          assert data["mandatory_cells"][0]["position_rms_m"] < 2.10
+          print("Measured SYS-ERR gate smoke PASS")
+          PY
+
       - name: Validate project evidence status
         run: |
           python -m tools.evidence_status             evidence/project_evidence_manifest.json             --output project_evidence_status.json
@@ -324,6 +347,7 @@ jobs:
           assert "M300_MEASURED" in data["measured_open_items"]
           assert "SYS_ERR_MEASURED" in data["measured_open_items"]
           assert "PHYSICAL_ANT_MEASUREMENT_TOOLING" in data["passed_items"]
+          assert "SYS_ERR_MEASURED_TOOLING" in data["passed_items"]
           assert "INTEGRATED_RADAR_GATE_TOOLING" in data["passed_items"]
           assert "EVIDENCE_PROMOTION_TOOLING" in data["passed_items"]
           assert "AWR_EVM_PROFILE_TOOLING" in data["passed_items"]
