@@ -153,6 +153,25 @@ jobs:
           print("D1 antenna-map validation smoke PASS")
           PY
 
+      - name: Run D1 Monte-Carlo summary smoke
+        run: |
+          python -m tools.antenna_mc_summary             tests/fixtures/d1_mc_pass.csv             --output d1_mc_summary.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("d1_mc_summary.json").read_text())
+          assert data["schema"] == "ANT-D1-MC-SUMMARY-001"
+          assert data["status"] == "PASS"
+          mandatory = next(
+              c for c in data["cells"]
+              if c["mandatory_region"]
+          )
+          assert mandatory["sample_count"] == 20
+          assert mandatory["robust"] is True
+          print("D1 Monte-Carlo summary smoke PASS")
+          PY
+
   stm32h753-cross:
     name: STM32H753 Cortex-M7 cross-build
     runs-on: ubuntu-latest
