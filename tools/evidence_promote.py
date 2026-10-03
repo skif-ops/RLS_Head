@@ -34,6 +34,7 @@ SUPPORTED_ITEMS = {
     "SYS_ERR_MEASURED",
     "CARRIER_REVIEW_A",
     "AWR_EVM_PROFILE_MEASURED",
+    "PHYSICAL_ANT_MEASUREMENT",
 }
 
 
@@ -326,6 +327,35 @@ def _evaluate_ant_gate(
     )
 
 
+def _evaluate_physical_antenna(
+    result: dict,
+) -> tuple[str, list[str]]:
+    if result.get("schema") != "ANT-MEASUREMENT-001":
+        return "INVALID", ["result_schema"]
+
+    if result.get("synthetic_fixture") is True:
+        return "INVALID", ["antenna_measurement_synthetic"]
+
+    value = str(result.get("status", "UNKNOWN"))
+
+    if value == "PASS":
+        return "PASS", []
+
+    if value == "CONDITIONAL":
+        return "CONDITIONAL", [
+            "antenna_measurement_conditional"
+        ]
+
+    if value in {"HOLD", "INCOMPLETE"}:
+        return "HOLD", [
+            f"antenna_measurement_{value.lower()}"
+        ]
+
+    return "FAIL", [
+        f"antenna_measurement_{value.lower()}"
+    ]
+
+
 def _evaluate_evm_profile(
     result: dict,
     source_json: list[tuple[str, dict]],
@@ -404,6 +434,9 @@ def _evaluate_claim(
     if item_id == "AWR_EVM_PROFILE_MEASURED":
         return _evaluate_evm_profile(result, source_json)
 
+    if item_id == "PHYSICAL_ANT_MEASUREMENT":
+        return _evaluate_physical_antenna(result)
+
     return "INVALID", ["unsupported_item"]
 
 
@@ -444,6 +477,13 @@ def _allowed_level(
             "SIMULATED_EM",
             "SIMULATED_EM_CORRELATED",
             "MEASURED_EM",
+        }
+
+    if item_id == "PHYSICAL_ANT_MEASUREMENT":
+        return evidence_level in {
+            "MEASURED_EM",
+            "MEASURED_INTEGRATED",
+            "MEASURED_FIELD",
         }
 
     return False
