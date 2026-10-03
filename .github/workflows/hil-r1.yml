@@ -239,6 +239,7 @@ jobs:
           assert "M300_MEASURED" in data["measured_open_items"]
           assert "SYS_ERR_MEASURED" in data["measured_open_items"]
           assert "CARRIER_REVIEW_A_TOOLING" in data["passed_items"]
+          assert "TIME_SERVICE_LOGIC" in data["passed_items"]
           assert data["milestones"]["M1"]["status"] == "OPEN"
           print("Project evidence status smoke PASS")
           PY
