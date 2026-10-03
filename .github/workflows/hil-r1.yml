@@ -187,6 +187,21 @@ jobs:
           print("ANT-SIM-GATE smoke PASS")
           PY
 
+      - name: Evaluate HW-SENSOR-PROTOTYPE-GATE logic
+        run: |
+          python -m tools.hw_sensor_prototype_gate             --m300 tests/fixtures/m300_measured_gate_pass.json             --ant-sim ant_sim_gate.json             --sys-err tests/fixtures/sys_err_gate_pass.json             --output hw_sensor_prototype_gate.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("hw_sensor_prototype_gate.json").read_text())
+          assert data["schema"] == "HW-SENSOR-PROTOTYPE-GATE-001"
+          assert data["status"] == "PASS"
+          assert data["prototype_authorization"] == "AUTHORIZED_FOR_MEASUREMENT"
+          assert "integrated radar PCB production" in data["explicitly_not_authorized"]
+          print("HW-SENSOR-PROTOTYPE-GATE logic smoke PASS")
+          PY
+
   stm32h753-cross:
     name: STM32H753 Cortex-M7 cross-build
     runs-on: ubuntu-latest
