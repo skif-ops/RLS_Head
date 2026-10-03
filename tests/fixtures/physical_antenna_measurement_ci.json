@@ -1,0 +1,12 @@
+{
+  "schema": "ANT-MEASUREMENT-MANIFEST-001",
+  "measurement_id": "ANT-MEAS-CI-001",
+  "synthetic_fixture": true,
+  "evidence_level": "SOFTWARE_CI",
+  "instrument_id": "CI-INSTRUMENT",
+  "calibration_id": "CI-CAL",
+  "measurement_csv": {
+    "path": "tests/fixtures/physical_antenna_measurement_ci.csv",
+    "sha256": "60f8f157906e22efb5617a3c9a2247bacd89128e0d2a3f83c5e03267ee21fb74"
+  }
+}
