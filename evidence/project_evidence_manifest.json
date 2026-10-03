@@ -1,0 +1,127 @@
+{
+  "schema": "PROJECT-EVIDENCE-MANIFEST-001",
+  "items": [
+    {
+      "id": "HIL_R1_HOST",
+      "status": "PASS",
+      "evidence_level": "SOFTWARE_CI",
+      "synthetic": false,
+      "requires_measured_evidence": false,
+      "note": "Host-native HIL-R1 code path and golden scenarios executed in GitHub Actions."
+    },
+    {
+      "id": "STM32H753_CROSS_BUILD",
+      "status": "PASS",
+      "evidence_level": "CROSS_BUILD",
+      "synthetic": false,
+      "requires_measured_evidence": false,
+      "note": "Cortex-M7 link/memory/section gate; not physical MCU execution."
+    },
+    {
+      "id": "HIL_R2_LOGIC",
+      "status": "PASS",
+      "evidence_level": "SOFTWARE_CI",
+      "synthetic": false,
+      "requires_measured_evidence": false,
+      "note": "Deterministic timing/host-state and runtime evidence logic executed in CI."
+    },
+    {
+      "id": "M300_TOOLING",
+      "status": "PASS",
+      "evidence_level": "SOFTWARE_CI",
+      "synthetic": false,
+      "requires_measured_evidence": false,
+      "note": "M300 analysis tooling is executable; current CI data are fixtures."
+    },
+    {
+      "id": "RAD_LB_PIPELINE",
+      "status": "PASS",
+      "evidence_level": "SOFTWARE_CI",
+      "synthetic": false,
+      "requires_measured_evidence": false,
+      "note": "Rev.A/Rev.B and ANT-SIM gate logic pass synthetic CI fixtures."
+    },
+    {
+      "id": "REFERENCE_RANGE_MEASURED",
+      "status": "OPEN",
+      "evidence_level": "OPEN",
+      "synthetic": false,
+      "requires_measured_evidence": true
+    },
+    {
+      "id": "M300_MEASURED",
+      "status": "OPEN",
+      "evidence_level": "OPEN",
+      "synthetic": false,
+      "requires_measured_evidence": true
+    },
+    {
+      "id": "ANT_D1_EM_REAL",
+      "status": "OPEN",
+      "evidence_level": "OPEN",
+      "synthetic": false,
+      "requires_measured_evidence": false,
+      "note": "Actual D1 EM solver exports have not yet been ingested."
+    },
+    {
+      "id": "ANT_D1_SIM_GATE_REAL",
+      "status": "OPEN",
+      "evidence_level": "OPEN",
+      "synthetic": false,
+      "requires_measured_evidence": false
+    },
+    {
+      "id": "HIL_R2_BENCH_MEASURED",
+      "status": "OPEN",
+      "evidence_level": "OPEN",
+      "synthetic": false,
+      "requires_measured_evidence": true
+    },
+    {
+      "id": "SYS_ERR_MEASURED",
+      "status": "OPEN",
+      "evidence_level": "OPEN",
+      "synthetic": false,
+      "requires_measured_evidence": true
+    },
+    {
+      "id": "CARRIER_REVIEW_A",
+      "status": "OPEN",
+      "evidence_level": "OPEN",
+      "synthetic": false,
+      "requires_measured_evidence": false
+    },
+    {
+      "id": "AWR_EVM_PROFILE_MEASURED",
+      "status": "OPEN",
+      "evidence_level": "OPEN",
+      "synthetic": false,
+      "requires_measured_evidence": true
+    },
+    {
+      "id": "PHYSICAL_ANT_MEASUREMENT",
+      "status": "OPEN",
+      "evidence_level": "OPEN",
+      "synthetic": false,
+      "requires_measured_evidence": true
+    }
+  ],
+  "milestones": {
+    "M1": [
+      "M300_MEASURED",
+      "ANT_D1_EM_REAL",
+      "HIL_R1_HOST",
+      "CARRIER_REVIEW_A"
+    ],
+    "HW_SENSOR_PROTOTYPE_GATE_INPUTS": [
+      "M300_MEASURED",
+      "ANT_D1_SIM_GATE_REAL",
+      "SYS_ERR_MEASURED"
+    ],
+    "INTEGRATED_RADAR_GATE_INPUTS": [
+      "AWR_EVM_PROFILE_MEASURED",
+      "PHYSICAL_ANT_MEASUREMENT",
+      "SYS_ERR_MEASURED"
+    ]
+  }
+}
