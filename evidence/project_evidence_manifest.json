@@ -116,6 +116,14 @@
       "requires_measured_evidence": false
     },
     {
+      "id": "AWR_EVM_PROFILE_TOOLING",
+      "status": "PASS",
+      "evidence_level": "SOFTWARE_CI",
+      "synthetic": false,
+      "requires_measured_evidence": false,
+      "note": "TRACK/LR1/LR2/LRX profile metrics are validated against EVM run manifests and classified through latency/update/compute/RAM/angle/range-gain gates. Real profile evidence remains open."
+    },
+    {
       "id": "AWR_EVM_PROFILE_MEASURED",
       "status": "OPEN",
       "evidence_level": "OPEN",
