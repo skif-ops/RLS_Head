@@ -1,0 +1,132 @@
+{
+  "schema": "SYS-CARRIER-PRECAPTURE-001",
+  "board_id": "EVT-SYS-CARRIER",
+  "hardware_revision": "A",
+  "mcu_package": "LQFP176",
+  "nominal_input_voltage_range_v": [
+    6,
+    14
+  ],
+  "primary_rail_v": 3.3,
+  "critical_time_capture": [
+    {
+      "signal": "GNSS_PPS",
+      "pin": "PA0",
+      "peripheral": "TIM2_CH1"
+    },
+    {
+      "signal": "RADAR_REF",
+      "pin": "PB10",
+      "peripheral": "TIM2_CH3"
+    },
+    {
+      "signal": "IMU_DRDY",
+      "pin": "PB11",
+      "peripheral": "TIM2_CH4"
+    }
+  ],
+  "clocks": [
+    {
+      "id": "MCU_HSE",
+      "frequency_hz": 25000000,
+      "mpn": "ECS-2520S33-250-FN-TR",
+      "distribution": "MCU"
+    },
+    {
+      "id": "ETH_RMII_REF",
+      "frequency_hz": 50000000,
+      "mpn": "ECS-2520S33-500-FN-TR",
+      "distribution": "STAR_TO_PHY_AND_MCU"
+    }
+  ],
+  "power_chain": [
+    "INPUT_CONNECTOR",
+    "SMAJ15CA",
+    "TPS259470ARPWR",
+    "VIN_PROTECTED",
+    "TPS62130ARGTR",
+    "3V3"
+  ],
+  "efuse": {
+    "uvlo_divider_ohm": [
+      374000,
+      143000
+    ],
+    "uvlo_target_v": 4.338,
+    "ovlo_divider_ohm": [
+      1150000,
+      100000
+    ],
+    "ovlo_target_v": 15,
+    "ilim_resistor_ohm": 1100,
+    "ilim_target_a": 3.03,
+    "dvdt_cap_f": 3.3e-9,
+    "itimer": "OPEN",
+    "auxoff_pullup": true,
+    "fault_pullup": true
+  },
+  "mcu_decoupling": {
+    "vcap1_f": 0.0000022,
+    "vcap2_f": 0.0000022,
+    "vddldo_f": 0.0000047,
+    "vdda_bulk_f": 0.000001,
+    "vdda_hf_f": 1e-7
+  },
+  "ethernet": {
+    "rmii_impedance_ohm": 68,
+    "mdi_diff_impedance_ohm": 100,
+    "rmii_series_resistor_initial_ohm": 10,
+    "refclk_branch_series_resistor_initial_ohm": 22,
+    "refclk_branch_length_mismatch_max_mm": 2.54,
+    "refclk_branch_length_target_max_mm": 25,
+    "phy_reset_min_after_power_ms": 25,
+    "straps": {
+      "mode": "111_AUTO_NEG",
+      "phyad0": 0,
+      "regoff": 0,
+      "nintsel": 1,
+      "refclk_mode": "INPUT",
+      "strap_resistor_ohm": 10000,
+      "rbias_ohm": 12100
+    }
+  },
+  "can_safe_defaults": {
+    "txd_pullup_ohm": 10000,
+    "stb_pullup_ohm": 10000,
+    "shdn_pulldown_ohm": 10000,
+    "startup_state": "STANDBY_RECESSIVE"
+  },
+  "stackup": {
+    "layer_count": 6,
+    "nominal_thickness_mm": 1.6,
+    "l2": "SOLID_GND",
+    "l5": "SOLID_GND",
+    "controlled_impedance": [
+      {
+        "net_class": "ETH_MDI",
+        "type": "DIFF",
+        "target_ohm": 100
+      },
+      {
+        "net_class": "RMII",
+        "type": "SE",
+        "target_ohm": 68
+      }
+    ]
+  },
+  "required_mpn": [
+    "STM32H753IIT6",
+    "ICM-42688-P",
+    "LAN8742Ai-CZ-TR",
+    "TCAN3404DRBRQ1",
+    "TPS62130ARGTR",
+    "TPS259470ARPWR",
+    "ECS-2520S33-250-FN-TR",
+    "ECS-2520S33-500-FN-TR",
+    "P01-0006-01",
+    "TPD4E05U06DQAR",
+    "ESD2CANFD24-Q1",
+    "XFL4020-222MEC",
+    "SMAJ15CA"
+  ]
+}
