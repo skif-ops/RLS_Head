@@ -13,6 +13,7 @@ Radar sensing/tracking project. The implemented software boundary in this reposi
 - RAD-LB-006 Rev.A / Rev.B projected evidence pipeline
 - D1 antenna-map validation and Monte-Carlo robustness tooling
 - ANT-SIM-GATE and HW sensor measurement-prototype gate logic
+- System Carrier Review A tooling (real CAD/ERC evidence still open)
 
 ## Evidence status
 

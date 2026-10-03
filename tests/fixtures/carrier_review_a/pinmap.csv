@@ -1,0 +1,4 @@
+signal,mcu_pin,peripheral,direction,criticality
+GNSS_PPS,PA0,TIM2_CH1,IN,P0
+RADAR_REF,PB10,TIM2_CH3,IN,P0
+IMU_DRDY,PB11,TIM2_CH4,IN,P0
