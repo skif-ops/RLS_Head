@@ -219,6 +219,21 @@ jobs:
           print("Project evidence status smoke PASS")
           PY
 
+      - name: Validate EVM run manifest integrity
+        run: |
+          python -m tools.evm_run_manifest             tests/fixtures/evm_run_manifest_ci.json             --output evm_run_validation.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("evm_run_validation.json").read_text())
+          assert data["schema"] == "EVM-RUN-VALIDATION-001"
+          assert data["status"] == "TEST_READY"
+          assert data["synthetic_fixture"] is True
+          assert data["evidence_level"] == "SOFTWARE_CI"
+          print("EVM run integrity smoke PASS")
+          PY
+
   stm32h753-cross:
     name: STM32H753 Cortex-M7 cross-build
     runs-on: ubuntu-latest
