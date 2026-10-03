@@ -1,0 +1,6 @@
+{
+  "schema": "SYS-ERR-GATE-001",
+  "status": "PASS",
+  "evidence_level": "MEASURED_BENCH",
+  "fixture_note": "CI logic fixture only; not real measured bench evidence"
+}
