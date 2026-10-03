@@ -132,6 +132,14 @@
       "note": "TRACK/LR1/LR2/LRX profile metrics are validated against EVM run manifests and classified through latency/update/compute/RAM/angle/range-gain gates. Real profile evidence remains open."
     },
     {
+      "id": "INTEGRATED_RADAR_GATE_TOOLING",
+      "status": "PASS",
+      "evidence_level": "SOFTWARE_CI",
+      "synthetic": false,
+      "requires_measured_evidence": false,
+      "note": "Integrated sensing measurement-prototype gate logic is executable in CI and consumes authoritative AWR EVM profile, physical antenna, and SYS-ERR evidence items."
+    },
+    {
       "id": "AWR_EVM_PROFILE_MEASURED",
       "status": "OPEN",
       "evidence_level": "OPEN",
