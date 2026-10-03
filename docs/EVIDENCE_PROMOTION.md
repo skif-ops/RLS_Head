@@ -64,9 +64,11 @@ Current promotion rules exist for:
 - `SYS_ERR_MEASURED`
 - `CARRIER_REVIEW_A`
 - `AWR_EVM_PROFILE_MEASURED`
+- `PHYSICAL_ANT_MEASUREMENT`
 
-`PHYSICAL_ANT_MEASUREMENT` is deliberately unsupported until a
-physical antenna-measurement result schema is defined.
+`PHYSICAL_ANT_MEASUREMENT` is supported only from non-synthetic
+`ANT-MEASUREMENT-001` results with `MEASURED_EM`,
+`MEASURED_INTEGRATED`, or `MEASURED_FIELD` provenance.
 
 ## Usage
 
