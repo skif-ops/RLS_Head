@@ -85,6 +85,14 @@
       "requires_measured_evidence": true
     },
     {
+      "id": "CARRIER_REVIEW_A_TOOLING",
+      "status": "PASS",
+      "evidence_level": "SOFTWARE_CI",
+      "synthetic": false,
+      "requires_measured_evidence": false,
+      "note": "Carrier Review A manifest/hash/ERC/pinmap/BOM/audit validation tooling is executable in CI. This does not close real CAD Review A."
+    },
+    {
       "id": "CARRIER_REVIEW_A",
       "status": "OPEN",
       "evidence_level": "OPEN",
