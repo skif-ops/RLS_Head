@@ -77,6 +77,33 @@ jobs:
           print("Reference-range ingest smoke PASS")
           PY
 
+      - name: Run RAD-LB-006 Rev.A smoke
+        run: |
+          python -m tools.range_analysis tests/fixtures/m300_track_pass.csv --output m300_report.json
+          python -m tools.rad_lb006 --reference reference_range_result.json --m300 m300_report.json --output rad_lb_006_reva.json
+          python - <<'PY'
+          import json
+          import math
+          from pathlib import Path
+
+          data = json.loads(Path("rad_lb_006_reva.json").read_text())
+          assert data["schema"] == "RAD-LB-006-REVA"
+          assert data["status"] == "PROJECTED"
+          assert len(data["cells"]) == 12
+          assert math.isclose(data["range_model"]["n_hat"], 4.0, abs_tol=1e-9)
+
+          cell = next(
+              c for c in data["cells"]
+              if c["range_m"] == 600.0 and c["rcs_m2"] == 0.10
+          )
+          assert math.isclose(
+              cell["m_total_r4_db"],
+              -0.041199826559248,
+              abs_tol=1e-6,
+          )
+          print("RAD-LB-006 Rev.A smoke PASS")
+          PY
+
   stm32h753-cross:
     name: STM32H753 Cortex-M7 cross-build
     runs-on: ubuntu-latest
