@@ -1,0 +1,7 @@
+ref,qty,manufacturer,mpn,description
+U1,1,STMicroelectronics,STM32H753IIT6,System MCU
+U2,1,TDK InvenSense,ICM-42688-P,IMU
+U3,1,Microchip,LAN8742Ai-CZ-TR,RMII PHY
+U4,1,Texas Instruments,TCAN3404DRBRQ1,CAN FD transceiver
+U5,1,Texas Instruments,TPS62130ARGTR,3V3 buck
+U6,1,Texas Instruments,TPS259470ARPWR,eFuse
