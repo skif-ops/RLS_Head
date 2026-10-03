@@ -72,6 +72,14 @@
       "requires_measured_evidence": true
     },
     {
+      "id": "ANT_D1_EM_TOOLING",
+      "status": "PASS",
+      "evidence_level": "SOFTWARE_CI",
+      "synthetic": false,
+      "requires_measured_evidence": false,
+      "note": "D1 EM solver/model/material/export provenance validator and promotion path are executable in CI. Real solver evidence remains open."
+    },
+    {
       "id": "ANT_D1_EM_REAL",
       "status": "OPEN",
       "evidence_level": "OPEN",

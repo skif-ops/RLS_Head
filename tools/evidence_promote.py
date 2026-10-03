@@ -296,20 +296,24 @@ def _evaluate_carrier(
     )
 
 
-def _evaluate_ant_map(
+def _evaluate_ant_em(
     result: dict,
 ) -> tuple[str, list[str]]:
-    if result.get("schema") != "ANT-D1-MAP-VALIDATION-001":
+    if result.get("schema") != "ANT-D1-EM-EVIDENCE-001":
         return "INVALID", ["result_schema"]
+
+    if result.get("synthetic_fixture") is True:
+        return "INVALID", ["ant_em_result_synthetic"]
 
     value = str(result.get("status", "UNKNOWN"))
 
     if value == "DATA_READY":
         return "PASS", []
-    if value in {"INCOMPLETE", "HOLD"}:
-        return "HOLD", [f"ant_map_{value.lower()}"]
 
-    return "FAIL", [f"ant_map_{value.lower()}"]
+    if value in {"HOLD", "INCOMPLETE", "TEST_READY"}:
+        return "HOLD", [f"ant_em_{value.lower()}"]
+
+    return "FAIL", [f"ant_em_{value.lower()}"]
 
 
 def _evaluate_ant_gate(
@@ -426,7 +430,7 @@ def _evaluate_claim(
         return _evaluate_carrier(result)
 
     if item_id == "ANT_D1_EM_REAL":
-        return _evaluate_ant_map(result)
+        return _evaluate_ant_em(result)
 
     if item_id == "ANT_D1_SIM_GATE_REAL":
         return _evaluate_ant_gate(result)

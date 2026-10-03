@@ -1,0 +1,4 @@
+solver=CI_EM_SOLVER
+version=1.0
+frequency_hz=76000000000,78500000000,81000000000
+export=far_field

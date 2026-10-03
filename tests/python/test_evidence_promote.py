@@ -521,3 +521,119 @@ def test_synthetic_physical_antenna_result_rejected(
     assert result["derived_status"] == "INVALID"
     assert "result_fixture_marker:synthetic_fixture" in result["errors"]
     assert updated["items"][0]["status"] == "OPEN"
+
+
+def test_d1_em_provenance_promotion_pass(tmp_path):
+    result_path = tmp_path / "d1_em.json"
+    write_json(
+        result_path,
+        {
+            "schema": "ANT-D1-EM-EVIDENCE-001",
+            "status": "DATA_READY",
+            "synthetic_fixture": False,
+            "evidence_level": "SIMULATED_EM",
+        },
+    )
+
+    solver = tmp_path / "solver_export.txt"
+    solver.write_text(
+        "solver evidence\n",
+        encoding="utf-8",
+    )
+
+    claim = {
+        "schema": "MEASURED-EVIDENCE-CLAIM-001",
+        "item_id": "ANT_D1_EM_REAL",
+        "result": {
+            "path": result_path.name,
+            "sha256": sha256(result_path),
+            "schema": "ANT-D1-EM-EVIDENCE-001",
+        },
+        "provenance": {
+            "evidence_level": "SIMULATED_EM",
+            "synthetic": False,
+            "artifacts": [
+                {
+                    "kind": "solver_export",
+                    "path": solver.name,
+                    "sha256": sha256(solver),
+                }
+            ],
+        },
+    }
+
+    manifest = project_manifest(
+        "ANT_D1_EM_REAL"
+    )
+    manifest["items"][0][
+        "requires_measured_evidence"
+    ] = False
+
+    result, updated = promote_claim(
+        project_manifest=manifest,
+        claim=claim,
+        repository_root=tmp_path,
+    )
+
+    assert result["promotion_allowed"] is True
+    assert result["derived_status"] == "PASS"
+    assert updated["items"][0]["status"] == "PASS"
+    assert updated["items"][0]["evidence_level"] == "SIMULATED_EM"
+
+
+def test_synthetic_d1_em_result_rejected(tmp_path):
+    result_path = tmp_path / "d1_em.json"
+    write_json(
+        result_path,
+        {
+            "schema": "ANT-D1-EM-EVIDENCE-001",
+            "status": "TEST_READY",
+            "synthetic_fixture": True,
+            "evidence_level": "SOFTWARE_CI",
+        },
+    )
+
+    solver = tmp_path / "solver_export.txt"
+    solver.write_text(
+        "solver evidence\n",
+        encoding="utf-8",
+    )
+
+    claim = {
+        "schema": "MEASURED-EVIDENCE-CLAIM-001",
+        "item_id": "ANT_D1_EM_REAL",
+        "result": {
+            "path": result_path.name,
+            "sha256": sha256(result_path),
+            "schema": "ANT-D1-EM-EVIDENCE-001",
+        },
+        "provenance": {
+            "evidence_level": "SIMULATED_EM",
+            "synthetic": False,
+            "artifacts": [
+                {
+                    "kind": "solver_export",
+                    "path": solver.name,
+                    "sha256": sha256(solver),
+                }
+            ],
+        },
+    }
+
+    manifest = project_manifest(
+        "ANT_D1_EM_REAL"
+    )
+    manifest["items"][0][
+        "requires_measured_evidence"
+    ] = False
+
+    result, updated = promote_claim(
+        project_manifest=manifest,
+        claim=claim,
+        repository_root=tmp_path,
+    )
+
+    assert result["promotion_allowed"] is False
+    assert result["derived_status"] == "INVALID"
+    assert "result_fixture_marker:synthetic_fixture" in result["errors"]
+    assert updated["items"][0]["status"] == "OPEN"
