@@ -153,6 +153,26 @@ jobs:
           print("D1 antenna-map validation smoke PASS")
           PY
 
+      - name: Validate D1 EM solver provenance
+        run: |
+          python -m tools.ant_em_evidence \
+            --manifest tests/fixtures/d1_em/manifest.json \
+            --map-config config/d1_map_validation_evt.json \
+            --repository-root . \
+            --output d1_em_evidence.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("d1_em_evidence.json").read_text())
+          assert data["schema"] == "ANT-D1-EM-EVIDENCE-001"
+          assert data["status"] == "TEST_READY"
+          assert data["synthetic_fixture"] is True
+          assert data["map_validation"]["status"] == "DATA_READY"
+          assert all(v["hash_ok"] for v in data["verified_artifacts"].values())
+          print("D1 EM provenance smoke PASS")
+          PY
+
       - name: Run D1 Monte-Carlo summary smoke
         run: |
           python -m tools.antenna_mc_summary             tests/fixtures/d1_mc_pass.csv             --output d1_mc_summary.json
@@ -348,6 +368,7 @@ jobs:
           assert "SYS_ERR_MEASURED" in data["measured_open_items"]
           assert "PHYSICAL_ANT_MEASUREMENT_TOOLING" in data["passed_items"]
           assert "SYS_ERR_MEASURED_TOOLING" in data["passed_items"]
+          assert "ANT_D1_EM_TOOLING" in data["passed_items"]
           assert "INTEGRATED_RADAR_GATE_TOOLING" in data["passed_items"]
           assert "EVIDENCE_PROMOTION_TOOLING" in data["passed_items"]
           assert "AWR_EVM_PROFILE_TOOLING" in data["passed_items"]
