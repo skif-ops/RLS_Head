@@ -26,6 +26,14 @@
       "note": "Deterministic timing/host-state and runtime evidence logic executed in CI."
     },
     {
+      "id": "TIME_SERVICE_LOGIC",
+      "status": "PASS",
+      "evidence_level": "SOFTWARE_CI",
+      "synthetic": false,
+      "requires_measured_evidence": false,
+      "note": "Disciplined PPS phase/rate/holdover logic passes deterministic host tests and STM32H753 cross-link; physical timing residuals remain open."
+    },
+    {
       "id": "M300_TOOLING",
       "status": "PASS",
       "evidence_level": "SOFTWARE_CI",
