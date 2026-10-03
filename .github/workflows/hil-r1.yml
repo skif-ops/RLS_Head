@@ -172,6 +172,21 @@ jobs:
           print("D1 Monte-Carlo summary smoke PASS")
           PY
 
+      - name: Evaluate ANT-SIM-GATE
+        run: |
+          python -m tools.ant_sim_gate             --validation antenna_map_validation.json             --mc d1_mc_summary.json             --revb rad_lb_006_revb.json             --output ant_sim_gate.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("ant_sim_gate.json").read_text())
+          assert data["schema"] == "ANT-SIM-GATE-001"
+          assert data["status"] == "PASS"
+          assert data["mandatory_300m"]["projected_track_point_count"] >= 1
+          assert data["mandatory_300m"]["projected_high_acc_point_count"] >= 1
+          print("ANT-SIM-GATE smoke PASS")
+          PY
+
   stm32h753-cross:
     name: STM32H753 Cortex-M7 cross-build
     runs-on: ubuntu-latest
