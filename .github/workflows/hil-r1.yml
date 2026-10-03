@@ -202,6 +202,23 @@ jobs:
           print("HW-SENSOR-PROTOTYPE-GATE logic smoke PASS")
           PY
 
+      - name: Validate project evidence status
+        run: |
+          python -m tools.evidence_status             evidence/project_evidence_manifest.json             --output project_evidence_status.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("project_evidence_status.json").read_text())
+          assert data["schema"] == "PROJECT-EVIDENCE-STATUS-001"
+          assert data["status"] == "VALID"
+          assert data["milestones"]["M1"]["status"] == "OPEN"
+          assert data["milestones"]["HW_SENSOR_PROTOTYPE_GATE_INPUTS"]["status"] == "OPEN"
+          assert "M300_MEASURED" in data["measured_open_items"]
+          assert "SYS_ERR_MEASURED" in data["measured_open_items"]
+          print("Project evidence status smoke PASS")
+          PY
+
   stm32h753-cross:
     name: STM32H753 Cortex-M7 cross-build
     runs-on: ubuntu-latest
