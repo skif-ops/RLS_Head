@@ -214,7 +214,11 @@ def summarize_mc(
                 }
             )
 
-        if mandatory and not robust:
+        if (
+            mandatory
+            and len(group) >= config.min_samples_per_cell
+            and not robust
+        ):
             mandatory_failures.append(
                 {
                     "frequency_hz": frequency_hz,
