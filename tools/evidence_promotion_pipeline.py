@@ -7,6 +7,7 @@ from pathlib import Path
 from tools.evidence_promote import promote_claim
 from tools.evidence_status import load_json
 from tools.external_evidence_ingest import ingest_bundle
+from tools.external_execution_queue import build_queue
 from tools.measurement_readiness import build_readiness
 
 
@@ -30,6 +31,7 @@ def run_pipeline(
         "ingest": ingest_result,
         "promotion": None,
         "readiness": None,
+        "execution_queue": None,
         "notes": [
             (
                 "The pipeline never mutates the authoritative manifest in place; "
@@ -38,6 +40,10 @@ def run_pipeline(
             (
                 "Promotion remains subject to item-specific evidence_promote "
                 "validation and provenance checks."
+            ),
+            (
+                "The execution queue is derived only from the candidate "
+                "readiness view and is not evidence."
             ),
         ],
     }
@@ -57,6 +63,7 @@ def run_pipeline(
 
     readiness = build_readiness(candidate_manifest)
     result["readiness"] = readiness
+    result["execution_queue"] = build_queue(readiness)
     result["status"] = "CANDIDATE_READY"
 
     return result, candidate_manifest
@@ -66,7 +73,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
             "Run external bundle ingest, evidence promotion, "
-            "and readiness recalculation"
+            "readiness recalculation, and next-action queue derivation"
         )
     )
     parser.add_argument("--manifest", required=True)
