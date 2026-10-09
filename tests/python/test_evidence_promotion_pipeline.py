@@ -73,8 +73,39 @@ def test_pass_bundle_returns_candidate_manifest_and_recalculates_readiness(tmp_p
     )
     assert sys_err["readiness"] == "READY_FOR_EXTERNAL_EXECUTION"
 
+    queue = result["execution_queue"]
+    assert queue is not None
+    assert queue["schema"] == "EXTERNAL-EXECUTION-QUEUE-001"
 
-def test_ingest_failure_does_not_create_candidate(tmp_path):
+    queued_ids = {
+        row["item_id"]
+        for row in queue["queue"]
+    }
+    assert "SYS_ERR_MEASURED" in queued_ids
+
+
+def test_queue_matches_candidate_readiness(tmp_path):
+    manifest = load_json(MANIFEST)
+    bundle = make_hil_bundle(tmp_path)
+
+    result, candidate = run_pipeline(
+        project_manifest=manifest,
+        bundle=bundle,
+        bundle_root=tmp_path,
+    )
+
+    assert candidate is not None
+    ready_ids = set(
+        result["readiness"]["ready_for_external_execution"]
+    )
+    queue_ids = {
+        row["item_id"]
+        for row in result["execution_queue"]["queue"]
+    }
+    assert queue_ids == ready_ids
+
+
+def test_ingest_failure_does_not_create_candidate_or_queue(tmp_path):
     manifest = load_json(MANIFEST)
     bundle = make_hil_bundle(tmp_path)
     bundle["synthetic"] = True
@@ -88,9 +119,10 @@ def test_ingest_failure_does_not_create_candidate(tmp_path):
     assert result["status"] == "REJECTED"
     assert candidate is None
     assert result["promotion"] is None
+    assert result["execution_queue"] is None
 
 
-def test_promotion_hold_still_returns_candidate_manifest(tmp_path):
+def test_promotion_hold_still_returns_candidate_manifest_and_queue(tmp_path):
     manifest = load_json(MANIFEST)
     bundle = make_hil_bundle(tmp_path, gate_status="INSUFFICIENT")
 
@@ -109,6 +141,7 @@ def test_promotion_hold_still_returns_candidate_manifest(tmp_path):
         if item["id"] == "HIL_R2_BENCH_MEASURED"
     )
     assert hil["status"] == "HOLD"
+    assert result["execution_queue"] is not None
 
 
 def test_authoritative_manifest_object_is_not_mutated(tmp_path):
