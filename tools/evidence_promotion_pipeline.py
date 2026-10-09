@@ -8,6 +8,7 @@ from tools.evidence_promote import promote_claim
 from tools.evidence_status import load_json
 from tools.external_evidence_ingest import ingest_bundle
 from tools.external_execution_queue import build_queue
+from tools.external_execution_recipe import build_recipes
 from tools.measurement_readiness import build_readiness
 
 
@@ -32,6 +33,7 @@ def run_pipeline(
         "promotion": None,
         "readiness": None,
         "execution_queue": None,
+        "execution_recipes": None,
         "notes": [
             (
                 "The pipeline never mutates the authoritative manifest in place; "
@@ -42,8 +44,8 @@ def run_pipeline(
                 "validation and provenance checks."
             ),
             (
-                "The execution queue is derived only from the candidate "
-                "readiness view and is not evidence."
+                "The execution queue and recipes are derived only from the "
+                "candidate readiness view and are not evidence."
             ),
         ],
     }
@@ -62,8 +64,11 @@ def run_pipeline(
         return result, None
 
     readiness = build_readiness(candidate_manifest)
+    queue = build_queue(readiness)
+
     result["readiness"] = readiness
-    result["execution_queue"] = build_queue(readiness)
+    result["execution_queue"] = queue
+    result["execution_recipes"] = build_recipes(queue)
     result["status"] = "CANDIDATE_READY"
 
     return result, candidate_manifest
@@ -72,8 +77,8 @@ def run_pipeline(
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
-            "Run external bundle ingest, evidence promotion, "
-            "readiness recalculation, and next-action queue derivation"
+            "Run external bundle ingest, evidence promotion, readiness "
+            "recalculation, next-action queue, and execution recipes"
         )
     )
     parser.add_argument("--manifest", required=True)
