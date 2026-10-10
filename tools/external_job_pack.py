@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from tools.external_execution_recipe import build_recipes
+from tools.m300_external_preflight import evaluate_preflight
 from tools.measurement_pack import build_pack
 
 
@@ -60,6 +61,7 @@ def build_job_pack(
 
     pack_kind = selected.get("pack_kind")
     measurement_pack = None
+    preflight = None
 
     if pack_kind:
         measurement_dir = root / "measurement_pack"
@@ -73,17 +75,50 @@ def build_job_pack(
                     str(path.relative_to(root))
                 )
 
+    if selected["item_id"] == "M300_MEASURED":
+        preflight = {
+            "schema": "M300-JOB-PACK-PREFLIGHT-001",
+            "run_manifest": "measurement_pack/run_manifest.json",
+            "range_csv": "measurement_pack/range_samples.csv",
+            "output": "m300_preflight_result.json",
+            "command": (
+                "python -m tools.m300_external_preflight "
+                "--run-manifest measurement_pack/run_manifest.json "
+                "--range-csv measurement_pack/range_samples.csv "
+                "--output m300_preflight_result.json"
+            ),
+            "expected_ready_status": "READY_FOR_COLLECTION",
+        }
+        _write_json(
+            root / "preflight_config.json",
+            preflight,
+        )
+        generated.append("preflight_config.json")
+
     checklist = [
         "Confirm target/range/geometry and measurement conditions before capture.",
         "Collect only real external measurements; do not use CI fixtures.",
         "Replace every <FILL...> placeholder before validation.",
-        "Compute hashes only after collection is complete.",
-        "Run the domain validator command from execution_recipe.json.",
-        "Build EXTERNAL-EVIDENCE-BUNDLE-001 from the result and source artifacts.",
-        "Run tools.external_evidence_ingest.",
-        "Run tools.evidence_promotion_pipeline.",
-        "Review the candidate manifest before any repository merge.",
     ]
+
+    if preflight is not None:
+        checklist.extend(
+            [
+                "Run the M300 preflight command from preflight_config.json before collection.",
+                "Do not start qualification collection unless preflight status is READY_FOR_COLLECTION.",
+            ]
+        )
+
+    checklist.extend(
+        [
+            "Compute hashes only after collection is complete.",
+            "Run the domain validator command from execution_recipe.json.",
+            "Build EXTERNAL-EVIDENCE-BUNDLE-001 from the result and source artifacts.",
+            "Run tools.external_evidence_ingest.",
+            "Run tools.evidence_promotion_pipeline.",
+            "Review the candidate manifest before any repository merge.",
+        ]
+    )
 
     (root / "EXECUTION_CHECKLIST.txt").write_text(
         "\n".join(
@@ -114,6 +149,7 @@ def build_job_pack(
         "generated_files": sorted(generated),
         "template_only": True,
         "measurement_pack_manifest": measurement_pack,
+        "preflight": preflight,
         "notes": [
             "This job pack is execution scaffolding only.",
             "No generated file counts as measured evidence.",
@@ -179,6 +215,43 @@ def validate_job_pack(path: str | Path) -> dict:
     ).strip():
         errors.append("result_schema")
 
+    preflight_status = None
+    preflight_errors: list[str] = []
+    preflight_warnings: list[str] = []
+
+    if (
+        manifest.get("item_id") == "M300_MEASURED"
+        and not errors
+    ):
+        try:
+            run_manifest = json.loads(
+                (
+                    root
+                    / "measurement_pack"
+                    / "run_manifest.json"
+                ).read_text(encoding="utf-8")
+            )
+            preflight_result = evaluate_preflight(
+                run_manifest=run_manifest,
+                range_csv=(
+                    root
+                    / "measurement_pack"
+                    / "range_samples.csv"
+                ),
+            )
+            preflight_status = preflight_result["status"]
+            preflight_errors = preflight_result["errors"]
+            preflight_warnings = preflight_result["warnings"]
+        except (
+            OSError,
+            json.JSONDecodeError,
+            ValueError,
+        ):
+            preflight_status = "BLOCKED"
+            preflight_errors = [
+                "preflight_execution_error"
+            ]
+
     return {
         "schema": "EXTERNAL-EVIDENCE-JOB-PACK-VALIDATION-001",
         "status": "TEMPLATE_READY" if not errors else "INVALID",
@@ -186,6 +259,13 @@ def validate_job_pack(path: str | Path) -> dict:
         "item_id": manifest.get("item_id"),
         "priority": manifest.get("priority"),
         "pack_kind": manifest.get("pack_kind"),
+        "preflight_status": preflight_status,
+        "preflight_errors": sorted(
+            set(preflight_errors)
+        ),
+        "preflight_warnings": sorted(
+            set(preflight_warnings)
+        ),
     }
 
 
