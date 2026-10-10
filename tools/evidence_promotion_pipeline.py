@@ -9,6 +9,7 @@ from tools.evidence_status import load_json
 from tools.external_evidence_ingest import ingest_bundle
 from tools.external_execution_queue import build_queue
 from tools.external_execution_recipe import build_recipes
+from tools.external_job_pack import build_job_pack, validate_job_pack
 from tools.measurement_readiness import build_readiness
 
 
@@ -20,6 +21,8 @@ def run_pipeline(
     project_manifest: dict,
     bundle: dict,
     bundle_root: str | Path,
+    job_pack_dir: str | Path | None = None,
+    job_pack_priority: int = 1,
 ) -> tuple[dict, dict | None]:
     ingest_result, claim = ingest_bundle(
         bundle,
@@ -34,6 +37,8 @@ def run_pipeline(
         "readiness": None,
         "execution_queue": None,
         "execution_recipes": None,
+        "priority_job_pack": None,
+        "priority_job_pack_validation": None,
         "notes": [
             (
                 "The pipeline never mutates the authoritative manifest in place; "
@@ -44,8 +49,8 @@ def run_pipeline(
                 "validation and provenance checks."
             ),
             (
-                "The execution queue and recipes are derived only from the "
-                "candidate readiness view and are not evidence."
+                "The execution queue, recipes, and priority job pack are derived "
+                "only from the candidate readiness view and are not evidence."
             ),
         ],
     }
@@ -69,6 +74,18 @@ def run_pipeline(
     result["readiness"] = readiness
     result["execution_queue"] = queue
     result["execution_recipes"] = build_recipes(queue)
+
+    if job_pack_dir is not None:
+        job_pack = build_job_pack(
+            queue,
+            job_pack_dir,
+            priority=job_pack_priority,
+        )
+        result["priority_job_pack"] = job_pack
+        result["priority_job_pack_validation"] = (
+            validate_job_pack(job_pack_dir)
+        )
+
     result["status"] = "CANDIDATE_READY"
 
     return result, candidate_manifest
@@ -78,7 +95,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
             "Run external bundle ingest, evidence promotion, readiness "
-            "recalculation, next-action queue, and execution recipes"
+            "recalculation, next-action queue, execution recipes, and "
+            "optional priority job-pack materialization"
         )
     )
     parser.add_argument("--manifest", required=True)
@@ -86,12 +104,20 @@ def main() -> int:
     parser.add_argument("--bundle-root", required=True)
     parser.add_argument("--output-result", required=True)
     parser.add_argument("--output-manifest", required=True)
+    parser.add_argument("--output-job-pack-dir")
+    parser.add_argument(
+        "--job-pack-priority",
+        type=int,
+        default=1,
+    )
     args = parser.parse_args()
 
     result, candidate_manifest = run_pipeline(
         project_manifest=load_json(args.manifest),
         bundle=load_json(args.bundle),
         bundle_root=args.bundle_root,
+        job_pack_dir=args.output_job_pack_dir,
+        job_pack_priority=args.job_pack_priority,
     )
 
     Path(args.output_result).write_text(
