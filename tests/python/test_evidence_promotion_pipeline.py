@@ -83,8 +83,20 @@ def test_pass_bundle_returns_candidate_manifest_and_recalculates_readiness(tmp_p
     }
     assert "SYS_ERR_MEASURED" in queued_ids
 
+    recipes = result["execution_recipes"]
+    assert recipes is not None
+    assert recipes["schema"] == "EXTERNAL-EXECUTION-RECIPE-001"
 
-def test_queue_matches_candidate_readiness(tmp_path):
+    sys_err_recipe = next(
+        row
+        for row in recipes["recipes"]
+        if row["item_id"] == "SYS_ERR_MEASURED"
+    )
+    assert sys_err_recipe["status"] == "READY"
+    assert sys_err_recipe["result_schema"] == "SYS-ERR-GATE-001"
+
+
+def test_recipes_match_queue_order(tmp_path):
     manifest = load_json(MANIFEST)
     bundle = make_hil_bundle(tmp_path)
 
@@ -95,17 +107,18 @@ def test_queue_matches_candidate_readiness(tmp_path):
     )
 
     assert candidate is not None
-    ready_ids = set(
-        result["readiness"]["ready_for_external_execution"]
-    )
-    queue_ids = {
+    queue_ids = [
         row["item_id"]
         for row in result["execution_queue"]["queue"]
-    }
-    assert queue_ids == ready_ids
+    ]
+    recipe_ids = [
+        row["item_id"]
+        for row in result["execution_recipes"]["recipes"]
+    ]
+    assert recipe_ids == queue_ids
 
 
-def test_ingest_failure_does_not_create_candidate_or_queue(tmp_path):
+def test_ingest_failure_does_not_create_candidate_queue_or_recipes(tmp_path):
     manifest = load_json(MANIFEST)
     bundle = make_hil_bundle(tmp_path)
     bundle["synthetic"] = True
@@ -120,9 +133,10 @@ def test_ingest_failure_does_not_create_candidate_or_queue(tmp_path):
     assert candidate is None
     assert result["promotion"] is None
     assert result["execution_queue"] is None
+    assert result["execution_recipes"] is None
 
 
-def test_promotion_hold_still_returns_candidate_manifest_and_queue(tmp_path):
+def test_promotion_hold_still_returns_candidate_manifest_queue_and_recipes(tmp_path):
     manifest = load_json(MANIFEST)
     bundle = make_hil_bundle(tmp_path, gate_status="INSUFFICIENT")
 
@@ -142,6 +156,7 @@ def test_promotion_hold_still_returns_candidate_manifest_and_queue(tmp_path):
     )
     assert hil["status"] == "HOLD"
     assert result["execution_queue"] is not None
+    assert result["execution_recipes"] is not None
 
 
 def test_authoritative_manifest_object_is_not_mutated(tmp_path):
