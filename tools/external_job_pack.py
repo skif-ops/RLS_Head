@@ -5,7 +5,12 @@ import json
 from pathlib import Path
 
 from tools.external_execution_recipe import build_recipes
-from tools.m300_external_preflight import evaluate_preflight
+from tools.hil_r2_external_preflight import (
+    evaluate_preflight as evaluate_hil_r2_preflight,
+)
+from tools.m300_external_preflight import (
+    evaluate_preflight as evaluate_m300_preflight,
+)
 from tools.measurement_pack import build_pack
 
 
@@ -16,6 +21,17 @@ def _write_json(path: Path, data: dict) -> None:
     path.write_text(
         json.dumps(data, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
+    )
+
+
+def _load_hil_r2_gate_config() -> dict:
+    path = (
+        Path(__file__).resolve().parents[1]
+        / "config"
+        / "hil_r2_evidence_evt.json"
+    )
+    return json.loads(
+        path.read_text(encoding="utf-8")
     )
 
 
@@ -95,6 +111,33 @@ def build_job_pack(
         )
         generated.append("preflight_config.json")
 
+    elif selected["item_id"] == "HIL_R2_BENCH_MEASURED":
+        gate_config = _load_hil_r2_gate_config()
+        _write_json(
+            root / "hil_r2_gate_config.json",
+            gate_config,
+        )
+        generated.append("hil_r2_gate_config.json")
+
+        preflight = {
+            "schema": "HIL-R2-JOB-PACK-PREFLIGHT-001",
+            "timing_csv": "measurement_pack/timing_capture.csv",
+            "gate_config": "hil_r2_gate_config.json",
+            "output": "hil_r2_preflight_result.json",
+            "command": (
+                "python -m tools.hil_r2_external_preflight "
+                "--timing-csv measurement_pack/timing_capture.csv "
+                "--config hil_r2_gate_config.json "
+                "--output hil_r2_preflight_result.json"
+            ),
+            "expected_ready_status": "READY_FOR_COLLECTION",
+        }
+        _write_json(
+            root / "preflight_config.json",
+            preflight,
+        )
+        generated.append("preflight_config.json")
+
     checklist = [
         "Confirm target/range/geometry and measurement conditions before capture.",
         "Collect only real external measurements; do not use CI fixtures.",
@@ -104,8 +147,8 @@ def build_job_pack(
     if preflight is not None:
         checklist.extend(
             [
-                "Run the M300 preflight command from preflight_config.json before collection.",
-                "Do not start qualification collection unless preflight status is READY_FOR_COLLECTION.",
+                "Run the preflight command from preflight_config.json before collection.",
+                "Do not start external collection unless preflight status is READY_FOR_COLLECTION.",
             ]
         )
 
@@ -219,29 +262,47 @@ def validate_job_pack(path: str | Path) -> dict:
     preflight_errors: list[str] = []
     preflight_warnings: list[str] = []
 
-    if (
-        manifest.get("item_id") == "M300_MEASURED"
-        and not errors
-    ):
+    if not errors:
         try:
-            run_manifest = json.loads(
-                (
-                    root
-                    / "measurement_pack"
-                    / "run_manifest.json"
-                ).read_text(encoding="utf-8")
-            )
-            preflight_result = evaluate_preflight(
-                run_manifest=run_manifest,
-                range_csv=(
-                    root
-                    / "measurement_pack"
-                    / "range_samples.csv"
-                ),
-            )
-            preflight_status = preflight_result["status"]
-            preflight_errors = preflight_result["errors"]
-            preflight_warnings = preflight_result["warnings"]
+            if manifest.get("item_id") == "M300_MEASURED":
+                run_manifest = json.loads(
+                    (
+                        root
+                        / "measurement_pack"
+                        / "run_manifest.json"
+                    ).read_text(encoding="utf-8")
+                )
+                preflight_result = evaluate_m300_preflight(
+                    run_manifest=run_manifest,
+                    range_csv=(
+                        root
+                        / "measurement_pack"
+                        / "range_samples.csv"
+                    ),
+                )
+                preflight_status = preflight_result["status"]
+                preflight_errors = preflight_result["errors"]
+                preflight_warnings = preflight_result["warnings"]
+
+            elif manifest.get("item_id") == "HIL_R2_BENCH_MEASURED":
+                gate_config = json.loads(
+                    (
+                        root
+                        / "hil_r2_gate_config.json"
+                    ).read_text(encoding="utf-8")
+                )
+                preflight_result = evaluate_hil_r2_preflight(
+                    timing_csv=(
+                        root
+                        / "measurement_pack"
+                        / "timing_capture.csv"
+                    ),
+                    gate_config=gate_config,
+                )
+                preflight_status = preflight_result["status"]
+                preflight_errors = preflight_result["errors"]
+                preflight_warnings = preflight_result["warnings"]
+
         except (
             OSError,
             json.JSONDecodeError,

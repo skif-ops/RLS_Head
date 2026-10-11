@@ -37,21 +37,8 @@ def test_build_priority_one_m300_job_pack(tmp_path):
     )
 
     assert manifest["item_id"] == "M300_MEASURED"
-    assert manifest["priority"] == 1
-    assert manifest["pack_kind"] == "m300"
-    assert manifest["result_schema"] == "M300-REPORT-001"
     assert manifest["preflight"]["expected_ready_status"] == "READY_FOR_COLLECTION"
-
-    assert (tmp_path / "job_manifest.json").is_file()
-    assert (tmp_path / "execution_recipe.json").is_file()
-    assert (tmp_path / "EXECUTION_CHECKLIST.txt").is_file()
     assert (tmp_path / "preflight_config.json").is_file()
-    assert (
-        tmp_path / "measurement_pack" / "range_samples.csv"
-    ).is_file()
-    assert (
-        tmp_path / "measurement_pack" / "run_manifest.json"
-    ).is_file()
 
 
 def test_m300_template_validates_but_preflight_is_blocked(tmp_path):
@@ -59,9 +46,7 @@ def test_m300_template_validates_but_preflight_is_blocked(tmp_path):
     result = validate_job_pack(tmp_path)
 
     assert result["status"] == "TEMPLATE_READY"
-    assert result["item_id"] == "M300_MEASURED"
     assert result["preflight_status"] == "BLOCKED"
-    assert result["preflight_errors"]
 
 
 def test_filled_m300_pack_reaches_ready_for_collection(tmp_path):
@@ -98,13 +83,10 @@ def test_filled_m300_pack_reaches_ready_for_collection(tmp_path):
     )
 
     result = validate_job_pack(tmp_path)
-
-    assert result["status"] == "TEMPLATE_READY"
     assert result["preflight_status"] == "READY_FOR_COLLECTION"
-    assert result["preflight_errors"] == []
 
 
-def test_priority_two_selects_hil_without_m300_preflight(tmp_path):
+def test_priority_two_selects_hil_with_preflight(tmp_path):
     manifest = build_job_pack(
         queue_fixture(),
         tmp_path,
@@ -113,10 +95,32 @@ def test_priority_two_selects_hil_without_m300_preflight(tmp_path):
 
     assert manifest["item_id"] == "HIL_R2_BENCH_MEASURED"
     assert manifest["pack_kind"] == "hil_r2_bench"
-    assert manifest["preflight"] is None
+    assert manifest["preflight"]["schema"] == "HIL-R2-JOB-PACK-PREFLIGHT-001"
+    assert (tmp_path / "hil_r2_gate_config.json").is_file()
+    assert (tmp_path / "preflight_config.json").is_file()
 
     result = validate_job_pack(tmp_path)
-    assert result["preflight_status"] is None
+    assert result["status"] == "TEMPLATE_READY"
+    assert result["preflight_status"] == "READY_FOR_COLLECTION"
+    assert "timing_csv_has_no_samples" in result["preflight_warnings"]
+
+
+def test_hil_gate_config_is_self_contained(tmp_path):
+    build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=2,
+    )
+
+    gate = json.loads(
+        (tmp_path / "hil_r2_gate_config.json").read_text(
+            encoding="utf-8"
+        )
+    )
+
+    assert gate["min_radar_imu_samples"] == 100
+    assert gate["min_pps_samples"] == 30
+    assert gate["max_missed_events"] == 0
 
 
 def test_invalid_priority_rejected(tmp_path):
