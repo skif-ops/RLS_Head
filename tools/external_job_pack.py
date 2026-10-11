@@ -12,6 +12,9 @@ from tools.m300_external_preflight import (
     evaluate_preflight as evaluate_m300_preflight,
 )
 from tools.measurement_pack import build_pack
+from tools.reference_range_external_preflight import (
+    evaluate_preflight as evaluate_reference_range_preflight,
+)
 
 
 SCHEMA = "EXTERNAL-EVIDENCE-JOB-PACK-001"
@@ -131,6 +134,55 @@ def build_job_pack(
                 "--output hil_r2_preflight_result.json"
             ),
             "expected_ready_status": "READY_FOR_COLLECTION",
+        }
+        _write_json(
+            root / "preflight_config.json",
+            preflight,
+        )
+        generated.append("preflight_config.json")
+
+    elif selected["item_id"] == "REFERENCE_RANGE_MEASURED":
+        manifest_dir = (
+            root
+            / "measurement_pack"
+            / "run_manifests"
+        )
+        manifest_dir.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+        readme = manifest_dir / "README.txt"
+        readme.write_text(
+            (
+                "Place one completed EVM-RUN-MANIFEST-001 JSON file here "
+                "for each required range: 50, 100, 150, 200, 250, 300 m.\n"
+            ),
+            encoding="utf-8",
+        )
+        generated.append(
+            str(readme.relative_to(root))
+        )
+
+        preflight = {
+            "schema": "REFERENCE-RANGE-JOB-PACK-PREFLIGHT-001",
+            "reference_csv": "measurement_pack/reference_range.csv",
+            "manifest_dir": "measurement_pack/run_manifests",
+            "output": "reference_range_preflight_result.json",
+            "command": (
+                "python -m tools.reference_range_external_preflight "
+                "--reference-csv measurement_pack/reference_range.csv "
+                "--manifest-dir measurement_pack/run_manifests "
+                "--output reference_range_preflight_result.json"
+            ),
+            "expected_ready_status": "READY_FOR_COLLECTION",
+            "required_ranges_m": [
+                50,
+                100,
+                150,
+                200,
+                250,
+                300,
+            ],
         }
         _write_json(
             root / "preflight_config.json",
@@ -280,9 +332,6 @@ def validate_job_pack(path: str | Path) -> dict:
                         / "range_samples.csv"
                     ),
                 )
-                preflight_status = preflight_result["status"]
-                preflight_errors = preflight_result["errors"]
-                preflight_warnings = preflight_result["warnings"]
 
             elif manifest.get("item_id") == "HIL_R2_BENCH_MEASURED":
                 gate_config = json.loads(
@@ -299,6 +348,25 @@ def validate_job_pack(path: str | Path) -> dict:
                     ),
                     gate_config=gate_config,
                 )
+
+            elif manifest.get("item_id") == "REFERENCE_RANGE_MEASURED":
+                preflight_result = evaluate_reference_range_preflight(
+                    reference_csv=(
+                        root
+                        / "measurement_pack"
+                        / "reference_range.csv"
+                    ),
+                    manifest_dir=(
+                        root
+                        / "measurement_pack"
+                        / "run_manifests"
+                    ),
+                )
+
+            else:
+                preflight_result = None
+
+            if preflight_result is not None:
                 preflight_status = preflight_result["status"]
                 preflight_errors = preflight_result["errors"]
                 preflight_warnings = preflight_result["warnings"]
