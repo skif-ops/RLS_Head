@@ -455,6 +455,48 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
         size=1.0,
     )
 
+
+def populate_debug_boot(sch, placeholders: list[dict]) -> None:
+    del placeholders
+
+    sch.add_text(
+        "DEBUG_BOOT — SWD, reset and boot service access\n"
+        "No vehicle actuation/control interfaces",
+        position=pos(18, 9),
+        size=1.27,
+    )
+
+    sch.components.add(
+        "Switch:SW_Push",
+        "SW1",
+        "NRST",
+        pos(52, 30),
+    )
+    sch.components.add(
+        "Device:R",
+        "R70",
+        "0R DNP_BOOT_OVERRIDE",
+        pos(52, 42),
+    )
+
+    for name, p in [
+        ("3V3", pos(34, 18)),
+        ("GND", pos(34, 54)),
+        ("SWDIO", pos(34, 26)),
+        ("SWCLK", pos(34, 31)),
+        ("SWO", pos(34, 36)),
+        ("NRST", pos(66, 30)),
+        ("BOOT0", pos(66, 42)),
+    ]:
+        sch.add_label(name, position=p)
+
+    sch.add_text(
+        "Primary Tag-Connect SWD connector remains captured with MCU_CORE.\n"
+        "SW1 pulls NRST low; R70 is a DNP service override only.",
+        position=pos(18, 61),
+        size=1.0,
+    )
+
 def populate_text_sheet(sch, title: str, notes: list[str]) -> None:
     sch.add_text(
         title + "\n" + "\n".join(notes),
@@ -522,13 +564,9 @@ def build(output_dir: Path) -> dict:
                 placeholders,
             )
         elif name == "DEBUG_BOOT":
-            populate_text_sheet(
+            populate_debug_boot(
                 child,
-                "DEBUG_BOOT",
-                [
-                    "SWDIO/SWCLK/SWO, target VREF, NRST, BOOT0",
-                    "No vehicle actuation/control interfaces",
-                ],
+                placeholders,
             )
 
         child.save(str(output_dir / filename))
