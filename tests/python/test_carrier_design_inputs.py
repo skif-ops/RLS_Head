@@ -50,7 +50,7 @@ def test_pinmap_duplicate_pin_fails(tmp_path):
 
 
 def test_bom_missing_required_part_fails(tmp_path):
-    source = (ROOT / "BOM_SYS_CARRIER_002.csv").read_text(
+    source = (ROOT / "BOM_SYS_CARRIER_003.csv").read_text(
         encoding="utf-8"
     )
 
@@ -150,7 +150,7 @@ def test_netlist_missing_critical_net_fails(tmp_path):
 
 
 def test_bom_requires_selected_gnss_and_radar_connectors(tmp_path):
-    source = (ROOT / "BOM_SYS_CARRIER_002.csv").read_text(
+    source = (ROOT / "BOM_SYS_CARRIER_003.csv").read_text(
         encoding="utf-8"
     )
 
@@ -248,3 +248,33 @@ def test_radar_interface_requires_ref_and_can(tmp_path):
         "missing_signal:RADAR_REF"
         in result["findings"]
     )
+
+
+def test_bom_requires_fixed_3v3_regulator(tmp_path):
+    source = (ROOT / "BOM_SYS_CARRIER_003.csv").read_text(
+        encoding="utf-8"
+    )
+    path = tmp_path / "bom.csv"
+    path.write_text(
+        source.replace("TPS62132RGTR", "TPS62130ARGTR"),
+        encoding="utf-8",
+    )
+    result = validate_bom(path)
+    assert result["status"] == "FAIL"
+    assert "TPS62132RGTR" in result["missing_mpns"]
+
+
+def test_bom_requires_gnss_rf_protection_and_connector(tmp_path):
+    source = (ROOT / "BOM_SYS_CARRIER_003.csv").read_text(
+        encoding="utf-8"
+    )
+    lines = [
+        line
+        for line in source.splitlines()
+        if "ESD0P2RF-02LS" not in line
+    ]
+    path = tmp_path / "bom.csv"
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    result = validate_bom(path)
+    assert result["status"] == "FAIL"
+    assert "ESD0P2RF-02LS" in result["missing_mpns"]
