@@ -7,3 +7,5 @@ RADAR_CAN,FDCAN1,can_fd,radar_can_service,P1,silent_until_configured,bus_off_rec
 GNSS_UART,USART3,uart_dma,gnss_service,P1,rx_enabled,parser_resync_and_counter
 HOST_ETH,ETH_RMII,ethernet_dma,telemetry_service,P1,link_down,retain_logging_and_report_link_fault
 WATCHDOG,IWDG,supervisor,health_service,P0,enabled_after_boot,system_reset
+SYS_EFUSE_FLT,GPIO_PE2,digital_input,health_service,P0,input_pullup_external,latch_system_power_fault
+RADAR_EFUSE_FLT,GPIO_PE3,digital_input,health_service,P0,input_pullup_external,latch_radar_power_fault
