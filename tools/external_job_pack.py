@@ -156,76 +156,12 @@ def build_job_pack(
         )
 
     elif selected["item_id"] == "ANT_D1_SIM_GATE_REAL":
-        inputs_dir = (
-            root
-            / "ant_sim_inputs"
-        )
-        inputs_dir.mkdir(
-            parents=True,
-            exist_ok=True,
-        )
-
-        readme = (
-            inputs_dir
-            / "README.txt"
-        )
-        readme.write_text(
-            (
-                "Place the upstream simulation-evidence results here using "
-                "canonical names: map_validation.json, mc_summary.json, "
-                "rad_lb_revb.json.\n"
-            ),
-            encoding="utf-8",
-        )
-        generated.append(
-            "ant_sim_inputs/README.txt"
-        )
-
-        preflight = {
-            "schema": (
-                "ANT-SIM-REAL-JOB-PACK-"
-                "PREFLIGHT-001"
-            ),
-            "map_validation": (
-                "ant_sim_inputs/"
-                "map_validation.json"
-            ),
-            "mc_summary": (
-                "ant_sim_inputs/"
-                "mc_summary.json"
-            ),
-            "revb": (
-                "ant_sim_inputs/"
-                "rad_lb_revb.json"
-            ),
-            "output": (
-                "ant_sim_real_preflight_result.json"
-            ),
-            "command": (
-                "python -m "
-                "tools.ant_sim_real_external_preflight "
-                "--validation ant_sim_inputs/"
-                "map_validation.json "
-                "--mc ant_sim_inputs/"
-                "mc_summary.json "
-                "--revb ant_sim_inputs/"
-                "rad_lb_revb.json "
-                "--output "
-                "ant_sim_real_preflight_result.json"
-            ),
-            "expected_waiting_status": (
-                "WAITING_FOR_UPSTREAM"
-            ),
-            "expected_ready_status": (
-                "READY_FOR_GATE_ASSEMBLY"
-            ),
-        }
-        _write_json(
-            root / "preflight_config.json",
-            preflight,
-        )
-        generated.append(
-            "preflight_config.json"
+        selected["validator_command"] = (
+            "python -m tools.ant_sim_gate "
+            "--validation ant_sim_inputs/map_validation.json "
+            "--mc ant_sim_inputs/mc_summary.json "
+            "--revb ant_sim_inputs/rad_lb_revb.json "
+            "--output result.json"
         )
 
     elif selected["item_id"] == "CARRIER_REVIEW_A":
@@ -478,6 +414,79 @@ def build_job_pack(
             preflight,
         )
         generated.append("preflight_config.json")
+
+    elif selected["item_id"] == "ANT_D1_SIM_GATE_REAL":
+        inputs_dir = (
+            root
+            / "ant_sim_inputs"
+        )
+        inputs_dir.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+        readme = (
+            inputs_dir
+            / "README.txt"
+        )
+        readme.write_text(
+            (
+                "Place the upstream simulation-evidence results here using "
+                "canonical names: map_validation.json, mc_summary.json, "
+                "rad_lb_revb.json.\n"
+            ),
+            encoding="utf-8",
+        )
+        generated.append(
+            "ant_sim_inputs/README.txt"
+        )
+
+        preflight = {
+            "schema": (
+                "ANT-SIM-REAL-JOB-PACK-"
+                "PREFLIGHT-001"
+            ),
+            "map_validation": (
+                "ant_sim_inputs/"
+                "map_validation.json"
+            ),
+            "mc_summary": (
+                "ant_sim_inputs/"
+                "mc_summary.json"
+            ),
+            "revb": (
+                "ant_sim_inputs/"
+                "rad_lb_revb.json"
+            ),
+            "output": (
+                "ant_sim_real_preflight_result.json"
+            ),
+            "command": (
+                "python -m "
+                "tools.ant_sim_real_external_preflight "
+                "--validation ant_sim_inputs/"
+                "map_validation.json "
+                "--mc ant_sim_inputs/"
+                "mc_summary.json "
+                "--revb ant_sim_inputs/"
+                "rad_lb_revb.json "
+                "--output "
+                "ant_sim_real_preflight_result.json"
+            ),
+            "expected_waiting_status": (
+                "WAITING_FOR_UPSTREAM"
+            ),
+            "expected_ready_status": (
+                "READY_FOR_GATE_ASSEMBLY"
+            ),
+        }
+        _write_json(
+            root / "preflight_config.json",
+            preflight,
+        )
+        generated.append(
+            "preflight_config.json"
+        )
 
     elif selected["item_id"] == "CARRIER_REVIEW_A":
         package = root / "carrier_package"
