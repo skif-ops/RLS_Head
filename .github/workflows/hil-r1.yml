@@ -288,6 +288,22 @@ jobs:
           print("System Carrier design-input smoke PASS")
           PY
 
+      - name: Validate System Carrier schematic contract
+        run: |
+          python -m tools.carrier_schematic_contract \
+            hardware/system_carrier \
+            --output carrier_schematic_contract.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("carrier_schematic_contract.json").read_text())
+          assert data["schema"] == "CARRIER-SCHEMATIC-CONTRACT-001"
+          assert data["status"] == "SCHEMATIC_CAPTURE_READY"
+          assert data["failed_sections"] == []
+          print("System Carrier schematic contract PASS")
+          PY
+
       - name: Validate System Carrier Review A tooling
         run: |
           python -m tools.carrier_review_a \

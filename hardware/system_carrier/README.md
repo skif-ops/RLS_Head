@@ -5,12 +5,16 @@ electrical design inputs.
 
 Present:
 
-- `BOM_SYS_CARRIER_002.csv`
+- `BOM_SYS_CARRIER_003.csv`
 - `PINMAP_SYS_001.csv`
 - `CLOCK_TREE_SYS_001.csv`
 - `POWER_TREE_SYS_001.csv`
 - `NETLIST_SYS_001.csv`
 - `RADAR_INTERFACE_SYS_001.csv`
+- `SCHEMATIC_BLOCKS_SYS_001.csv`
+- `SCHEMATIC_COMPONENTS_SYS_001.csv`
+- `CONNECTOR_PINOUT_SYS_001.csv`
+- `POWER_BUDGET_SYS_001.csv`
 
 ## EVT radar architecture
 
@@ -36,13 +40,14 @@ The selected GNSS module is u-blox NEO-M9N-00B.
 
 - external system input: 12 V nominal, source capability >= 5 A;
 - U6 TPS259470A: system-level input protection, target current limit 5 A;
-- U5 TPS62130A: 3.3 V / 3 A carrier rail;
+- U5 TPS62132: fixed 3.3 V / 3 A carrier rail;
 - U7 TPS259470A: dedicated radar branch, target current limit 3.2 A;
 - J_RADAR_PWR: protected 12 V output toward the radar EVM harness.
 
-Exact TPS25947 threshold/current-program resistor values are schematic-capture
-calculations and must be checked against the selected EVM supply tolerance
-before Review A.
+The schematic-capture contract locks the first-pass TPS25947 programming values,
+TPS62132 network, MCU decoupling, Ethernet bias/termination, GNSS RF protection,
+connector pinout and rail allocations. These values remain subject to ERC and
+bench verification before Review A.
 
 Still open:
 
@@ -53,8 +58,15 @@ Still open:
 - `review_a/erc.json`
 - `review_a/manifest.json`
 
-Run `python -m tools.carrier_design_inputs hardware/system_carrier
---output carrier_design_inputs.json` before schematic capture.
+Run:
+
+`python -m tools.carrier_design_inputs hardware/system_carrier --output carrier_design_inputs.json`
+
+and:
+
+`python -m tools.carrier_schematic_contract hardware/system_carrier --output carrier_schematic_contract.json`
+
+before schematic capture.
 
 The first real schematic gate remains `CARRIER_REVIEW_A`.
 Synthetic files under `tests/fixtures/carrier_review_a/` must never
