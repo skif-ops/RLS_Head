@@ -8,6 +8,7 @@
 #include "rls/radar_link.h"
 #include "rls/carrier_health.h"
 #include "rls/measurement_session.h"
+#include "rls/capture_router.h"
 #include "stm32h753_memory.h"
 
 #include <stddef.h>
@@ -211,6 +212,18 @@ int main(void)
             &measurement_session,
             2500000u);
 
+    rls_capture_router_t capture_router;
+    rls_capture_event_t capture_event;
+    rls_capture_router_init(&capture_router);
+    const bool capture_router_ok =
+        rls_capture_router_push(
+            &capture_router,
+            RLS_CAPTURE_RADAR_REF,
+            2500000u)
+        && rls_capture_router_pop(
+            &capture_router,
+            &capture_event);
+
     TargetStateErrorLedger error_ledger;
     const bool ledger_ok =
         targetstate_syserr_ok &&
@@ -245,7 +258,10 @@ int main(void)
             : UINT32_C(0x80000000)) ^
         (measurement_session_ok
             ? measurement_session.session_id
-            : UINT32_C(0x20000000));
+            : UINT32_C(0x20000000)) ^
+        (capture_router_ok
+            ? capture_event.sequence
+            : UINT32_C(0x40000000));
 
     g_smoke_response_len =
         (uint32_t)response_len;
