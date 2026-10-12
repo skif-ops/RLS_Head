@@ -170,13 +170,22 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
         size=1.27,
     )
 
-    add_placeholder(
-        sch,
-        "U8",
-        "NEO-M9N-00B",
-        pos(50, 32),
-        placeholders,
-    )
+    try:
+        sch.components.add(
+            "RF_GPS:NEO-M9N",
+            "U8",
+            "NEO-M9N-00B",
+            pos(50, 32),
+            MPN="NEO-M9N-00B",
+        )
+    except Exception:
+        add_placeholder(
+            sch,
+            "U8",
+            "NEO-M9N-00B",
+            pos(50, 32),
+            placeholders,
+        )
     add_placeholder(
         sch,
         "D8",
@@ -381,13 +390,22 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
         size=1.27,
     )
 
-    add_placeholder(
-        sch,
-        "U3",
-        "LAN8742Ai-CZ-TR",
-        pos(48, 31),
-        placeholders,
-    )
+    try:
+        sch.components.add(
+            "Interface_Ethernet:LAN8742A",
+            "U3",
+            "LAN8742Ai-CZ-TR",
+            pos(48, 31),
+            MPN="LAN8742Ai-CZ-TR",
+        )
+    except Exception:
+        add_placeholder(
+            sch,
+            "U3",
+            "LAN8742Ai-CZ-TR",
+            pos(48, 31),
+            placeholders,
+        )
     add_placeholder(
         sch,
         "Y2",
