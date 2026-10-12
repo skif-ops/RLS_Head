@@ -6,7 +6,9 @@ from pathlib import Path
 
 
 LIBRARY_NAME = "SystemCarrier_Local"
-TARGET_REFS = {"U2", "U4", "U5", "U6", "U7"}
+CORE_TARGET_REFS = {"U2", "U4", "U5", "U6", "U7"}
+AUX_TARGET_REFS = {"Y2", "D3", "D4"}
+TARGET_REFS = CORE_TARGET_REFS | AUX_TARGET_REFS
 
 PIN_TYPE = {
     "DIGITAL_IN": "input",
@@ -38,6 +40,9 @@ REF_PREFIX = {
     "TCAN3404DRBRQ1": "U",
     "TPS62132RGTR": "U",
     "TPS259470ARPWR": "U",
+    "ECS-2520S33-500-FN-TR": "Y",
+    "ESD2CANFD24DBZRQ1": "D",
+    "TPD4E05U06DQAR": "D",
 }
 
 
@@ -58,33 +63,42 @@ def _read_csv(path: Path) -> list[dict[str, str]]:
 
 def _footprints(path: Path) -> dict[str, str]:
     result: dict[str, str] = {}
+
     for row in _read_csv(path):
-        ref = str(row.get("ref", "")).strip()
-        if (
-            ref in TARGET_REFS
-            and str(row.get("status", "")).strip() == "LOCKED"
-        ):
-            result[ref] = str(
-                row.get("footprint_id", "")
-            ).strip()
+        if str(row.get("status", "")).strip() != "LOCKED":
+            continue
+
+        mpn = str(row.get("mpn", "")).strip()
+        footprint = str(
+            row.get("footprint_id", "")
+        ).strip()
+
+        if mpn and footprint:
+            result[mpn] = footprint
+
     return result
 
 
-def _pin_rows(path: Path) -> dict[str, list[dict[str, str]]]:
+def _pin_rows(
+    paths: list[Path],
+) -> dict[str, list[dict[str, str]]]:
     grouped: dict[str, list[dict[str, str]]] = {}
 
-    for row in _read_csv(path):
-        ref = str(row.get("ref", "")).strip()
-        if ref not in TARGET_REFS:
-            continue
+    for path in paths:
+        for row in _read_csv(path):
+            ref = str(row.get("ref", "")).strip()
+            if ref not in TARGET_REFS:
+                continue
 
-        role = str(row.get("electrical_role", "")).strip()
-        if role not in PIN_TYPE:
-            raise ValueError(
-                f"unsupported electrical_role:{ref}:{role}"
-            )
+            role = str(
+                row.get("electrical_role", "")
+            ).strip()
+            if role not in PIN_TYPE:
+                raise ValueError(
+                    f"unsupported electrical_role:{ref}:{role}"
+                )
 
-        grouped.setdefault(ref, []).append(row)
+            grouped.setdefault(ref, []).append(row)
 
     missing = sorted(TARGET_REFS - set(grouped))
     if missing:
@@ -93,7 +107,6 @@ def _pin_rows(path: Path) -> dict[str, list[dict[str, str]]]:
         )
 
     return grouped
-
 
 def _pin_sort_key(pin: str) -> tuple[int, str]:
     try:
@@ -211,12 +224,19 @@ def generate(
     pin_contract: str | Path,
     footprint_plan: str | Path,
     output: str | Path,
+    aux_pin_contract: str | Path | None = None,
 ) -> dict:
     pin_contract = Path(pin_contract)
     footprint_plan = Path(footprint_plan)
     output = Path(output)
 
-    grouped = _pin_rows(pin_contract)
+    pin_contracts = [pin_contract]
+    if aux_pin_contract is not None:
+        pin_contracts.append(
+            Path(aux_pin_contract)
+        )
+
+    grouped = _pin_rows(pin_contracts)
     footprints = _footprints(footprint_plan)
 
     by_mpn: dict[str, dict] = {}
@@ -239,7 +259,7 @@ def generate(
             by_mpn[mpn] = {
                 "pins": rows,
                 "refs": [ref],
-                "footprint": footprints.get(ref, ""),
+                "footprint": footprints.get(mpn, ""),
             }
         else:
             existing["refs"].append(ref)
@@ -307,6 +327,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--pin-contract", required=True)
     parser.add_argument("--footprint-plan", required=True)
+    parser.add_argument("--aux-pin-contract")
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
 
@@ -314,6 +335,7 @@ def main() -> int:
         pin_contract=args.pin_contract,
         footprint_plan=args.footprint_plan,
         output=args.output,
+        aux_pin_contract=args.aux_pin_contract,
     )
 
     print(result["status"])
