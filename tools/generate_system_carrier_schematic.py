@@ -469,12 +469,14 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
         pos(72, 31),
         placeholders,
     )
-    add_placeholder(
-        sch,
+    sch.components.add(
+        "Connector:RJ45_Bel_SI-60062-F",
         "J6",
-        "P01-0006-01_MAGJACK",
+        "SI-60182-F",
         pos(88, 31),
-        placeholders,
+        footprint="Connector_RJ:RJ45_Bel_SI-60062-F",
+        MPN="SI-60182-F",
+        Compatibility_Basis="Bel_SI-60182-F_vs_SI-60062-F_verified",
     )
 
     sch.components.add(
