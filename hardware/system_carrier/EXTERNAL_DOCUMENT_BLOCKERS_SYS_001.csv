@@ -1,0 +1,2 @@
+blocker_id,ref,mpn,required_document,status,notes
+MAGJACK_DRAWING,J_ETH,P01-0006-01,Manufacturer pinout/PCB drawing,OPEN,Do not guess integrated magnetics/LED pin mapping; close only from manufacturer drawing or verified CAD model.
