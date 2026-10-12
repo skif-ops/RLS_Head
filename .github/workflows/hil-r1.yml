@@ -416,6 +416,53 @@ jobs:
           print("EVM campaign assembler smoke PASS")
           PY
 
+      - name: Run execution coverage audit smoke
+        run: |
+          python -m tools.execution_coverage_audit \
+            --output-root coverage_jobs \
+            --output execution_coverage_audit.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("execution_coverage_audit.json").read_text())
+          assert data["schema"] == "EXECUTION-COVERAGE-AUDIT-001"
+          assert data["status"] == "PASS"
+          assert data["plan_item_count"] == data["covered_item_count"]
+          assert data["missing_recipes"] == []
+          assert data["errors"] == []
+          print("Execution coverage audit smoke PASS")
+          PY
+
+      - name: Run project execution snapshot smoke
+        run: |
+          python -m tools.project_execution_snapshot \
+            --manifest evidence/project_evidence_manifest.json \
+            --output project_execution_snapshot.json \
+            --output-job-pack-dir next_external_job
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("project_execution_snapshot.json").read_text())
+          assert data["schema"] == "PROJECT-EXECUTION-SNAPSHOT-001"
+          assert data["status"] == "READY"
+          assert data["execution_queue"]["schema"] == "EXTERNAL-EXECUTION-QUEUE-001"
+          assert data["execution_recipes"]["schema"] == "EXTERNAL-EXECUTION-RECIPE-001"
+          assert data["summary"]["queue_depth"] >= 1
+          assert data["next_job_pack"] is not None
+          assert data["next_job_pack_validation"]["status"] == "TEMPLATE_READY"
+          print("Project execution snapshot smoke PASS")
+          PY
+
+      - name: Upload execution workflow status
+        uses: actions/upload-artifact@v4
+        with:
+          name: execution-workflow-status
+          path: |
+            execution_coverage_audit.json
+            project_execution_snapshot.json
+
   stm32h753-cross:
     name: STM32H753 Cortex-M7 cross-build
     runs-on: ubuntu-latest
