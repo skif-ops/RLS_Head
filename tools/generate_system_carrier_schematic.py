@@ -221,12 +221,12 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
             pos(50, 32),
             placeholders,
         )
-    add_placeholder(
-        sch,
+    sch.components.add(
+        "Device:D_TVS",
         "D8",
         "ESD0P2RF-02LS",
         pos(72, 28),
-        placeholders,
+        MPN="ESD0P2RF-02LS",
     )
 
     sch.components.add(
@@ -360,9 +360,10 @@ def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
         pos(50, 30),
         placeholders,
     )
-    add_placeholder(
+    add_local_symbol(
         sch,
         "D4",
+        "ESD2CANFD24DBZRQ1",
         "ESD2CANFD24-Q1",
         pos(68, 30),
         placeholders,
@@ -449,16 +450,18 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
             pos(48, 31),
             placeholders,
         )
-    add_placeholder(
+    add_local_symbol(
         sch,
         "Y2",
+        "ECS-2520S33-500-FN-TR",
         "ECS-2520S33-500-FN-TR",
         pos(28, 22),
         placeholders,
     )
-    add_placeholder(
+    add_local_symbol(
         sch,
         "D3",
+        "TPD4E05U06DQAR",
         "TPD4E05U06DQAR",
         pos(72, 31),
         placeholders,
@@ -608,6 +611,12 @@ def build(output_dir: Path) -> dict:
             / "system_carrier"
             / "FOOTPRINT_PLAN_SYS_001.csv"
         ),
+        aux_pin_contract=(
+            repo_root
+            / "hardware"
+            / "system_carrier"
+            / "AUX_SYMBOL_PIN_CONTRACT_SYS_001.csv"
+        ),
         output=local_symbol_path,
     )
 
@@ -709,7 +718,7 @@ def build(output_dir: Path) -> dict:
         "notes": [
             "This is an authoritative generated CAD scaffold, not Review A.",
             "POWER_INPUT and MCU_CORE contain initial capture content.",
-            "Local U2/U4/U5/U6/U7 symbols are generated from the authoritative pin contract.",
+            "Local U2/U4/U5/U6/U7/Y2/D3/D4 symbols are generated from authoritative pin contracts.",
             "Remaining placeholder symbols must be replaced before CARRIER_REVIEW_A.",
             "Real KiCad ERC is generated in CI and may contain expected capture-stage violations.",
         ],

@@ -5,6 +5,9 @@ from tools.generate_system_carrier_symbols import generate
 
 PIN_CONTRACT = "hardware/system_carrier/SYMBOL_PIN_CONTRACT_SYS_001.csv"
 FOOTPRINT_PLAN = "hardware/system_carrier/FOOTPRINT_PLAN_SYS_001.csv"
+AUX_PIN_CONTRACT = (
+    "hardware/system_carrier/AUX_SYMBOL_PIN_CONTRACT_SYS_001.csv"
+)
 
 
 def test_generates_expected_local_symbols(tmp_path):
@@ -13,12 +16,13 @@ def test_generates_expected_local_symbols(tmp_path):
     result = generate(
         pin_contract=PIN_CONTRACT,
         footprint_plan=FOOTPRINT_PLAN,
+        aux_pin_contract=AUX_PIN_CONTRACT,
         output=output,
     )
 
     assert result["schema"] == "SYSTEM-CARRIER-LOCAL-SYMBOL-LIBRARY-001"
     assert result["status"] == "GENERATED"
-    assert result["symbol_count"] == 4
+    assert result["symbol_count"] == 7
     assert output.is_file()
 
     names = {
@@ -30,6 +34,9 @@ def test_generates_expected_local_symbols(tmp_path):
         "TCAN3404DRBRQ1",
         "TPS62132RGTR",
         "TPS259470ARPWR",
+        "ECS-2520S33-500-FN-TR",
+        "ESD2CANFD24DBZRQ1",
+        "TPD4E05U06DQAR",
     }
 
 
@@ -39,6 +46,7 @@ def test_shared_tps259470_symbol_covers_u6_u7(tmp_path):
     result = generate(
         pin_contract=PIN_CONTRACT,
         footprint_plan=FOOTPRINT_PLAN,
+        aux_pin_contract=AUX_PIN_CONTRACT,
         output=output,
     )
 
@@ -58,6 +66,7 @@ def test_pin_numbers_and_ep_are_emitted(tmp_path):
     generate(
         pin_contract=PIN_CONTRACT,
         footprint_plan=FOOTPRINT_PLAN,
+        aux_pin_contract=AUX_PIN_CONTRACT,
         output=output,
     )
 
@@ -76,6 +85,7 @@ def test_locked_footprints_are_embedded_only_when_available(tmp_path):
     result = generate(
         pin_contract=PIN_CONTRACT,
         footprint_plan=FOOTPRINT_PLAN,
+        aux_pin_contract=AUX_PIN_CONTRACT,
         output=output,
     )
 
@@ -93,3 +103,32 @@ def test_locked_footprints_are_embedded_only_when_available(tmp_path):
     )
     assert by_name["ICM-42688-P"]["footprint"] == ""
     assert by_name["TPS259470ARPWR"]["footprint"] == ""
+
+
+def test_auxiliary_symbol_pin_counts_and_footprints(tmp_path):
+    output = tmp_path / "SystemCarrier_Local.kicad_sym"
+
+    result = generate(
+        pin_contract=PIN_CONTRACT,
+        footprint_plan=FOOTPRINT_PLAN,
+        aux_pin_contract=AUX_PIN_CONTRACT,
+        output=output,
+    )
+
+    by_name = {
+        item["name"]: item
+        for item in result["symbols"]
+    }
+
+    assert by_name["ECS-2520S33-500-FN-TR"]["pin_count"] == 4
+    assert by_name["ECS-2520S33-500-FN-TR"]["footprint"] == ""
+
+    assert by_name["ESD2CANFD24DBZRQ1"]["pin_count"] == 3
+    assert by_name["ESD2CANFD24DBZRQ1"]["footprint"] == (
+        "Package_TO_SOT_SMD:SOT-23"
+    )
+
+    assert by_name["TPD4E05U06DQAR"]["pin_count"] == 10
+    assert by_name["TPD4E05U06DQAR"]["footprint"] == (
+        "Package_SON:USON-10_2.5x1.0mm_P0.5mm"
+    )
