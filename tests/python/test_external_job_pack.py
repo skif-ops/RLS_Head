@@ -46,6 +46,13 @@ def queue_fixture():
                 "requires_measured_evidence": False,
                 "directly_unlocks": 0,
             },
+            {
+                "item_id": "AWR_EVM_PROFILE_MEASURED",
+                "next_action": "COLLECT_EVM_PROFILE_MATRIX",
+                "measurement_pack_kind": "evm_profile",
+                "requires_measured_evidence": True,
+                "directly_unlocks": 0,
+            },
         ],
     }
 
@@ -435,6 +442,99 @@ def test_carrier_validator_command_is_self_contained(tmp_path):
         in manifest["validator_command"]
     )
     assert "<" not in manifest["validator_command"]
+
+
+def test_priority_six_selects_evm_profile_with_preflight(tmp_path):
+    manifest = build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=6,
+    )
+
+    assert manifest["item_id"] == "AWR_EVM_PROFILE_MEASURED"
+    assert manifest["pack_kind"] == "evm_profile"
+    assert (
+        manifest["preflight"]["schema"]
+        == "EVM-PROFILE-JOB-PACK-PREFLIGHT-001"
+    )
+    assert (
+        tmp_path
+        / "measurement_pack"
+        / "run_manifests"
+        / "README.txt"
+    ).is_file()
+    assert (
+        tmp_path
+        / "evm_profile_gate_config.json"
+    ).is_file()
+
+    result = validate_job_pack(tmp_path)
+    assert result["status"] == "TEMPLATE_READY"
+    assert result["preflight_status"] == "READY_FOR_COLLECTION"
+    assert "metrics_csv_has_no_samples" in result["preflight_warnings"]
+    assert any(
+        warning.startswith("missing_profile_manifests:")
+        for warning in result["preflight_warnings"]
+    )
+
+
+def test_evm_profile_bad_manifest_blocks_preflight(tmp_path):
+    build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=6,
+    )
+
+    bad = (
+        tmp_path
+        / "measurement_pack"
+        / "run_manifests"
+        / "TRACK.json"
+    )
+    bad.write_text("{bad", encoding="utf-8")
+
+    result = validate_job_pack(tmp_path)
+
+    assert result["preflight_status"] == "BLOCKED"
+    assert "invalid_manifest_json:TRACK.json" in result["preflight_errors"]
+
+
+def test_evm_profile_validator_command_is_self_contained(tmp_path):
+    manifest = build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=6,
+    )
+
+    command = manifest["validator_command"]
+
+    assert "<" not in command
+    assert "--metrics measurement_pack/profile_metrics.csv" in command
+    assert "--config evm_profile_gate_config.json" in command
+    for profile in ("TRACK", "LR1", "LR2", "LRX"):
+        assert (
+            f"--manifest measurement_pack/run_manifests/{profile}.json"
+            in command
+        )
+
+
+def test_evm_profile_gate_config_is_copied(tmp_path):
+    build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=6,
+    )
+
+    config = json.loads(
+        (
+            tmp_path
+            / "evm_profile_gate_config.json"
+        ).read_text(encoding="utf-8")
+    )
+
+    assert config["pd_min"] == 0.90
+    assert config["track_availability_min"] == 0.95
+    assert config["update_min_hz"] == 20.0
 
 
 def test_invalid_priority_rejected(tmp_path):
