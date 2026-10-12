@@ -221,6 +221,12 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
         "100nF DNP_OPTION",
         pos(78, 48),
     )
+    sch.components.add(
+        "Device:R",
+        "R81",
+        "100k 1% VUSB_PD",
+        pos(57, 48),
+    )
 
     for name, p in [
         ("3V3", pos(34, 18)),
@@ -234,7 +240,7 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
 
     sch.add_text(
         "L80/R80/C82 are optional active-antenna bias population.\n"
-        "D8 must sit immediately behind the antenna connector.",
+        "R81 pulls unused V_USB to GND. D8 must sit immediately behind the antenna connector.",
         position=pos(18, 62),
         size=1.0,
     )
