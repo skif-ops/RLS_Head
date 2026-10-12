@@ -447,6 +447,12 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
         "100nF",
         pos(36, 45),
     )
+    sch.components.add(
+        "Device:R",
+        "R65",
+        "10k 1% NRST_PD",
+        pos(58, 51),
+    )
 
     for name, p in [
         ("3V3", pos(34, 17)),
@@ -460,13 +466,15 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
         ("ETH_TX_EN", pos(61, 24)),
         ("ETH_TXD0", pos(61, 29)),
         ("ETH_TXD1", pos(61, 34)),
+        ("ETH_NRST", pos(61, 39)),
         ("ETH_MDI", pos(78, 31)),
     ]:
         sch.add_label(name, position=p)
 
     sch.add_text(
         "R60 = PHY RBIAS. R61-R64 = 49.9R MDI termination.\n"
-        "C60 = VDDCR, C61 = analog filter, C62 = local bypass.",
+        "C60 = VDDCR, C61 = analog filter, C62 = local bypass.\n"
+        "R65 holds nRST low until STM32 PE4 releases it after the required startup delay.",
         position=pos(18, 64),
         size=1.0,
     )

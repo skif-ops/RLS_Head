@@ -30,3 +30,4 @@ RADAR_12V,U7_OUT;J_RADAR_PWR,POWER,P0,Dedicated protected radar supply
 3V3,U5_OUT;U1_VDD;U2_VDD;U3_VDD;U4_VCC;U8_VCC;Y1_VDD;Y2_VDD,POWER,P0,Primary digital rail
 SYS_EFUSE_FLT,U6_FLT;R_U6_FLT_PU;U1_PE2,FAULT,P0,System eFuse active-low open-drain fault input
 RADAR_EFUSE_FLT,U7_FLT;R_U7_FLT_PU;U1_PE3,FAULT,P0,Radar branch eFuse active-low open-drain fault input
+ETH_NRST,U1_PE4;U3_nRST;R_ETH_NRST_PD,RESET,P1,Push-pull PHY reset held low during MCU startup then released after timing delay

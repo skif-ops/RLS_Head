@@ -45,3 +45,4 @@ block_id,ref_or_pattern,function,value_or_mpn,qty_rule,criticality,placement_rul
 10,R_U7_FLT_PU,Radar eFuse FLT pull-up,10k 1%,1,P0,Adjacent U7 FLT,Pull active-low open-drain FLT to 3V3
 50,R_CAN_STB,TCAN3404 standby default,10k 1%,1,P0,Adjacent U4 STB,Pull STB low for deterministic normal mode
 50,R_CAN_SHDN,TCAN3404 shutdown default,10k 1%,1,P1,Adjacent U4 SHDN,External pull-down reinforces normal-mode default
+60,R_ETH_NRST_PD,PHY reset hold-down,10k 1%,1,P0,Adjacent U3 nRST,Hold LAN8742A in reset until STM32 push-pull release after >=25ms

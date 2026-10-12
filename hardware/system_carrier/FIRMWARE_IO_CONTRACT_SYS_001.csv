@@ -9,3 +9,4 @@ HOST_ETH,ETH_RMII,ethernet_dma,telemetry_service,P1,link_down,retain_logging_and
 WATCHDOG,IWDG,supervisor,health_service,P0,enabled_after_boot,system_reset
 SYS_EFUSE_FLT,GPIO_PE2,digital_input,health_service,P0,input_pullup_external,latch_system_power_fault
 RADAR_EFUSE_FLT,GPIO_PE3,digital_input,health_service,P0,input_pullup_external,latch_radar_power_fault
+ETH_NRST,GPIO_PE4,push_pull_output,ethernet_service,P1,drive_low,hold_low_through_startup_then_drive_high_after_min_25ms
