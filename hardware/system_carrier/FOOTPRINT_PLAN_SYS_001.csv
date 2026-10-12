@@ -8,5 +8,5 @@ U6,TPS259470ARPWR,RPW0010A,PROJECT_LOCAL,,CUSTOM_REQUIRED,TI RPW VQFN-HR 10-pin 
 U7,TPS259470ARPWR,RPW0010A,PROJECT_LOCAL,,CUSTOM_REQUIRED,TI RPW VQFN-HR 10-pin package drawing,Same local footprint as U6 after verification
 U8,NEO-M9N-00B,NEO_M9N_LCC24,PROJECT_LOCAL,,CUSTOM_REQUIRED,u-blox NEO-M9N hardware integration land pattern,Module courtyard and antenna keepout required
 D_GNSS,ESD0P2RF-02LS,PG-TSSLP-2,PROJECT_LOCAL,,CUSTOM_REQUIRED,Infineon package drawing,GNSS RF shunt path placement critical
-D_ETH,TPD4E05U06DQAR,DQA0010A,KICAD_OR_PROJECT,,VERIFY_REQUIRED,TI DQA USON-10 package drawing,Verify pad geometry before lock
+D_ETH,TPD4E05U06DQAR,DQA0010A,KICAD_STOCK,Package_SON:USON-10_2.5x1.0mm_P0.5mm,LOCKED,TI DQA0010A 2.5x1.0mm P0.5mm land pattern matches KiCad stock footprint,Use straight-through routing orientation per high-speed ESD layout
 D_CAN,ESD2CANFD24DBZRQ1,DBZ0003A,KICAD_STOCK,Package_TO_SOT_SMD:SOT-23,LOCKED,TI DBZ SOT-23-3 package,Confirm pin-1 orientation in symbol mapping
