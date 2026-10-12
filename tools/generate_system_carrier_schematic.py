@@ -157,6 +157,84 @@ def populate_mcu(sch, placeholders: list[dict]) -> None:
 
 
 
+
+def populate_time_gnss(sch, placeholders: list[dict]) -> None:
+    sch.add_text(
+        "TIME_GNSS — NEO-M9N timing and RF entry\n"
+        "P0 GNSS_PPS -> STM32 PA0/TIM2_CH1",
+        position=pos(18, 9),
+        size=1.27,
+    )
+
+    add_placeholder(
+        sch,
+        "U8",
+        "NEO-M9N-00B",
+        pos(50, 32),
+        placeholders,
+    )
+    add_placeholder(
+        sch,
+        "D8",
+        "ESD0P2RF-02LS",
+        pos(72, 28),
+        placeholders,
+    )
+
+    sch.components.add(
+        "Connector_Generic:Conn_01x02",
+        "J8",
+        "GNSS_UFL",
+        pos(86, 28),
+    )
+    sch.components.add(
+        "Device:C",
+        "C80",
+        "100nF",
+        pos(36, 42),
+    )
+    sch.components.add(
+        "Device:C",
+        "C81",
+        "10uF",
+        pos(42, 42),
+    )
+    sch.components.add(
+        "Device:L",
+        "L80",
+        "27nH DNP_OPTION",
+        pos(72, 42),
+    )
+    sch.components.add(
+        "Device:R",
+        "R80",
+        "10R 0.25W DNP_OPTION",
+        pos(64, 48),
+    )
+    sch.components.add(
+        "Device:C",
+        "C82",
+        "100nF DNP_OPTION",
+        pos(78, 48),
+    )
+
+    for name, p in [
+        ("3V3", pos(34, 18)),
+        ("GND", pos(34, 55)),
+        ("GNSS_TX_EXT", pos(34, 28)),
+        ("GNSS_RX_EXT", pos(34, 34)),
+        ("GNSS_PPS", pos(62, 20)),
+        ("GNSS_RF", pos(78, 28)),
+    ]:
+        sch.add_label(name, position=p)
+
+    sch.add_text(
+        "L80/R80/C82 are optional active-antenna bias population.\n"
+        "D8 must sit immediately behind the antenna connector.",
+        position=pos(18, 62),
+        size=1.0,
+    )
+
 def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
     sch.add_text(
         "RADAR_IO_CAN — external AWR2944-class EVM interface\n"
@@ -271,14 +349,9 @@ def build(output_dir: Path) -> dict:
         elif name == "MCU_CORE":
             populate_mcu(child, placeholders)
         elif name == "TIME_GNSS":
-            populate_text_sheet(
+            populate_time_gnss(
                 child,
-                "TIME_GNSS",
-                [
-                    "U8 NEO-M9N-00B — symbol capture pending",
-                    "GNSS_PPS -> STM32 PA0/TIM2_CH1",
-                    "GNSS antenna: U.FL + ESD0P2RF-02LS",
-                ],
+                placeholders,
             )
         elif name == "IMU":
             populate_text_sheet(
