@@ -1,60 +1,54 @@
 #include "rls/capture_router.h"
 
-#include <assert.h>
 #include <stdint.h>
+#include <stdio.h>
 
-static void test_fifo_and_per_source_sequence(void)
+#define CHECK(expr) \
+    do { \
+        if (!(expr)) { \
+            fprintf(stderr, "CHECK failed: %s at %s:%d\n", \
+                    #expr, __FILE__, __LINE__); \
+            return 1; \
+        } \
+    } while (0)
+
+static int test_fifo_and_per_source_sequence(void)
 {
     rls_capture_router_t router;
     rls_capture_event_t event;
 
     rls_capture_router_init(&router);
 
-    assert(
-        rls_capture_router_push(
-            &router,
-            RLS_CAPTURE_GNSS_PPS,
-            100u
-        )
-    );
+    CHECK(rls_capture_router_push(
+        &router, RLS_CAPTURE_GNSS_PPS, 100u));
+    CHECK(rls_capture_router_push(
+        &router, RLS_CAPTURE_RADAR_REF, 110u));
+    CHECK(rls_capture_router_push(
+        &router, RLS_CAPTURE_GNSS_PPS, 200u));
 
-    assert(
-        rls_capture_router_push(
-            &router,
-            RLS_CAPTURE_RADAR_REF,
-            110u
-        )
-    );
+    CHECK(rls_capture_router_count(&router) == 3u);
 
-    assert(
-        rls_capture_router_push(
-            &router,
-            RLS_CAPTURE_GNSS_PPS,
-            200u
-        )
-    );
+    CHECK(rls_capture_router_pop(&router, &event));
+    CHECK(event.source == RLS_CAPTURE_GNSS_PPS);
+    CHECK(event.timestamp_us == 100u);
+    CHECK(event.sequence == 0u);
 
-    assert(rls_capture_router_count(&router) == 3u);
+    CHECK(rls_capture_router_pop(&router, &event));
+    CHECK(event.source == RLS_CAPTURE_RADAR_REF);
+    CHECK(event.timestamp_us == 110u);
+    CHECK(event.sequence == 0u);
 
-    assert(rls_capture_router_pop(&router, &event));
-    assert(event.source == RLS_CAPTURE_GNSS_PPS);
-    assert(event.timestamp_us == 100u);
-    assert(event.sequence == 0u);
+    CHECK(rls_capture_router_pop(&router, &event));
+    CHECK(event.source == RLS_CAPTURE_GNSS_PPS);
+    CHECK(event.timestamp_us == 200u);
+    CHECK(event.sequence == 1u);
 
-    assert(rls_capture_router_pop(&router, &event));
-    assert(event.source == RLS_CAPTURE_RADAR_REF);
-    assert(event.timestamp_us == 110u);
-    assert(event.sequence == 0u);
+    CHECK(!rls_capture_router_pop(&router, &event));
 
-    assert(rls_capture_router_pop(&router, &event));
-    assert(event.source == RLS_CAPTURE_GNSS_PPS);
-    assert(event.timestamp_us == 200u);
-    assert(event.sequence == 1u);
-
-    assert(!rls_capture_router_pop(&router, &event));
+    return 0;
 }
 
-static void test_overflow_is_counted(void)
+static int test_overflow_is_counted(void)
 {
     rls_capture_router_t router;
 
@@ -63,48 +57,49 @@ static void test_overflow_is_counted(void)
     for (unsigned int i = 0u;
          i < RLS_CAPTURE_ROUTER_CAPACITY;
          ++i) {
-        assert(
-            rls_capture_router_push(
-                &router,
-                RLS_CAPTURE_IMU_DRDY,
-                (uint64_t)i
-            )
-        );
-    }
-
-    assert(
-        !rls_capture_router_push(
+        CHECK(rls_capture_router_push(
             &router,
             RLS_CAPTURE_IMU_DRDY,
-            999u
-        )
-    );
+            (uint64_t)i));
+    }
 
-    assert(
-        rls_capture_router_dropped(&router)
-        == 1u
-    );
+    CHECK(!rls_capture_router_push(
+        &router,
+        RLS_CAPTURE_IMU_DRDY,
+        999u));
+
+    CHECK(rls_capture_router_dropped(&router) == 1u);
+    CHECK(rls_capture_router_count(&router)
+          == RLS_CAPTURE_ROUTER_CAPACITY);
+
+    return 0;
 }
 
-static void test_invalid_source_rejected(void)
+static int test_invalid_source_rejected(void)
 {
     rls_capture_router_t router;
 
     rls_capture_router_init(&router);
 
-    assert(
-        !rls_capture_router_push(
-            &router,
-            (rls_capture_source_t)0,
-            1u
-        )
-    );
+    CHECK(!rls_capture_router_push(
+        &router,
+        (rls_capture_source_t)0,
+        1u));
+
+    return 0;
 }
 
 int main(void)
 {
-    test_fifo_and_per_source_sequence();
-    test_overflow_is_counted();
-    test_invalid_source_rejected();
+    if (test_fifo_and_per_source_sequence() != 0) {
+        return 1;
+    }
+    if (test_overflow_is_counted() != 0) {
+        return 1;
+    }
+    if (test_invalid_source_rejected() != 0) {
+        return 1;
+    }
+
     return 0;
 }
