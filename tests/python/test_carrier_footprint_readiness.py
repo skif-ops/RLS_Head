@@ -14,6 +14,7 @@ def test_authoritative_footprint_plan_is_explicit_but_not_frozen():
     assert "U4" in result["locked_refs"]
     assert "D_CAN" in result["locked_refs"]
 
-    assert "U2" in result["unresolved_refs"]
+    assert "U2" in result["locked_refs"]
+    assert "U2" not in result["unresolved_refs"]
     assert "U6" in result["unresolved_refs"]
     assert "U8" in result["unresolved_refs"]
