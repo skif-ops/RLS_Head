@@ -15,6 +15,7 @@ FILES = {
     "clock_tree": "CLOCK_TREE_SYS_001.csv",
     "power_tree": "POWER_TREE_SYS_001.csv",
     "netlist": "NETLIST_SYS_001.csv",
+    "radar_interface": "RADAR_INTERFACE_SYS_001.csv",
 }
 
 REQUIRED_MPNS = {
@@ -94,6 +95,16 @@ REQUIRED_CLOCKS = {
     "RADAR_REF": 0,
     "IMU_DRDY": 0,
 }
+
+REQUIRED_RADAR_INTERFACE_SIGNALS = {
+    "RADAR_12V",
+    "RADAR_CANH",
+    "RADAR_CANL",
+    "RADAR_CAN_GND",
+    "RADAR_REF",
+    "RADAR_REF_GND",
+}
+
 
 REQUIRED_POWER_DEVICES = {
     "SMAJ15CA",
@@ -323,6 +334,71 @@ def validate_netlist(path: Path, pinmap_path: Path) -> dict:
     }
 
 
+
+
+def validate_radar_interface(path: Path) -> dict:
+    rows = read_csv(path)
+    findings: list[str] = []
+
+    by_signal = {
+        str(row.get("signal", "")).strip(): row
+        for row in rows
+        if str(row.get("signal", "")).strip()
+    }
+
+    missing = sorted(
+        REQUIRED_RADAR_INTERFACE_SIGNALS
+        - set(by_signal)
+    )
+    findings.extend(
+        f"missing_signal:{signal}"
+        for signal in missing
+    )
+
+    for signal in sorted(
+        REQUIRED_RADAR_INTERFACE_SIGNALS
+        & set(by_signal)
+    ):
+        row = by_signal[signal]
+
+        if not str(
+            row.get("carrier_endpoint", "")
+        ).strip():
+            findings.append(
+                f"missing_carrier_endpoint:{signal}"
+            )
+
+        if not str(
+            row.get("radar_endpoint", "")
+        ).strip():
+            findings.append(
+                f"missing_radar_endpoint:{signal}"
+            )
+
+        if signal in {
+            "RADAR_12V",
+            "RADAR_CAN_GND",
+            "RADAR_REF",
+            "RADAR_REF_GND",
+        }:
+            if str(
+                row.get("criticality", "")
+            ).strip() != "P0":
+                findings.append(
+                    f"criticality:{signal}"
+                )
+
+    return {
+        "status": (
+            "PASS"
+            if not findings
+            else "FAIL"
+        ),
+        "row_count": len(rows),
+        "findings": findings,
+    }
+
+
 def validate_design_inputs(directory: str | Path) -> dict:
     directory = Path(directory)
     errors: list[str] = []
@@ -356,6 +432,9 @@ def validate_design_inputs(directory: str | Path) -> dict:
             paths["netlist"],
             paths["pinmap"],
         )
+        radar_interface = validate_radar_interface(
+            paths["radar_interface"]
+        )
     except (ValueError, KeyError) as exc:
         return {
             "schema": RESULT_SCHEMA,
@@ -370,6 +449,7 @@ def validate_design_inputs(directory: str | Path) -> dict:
         "clock_tree": clock_tree,
         "power_tree": power_tree,
         "netlist": netlist,
+        "radar_interface": radar_interface,
     }
 
     failed = [
