@@ -521,3 +521,82 @@ jobs:
             build-stm32/stm32h753_link_smoke.map
             build-stm32/sections.txt
             build-stm32/symbols.txt
+
+  system-carrier-cad:
+    name: System Carrier generated KiCad scaffold
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install KiCad 9 and schematic generator
+        run: |
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update
+          sudo apt-get install -y --install-recommends kicad
+          python -m pip install --upgrade "kicad-sch-api==0.5.6"
+          kicad-cli version
+
+      - name: Generate System Carrier schematic scaffold
+        run: |
+          python -m tools.generate_system_carrier_schematic \
+            --output-dir build-cad/system_carrier
+          python -m tools.validate_system_carrier_cad_scaffold \
+            build-cad/system_carrier \
+            --output build-cad/system_carrier/cad_scaffold_validation.json
+
+      - name: Run real KiCad ERC
+        run: |
+          kicad-cli sch erc \
+            --format json \
+            --output build-cad/system_carrier/erc.json \
+            build-cad/system_carrier/EVT_SYS_CARRIER.kicad_sch
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("build-cad/system_carrier")
+          manifest = json.loads((root / "cad_scaffold_manifest.json").read_text())
+          validation = json.loads((root / "cad_scaffold_validation.json").read_text())
+          erc = json.loads((root / "erc.json").read_text())
+
+          assert manifest["schema"] == "SYSTEM-CARRIER-CAD-SCAFFOLD-001"
+          assert manifest["status"] == "CAD_SCAFFOLD_READY"
+          assert validation["status"] == "PASS"
+          assert erc["source"] == "EVT_SYS_CARRIER.kicad_sch"
+
+          violations = sum(
+              len(sheet.get("violations", []))
+              for sheet in erc.get("sheets", [])
+          )
+
+          summary = {
+              "schema": "SYSTEM-CARRIER-CAD-CI-001",
+              "status": "CAPTURE_IN_PROGRESS",
+              "kicad_version": erc.get("kicad_version"),
+              "sheet_count": manifest["sheet_count"],
+              "placeholder_count": validation["placeholder_count"],
+              "erc_violation_count": violations,
+              "review_a_closed": False,
+          }
+          (root / "cad_ci_summary.json").write_text(
+              json.dumps(summary, indent=2, sort_keys=True) + "\n"
+          )
+          print(json.dumps(summary, indent=2))
+          PY
+
+      - name: Upload generated System Carrier CAD
+        uses: actions/upload-artifact@v4
+        with:
+          name: system-carrier-cad-scaffold
+          path: |
+            build-cad/system_carrier/*.kicad_sch
+            build-cad/system_carrier/*.kicad_pro
+            build-cad/system_carrier/*.json
+
