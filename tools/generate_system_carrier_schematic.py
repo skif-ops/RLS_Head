@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 from pathlib import Path
 
 import kicad_sch_api as ksa
@@ -620,6 +621,33 @@ def build(output_dir: Path) -> dict:
         output=local_symbol_path,
     )
 
+    local_fp_source = (
+        repo_root
+        / "hardware"
+        / "system_carrier"
+        / "footprints"
+        / "SystemCarrier_Local.pretty"
+    )
+    local_fp_output = (
+        output_dir
+        / "SystemCarrier_Local.pretty"
+    )
+    shutil.copytree(
+        local_fp_source,
+        local_fp_output,
+        dirs_exist_ok=True,
+    )
+    (output_dir / "fp-lib-table").write_text(
+        "(fp_lib_table\n"
+        "  (lib (name \"SystemCarrier_Local\") "
+        "(type \"KiCad\") "
+        "(uri \"${KIPRJMOD}/SystemCarrier_Local.pretty\") "
+        "(options \"\") "
+        "(descr \"RLS Head System Carrier local footprints\"))\n"
+        ")\n",
+        encoding="utf-8",
+    )
+
     symbol_cache = ksa.library.get_symbol_cache()
     symbol_cache.add_library_path(
         str(local_symbol_path)
@@ -714,6 +742,8 @@ def build(output_dir: Path) -> dict:
         "sheet_uuids": sheet_uuids,
         "local_symbol_library": local_symbol_path.name,
         "local_symbol_manifest": local_symbol_manifest,
+        "local_footprint_library": "SystemCarrier_Local.pretty",
+        "fp_lib_table": "fp-lib-table",
         "symbol_placeholders": placeholders,
         "notes": [
             "This is an authoritative generated CAD scaffold, not Review A.",

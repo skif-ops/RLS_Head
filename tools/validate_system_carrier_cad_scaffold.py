@@ -43,6 +43,23 @@ def validate(root: Path) -> dict:
     elif not (root / local_library_name).is_file():
         errors.append("missing_local_symbol_library")
 
+    local_fp_library = str(
+        manifest.get("local_footprint_library", "")
+    ).strip()
+    fp_lib_table = str(
+        manifest.get("fp_lib_table", "")
+    ).strip()
+
+    if local_fp_library != "SystemCarrier_Local.pretty":
+        errors.append("local_footprint_library_name")
+    elif not (root / local_fp_library).is_dir():
+        errors.append("missing_local_footprint_library")
+
+    if fp_lib_table != "fp-lib-table":
+        errors.append("fp_lib_table_name")
+    elif not (root / fp_lib_table).is_file():
+        errors.append("missing_fp_lib_table")
+
     if not isinstance(local_manifest, dict):
         errors.append("missing_local_symbol_manifest")
         local_symbol_count = 0

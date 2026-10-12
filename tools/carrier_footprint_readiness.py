@@ -67,6 +67,23 @@ def evaluate(path: str | Path) -> dict:
         if status == "LOCKED":
             if not footprint_id:
                 errors.append(f"locked_without_footprint:{ref}")
+            elif str(row.get("footprint_source", "")).strip() == "PROJECT_LOCAL":
+                if ":" not in footprint_id:
+                    errors.append(f"invalid_local_footprint_id:{ref}:{footprint_id}")
+                else:
+                    library, name = footprint_id.split(":", 1)
+                    local_path = (
+                        path.parent
+                        / "footprints"
+                        / f"{library}.pretty"
+                        / f"{name}.kicad_mod"
+                    )
+                    if not local_path.is_file():
+                        errors.append(
+                            f"missing_local_footprint:{ref}:{footprint_id}"
+                        )
+                    else:
+                        locked.append(ref)
             else:
                 locked.append(ref)
         else:
