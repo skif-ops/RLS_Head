@@ -212,6 +212,7 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
             "U8",
             "NEO-M9N-00B",
             pos(50, 32),
+            footprint="SystemCarrier_Local:NEO-M9N_LCC24_12.2x16mm",
             MPN="NEO-M9N-00B",
         )
     except Exception:
