@@ -35,6 +35,22 @@ RECIPES = {
         "result_schema": "ANT-D1-EM-EVIDENCE-001",
         "pack_kind": None,
     },
+    "ANT_D1_SIM_GATE_REAL": {
+        "collect": [
+            "ANT-D1-MAP-VALIDATION-001",
+            "ANT-D1-MC-SUMMARY-001",
+            "RAD-LB-006-REVB",
+        ],
+        "validate": (
+            "python -m tools.ant_sim_gate "
+            "--validation ant_sim_inputs/map_validation.json "
+            "--mc ant_sim_inputs/mc_summary.json "
+            "--revb ant_sim_inputs/rad_lb_revb.json "
+            "--output result.json"
+        ),
+        "result_schema": "ANT-SIM-GATE-001",
+        "pack_kind": None,
+    },
     "HIL_R2_BENCH_MEASURED": {
         "collect": ["timing_capture.csv"],
         "validate": (
