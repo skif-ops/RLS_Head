@@ -278,3 +278,17 @@ def test_bom_requires_gnss_rf_protection_and_connector(tmp_path):
     result = validate_bom(path)
     assert result["status"] == "FAIL"
     assert "ESD0P2RF-02LS" in result["missing_mpns"]
+
+
+def test_bom_requires_selected_extended_temperature_magjack(tmp_path):
+    source = (ROOT / "BOM_SYS_CARRIER_003.csv").read_text(
+        encoding="utf-8"
+    )
+    path = tmp_path / "bom.csv"
+    path.write_text(
+        source.replace("SI-60182-F", "P01-0006-01"),
+        encoding="utf-8",
+    )
+    result = validate_bom(path)
+    assert result["status"] == "FAIL"
+    assert "SI-60182-F" in result["missing_mpns"]
