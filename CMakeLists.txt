@@ -44,6 +44,10 @@ add_library(carrier_health STATIC
     src/carrier_health.c
 )
 
+add_library(capture_router STATIC
+    src/capture_router.c
+)
+
 target_include_directories(hil_r1 PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -80,6 +84,10 @@ target_include_directories(carrier_health PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_include_directories(capture_router PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 if(MSVC)
     target_compile_options(hil_r1 PRIVATE /W4 /WX)
     target_compile_options(hil_r2 PRIVATE /W4 /WX)
@@ -90,6 +98,7 @@ if(MSVC)
     target_compile_options(time_service PRIVATE /W4 /WX)
     target_compile_options(radar_link PRIVATE /W4 /WX)
     target_compile_options(carrier_health PRIVATE /W4 /WX)
+    target_compile_options(capture_router PRIVATE /W4 /WX)
 else()
     target_compile_options(hil_r1 PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(hil_r2 PRIVATE -Wall -Wextra -Wpedantic -Werror)
@@ -100,6 +109,7 @@ else()
     target_compile_options(time_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(radar_link PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(carrier_health PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(capture_router PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_link_libraries(hil_r1 PUBLIC m)
     target_link_libraries(hil_r2 PUBLIC m)
 endif()
@@ -241,6 +251,20 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     endif()
 
     add_test(NAME carrier_health_logic COMMAND test_carrier_health)
+
+    add_executable(test_capture_router
+        tests/test_capture_router.c
+    )
+
+    target_link_libraries(test_capture_router PRIVATE capture_router)
+
+    if(MSVC)
+        target_compile_options(test_capture_router PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_capture_router PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+
+    add_test(NAME carrier_capture_router COMMAND test_capture_router)
 endif()
 
 if(HIL_BUILD_STM32H753_SMOKE)
@@ -279,6 +303,7 @@ if(HIL_BUILD_STM32H753_SMOKE)
         time_service
         radar_link
         carrier_health
+        capture_router
         c
         nosys
     )
