@@ -21,6 +21,9 @@ from tools.m300_external_preflight import (
     evaluate_preflight as evaluate_m300_preflight,
 )
 from tools.measurement_pack import build_pack
+from tools.physical_antenna_external_preflight import (
+    evaluate_preflight as evaluate_physical_antenna_preflight,
+)
 from tools.reference_range_external_preflight import (
     evaluate_preflight as evaluate_reference_range_preflight,
 )
@@ -45,6 +48,17 @@ def _repo_text(relative: str) -> str:
         / relative
     )
     return path.read_text(encoding="utf-8")
+
+
+def _load_physical_antenna_config() -> dict:
+    path = (
+        Path(__file__).resolve().parents[1]
+        / "config"
+        / "physical_antenna_measurement_evt.json"
+    )
+    return json.loads(
+        path.read_text(encoding="utf-8")
+    )
 
 
 def _load_sys_err_gate_config() -> dict:
@@ -163,6 +177,16 @@ def build_job_pack(
             "python -m tools.sys_err_measured_gate "
             "--manifest measurement_pack/sys_err_manifest.json "
             "--config sys_err_gate_config.json "
+            "--repository-root . "
+            "--output result.json"
+        )
+
+    elif selected["item_id"] == "PHYSICAL_ANT_MEASUREMENT":
+        selected["validator_command"] = (
+            "python -m tools.physical_antenna_measurement "
+            "--manifest measurement_pack/"
+            "antenna_measurement_manifest.json "
+            "--config physical_antenna_measurement_config.json "
             "--repository-root . "
             "--output result.json"
         )
@@ -720,6 +744,80 @@ def build_job_pack(
             "preflight_config.json"
         )
 
+    elif selected["item_id"] == "PHYSICAL_ANT_MEASUREMENT":
+        ant_manifest_path = (
+            root
+            / "measurement_pack"
+            / "antenna_measurement_manifest.json"
+        )
+        ant_manifest = json.loads(
+            ant_manifest_path.read_text(
+                encoding="utf-8"
+            )
+        )
+        ant_manifest[
+            "measurement_csv"
+        ][
+            "path"
+        ] = (
+            "measurement_pack/"
+            "antenna_measurement.csv"
+        )
+        _write_json(
+            ant_manifest_path,
+            ant_manifest,
+        )
+
+        ant_config = (
+            _load_physical_antenna_config()
+        )
+        _write_json(
+            root
+            / "physical_antenna_measurement_config.json",
+            ant_config,
+        )
+        generated.append(
+            "physical_antenna_measurement_config.json"
+        )
+
+        preflight = {
+            "schema": (
+                "PHYSICAL-ANTENNA-JOB-PACK-"
+                "PREFLIGHT-001"
+            ),
+            "manifest": (
+                "measurement_pack/"
+                "antenna_measurement_manifest.json"
+            ),
+            "gate_config": (
+                "physical_antenna_measurement_config.json"
+            ),
+            "repository_root": ".",
+            "output": (
+                "physical_antenna_preflight_result.json"
+            ),
+            "command": (
+                "python -m "
+                "tools.physical_antenna_external_preflight "
+                "--manifest measurement_pack/"
+                "antenna_measurement_manifest.json "
+                "--config physical_antenna_measurement_config.json "
+                "--repository-root . "
+                "--output "
+                "physical_antenna_preflight_result.json"
+            ),
+            "expected_ready_status": (
+                "READY_FOR_COLLECTION"
+            ),
+        }
+        _write_json(
+            root / "preflight_config.json",
+            preflight,
+        )
+        generated.append(
+            "preflight_config.json"
+        )
+
     checklist = [
         "Confirm target/range/geometry and measurement conditions before capture.",
         "Collect only real external measurements; do not use CI fixtures.",
@@ -950,6 +1048,26 @@ def validate_job_pack(path: str | Path) -> dict:
                 preflight_result = evaluate_sys_err_preflight(
                     manifest=sys_manifest,
                     gate_config=sys_config,
+                    repository_root=root,
+                )
+
+            elif manifest.get("item_id") == "PHYSICAL_ANT_MEASUREMENT":
+                ant_manifest = json.loads(
+                    (
+                        root
+                        / "measurement_pack"
+                        / "antenna_measurement_manifest.json"
+                    ).read_text(encoding="utf-8")
+                )
+                ant_config = json.loads(
+                    (
+                        root
+                        / "physical_antenna_measurement_config.json"
+                    ).read_text(encoding="utf-8")
+                )
+                preflight_result = evaluate_physical_antenna_preflight(
+                    manifest=ant_manifest,
+                    gate_config=ant_config,
                     repository_root=root,
                 )
 
