@@ -10,7 +10,7 @@ from pathlib import Path
 RESULT_SCHEMA = "CARRIER-DESIGN-INPUTS-001"
 
 FILES = {
-    "bom": "BOM_SYS_CARRIER_002.csv",
+    "bom": "BOM_SYS_CARRIER_003.csv",
     "pinmap": "PINMAP_SYS_001.csv",
     "clock_tree": "CLOCK_TREE_SYS_001.csv",
     "power_tree": "POWER_TREE_SYS_001.csv",
@@ -23,13 +23,15 @@ REQUIRED_MPNS = {
     "ICM-42688-P",
     "LAN8742Ai-CZ-TR",
     "TCAN3404DRBRQ1",
-    "TPS62130ARGTR",
+    "TPS62132RGTR",
     "TPS259470ARPWR",
     "ECS-2520S33-250-FN-TR",
     "ECS-2520S33-500-FN-TR",
     "NEO-M9N-00B",
     "43650-0200",
     "43045-0600",
+    "U.FL-R-SMT-K(800)",
+    "ESD0P2RF-02LS",
 }
 
 REQUIRED_PINMAP = {
@@ -109,7 +111,7 @@ REQUIRED_RADAR_INTERFACE_SIGNALS = {
 REQUIRED_POWER_DEVICES = {
     "SMAJ15CA",
     "TPS259470ARPWR",
-    "TPS62130ARGTR",
+    "TPS62132RGTR",
 }
 
 
