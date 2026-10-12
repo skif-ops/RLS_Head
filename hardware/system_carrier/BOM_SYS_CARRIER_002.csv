@@ -4,10 +4,14 @@ U2,1,TDK InvenSense,ICM-42688-P,6-axis IMU,SELECTED
 U3,1,Microchip,LAN8742Ai-CZ-TR,10/100 RMII Ethernet PHY,SELECTED
 U4,1,Texas Instruments,TCAN3404DRBRQ1,3.3V CAN FD transceiver,SELECTED
 U5,1,Texas Instruments,TPS62130ARGTR,3V3 3A buck regulator,SELECTED
-U6,1,Texas Instruments,TPS259470ARPWR,eFuse reverse-polarity protection,SELECTED
+U6,1,Texas Instruments,TPS259470ARPWR,System input eFuse reverse-polarity protection,SELECTED
+U7,1,Texas Instruments,TPS259470ARPWR,Dedicated radar 12V branch eFuse/load protection,SELECTED
+U8,1,u-blox,NEO-M9N-00B,Multi-GNSS module with UART and PPS,SELECTED
 Y1,1,ECS,ECS-2520S33-250-FN-TR,25MHz 3.3V MCU oscillator,SELECTED
 Y2,1,ECS,ECS-2520S33-500-FN-TR,50MHz 3.3V RMII oscillator,SELECTED
 J_ETH,1,Bel,P01-0006-01,RJ45 MagJack,SELECTED
+J_RADAR_PWR,1,Molex,43650-0200,Micro-Fit 3.0 2-circuit right-angle radar power output,SELECTED
+J_RADAR_IO,1,Molex,43045-0600,Micro-Fit 3.0 6-circuit right-angle radar CAN/ref harness,SELECTED
 D_ETH,1,Texas Instruments,TPD4E05U06DQAR,Ethernet ESD array,SELECTED
 D_CAN,1,Texas Instruments,ESD2CANFD24-Q1,CAN FD ESD protection,SELECTED
 FB1,1,Murata,BLM18BD601SH1,Precision ferrite bead,SELECTED

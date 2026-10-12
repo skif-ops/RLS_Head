@@ -1,0 +1,7 @@
+signal,carrier_endpoint,radar_endpoint,electrical,direction,criticality,notes
+RADAR_12V,J_RADAR_PWR pins 1/2,AWR2944PEVM J12 via dedicated harness,12V power,CARRIER_TO_RADAR,P0,EVM requires a 12V source with greater than 2.5A capability; carrier branch target current limit 3.2A
+RADAR_CANH,J_RADAR_IO CANH,AWR2944PEVM J3 pin 3,CAN-FD,BIDIR,P1,CAN-A selected as the default EVT control/metadata bus
+RADAR_CANL,J_RADAR_IO CANL,AWR2944PEVM J3 pin 1,CAN-FD,BIDIR,P1,CAN-A selected as the default EVT control/metadata bus
+RADAR_CAN_GND,J_RADAR_IO GND,AWR2944PEVM J3 pin 2,GND,BIDIR,P0,Common reference for CAN harness
+RADAR_REF,J_RADAR_IO REF,AWR2944PEVM firmware-selected GPIO/header output,3V3 CMOS or open-drain,RADAR_TO_CARRIER,P0,One pulse per radar measurement frame; exact EVM GPIO/header assignment to be frozen after bench verification
+RADAR_REF_GND,J_RADAR_IO GND,AWR2944PEVM signal ground,GND,BIDIR,P0,Return for RADAR_REF

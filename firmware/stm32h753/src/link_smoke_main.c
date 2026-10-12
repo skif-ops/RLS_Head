@@ -5,6 +5,7 @@
 #include "rls/targetstate_uncertainty.h"
 #include "rls/targetstate_error_ledger.h"
 #include "rls/time_service.h"
+#include "rls/radar_link.h"
 #include "stm32h753_memory.h"
 
 #include <stddef.h>
@@ -148,6 +149,23 @@ int main(void)
             2500000u,
             &disciplined_time);
 
+    rls_radar_link_msg_t radar_msg = {
+        .version = RLS_RADAR_LINK_VERSION,
+        .type = RLS_RADAR_MSG_FRAME_META,
+        .status_flags = 0u,
+        .sequence = 1u,
+        .radar_time_us = 2500000u,
+        .config_crc32 = 0x12345678u,
+        .temperature_cdeg = 2500,
+        .measurement_count = 0u,
+    };
+    uint8_t radar_wire[RLS_RADAR_LINK_WIRE_SIZE] = {0};
+    const bool radar_link_ok =
+        rls_radar_link_encode(
+            &radar_msg,
+            radar_wire,
+            sizeof(radar_wire)) == 0;
+
     TargetStateErrorLedger error_ledger;
     const bool ledger_ok =
         targetstate_syserr_ok &&
@@ -173,6 +191,9 @@ int main(void)
         ((uint32_t)pps2 << 4) ^
         (time_map_ok
             ? (uint32_t)(disciplined_time & 0xFFFF)
+            : 0u) ^
+        (radar_link_ok
+            ? (uint32_t)radar_wire[0]
             : 0u);
 
     g_smoke_response_len =
