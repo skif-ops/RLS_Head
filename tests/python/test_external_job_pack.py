@@ -67,6 +67,13 @@ def queue_fixture():
                 "requires_measured_evidence": True,
                 "directly_unlocks": 0,
             },
+            {
+                "item_id": "ANT_D1_SIM_GATE_REAL",
+                "next_action": "ASSEMBLE_REAL_ANT_SIM_GATE",
+                "measurement_pack_kind": None,
+                "requires_measured_evidence": False,
+                "directly_unlocks": 1,
+            },
         ],
     }
 
@@ -781,6 +788,109 @@ def test_physical_antenna_validator_command_is_self_contained(tmp_path):
         "--config physical_antenna_measurement_config.json"
         in command
     )
+
+
+def test_priority_nine_selects_ant_sim_waiting_for_upstream(tmp_path):
+    manifest = build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=9,
+    )
+
+    assert manifest["item_id"] == "ANT_D1_SIM_GATE_REAL"
+    assert manifest["pack_kind"] is None
+    assert (
+        manifest["preflight"]["schema"]
+        == "ANT-SIM-REAL-JOB-PACK-PREFLIGHT-001"
+    )
+    assert (
+        tmp_path
+        / "ant_sim_inputs"
+        / "README.txt"
+    ).is_file()
+
+    result = validate_job_pack(tmp_path)
+
+    assert result["status"] == "TEMPLATE_READY"
+    assert result["preflight_status"] == "WAITING_FOR_UPSTREAM"
+    assert result["preflight_errors"] == []
+    assert any(
+        warning.startswith("map_validation:not_present_yet")
+        for warning in result["preflight_warnings"]
+    )
+
+
+def test_ant_sim_ready_inputs_reach_gate_assembly(tmp_path):
+    build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=9,
+    )
+
+    inputs = (
+        tmp_path
+        / "ant_sim_inputs"
+    )
+
+    (
+        inputs
+        / "map_validation.json"
+    ).write_text(
+        json.dumps(
+            {
+                "schema": "ANT-D1-MAP-VALIDATION-001",
+                "status": "DATA_READY",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (
+        inputs
+        / "mc_summary.json"
+    ).write_text(
+        json.dumps(
+            {
+                "schema": "ANT-D1-MC-SUMMARY-001",
+                "status": "PASS",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (
+        inputs
+        / "rad_lb_revb.json"
+    ).write_text(
+        json.dumps(
+            {
+                "schema": "RAD-LB-006-REVB",
+                "status": "PROJECTED",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_job_pack(tmp_path)
+
+    assert result["preflight_status"] == "READY_FOR_GATE_ASSEMBLY"
+    assert result["preflight_errors"] == []
+
+
+def test_ant_sim_validator_command_is_self_contained(tmp_path):
+    manifest = build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=9,
+    )
+
+    command = manifest["validator_command"]
+
+    assert "<" not in command
+    assert "--validation ant_sim_inputs/map_validation.json" in command
+    assert "--mc ant_sim_inputs/mc_summary.json" in command
+    assert "--revb ant_sim_inputs/rad_lb_revb.json" in command
 
 
 def test_invalid_priority_rejected(tmp_path):
