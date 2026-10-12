@@ -58,8 +58,10 @@ def make_inputs(root: Path):
             "U2,1,TDK,ICM-42688-P,IMU\n"
             "U3,1,Microchip,LAN8742Ai-CZ-TR,PHY\n"
             "U4,1,TI,TCAN3404DRBRQ1,CAN\n"
-            "U5,1,TI,TPS62130ARGTR,BUCK\n"
+            "U5,1,TI,TPS62132RGTR,BUCK\n"
             "U6,1,TI,TPS259470ARPWR,EFUSE\n"
+            "U8,1,u-blox,NEO-M9N-00B,GNSS timing receiver\n"
+            "J_ETH,1,Bel,SI-60182-F,MagJack\n"
         ),
         encoding="utf-8",
     )

@@ -25,7 +25,7 @@
     {
       "id": "bom",
       "path": "tests/fixtures/carrier_review_a/bom.csv",
-      "sha256": "6f74f05c2218b99e4b238cf0507396bed4a1ace38edfbc0bb7960aa65d83ad64"
+      "sha256": "c28c6f79f4e64ee28ceea51db2ccd6638b5703fd56fbc4a8309d28dcc041d268"
     }
   ],
   "erc_policy": {
