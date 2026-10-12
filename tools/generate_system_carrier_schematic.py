@@ -28,6 +28,39 @@ SHEETS = [
 
 PLACEHOLDER_LIB = "Connector_Generic:Conn_01x08"
 
+SYMBOL_LIBRARIES = {
+    "SystemCarrier_Local": "${KIPRJMOD}/SystemCarrier_Local.kicad_sym",
+    "Device": "${KICAD9_SYMBOL_DIR}/Device.kicad_sym",
+    "Connector_Generic": "${KICAD9_SYMBOL_DIR}/Connector_Generic.kicad_sym",
+    "Connector": "${KICAD9_SYMBOL_DIR}/Connector.kicad_sym",
+    "RF_GPS": "${KICAD9_SYMBOL_DIR}/RF_GPS.kicad_sym",
+    "Switch": "${KICAD9_SYMBOL_DIR}/Switch.kicad_sym",
+    "MCU_ST_STM32H7": "${KICAD9_SYMBOL_DIR}/MCU_ST_STM32H7.kicad_sym",
+    "Interface_Ethernet": "${KICAD9_SYMBOL_DIR}/Interface_Ethernet.kicad_sym",
+}
+
+
+def write_symbol_library_table(output_dir: Path) -> None:
+    lines = [
+        "(sym_lib_table",
+        "  (version 7)",
+    ]
+
+    for name, uri in SYMBOL_LIBRARIES.items():
+        lines.append(
+            '  (lib (name "' + name + '") '
+            '(type "KiCad") '
+            '(uri "' + uri + '") '
+            '(options "") '
+            '(descr "RLS Head generated Carrier symbol library binding"))'
+        )
+
+    lines.append(")")
+    (output_dir / "sym-lib-table").write_text(
+        "\n".join(lines) + "\n",
+        encoding="utf-8",
+    )
+
 
 def pos(x_grid: int, y_grid: int) -> tuple[float, float]:
     return (1.27 * x_grid, 1.27 * y_grid)
@@ -652,6 +685,8 @@ def build(output_dir: Path) -> dict:
         encoding="utf-8",
     )
 
+    write_symbol_library_table(output_dir)
+
     symbol_cache = ksa.library.get_symbol_cache()
     symbol_cache.add_library_path(
         str(local_symbol_path)
@@ -748,6 +783,8 @@ def build(output_dir: Path) -> dict:
         "local_symbol_manifest": local_symbol_manifest,
         "local_footprint_library": "SystemCarrier_Local.pretty",
         "fp_lib_table": "fp-lib-table",
+        "sym_lib_table": "sym-lib-table",
+        "symbol_library_bindings": dict(SYMBOL_LIBRARIES),
         "symbol_placeholders": placeholders,
         "notes": [
             "This is an authoritative generated CAD scaffold, not Review A.",
