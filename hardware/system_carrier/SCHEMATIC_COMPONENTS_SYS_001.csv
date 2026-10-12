@@ -32,6 +32,7 @@ block_id,ref_or_pattern,function,value_or_mpn,qty_rule,criticality,placement_rul
 30,R_GNSS_BIAS,Active-antenna short-current limiter,10R 0.25W,1_optional,P1,At bias-T,u-blox reference value
 40,C_IMU_HF,IMU VDD bypass,100nF X7R,1,P1,Adjacent U2 VDD,
 40,C_IMU_BULK,IMU bulk,2.2uF X7R,1,P1,Adjacent U2 VDD,
+40,C_IMU_VDDIO,IMU VDDIO bypass,10nF X7R,1,P1,Adjacent U2 VDDIO,Required by ICM-42688-P typical SPI application
 50,R_CAN_TERM,CAN selectable termination,120R 1%,1,P1,At J_RADAR_IO,Populate through solder jumper/0R option only when carrier is bus endpoint
 50,C_CAN_VCC,CAN transceiver bypass,100nF X7R,1,P1,Adjacent U4 VCC,
 60,R_ETH_RBIAS,PHY bias,12.1k 1%,1,P0,Adjacent U3 RBIAS,Microchip mandatory value
