@@ -6,4 +6,4 @@ def test_authoritative_package_contract_passes():
     assert result["schema"] == "SYSTEM-CARRIER-PACKAGE-CONTRACT-001"
     assert result["status"] == "PASS"
     assert result["errors"] == []
-    assert result["contract_count"] >= 11
+    assert result["contract_count"] >= 12
