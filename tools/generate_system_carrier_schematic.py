@@ -265,10 +265,10 @@ def populate_imu(sch, placeholders: list[dict]) -> None:
         pos(45, 42),
     )
     sch.components.add(
-        "Device:R",
-        "R20",
-        "10k 1%",
-        pos(66, 42),
+        "Device:C",
+        "C22",
+        "10nF",
+        pos(52, 42),
     )
 
     for name, p in [
@@ -283,8 +283,8 @@ def populate_imu(sch, placeholders: list[dict]) -> None:
         sch.add_label(name, position=p)
 
     sch.add_text(
-        "C20/C21 are local VDD decoupling.\n"
-        "R20 provides a deterministic default on the interrupt/config line as required by final symbol pinout.",
+        "C20/C21 are local VDD decoupling. C22 is the dedicated VDDIO 10nF bypass.\n"
+        "Unused RESV/FSYNC pins are resolved by the final pin contract, not by an arbitrary pull resistor.",
         position=pos(18, 61),
         size=1.0,
     )
