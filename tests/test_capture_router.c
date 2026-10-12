@@ -1,18 +1,11 @@
 #include "rls/capture_router.h"
 
 #include <stdint.h>
-#include <stdio.h>
+#include <stdlib.h>
 
-#define CHECK(expr) \
-    do { \
-        if (!(expr)) { \
-            fprintf(stderr, "CHECK failed: %s:%d: %s\n", \
-                    __FILE__, __LINE__, #expr); \
-            return 1; \
-        } \
-    } while (0)
+#define CHECK(expr) do { if (!(expr)) abort(); } while (0)
 
-static int test_fifo_and_per_source_sequence(void)
+static void test_fifo_and_per_source_sequence(void)
 {
     rls_capture_router_t router;
     rls_capture_event_t event;
@@ -61,11 +54,9 @@ static int test_fifo_and_per_source_sequence(void)
     CHECK(event.sequence == 1u);
 
     CHECK(!rls_capture_router_pop(&router, &event));
-
-    return 0;
 }
 
-static int test_overflow_is_counted(void)
+static void test_overflow_is_counted(void)
 {
     rls_capture_router_t router;
 
@@ -95,11 +86,9 @@ static int test_overflow_is_counted(void)
         rls_capture_router_dropped(&router)
         == 1u
     );
-
-    return 0;
 }
 
-static int test_invalid_source_rejected(void)
+static void test_invalid_source_rejected(void)
 {
     rls_capture_router_t router;
 
@@ -112,23 +101,12 @@ static int test_invalid_source_rejected(void)
             1u
         )
     );
-
-    return 0;
 }
 
 int main(void)
 {
-    if (test_fifo_and_per_source_sequence() != 0) {
-        return 1;
-    }
-
-    if (test_overflow_is_counted() != 0) {
-        return 1;
-    }
-
-    if (test_invalid_source_rejected() != 0) {
-        return 1;
-    }
-
+    test_fifo_and_per_source_sequence();
+    test_overflow_is_counted();
+    test_invalid_source_rejected();
     return 0;
 }
