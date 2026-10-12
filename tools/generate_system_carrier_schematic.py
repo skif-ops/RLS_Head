@@ -356,6 +356,105 @@ def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
         size=1.0,
     )
 
+
+def populate_ethernet(sch, placeholders: list[dict]) -> None:
+    sch.add_text(
+        "ETHERNET — LAN8742A RMII instrumentation link\n"
+        "Dedicated 50 MHz reference clock shared with STM32 RMII",
+        position=pos(18, 9),
+        size=1.27,
+    )
+
+    add_placeholder(
+        sch,
+        "U3",
+        "LAN8742Ai-CZ-TR",
+        pos(48, 31),
+        placeholders,
+    )
+    add_placeholder(
+        sch,
+        "Y2",
+        "ECS-2520S33-500-FN-TR",
+        pos(28, 22),
+        placeholders,
+    )
+    add_placeholder(
+        sch,
+        "D3",
+        "TPD4E05U06DQAR",
+        pos(72, 31),
+        placeholders,
+    )
+    add_placeholder(
+        sch,
+        "J6",
+        "P01-0006-01_MAGJACK",
+        pos(88, 31),
+        placeholders,
+    )
+
+    sch.components.add(
+        "Device:R",
+        "R60",
+        "12.1k 1%",
+        pos(42, 45),
+    )
+    for ref, y in [
+        ("R61", 42),
+        ("R62", 46),
+        ("R63", 50),
+        ("R64", 54),
+    ]:
+        sch.components.add(
+            "Device:R",
+            ref,
+            "49.9R 1%",
+            pos(68, y),
+        )
+
+    sch.components.add(
+        "Device:C",
+        "C60",
+        "1uF",
+        pos(50, 45),
+    )
+    sch.components.add(
+        "Device:C",
+        "C61",
+        "470pF C0G",
+        pos(56, 45),
+    )
+    sch.components.add(
+        "Device:C",
+        "C62",
+        "100nF",
+        pos(36, 45),
+    )
+
+    for name, p in [
+        ("3V3", pos(34, 17)),
+        ("GND", pos(34, 58)),
+        ("ETH_50M", pos(34, 22)),
+        ("ETH_MDIO", pos(34, 28)),
+        ("ETH_MDC", pos(34, 33)),
+        ("ETH_CRS_DV", pos(34, 38)),
+        ("ETH_RXD0", pos(34, 43)),
+        ("ETH_RXD1", pos(34, 48)),
+        ("ETH_TX_EN", pos(61, 24)),
+        ("ETH_TXD0", pos(61, 29)),
+        ("ETH_TXD1", pos(61, 34)),
+        ("ETH_MDI", pos(78, 31)),
+    ]:
+        sch.add_label(name, position=p)
+
+    sch.add_text(
+        "R60 = PHY RBIAS. R61-R64 = 49.9R MDI termination.\n"
+        "C60 = VDDCR, C61 = analog filter, C62 = local bypass.",
+        position=pos(18, 64),
+        size=1.0,
+    )
+
 def populate_text_sheet(sch, title: str, notes: list[str]) -> None:
     sch.add_text(
         title + "\n" + "\n".join(notes),
@@ -418,13 +517,9 @@ def build(output_dir: Path) -> dict:
                 placeholders,
             )
         elif name == "ETHERNET":
-            populate_text_sheet(
+            populate_ethernet(
                 child,
-                "ETHERNET",
-                [
-                    "U3 LAN8742Ai-CZ-TR — symbol capture pending",
-                    "50 MHz RMII clock, RBIAS 12.1k, MagJack",
-                ],
+                placeholders,
             )
         elif name == "DEBUG_BOOT":
             populate_text_sheet(
