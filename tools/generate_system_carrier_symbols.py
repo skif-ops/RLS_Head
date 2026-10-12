@@ -81,13 +81,14 @@ def _footprints(path: Path) -> dict[str, str]:
 
 def _pin_rows(
     paths: list[Path],
+    target_refs: set[str],
 ) -> dict[str, list[dict[str, str]]]:
     grouped: dict[str, list[dict[str, str]]] = {}
 
     for path in paths:
         for row in _read_csv(path):
             ref = str(row.get("ref", "")).strip()
-            if ref not in TARGET_REFS:
+            if ref not in target_refs:
                 continue
 
             role = str(
@@ -100,7 +101,7 @@ def _pin_rows(
 
             grouped.setdefault(ref, []).append(row)
 
-    missing = sorted(TARGET_REFS - set(grouped))
+    missing = sorted(target_refs - set(grouped))
     if missing:
         raise ValueError(
             "missing target refs:" + ",".join(missing)
@@ -231,12 +232,20 @@ def generate(
     output = Path(output)
 
     pin_contracts = [pin_contract]
+    target_refs = set(CORE_TARGET_REFS)
+
     if aux_pin_contract is not None:
         pin_contracts.append(
             Path(aux_pin_contract)
         )
+        target_refs.update(
+            AUX_TARGET_REFS
+        )
 
-    grouped = _pin_rows(pin_contracts)
+    grouped = _pin_rows(
+        pin_contracts,
+        target_refs,
+    )
     footprints = _footprints(footprint_plan)
 
     by_mpn: dict[str, dict] = {}
