@@ -60,6 +60,13 @@ def queue_fixture():
                 "requires_measured_evidence": True,
                 "directly_unlocks": 1,
             },
+            {
+                "item_id": "PHYSICAL_ANT_MEASUREMENT",
+                "next_action": "MEASURE_PHYSICAL_ANTENNA",
+                "measurement_pack_kind": "physical_antenna",
+                "requires_measured_evidence": True,
+                "directly_unlocks": 0,
+            },
         ],
     }
 
@@ -649,6 +656,129 @@ def test_sys_err_validator_command_is_self_contained(tmp_path):
     )
     assert (
         "--config sys_err_gate_config.json"
+        in command
+    )
+
+
+def test_priority_eight_selects_physical_antenna_blocked_template(tmp_path):
+    manifest = build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=8,
+    )
+
+    assert manifest["item_id"] == "PHYSICAL_ANT_MEASUREMENT"
+    assert manifest["pack_kind"] == "physical_antenna"
+    assert (
+        manifest["preflight"]["schema"]
+        == "PHYSICAL-ANTENNA-JOB-PACK-PREFLIGHT-001"
+    )
+    assert (
+        tmp_path
+        / "physical_antenna_measurement_config.json"
+    ).is_file()
+
+    result = validate_job_pack(tmp_path)
+
+    assert result["status"] == "TEMPLATE_READY"
+    assert result["preflight_status"] == "BLOCKED"
+    assert result["preflight_errors"]
+
+
+def test_filled_physical_antenna_ids_reach_ready_for_collection(tmp_path):
+    build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=8,
+    )
+
+    manifest_path = (
+        tmp_path
+        / "measurement_pack"
+        / "antenna_measurement_manifest.json"
+    )
+    data = json.loads(
+        manifest_path.read_text(encoding="utf-8")
+    )
+    data.update(
+        {
+            "measurement_id": "ANT-MEAS-001",
+            "instrument_id": "INSTRUMENT-001",
+            "calibration_id": "CAL-001",
+        }
+    )
+    manifest_path.write_text(
+        json.dumps(data) + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_job_pack(tmp_path)
+
+    assert result["preflight_status"] == "READY_FOR_COLLECTION"
+    assert result["preflight_errors"] == []
+    assert "measurement_csv:no_samples_yet" in result["preflight_warnings"]
+
+
+def test_physical_antenna_manifest_path_is_job_pack_relative(tmp_path):
+    build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=8,
+    )
+
+    data = json.loads(
+        (
+            tmp_path
+            / "measurement_pack"
+            / "antenna_measurement_manifest.json"
+        ).read_text(encoding="utf-8")
+    )
+
+    assert (
+        data["measurement_csv"]["path"]
+        == "measurement_pack/antenna_measurement.csv"
+    )
+
+
+def test_physical_antenna_config_is_copied(tmp_path):
+    build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=8,
+    )
+
+    config = json.loads(
+        (
+            tmp_path
+            / "physical_antenna_measurement_config.json"
+        ).read_text(encoding="utf-8")
+    )
+
+    assert config["required_frequencies_hz"] == [
+        76000000000,
+        78500000000,
+        81000000000,
+    ]
+    assert config["min_repeat_count"] == 3
+    assert config["max_gain_uncertainty_db"] == 1.0
+
+
+def test_physical_antenna_validator_command_is_self_contained(tmp_path):
+    manifest = build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=8,
+    )
+
+    command = manifest["validator_command"]
+
+    assert "<" not in command
+    assert (
+        "--manifest measurement_pack/antenna_measurement_manifest.json"
+        in command
+    )
+    assert (
+        "--config physical_antenna_measurement_config.json"
         in command
     )
 
