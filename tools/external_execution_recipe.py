@@ -96,7 +96,9 @@ RECIPES = {
         ],
         "validate": (
             "python -m tools.physical_antenna_measurement "
-            "antenna_measurement_manifest.json --repository-root . "
+            "--manifest antenna_measurement_manifest.json "
+            "--config <ANT_MEASUREMENT_CONFIG> "
+            "--repository-root . "
             "--output result.json"
         ),
         "result_schema": "ANT-MEASUREMENT-001",
