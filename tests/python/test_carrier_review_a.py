@@ -4,6 +4,7 @@ from pathlib import Path
 
 from tools.carrier_review_a import (
     parse_erc_json,
+    validate_bom,
     validate_manifest,
     validate_pinmap,
 )
@@ -134,3 +135,25 @@ def test_hash_mismatch_invalid(tmp_path):
         item.startswith("hash_mismatch:")
         for item in result["errors"]
     )
+
+
+def test_review_a_bom_requires_current_rev_a_parts(tmp_path):
+    path = tmp_path / "bom.csv"
+    path.write_text(
+        "ref,qty,manufacturer,mpn,description\n"
+        "U1,1,STMicroelectronics,STM32H753IIT6,System MCU\n"
+        "U2,1,TDK InvenSense,ICM-42688-P,IMU\n"
+        "U3,1,Microchip,LAN8742Ai-CZ-TR,RMII PHY\n"
+        "U4,1,Texas Instruments,TCAN3404DRBRQ1,CAN FD transceiver\n"
+        "U5,1,Texas Instruments,TPS62130ARGTR,obsolete adjustable baseline\n"
+        "U6,1,Texas Instruments,TPS259470ARPWR,eFuse\n"
+        "U8,1,u-blox,NEO-M9N-00B,GNSS timing receiver\n"
+        "J_ETH,1,Bel,P01-0006-01,old MagJack baseline\n",
+        encoding="utf-8",
+    )
+
+    result = validate_bom(path)
+
+    assert result["status"] == "FAIL"
+    assert "TPS62132RGTR" in result["missing_required_mpns"]
+    assert "SI-60182-F" in result["missing_required_mpns"]
