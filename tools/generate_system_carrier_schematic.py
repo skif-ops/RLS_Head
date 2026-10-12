@@ -46,7 +46,7 @@ def add_placeholder(
         {
             "reference": reference,
             "value": value,
-            "sheet": sch.name,
+            "sheet": getattr(sch, "name", ""),
         }
     )
 
@@ -67,7 +67,7 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     )
     sch.components.add(
         "Device:D_TVS",
-        "D_IN",
+        "D1",
         "SMAJ15CA",
         pos(30, 24),
     )
@@ -83,14 +83,14 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     )
 
     sch.components.add("Device:L", "L1", "2.2uH", pos(72, 24))
-    sch.components.add("Device:C", "C_U5_IN", "10uF/25V", pos(55, 36))
-    sch.components.add("Device:C", "C_U5_OUT", "22uF/6.3V", pos(76, 36))
-    sch.components.add("Device:C", "C_U5_SS", "3.3nF", pos(64, 36))
-    sch.components.add("Device:R", "R_U6_ILIM", "665R 1%", pos(39, 34))
-    sch.components.add("Device:R", "R_U7_ILIM", "1.05k 1%", pos(39, 52))
+    sch.components.add("Device:C", "C1", "10uF/25V", pos(55, 36))
+    sch.components.add("Device:C", "C2", "22uF/6.3V", pos(76, 36))
+    sch.components.add("Device:C", "C3", "3.3nF", pos(64, 36))
+    sch.components.add("Device:R", "R1", "665R 1%", pos(39, 34))
+    sch.components.add("Device:R", "R2", "1.05k 1%", pos(39, 52))
     sch.components.add(
         "Connector_Generic:Conn_01x02",
-        "J_RADAR_PWR",
+        "J2",
         "RADAR_12V_OUT",
         pos(75, 50),
     )
@@ -132,14 +132,14 @@ def populate_mcu(sch, placeholders: list[dict]) -> None:
             placeholders,
         )
 
-    sch.components.add("Device:C", "C_VCAP1", "2.2uF", pos(27, 25))
-    sch.components.add("Device:C", "C_VCAP2", "2.2uF", pos(27, 33))
-    sch.components.add("Device:C", "C_VDD_BULK", "4.7uF", pos(27, 41))
-    sch.components.add("Device:C", "C_NRST", "100nF", pos(83, 26))
-    sch.components.add("Device:R", "R_BOOT0", "10k 1%", pos(83, 38))
+    sch.components.add("Device:C", "C10", "2.2uF", pos(27, 25))
+    sch.components.add("Device:C", "C11", "2.2uF", pos(27, 33))
+    sch.components.add("Device:C", "C12", "4.7uF", pos(27, 41))
+    sch.components.add("Device:C", "C13", "100nF", pos(83, 26))
+    sch.components.add("Device:R", "R10", "10k 1%", pos(83, 38))
     sch.components.add(
         "Connector_Generic:Conn_01x06",
-        "J_SWD",
+        "J10",
         "TC2030_SWD",
         pos(83, 52),
     )
