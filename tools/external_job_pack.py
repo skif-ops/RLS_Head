@@ -4,6 +4,9 @@ import argparse
 import json
 from pathlib import Path
 
+from tools.ant_d1_em_external_preflight import (
+    evaluate_preflight as evaluate_ant_d1_em_preflight,
+)
 from tools.external_execution_recipe import build_recipes
 from tools.hil_r2_external_preflight import (
     evaluate_preflight as evaluate_hil_r2_preflight,
@@ -24,6 +27,17 @@ def _write_json(path: Path, data: dict) -> None:
     path.write_text(
         json.dumps(data, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
+    )
+
+
+def _load_d1_map_validation_config() -> dict:
+    path = (
+        Path(__file__).resolve().parents[1]
+        / "config"
+        / "d1_map_validation_evt.json"
+    )
+    return json.loads(
+        path.read_text(encoding="utf-8")
     )
 
 
@@ -73,6 +87,17 @@ def build_job_pack(
     root.mkdir(parents=True, exist_ok=True)
 
     generated: list[str] = []
+
+    selected = dict(selected)
+
+    if selected["item_id"] == "ANT_D1_EM_REAL":
+        selected["validator_command"] = (
+            "python -m tools.ant_em_evidence "
+            "--manifest em_package/d1_em_manifest.json "
+            "--map-config d1_map_validation_config.json "
+            "--repository-root . "
+            "--output result.json"
+        )
 
     recipe_path = root / "execution_recipe.json"
     _write_json(recipe_path, selected)
@@ -190,6 +215,102 @@ def build_job_pack(
         )
         generated.append("preflight_config.json")
 
+    elif selected["item_id"] == "ANT_D1_EM_REAL":
+        package = root / "em_package"
+        model_dir = package / "model"
+        output_dir_em = package / "output"
+        model_dir.mkdir(parents=True, exist_ok=True)
+        output_dir_em.mkdir(parents=True, exist_ok=True)
+
+        manifest_template = {
+            "schema": "ANT-D1-EM-MANIFEST-001",
+            "model_id": "<FILL_MODEL_ID>",
+            "model_revision": "<FILL_MODEL_REVISION>",
+            "solver_name": "<FILL_SOLVER_NAME>",
+            "solver_version": "<FILL_SOLVER_VERSION>",
+            "synthetic_fixture": False,
+            "evidence_level": "SIMULATED_EM",
+            "artifacts": [
+                {
+                    "kind": "model_input",
+                    "path": "em_package/model/model_input.dat",
+                    "sha256": "<FILL_SHA256>",
+                },
+                {
+                    "kind": "material_definition",
+                    "path": "em_package/model/material_definition.json",
+                    "sha256": "<FILL_SHA256>",
+                },
+                {
+                    "kind": "solver_export",
+                    "path": "em_package/output/solver_export.dat",
+                    "sha256": "<FILL_SHA256>",
+                },
+                {
+                    "kind": "antenna_map",
+                    "path": "em_package/output/antenna_map.csv",
+                    "sha256": "<FILL_SHA256>",
+                },
+            ],
+        }
+        _write_json(
+            package / "d1_em_manifest.json",
+            manifest_template,
+        )
+        generated.append(
+            "em_package/d1_em_manifest.json"
+        )
+
+        (model_dir / "README.txt").write_text(
+            (
+                "Place the real solver model input and material definition "
+                "files here using the paths declared in d1_em_manifest.json.\n"
+            ),
+            encoding="utf-8",
+        )
+        generated.append(
+            "em_package/model/README.txt"
+        )
+
+        (output_dir_em / "README.txt").write_text(
+            (
+                "After external EM execution, place the raw solver export "
+                "and machine-readable antenna map here.\n"
+            ),
+            encoding="utf-8",
+        )
+        generated.append(
+            "em_package/output/README.txt"
+        )
+
+        map_config = _load_d1_map_validation_config()
+        _write_json(
+            root / "d1_map_validation_config.json",
+            map_config,
+        )
+        generated.append(
+            "d1_map_validation_config.json"
+        )
+
+        preflight = {
+            "schema": "ANT-D1-EM-JOB-PACK-PREFLIGHT-001",
+            "manifest": "em_package/d1_em_manifest.json",
+            "repository_root": ".",
+            "output": "ant_d1_em_preflight_result.json",
+            "command": (
+                "python -m tools.ant_d1_em_external_preflight "
+                "--manifest em_package/d1_em_manifest.json "
+                "--repository-root . "
+                "--output ant_d1_em_preflight_result.json"
+            ),
+            "expected_ready_status": "READY_FOR_SOLVER_EXECUTION",
+        }
+        _write_json(
+            root / "preflight_config.json",
+            preflight,
+        )
+        generated.append("preflight_config.json")
+
     checklist = [
         "Confirm target/range/geometry and measurement conditions before capture.",
         "Collect only real external measurements; do not use CI fixtures.",
@@ -199,8 +320,8 @@ def build_job_pack(
     if preflight is not None:
         checklist.extend(
             [
-                "Run the preflight command from preflight_config.json before collection.",
-                "Do not start external collection unless preflight status is READY_FOR_COLLECTION.",
+                "Run the preflight command from preflight_config.json before external execution or collection.",
+                "Do not start the external step unless preflight reports its expected ready status.",
             ]
         )
 
@@ -361,6 +482,19 @@ def validate_job_pack(path: str | Path) -> dict:
                         / "measurement_pack"
                         / "run_manifests"
                     ),
+                )
+
+            elif manifest.get("item_id") == "ANT_D1_EM_REAL":
+                em_manifest = json.loads(
+                    (
+                        root
+                        / "em_package"
+                        / "d1_em_manifest.json"
+                    ).read_text(encoding="utf-8")
+                )
+                preflight_result = evaluate_ant_d1_em_preflight(
+                    manifest=em_manifest,
+                    repository_root=root,
                 )
 
             else:

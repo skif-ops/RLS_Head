@@ -26,6 +26,13 @@ def queue_fixture():
                 "directly_unlocks": 1,
             },
             {
+                "item_id": "ANT_D1_EM_REAL",
+                "next_action": "RUN_D1_EM_SOLVER",
+                "measurement_pack_kind": None,
+                "requires_measured_evidence": False,
+                "directly_unlocks": 1,
+            },
+            {
                 "item_id": "REFERENCE_RANGE_MEASURED",
                 "next_action": "COLLECT_EVM_REFERENCE_LADDER",
                 "measurement_pack_kind": "reference_range",
@@ -150,7 +157,7 @@ def test_priority_three_selects_reference_range_with_preflight(tmp_path):
     manifest = build_job_pack(
         queue_fixture(),
         tmp_path,
-        priority=3,
+        priority=4,
     )
 
     assert manifest["item_id"] == "REFERENCE_RANGE_MEASURED"
@@ -187,7 +194,7 @@ def test_reference_range_invalid_manifest_blocks_preflight(tmp_path):
     build_job_pack(
         queue_fixture(),
         tmp_path,
-        priority=3,
+        priority=4,
     )
 
     bad = (
@@ -214,7 +221,7 @@ def test_reference_required_ranges_are_embedded(tmp_path):
     manifest = build_job_pack(
         queue_fixture(),
         tmp_path,
-        priority=3,
+        priority=4,
     )
 
     assert manifest["preflight"]["required_ranges_m"] == [
@@ -225,6 +232,104 @@ def test_reference_required_ranges_are_embedded(tmp_path):
         250,
         300,
     ]
+
+
+def test_priority_three_selects_d1_em_with_preflight(tmp_path):
+    manifest = build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=3,
+    )
+
+    assert manifest["item_id"] == "ANT_D1_EM_REAL"
+    assert manifest["pack_kind"] is None
+    assert (
+        manifest["preflight"]["schema"]
+        == "ANT-D1-EM-JOB-PACK-PREFLIGHT-001"
+    )
+    assert (
+        tmp_path
+        / "em_package"
+        / "d1_em_manifest.json"
+    ).is_file()
+    assert (
+        tmp_path
+        / "d1_map_validation_config.json"
+    ).is_file()
+
+    result = validate_job_pack(tmp_path)
+    assert result["status"] == "TEMPLATE_READY"
+    assert result["preflight_status"] == "BLOCKED"
+    assert result["preflight_errors"]
+
+
+def test_d1_em_inputs_can_reach_solver_ready(tmp_path):
+    build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=3,
+    )
+
+    model_dir = tmp_path / "em_package" / "model"
+    (model_dir / "model_input.dat").write_text(
+        "model\n",
+        encoding="utf-8",
+    )
+    (model_dir / "material_definition.json").write_text(
+        "{}\n",
+        encoding="utf-8",
+    )
+
+    manifest_path = (
+        tmp_path
+        / "em_package"
+        / "d1_em_manifest.json"
+    )
+    em = json.loads(
+        manifest_path.read_text(encoding="utf-8")
+    )
+    em.update(
+        {
+            "model_id": "D1",
+            "model_revision": "A",
+            "solver_name": "EM_SOLVER",
+            "solver_version": "1.0",
+        }
+    )
+    manifest_path.write_text(
+        json.dumps(em) + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_job_pack(tmp_path)
+    assert (
+        result["preflight_status"]
+        == "READY_FOR_SOLVER_EXECUTION"
+    )
+    assert result["preflight_errors"] == []
+    assert any(
+        warning.startswith(
+            "solver_export:output_not_present_yet"
+        )
+        for warning in result["preflight_warnings"]
+    )
+
+
+def test_d1_validator_command_is_self_contained(tmp_path):
+    manifest = build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=3,
+    )
+
+    assert (
+        "<MAP_CONFIG>"
+        not in manifest["validator_command"]
+    )
+    assert (
+        "--map-config d1_map_validation_config.json"
+        in manifest["validator_command"]
+    )
 
 
 def test_invalid_priority_rejected(tmp_path):
