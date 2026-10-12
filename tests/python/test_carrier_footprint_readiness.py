@@ -21,6 +21,7 @@ def test_authoritative_footprint_plan_is_frozen():
     assert result["unresolved_refs"] == []
     assert "U8" in result["locked_refs"]
     assert "U8" not in result["unresolved_refs"]
+    assert "J_ETH" in result["locked_refs"]
 
 def test_gnss_esd_footprint_is_locked():
     result = evaluate(
