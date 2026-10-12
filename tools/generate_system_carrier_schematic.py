@@ -228,6 +228,7 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
         "D8",
         "ESD0P2RF-02LS",
         pos(72, 28),
+        footprint="SystemCarrier_Local:ESD0P2RF-02LS_PG-TSSLP-2-1",
         MPN="ESD0P2RF-02LS",
     )
 
