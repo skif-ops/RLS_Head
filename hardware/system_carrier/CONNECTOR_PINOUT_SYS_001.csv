@@ -11,7 +11,7 @@ J_RADAR_IO,5,RADAR_REF_GND,RETURN,0V,P0,
 J_RADAR_IO,6,NC,NA,NA,P2,Reserved EVT spare; do not connect on Rev A
 J_GNSS_ANT,1,GNSS_RF,IN,50R RF,P0,U.FL signal pin to NEO-M9N RF_IN through ESD
 J_GNSS_ANT,GND,GNSS_RF_GND,RETURN,RF ground,P0,Stitch to ground plane around connector
-J_ETH,MDI,ETH_MDI,BIDIR,100BASE-TX,P1,Integrated magnetics RJ45
+J_ETH,MDI,ETH_MDI,BIDIR,100BASE-TX,P1,Bel SI-60182-F integrated magnetics RJ45; KiCad SI-60062-F symbol/footprint representation verified against Bel drawings
 J_SWD,1,VREF,OUT,3V3,P0,Target-reference voltage
 J_SWD,2,SWDIO,BIDIR,SWD,P0,
 J_SWD,3,GND,RETURN,0V,P0,
