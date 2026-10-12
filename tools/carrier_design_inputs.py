@@ -55,6 +55,7 @@ REQUIRED_PINMAP = {
     "ETH_RMII_TX_EN": ("PG11", "153", "ETH_RMII_TX_EN"),
     "ETH_RMII_TXD0": ("PG13", "155", "ETH_RMII_TXD0"),
     "ETH_RMII_TXD1": ("PG14", "156", "ETH_RMII_TXD1"),
+    "ETH_NRST": ("PE4", "3", "GPIO"),
     "SWDIO": ("PA13", "124", "SWDIO"),
     "SWCLK": ("PA14", "136", "SWCLK"),
     "MCU_HSE": ("PH0", "29", "OSC_IN"),
