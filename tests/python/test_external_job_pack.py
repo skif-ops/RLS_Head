@@ -408,6 +408,27 @@ def test_priority_five_selects_carrier_review_a_with_preflight(tmp_path):
     assert "erc_json:not_present_yet" in result["preflight_warnings"]
 
 
+def test_carrier_job_pack_uses_current_rev_a_bom(tmp_path):
+    build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=5,
+    )
+
+    bom = (
+        tmp_path
+        / "carrier_package"
+        / "inputs"
+        / "bom.csv"
+    ).read_text(encoding="utf-8")
+
+    assert "TPS62132RGTR" in bom
+    assert "NEO-M9N-00B" in bom
+    assert "SI-60182-F" in bom
+    assert "TPS62130ARGTR" not in bom
+    assert "P01-0006-01" not in bom
+
+
 def test_carrier_job_pack_uses_authoritative_timing_pinmap(tmp_path):
     build_job_pack(
         queue_fixture(),
