@@ -24,6 +24,9 @@ from tools.measurement_pack import build_pack
 from tools.reference_range_external_preflight import (
     evaluate_preflight as evaluate_reference_range_preflight,
 )
+from tools.sys_err_external_preflight import (
+    evaluate_preflight as evaluate_sys_err_preflight,
+)
 
 
 SCHEMA = "EXTERNAL-EVIDENCE-JOB-PACK-001"
@@ -42,6 +45,17 @@ def _repo_text(relative: str) -> str:
         / relative
     )
     return path.read_text(encoding="utf-8")
+
+
+def _load_sys_err_gate_config() -> dict:
+    path = (
+        Path(__file__).resolve().parents[1]
+        / "config"
+        / "sys_err_measured_evt.json"
+    )
+    return json.loads(
+        path.read_text(encoding="utf-8")
+    )
 
 
 def _load_evm_profile_gate_config() -> dict:
@@ -141,6 +155,15 @@ def build_job_pack(
             "--manifest measurement_pack/run_manifests/LR2.json "
             "--manifest measurement_pack/run_manifests/LRX.json "
             "--config evm_profile_gate_config.json "
+            "--output result.json"
+        )
+
+    elif selected["item_id"] == "SYS_ERR_MEASURED":
+        selected["validator_command"] = (
+            "python -m tools.sys_err_measured_gate "
+            "--manifest measurement_pack/sys_err_manifest.json "
+            "--config sys_err_gate_config.json "
+            "--repository-root . "
             "--output result.json"
         )
 
@@ -581,6 +604,122 @@ def build_job_pack(
             "preflight_config.json"
         )
 
+    elif selected["item_id"] == "SYS_ERR_MEASURED":
+        sys_manifest_path = (
+            root
+            / "measurement_pack"
+            / "sys_err_manifest.json"
+        )
+        sys_manifest = json.loads(
+            sys_manifest_path.read_text(
+                encoding="utf-8"
+            )
+        )
+
+        timing_dir = (
+            root
+            / "measurement_pack"
+            / "timing"
+        )
+        timing_dir.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+        timing_readme = (
+            timing_dir
+            / "README.txt"
+        )
+        timing_readme.write_text(
+            (
+                "Place the real HIL-R2-BENCH-EVIDENCE-001 PASS JSON here "
+                "as hil_r2_evidence.json after the bench gate closes.\n"
+            ),
+            encoding="utf-8",
+        )
+        generated.append(
+            str(
+                timing_readme.relative_to(
+                    root
+                )
+            )
+        )
+
+        sys_manifest[
+            "timing_evidence"
+        ][
+            "path"
+        ] = (
+            "measurement_pack/timing/"
+            "hil_r2_evidence.json"
+        )
+        sys_manifest[
+            "cells_csv"
+        ][
+            "path"
+        ] = (
+            "measurement_pack/"
+            "sys_err_cells.csv"
+        )
+
+        _write_json(
+            sys_manifest_path,
+            sys_manifest,
+        )
+
+        sys_config = (
+            _load_sys_err_gate_config()
+        )
+        _write_json(
+            root
+            / "sys_err_gate_config.json",
+            sys_config,
+        )
+        generated.append(
+            "sys_err_gate_config.json"
+        )
+
+        preflight = {
+            "schema": (
+                "SYS-ERR-JOB-PACK-"
+                "PREFLIGHT-001"
+            ),
+            "manifest": (
+                "measurement_pack/"
+                "sys_err_manifest.json"
+            ),
+            "gate_config": (
+                "sys_err_gate_config.json"
+            ),
+            "repository_root": ".",
+            "output": (
+                "sys_err_preflight_result.json"
+            ),
+            "command": (
+                "python -m "
+                "tools.sys_err_external_preflight "
+                "--manifest measurement_pack/"
+                "sys_err_manifest.json "
+                "--config "
+                "sys_err_gate_config.json "
+                "--repository-root . "
+                "--output "
+                "sys_err_preflight_result.json"
+            ),
+            "expected_waiting_status": (
+                "WAITING_FOR_HIL_R2"
+            ),
+            "expected_ready_status": (
+                "READY_FOR_COLLECTION"
+            ),
+        }
+        _write_json(
+            root / "preflight_config.json",
+            preflight,
+        )
+        generated.append(
+            "preflight_config.json"
+        )
+
     checklist = [
         "Confirm target/range/geometry and measurement conditions before capture.",
         "Collect only real external measurements; do not use CI fixtures.",
@@ -792,6 +931,26 @@ def validate_job_pack(path: str | Path) -> dict:
                         / "measurement_pack"
                         / "run_manifests"
                     ),
+                )
+
+            elif manifest.get("item_id") == "SYS_ERR_MEASURED":
+                sys_manifest = json.loads(
+                    (
+                        root
+                        / "measurement_pack"
+                        / "sys_err_manifest.json"
+                    ).read_text(encoding="utf-8")
+                )
+                sys_config = json.loads(
+                    (
+                        root
+                        / "sys_err_gate_config.json"
+                    ).read_text(encoding="utf-8")
+                )
+                preflight_result = evaluate_sys_err_preflight(
+                    manifest=sys_manifest,
+                    gate_config=sys_config,
+                    repository_root=root,
                 )
 
             else:

@@ -53,6 +53,13 @@ def queue_fixture():
                 "requires_measured_evidence": True,
                 "directly_unlocks": 0,
             },
+            {
+                "item_id": "SYS_ERR_MEASURED",
+                "next_action": "ASSEMBLE_MEASURED_SYS_ERR",
+                "measurement_pack_kind": "sys_err",
+                "requires_measured_evidence": True,
+                "directly_unlocks": 1,
+            },
         ],
     }
 
@@ -535,6 +542,115 @@ def test_evm_profile_gate_config_is_copied(tmp_path):
     assert config["pd_min"] == 0.90
     assert config["track_availability_min"] == 0.95
     assert config["update_min_hz"] == 20.0
+
+
+def test_priority_seven_selects_sys_err_waiting_for_hil(tmp_path):
+    manifest = build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=7,
+    )
+
+    assert manifest["item_id"] == "SYS_ERR_MEASURED"
+    assert manifest["pack_kind"] == "sys_err"
+    assert (
+        manifest["preflight"]["schema"]
+        == "SYS-ERR-JOB-PACK-PREFLIGHT-001"
+    )
+    assert (
+        tmp_path
+        / "sys_err_gate_config.json"
+    ).is_file()
+    assert (
+        tmp_path
+        / "measurement_pack"
+        / "timing"
+        / "README.txt"
+    ).is_file()
+
+    result = validate_job_pack(tmp_path)
+
+    assert result["status"] == "TEMPLATE_READY"
+    assert result["preflight_status"] == "WAITING_FOR_HIL_R2"
+    assert result["preflight_errors"] == []
+    assert "timing:not_present_yet" in result["preflight_warnings"]
+
+
+def test_sys_err_hil_pass_reaches_ready_for_collection(tmp_path):
+    build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=7,
+    )
+
+    timing_path = (
+        tmp_path
+        / "measurement_pack"
+        / "timing"
+        / "hil_r2_evidence.json"
+    )
+    timing_path.write_text(
+        json.dumps(
+            {
+                "schema": "HIL-R2-BENCH-EVIDENCE-001",
+                "gate_status": "PASS",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_job_pack(tmp_path)
+
+    assert result["preflight_status"] == "READY_FOR_COLLECTION"
+    assert result["preflight_errors"] == []
+    assert "cells:no_samples_yet" in result["preflight_warnings"]
+
+
+def test_sys_err_manifest_paths_are_job_pack_relative(tmp_path):
+    build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=7,
+    )
+
+    manifest_path = (
+        tmp_path
+        / "measurement_pack"
+        / "sys_err_manifest.json"
+    )
+    data = json.loads(
+        manifest_path.read_text(encoding="utf-8")
+    )
+
+    assert (
+        data["timing_evidence"]["path"]
+        == "measurement_pack/timing/hil_r2_evidence.json"
+    )
+    assert (
+        data["cells_csv"]["path"]
+        == "measurement_pack/sys_err_cells.csv"
+    )
+
+
+def test_sys_err_validator_command_is_self_contained(tmp_path):
+    manifest = build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=7,
+    )
+
+    command = manifest["validator_command"]
+
+    assert "<" not in command
+    assert (
+        "--manifest measurement_pack/sys_err_manifest.json"
+        in command
+    )
+    assert (
+        "--config sys_err_gate_config.json"
+        in command
+    )
 
 
 def test_invalid_priority_rejected(tmp_path):

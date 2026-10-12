@@ -80,8 +80,11 @@ RECIPES = {
     "SYS_ERR_MEASURED": {
         "collect": ["sys_err_cells.csv", "SYS-ERR-MEASUREMENT-MANIFEST-001"],
         "validate": (
-            "python -m tools.sys_err_measured_gate --manifest sys_err_manifest.json "
-            "--repository-root . --output result.json"
+            "python -m tools.sys_err_measured_gate "
+            "--manifest sys_err_manifest.json "
+            "--config <SYS_ERR_CONFIG> "
+            "--repository-root . "
+            "--output result.json"
         ),
         "result_schema": "SYS-ERR-GATE-001",
         "pack_kind": "sys_err",
