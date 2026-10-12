@@ -7,6 +7,7 @@
 #include "rls/time_service.h"
 #include "rls/radar_link.h"
 #include "rls/carrier_health.h"
+#include "rls/measurement_session.h"
 #include "stm32h753_memory.h"
 
 #include <stddef.h>
@@ -193,6 +194,23 @@ int main(void)
             2500000u,
             &carrier_report) == 0;
 
+    rls_measurement_session_t measurement_session;
+    rls_measurement_session_init(&measurement_session);
+    const bool measurement_session_ok =
+        rls_measurement_session_arm(
+            &measurement_session,
+            1u,
+            radar_msg.config_crc32,
+            2400000u)
+        && rls_measurement_session_start(
+            &measurement_session,
+            2450000u)
+        && rls_measurement_session_note_radar(
+            &measurement_session)
+        && rls_measurement_session_close(
+            &measurement_session,
+            2500000u);
+
     TargetStateErrorLedger error_ledger;
     const bool ledger_ok =
         targetstate_syserr_ok &&
@@ -224,7 +242,10 @@ int main(void)
             : 0u) ^
         (carrier_health_ok
             ? carrier_report.fault_flags
-            : UINT32_C(0x80000000));
+            : UINT32_C(0x80000000)) ^
+        (measurement_session_ok
+            ? measurement_session.session_id
+            : UINT32_C(0x20000000));
 
     g_smoke_response_len =
         (uint32_t)response_len;
