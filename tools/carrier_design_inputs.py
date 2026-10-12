@@ -32,6 +32,7 @@ REQUIRED_MPNS = {
     "43045-0600",
     "U.FL-R-SMT-K(800)",
     "ESD0P2RF-02LS",
+    "SI-60182-F",
 }
 
 REQUIRED_PINMAP = {

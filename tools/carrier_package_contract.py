@@ -6,7 +6,7 @@ from pathlib import Path
 
 REQUIRED_REFS = {
     "U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8",
-    "D_GNSS", "D_ETH", "D_CAN",
+    "D_GNSS", "D_ETH", "D_CAN", "J_ETH",
 }
 
 

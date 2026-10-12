@@ -561,6 +561,28 @@ jobs:
           rm -rf \
             build-cad/system_carrier/SystemCarrier_Local.validate.pretty
 
+      - name: Validate System Carrier Review A readiness
+        run: |
+          python -m tools.carrier_review_a_readiness \
+            --repository-root . \
+            --scaffold-manifest build-cad/system_carrier/cad_scaffold_manifest.json \
+            --output build-cad/system_carrier/review_a_readiness.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/review_a_readiness.json"
+              ).read_text()
+          )
+          assert data["status"] == "READY_FOR_REVIEW_A"
+          assert data["placeholder_count"] == 0
+          assert data["open_external_blocker_count"] == 0
+          assert data["unresolved_footprint_count"] == 0
+          print("System Carrier READY_FOR_REVIEW_A")
+          PY
+
       - name: Run real KiCad ERC
         run: |
           kicad-cli sch erc \
@@ -579,6 +601,7 @@ jobs:
           assert manifest["schema"] == "SYSTEM-CARRIER-CAD-SCAFFOLD-001"
           assert manifest["status"] == "CAD_SCAFFOLD_READY"
           assert validation["status"] == "PASS"
+          assert validation["placeholder_count"] == 0
           assert erc["source"] == "EVT_SYS_CARRIER.kicad_sch"
 
           violations = sum(

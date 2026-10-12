@@ -1,2 +1,2 @@
 blocker_id,ref,mpn,required_document,status,notes
-MAGJACK_DRAWING,J_ETH,P01-0006-01,Manufacturer pinout/PCB drawing,OPEN,Do not guess integrated magnetics/LED pin mapping; close only from manufacturer drawing or verified CAD model.
+MAGJACK_DRAWING,J_ETH,SI-60182-F,Manufacturer pinout/PCB drawing,CLOSED,Bel SI-60182-F official drawing verified; P01-0006-01 is listed by Bel as compatible and SI-60182-F maps to the electrically/mechanically equivalent KiCad SI-60062-F stock representation.

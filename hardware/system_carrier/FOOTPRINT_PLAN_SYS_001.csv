@@ -10,3 +10,4 @@ U8,NEO-M9N-00B,NEO_M9N_LCC24,PROJECT_LOCAL,SystemCarrier_Local:NEO-M9N_LCC24_12.
 D_GNSS,ESD0P2RF-02LS,PG-TSSLP-2-1,PROJECT_LOCAL,SystemCarrier_Local:ESD0P2RF-02LS_PG-TSSLP-2-1,LOCKED,Infineon PG-TSSLP-2-1 package drawing copper/stencil footprint,Place immediately behind U.FL with minimum RF shunt path
 D_ETH,TPD4E05U06DQAR,DQA0010A,KICAD_STOCK,Package_SON:USON-10_2.5x1.0mm_P0.5mm,LOCKED,TI DQA0010A 2.5x1.0mm P0.5mm land pattern matches KiCad stock footprint,Use straight-through routing orientation per high-speed ESD layout
 D_CAN,ESD2CANFD24DBZRQ1,DBZ0003A,KICAD_STOCK,Package_TO_SOT_SMD:SOT-23,LOCKED,TI DBZ SOT-23-3 package,Confirm pin-1 orientation in symbol mapping
+J_ETH,SI-60182-F,BEL_SI60182_THT,KICAD_STOCK,Connector_RJ:RJ45_Bel_SI-60062-F,LOCKED,Bel SI-60182-F drawing cross-check against Bel SI-60062-F KiCad stock geometry,Identical signal/post/shield/LED hole pattern; selected part keeps -40C..+85C rating
