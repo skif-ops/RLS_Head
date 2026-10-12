@@ -6,6 +6,7 @@
 #include "rls/targetstate_error_ledger.h"
 #include "rls/time_service.h"
 #include "rls/radar_link.h"
+#include "rls/carrier_health.h"
 #include "stm32h753_memory.h"
 
 #include <stddef.h>
@@ -166,6 +167,32 @@ int main(void)
             radar_wire,
             sizeof(radar_wire)) == 0;
 
+    rls_carrier_health_state_t carrier_health;
+    rls_carrier_health_report_t carrier_report;
+    const rls_carrier_health_limits_t carrier_limits = {
+        .radar_timeout_us = 100000u,
+        .gnss_pps_timeout_us = 1500000u,
+        .imu_timeout_us = 20000u,
+    };
+
+    rls_carrier_health_init(&carrier_health);
+    rls_carrier_health_note_radar_ref(
+        &carrier_health,
+        2400000u);
+    rls_carrier_health_note_gnss_pps(
+        &carrier_health,
+        2000000u);
+    rls_carrier_health_note_imu_drdy(
+        &carrier_health,
+        2495000u);
+
+    const bool carrier_health_ok =
+        rls_carrier_health_evaluate(
+            &carrier_health,
+            &carrier_limits,
+            2500000u,
+            &carrier_report) == 0;
+
     TargetStateErrorLedger error_ledger;
     const bool ledger_ok =
         targetstate_syserr_ok &&
@@ -194,7 +221,10 @@ int main(void)
             : 0u) ^
         (radar_link_ok
             ? (uint32_t)radar_wire[0]
-            : 0u);
+            : 0u) ^
+        (carrier_health_ok
+            ? carrier_report.fault_flags
+            : UINT32_C(0x80000000));
 
     g_smoke_response_len =
         (uint32_t)response_len;
