@@ -60,6 +60,34 @@ def validate(root: Path) -> dict:
     elif not (root / fp_lib_table).is_file():
         errors.append("missing_fp_lib_table")
 
+    sym_lib_table = str(
+        manifest.get("sym_lib_table", "")
+    ).strip()
+    symbol_bindings = manifest.get(
+        "symbol_library_bindings"
+    )
+
+    if sym_lib_table != "sym-lib-table":
+        errors.append("sym_lib_table_name")
+    elif not (root / sym_lib_table).is_file():
+        errors.append("missing_sym_lib_table")
+
+    required_symbol_libraries = {
+        "SystemCarrier_Local",
+        "Device",
+        "Connector_Generic",
+        "Connector",
+        "RF_GPS",
+        "Switch",
+        "MCU_ST_STM32H7",
+        "Interface_Ethernet",
+    }
+
+    if not isinstance(symbol_bindings, dict):
+        errors.append("missing_symbol_library_bindings")
+    elif set(symbol_bindings) != required_symbol_libraries:
+        errors.append("symbol_library_binding_set")
+
     if not isinstance(local_manifest, dict):
         errors.append("missing_local_symbol_manifest")
         local_symbol_count = 0
