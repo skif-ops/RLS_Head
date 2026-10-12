@@ -7,6 +7,7 @@ from tools.carrier_design_inputs import (
     validate_netlist,
     validate_pinmap,
     validate_power_tree,
+    validate_radar_interface,
 )
 
 
@@ -24,6 +25,7 @@ def test_authoritative_design_inputs_ready():
     assert result["clock_tree"]["status"] == "PASS"
     assert result["power_tree"]["status"] == "PASS"
     assert result["netlist"]["status"] == "PASS"
+    assert result["radar_interface"]["status"] == "PASS"
 
 
 def test_pinmap_duplicate_pin_fails(tmp_path):
@@ -220,3 +222,29 @@ def test_netlist_requires_radar_can_bus(tmp_path):
 
     assert result["status"] == "FAIL"
     assert "missing_net:RADAR_CANH" in result["findings"]
+
+
+def test_radar_interface_requires_ref_and_can(tmp_path):
+    source = (
+        ROOT / "RADAR_INTERFACE_SYS_001.csv"
+    ).read_text(encoding="utf-8")
+
+    lines = [
+        line
+        for line in source.splitlines()
+        if not line.startswith("RADAR_REF,")
+    ]
+
+    path = tmp_path / "radar_interface.csv"
+    path.write_text(
+        "\n".join(lines) + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_radar_interface(path)
+
+    assert result["status"] == "FAIL"
+    assert (
+        "missing_signal:RADAR_REF"
+        in result["findings"]
+    )
