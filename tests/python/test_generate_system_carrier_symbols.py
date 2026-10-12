@@ -101,7 +101,10 @@ def test_locked_footprints_are_embedded_only_when_available(tmp_path):
         "Package_DFN_QFN:"
         "VQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm"
     )
-    assert by_name["ICM-42688-P"]["footprint"] == ""
+    assert by_name["ICM-42688-P"]["footprint"] == (
+        "SystemCarrier_Local:"
+        "ICM-42688-P_LGA14_2.5x3mm_P0.5mm"
+    )
     assert by_name["TPS259470ARPWR"]["footprint"] == ""
 
 
