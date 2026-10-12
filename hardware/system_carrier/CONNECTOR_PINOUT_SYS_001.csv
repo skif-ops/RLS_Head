@@ -1,0 +1,20 @@
+connector,pin,signal,direction,voltage_or_standard,criticality,notes
+J1_POWER,1,12V_IN,IN,12V nominal,P0,Source capability >=5A
+J1_POWER,2,GND,RETURN,0V,P0,
+J_RADAR_PWR,1,RADAR_12V,OUT,Protected 12V,P0,Toward AWR2944PEVM J12 harness
+J_RADAR_PWR,2,GND,RETURN,0V,P0,
+J_RADAR_IO,1,RADAR_CANL,BIDIR,CAN-FD,P1,Maps to AWR2944PEVM CAN-A J3 pin1
+J_RADAR_IO,2,RADAR_CAN_GND,RETURN,0V,P0,Maps to AWR2944PEVM CAN-A J3 pin2
+J_RADAR_IO,3,RADAR_CANH,BIDIR,CAN-FD,P1,Maps to AWR2944PEVM CAN-A J3 pin3
+J_RADAR_IO,4,RADAR_REF,IN,3V3 CMOS/open-drain,P0,Exact EVM GPIO/header source frozen after bench verification
+J_RADAR_IO,5,RADAR_REF_GND,RETURN,0V,P0,
+J_RADAR_IO,6,NC,NA,NA,P2,Reserved EVT spare; do not connect on Rev A
+J_GNSS_ANT,1,GNSS_RF,IN,50R RF,P0,U.FL signal pin to NEO-M9N RF_IN through ESD
+J_GNSS_ANT,GND,GNSS_RF_GND,RETURN,RF ground,P0,Stitch to ground plane around connector
+J_ETH,MDI,ETH_MDI,BIDIR,100BASE-TX,P1,Integrated magnetics RJ45
+J_SWD,1,VREF,OUT,3V3,P0,Target-reference voltage
+J_SWD,2,SWDIO,BIDIR,SWD,P0,
+J_SWD,3,GND,RETURN,0V,P0,
+J_SWD,4,SWCLK,IN,SWD,P0,
+J_SWD,5,GND,RETURN,0V,P0,
+J_SWD,6,SWO,OUT,SWD trace,P2,
