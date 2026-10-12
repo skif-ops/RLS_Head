@@ -50,9 +50,9 @@ def validate(root: Path) -> dict:
         local_symbol_count = int(
             local_manifest.get("symbol_count", 0)
         )
-        if local_symbol_count != 4:
+        if local_symbol_count != 7:
             errors.append(
-                f"local_symbol_count:{local_symbol_count}!=4"
+                f"local_symbol_count:{local_symbol_count}!=7"
             )
 
     pending_refs = {
@@ -60,7 +60,7 @@ def validate(root: Path) -> dict:
         for item in manifest.get("symbol_placeholders", [])
         if isinstance(item, dict)
     }
-    for ref in {"U2", "U4", "U5", "U6", "U7"}:
+    for ref in {"U2", "U4", "U5", "U6", "U7", "Y2", "D3", "D4"}:
         if ref in pending_refs:
             errors.append(
                 f"local_symbol_fell_back:{ref}"
