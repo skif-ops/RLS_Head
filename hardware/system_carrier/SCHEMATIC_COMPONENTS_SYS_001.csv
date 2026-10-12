@@ -1,0 +1,42 @@
+block_id,ref_or_pattern,function,value_or_mpn,qty_rule,criticality,placement_rule,notes
+10,U5,3V3 buck,TPS62132RGTR,1,P0,Power sheet,Fixed 3.3V reduces feedback-network risk
+10,L1,Buck inductor,XFL4020-222MEC 2.2uH,1,P0,Adjacent U5 SW,TI family reference value
+10,C_U5_IN,Buck input capacitor,10uF 25V X7R/X5R,1,P0,Adjacent PVIN/PGND,Plus 100nF high-frequency bypass
+10,C_U5_AVIN,AVIN bypass,100nF 25V X7R,1,P0,Adjacent AVIN/AGND,
+10,C_U5_OUT,Buck output capacitor,22uF 6.3V X7R/X5R,1,P0,Adjacent VOS/PGND,Minimum effective capacitance verified after DC bias
+10,C_U5_SS,Soft-start capacitor,3.3nF C0G/X7R,1,P1,Adjacent SS/TR,
+10,R_U5_PG,Power-good pull-up,100k 1%,1,P1,Near U5,Pull to 3V3
+10,R_U6_ILIM,System eFuse current program,665R 1%,1,P0,Adjacent U6 ILM,Targets approximately 5.0A
+10,R_U6_UV1,System eFuse divider R1,470k 1%,1,P0,Adjacent U6 EN/UVLO OVLO,
+10,R_U6_UV2,System eFuse divider R2,36.0k 1%,1,P0,Adjacent U6 EN/UVLO OVLO,Targets UVLO approximately 8.51V with R1/R3
+10,R_U6_OV,System eFuse divider R3,41.2k 1%,1,P0,Adjacent U6 EN/UVLO OVLO,Targets OVLO approximately 15.94V with R1/R2
+10,C_U6_DVDT,System eFuse slew capacitor,3.3nF C0G/X7R,1,P1,Adjacent U6 dVdt,Approximate 20ms class 12V rise
+10,R_U7_ILIM,Radar eFuse current program,1.05k 1%,1,P0,Adjacent U7 ILM,Targets approximately 3.18A
+10,R_U7_UV1,Radar eFuse divider R1,470k 1%,1,P0,Adjacent U7 EN/UVLO OVLO,
+10,R_U7_UV2,Radar eFuse divider R2,16.9k 1%,1,P0,Adjacent U7 EN/UVLO OVLO,Targets UVLO approximately 10.51V
+10,R_U7_OV,Radar eFuse divider R3,43.7k 1%,1,P0,Adjacent U7 EN/UVLO OVLO,Targets OVLO approximately 14.57V
+10,C_U7_DVDT,Radar eFuse slew capacitor,3.3nF C0G/X7R,1,P1,Adjacent U7 dVdt,Controls radar branch inrush
+20,C_VCAP1;C_VCAP2,STM32 core regulator stabilization,2.2uF X7R ESR_lt_100mR,2,P0,Immediately at VCAP pins,Each VCAP gets its own capacitor
+20,C_VDDx,STM32 VDD decoupling,100nF X7R,one_per_VDD_pin,P0,At each VDD/VSS pair,Shortest loop
+20,C_VDD_BULK,STM32 digital bulk,4.7uF X7R,1,P1,Near MCU power pin group,
+20,C_VDDA_HF,STM32 analog decoupling,100nF X7R,1,P0,After FB1 at VDDA/VSSA,
+20,C_VDDA_BULK,STM32 analog bulk,1uF X7R,1,P0,After FB1 at VDDA/VSSA,
+20,R_BOOT0,BOOT0 default strap,10k 1%,1,P0,Adjacent MCU,Pull down to GND
+20,C_NRST,NRST filter,100nF X7R,1,P1,Adjacent NRST,Reset switch/test pad may pull NRST low
+30,C_GNSS_HF,NEO-M9N VCC bypass,100nF X7R,1,P0,Adjacent U8 VCC,
+30,C_GNSS_BULK,NEO-M9N VCC bulk,10uF low-ESR,1,P0,Adjacent U8 VCC,Supports startup current transient
+30,R_GNSS_BCKP,Backup-domain population option,0R,1,P1,Near U8 V_BCKP,Default ties V_BCKP to 3V3; footprint permits future backed rail
+30,D_GNSS,GNSS RF ESD,ESD0P2RF-02LS,1,P0,Immediately behind J_GNSS_ANT,Keep RF shunt path extremely short
+30,L_GNSS_BIAS,Optional active-antenna bias-T,27nH Z_gt_500R_at_GNSS I_gt_300mA,1_optional,P1,At RF feed,VCC_RF source option
+30,C_GNSS_BIAS,Active-antenna bias supply filter,100nF X7R 16V,1_optional,P1,At bias-T,u-blox reference value
+30,R_GNSS_BIAS,Active-antenna short-current limiter,10R 0.25W,1_optional,P1,At bias-T,u-blox reference value
+40,C_IMU_HF,IMU VDD bypass,100nF X7R,1,P1,Adjacent U2 VDD,
+40,C_IMU_BULK,IMU bulk,2.2uF X7R,1,P1,Adjacent U2 VDD,
+50,R_CAN_TERM,CAN selectable termination,120R 1%,1,P1,At J_RADAR_IO,Populate through solder jumper/0R option only when carrier is bus endpoint
+50,C_CAN_VCC,CAN transceiver bypass,100nF X7R,1,P1,Adjacent U4 VCC,
+60,R_ETH_RBIAS,PHY bias,12.1k 1%,1,P0,Adjacent U3 RBIAS,Microchip mandatory value
+60,C_ETH_VDDCR,PHY core regulator capacitor,1uF X7R,1,P0,Adjacent U3 VDDCR,Follow LAN8742A internal-regulator reference
+60,C_ETH_CF,PHY analog filter capacitor,470pF C0G,1,P1,Adjacent PHY supply network,Follow LAN8742A reference
+60,R_ETH_TERM,PHY MDI termination,49.9R 1%,4,P0,PHY to magnetics,Follow LAN8742A reference diagram
+60,C_ETH_DECOUPLING,PHY local bypass,100nF X7R,one_per_supply_pin,P0,Adjacent supply pins,
+70,J_SWD,Programming interface,Tag-Connect TC2030 footprint,1,P0,Board edge accessible,No permanent connector required
