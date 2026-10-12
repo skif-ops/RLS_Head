@@ -7,6 +7,9 @@ from pathlib import Path
 from tools.ant_d1_em_external_preflight import (
     evaluate_preflight as evaluate_ant_d1_em_preflight,
 )
+from tools.ant_sim_real_external_preflight import (
+    evaluate_preflight as evaluate_ant_sim_real_preflight,
+)
 from tools.carrier_review_a_external_preflight import (
     evaluate_preflight as evaluate_carrier_review_a_preflight,
 )
@@ -150,6 +153,79 @@ def build_job_pack(
             "--map-config d1_map_validation_config.json "
             "--repository-root . "
             "--output result.json"
+        )
+
+    elif selected["item_id"] == "ANT_D1_SIM_GATE_REAL":
+        inputs_dir = (
+            root
+            / "ant_sim_inputs"
+        )
+        inputs_dir.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+        readme = (
+            inputs_dir
+            / "README.txt"
+        )
+        readme.write_text(
+            (
+                "Place the upstream simulation-evidence results here using "
+                "canonical names: map_validation.json, mc_summary.json, "
+                "rad_lb_revb.json.\n"
+            ),
+            encoding="utf-8",
+        )
+        generated.append(
+            "ant_sim_inputs/README.txt"
+        )
+
+        preflight = {
+            "schema": (
+                "ANT-SIM-REAL-JOB-PACK-"
+                "PREFLIGHT-001"
+            ),
+            "map_validation": (
+                "ant_sim_inputs/"
+                "map_validation.json"
+            ),
+            "mc_summary": (
+                "ant_sim_inputs/"
+                "mc_summary.json"
+            ),
+            "revb": (
+                "ant_sim_inputs/"
+                "rad_lb_revb.json"
+            ),
+            "output": (
+                "ant_sim_real_preflight_result.json"
+            ),
+            "command": (
+                "python -m "
+                "tools.ant_sim_real_external_preflight "
+                "--validation ant_sim_inputs/"
+                "map_validation.json "
+                "--mc ant_sim_inputs/"
+                "mc_summary.json "
+                "--revb ant_sim_inputs/"
+                "rad_lb_revb.json "
+                "--output "
+                "ant_sim_real_preflight_result.json"
+            ),
+            "expected_waiting_status": (
+                "WAITING_FOR_UPSTREAM"
+            ),
+            "expected_ready_status": (
+                "READY_FOR_GATE_ASSEMBLY"
+            ),
+        }
+        _write_json(
+            root / "preflight_config.json",
+            preflight,
+        )
+        generated.append(
+            "preflight_config.json"
         )
 
     elif selected["item_id"] == "CARRIER_REVIEW_A":
@@ -1002,6 +1078,25 @@ def validate_job_pack(path: str | Path) -> dict:
                 preflight_result = evaluate_ant_d1_em_preflight(
                     manifest=em_manifest,
                     repository_root=root,
+                )
+
+            elif manifest.get("item_id") == "ANT_D1_SIM_GATE_REAL":
+                preflight_result = evaluate_ant_sim_real_preflight(
+                    map_validation=(
+                        root
+                        / "ant_sim_inputs"
+                        / "map_validation.json"
+                    ),
+                    mc_summary=(
+                        root
+                        / "ant_sim_inputs"
+                        / "mc_summary.json"
+                    ),
+                    revb=(
+                        root
+                        / "ant_sim_inputs"
+                        / "rad_lb_revb.json"
+                    ),
                 )
 
             elif manifest.get("item_id") == "CARRIER_REVIEW_A":
