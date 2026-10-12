@@ -10,6 +10,9 @@ from tools.ant_d1_em_external_preflight import (
 from tools.carrier_review_a_external_preflight import (
     evaluate_preflight as evaluate_carrier_review_a_preflight,
 )
+from tools.evm_profile_external_preflight import (
+    evaluate_preflight as evaluate_evm_profile_preflight,
+)
 from tools.external_execution_recipe import build_recipes
 from tools.hil_r2_external_preflight import (
     evaluate_preflight as evaluate_hil_r2_preflight,
@@ -39,6 +42,17 @@ def _repo_text(relative: str) -> str:
         / relative
     )
     return path.read_text(encoding="utf-8")
+
+
+def _load_evm_profile_gate_config() -> dict:
+    path = (
+        Path(__file__).resolve().parents[1]
+        / "config"
+        / "evm_profile_gate_evt.json"
+    )
+    return json.loads(
+        path.read_text(encoding="utf-8")
+    )
 
 
 def _load_d1_map_validation_config() -> dict:
@@ -115,6 +129,18 @@ def build_job_pack(
             "python -m tools.carrier_review_a "
             "carrier_package/carrier_review_a_manifest.json "
             "--repository-root . "
+            "--output result.json"
+        )
+
+    elif selected["item_id"] == "AWR_EVM_PROFILE_MEASURED":
+        selected["validator_command"] = (
+            "python -m tools.evm_profile_gate "
+            "--metrics measurement_pack/profile_metrics.csv "
+            "--manifest measurement_pack/run_manifests/TRACK.json "
+            "--manifest measurement_pack/run_manifests/LR1.json "
+            "--manifest measurement_pack/run_manifests/LR2.json "
+            "--manifest measurement_pack/run_manifests/LRX.json "
+            "--config evm_profile_gate_config.json "
             "--output result.json"
         )
 
@@ -477,6 +503,84 @@ def build_job_pack(
         )
         generated.append("preflight_config.json")
 
+    elif selected["item_id"] == "AWR_EVM_PROFILE_MEASURED":
+        manifest_dir = (
+            root
+            / "measurement_pack"
+            / "run_manifests"
+        )
+        manifest_dir.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+        readme = manifest_dir / "README.txt"
+        readme.write_text(
+            (
+                "Place completed EVM-RUN-MANIFEST-001 files here using "
+                "canonical names TRACK.json, LR1.json, LR2.json, LRX.json.\n"
+            ),
+            encoding="utf-8",
+        )
+        generated.append(
+            str(readme.relative_to(root))
+        )
+
+        profile_gate_config = (
+            _load_evm_profile_gate_config()
+        )
+        _write_json(
+            root
+            / "evm_profile_gate_config.json",
+            profile_gate_config,
+        )
+        generated.append(
+            "evm_profile_gate_config.json"
+        )
+
+        preflight = {
+            "schema": (
+                "EVM-PROFILE-JOB-PACK-"
+                "PREFLIGHT-001"
+            ),
+            "metrics": (
+                "measurement_pack/"
+                "profile_metrics.csv"
+            ),
+            "manifest_dir": (
+                "measurement_pack/"
+                "run_manifests"
+            ),
+            "output": (
+                "evm_profile_preflight_result.json"
+            ),
+            "command": (
+                "python -m "
+                "tools.evm_profile_external_preflight "
+                "--metrics measurement_pack/"
+                "profile_metrics.csv "
+                "--manifest-dir measurement_pack/"
+                "run_manifests "
+                "--output "
+                "evm_profile_preflight_result.json"
+            ),
+            "expected_ready_status": (
+                "READY_FOR_COLLECTION"
+            ),
+            "required_profiles": [
+                "TRACK",
+                "LR1",
+                "LR2",
+                "LRX",
+            ],
+        }
+        _write_json(
+            root / "preflight_config.json",
+            preflight,
+        )
+        generated.append(
+            "preflight_config.json"
+        )
+
     checklist = [
         "Confirm target/range/geometry and measurement conditions before capture.",
         "Collect only real external measurements; do not use CI fixtures.",
@@ -674,6 +778,20 @@ def validate_job_pack(path: str | Path) -> dict:
                 preflight_result = evaluate_carrier_review_a_preflight(
                     manifest=carrier_manifest,
                     repository_root=root,
+                )
+
+            elif manifest.get("item_id") == "AWR_EVM_PROFILE_MEASURED":
+                preflight_result = evaluate_evm_profile_preflight(
+                    metrics_csv=(
+                        root
+                        / "measurement_pack"
+                        / "profile_metrics.csv"
+                    ),
+                    manifest_dir=(
+                        root
+                        / "measurement_pack"
+                        / "run_manifests"
+                    ),
                 )
 
             else:
