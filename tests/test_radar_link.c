@@ -1,10 +1,9 @@
 #include "rls/radar_link.h"
 
-#include <assert.h>
 #include <stdint.h>
 #include <string.h>
 
-static void test_round_trip(void)
+static int test_round_trip(void)
 {
     rls_radar_link_msg_t input = {
         .version = RLS_RADAR_LINK_VERSION,
@@ -22,20 +21,31 @@ static void test_round_trip(void)
     memset(&output, 0, sizeof(output));
     memset(wire, 0, sizeof(wire));
 
-    assert(rls_radar_link_encode(&input, wire, sizeof(wire)) == 0);
-    assert(rls_radar_link_decode(wire, sizeof(wire), &output) == 0);
+    if (rls_radar_link_encode(&input, wire, sizeof(wire)) != 0) {
+        return 1;
+    }
 
-    assert(output.version == input.version);
-    assert(output.type == input.type);
-    assert(output.status_flags == input.status_flags);
-    assert(output.sequence == input.sequence);
-    assert(output.radar_time_us == input.radar_time_us);
-    assert(output.config_crc32 == input.config_crc32);
-    assert(output.temperature_cdeg == input.temperature_cdeg);
-    assert(output.measurement_count == input.measurement_count);
+    if (rls_radar_link_decode(wire, sizeof(wire), &output) != 0) {
+        return 2;
+    }
+
+    if (
+        output.version != input.version
+        || output.type != input.type
+        || output.status_flags != input.status_flags
+        || output.sequence != input.sequence
+        || output.radar_time_us != input.radar_time_us
+        || output.config_crc32 != input.config_crc32
+        || output.temperature_cdeg != input.temperature_cdeg
+        || output.measurement_count != input.measurement_count
+    ) {
+        return 3;
+    }
+
+    return 0;
 }
 
-static void test_rejects_invalid_type(void)
+static int test_rejects_invalid_type(void)
 {
     rls_radar_link_msg_t msg = {
         .version = RLS_RADAR_LINK_VERSION,
@@ -43,10 +53,16 @@ static void test_rejects_invalid_type(void)
     };
     uint8_t wire[RLS_RADAR_LINK_WIRE_SIZE];
 
-    assert(rls_radar_link_encode(&msg, wire, sizeof(wire)) == -4);
+    return (
+        rls_radar_link_encode(
+            &msg,
+            wire,
+            sizeof(wire)
+        ) == -4
+    ) ? 0 : 1;
 }
 
-static void test_rejects_wrong_wire_size(void)
+static int test_rejects_wrong_wire_size(void)
 {
     rls_radar_link_msg_t msg;
     uint8_t wire[RLS_RADAR_LINK_WIRE_SIZE] = {0};
@@ -54,19 +70,28 @@ static void test_rejects_wrong_wire_size(void)
     wire[0] = RLS_RADAR_LINK_VERSION;
     wire[1] = RLS_RADAR_MSG_HEARTBEAT;
 
-    assert(
+    return (
         rls_radar_link_decode(
             wire,
             RLS_RADAR_LINK_WIRE_SIZE - 1u,
             &msg
         ) == -2
-    );
+    ) ? 0 : 1;
 }
 
 int main(void)
 {
-    test_round_trip();
-    test_rejects_invalid_type();
-    test_rejects_wrong_wire_size();
+    if (test_round_trip() != 0) {
+        return 1;
+    }
+
+    if (test_rejects_invalid_type() != 0) {
+        return 2;
+    }
+
+    if (test_rejects_wrong_wire_size() != 0) {
+        return 3;
+    }
+
     return 0;
 }
