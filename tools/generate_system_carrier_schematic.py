@@ -235,6 +235,60 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
         size=1.0,
     )
 
+
+def populate_imu(sch, placeholders: list[dict]) -> None:
+    sch.add_text(
+        "IMU — ICM-42688-P SPI2 + hardware DRDY\n"
+        "P0 IMU_DRDY -> STM32 PB11/TIM2_CH4",
+        position=pos(18, 9),
+        size=1.27,
+    )
+
+    add_placeholder(
+        sch,
+        "U2",
+        "ICM-42688-P",
+        pos(52, 31),
+        placeholders,
+    )
+
+    sch.components.add(
+        "Device:C",
+        "C20",
+        "100nF",
+        pos(38, 42),
+    )
+    sch.components.add(
+        "Device:C",
+        "C21",
+        "2.2uF",
+        pos(45, 42),
+    )
+    sch.components.add(
+        "Device:R",
+        "R20",
+        "10k 1%",
+        pos(66, 42),
+    )
+
+    for name, p in [
+        ("3V3", pos(34, 18)),
+        ("GND", pos(34, 54)),
+        ("IMU_NSS", pos(34, 26)),
+        ("IMU_SCK", pos(34, 31)),
+        ("IMU_MISO", pos(34, 36)),
+        ("IMU_MOSI", pos(34, 41)),
+        ("IMU_DRDY", pos(70, 28)),
+    ]:
+        sch.add_label(name, position=p)
+
+    sch.add_text(
+        "C20/C21 are local VDD decoupling.\n"
+        "R20 provides a deterministic default on the interrupt/config line as required by final symbol pinout.",
+        position=pos(18, 61),
+        size=1.0,
+    )
+
 def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
     sch.add_text(
         "RADAR_IO_CAN — external AWR2944-class EVM interface\n"
@@ -354,13 +408,9 @@ def build(output_dir: Path) -> dict:
                 placeholders,
             )
         elif name == "IMU":
-            populate_text_sheet(
+            populate_imu(
                 child,
-                "IMU",
-                [
-                    "U2 ICM-42688-P — symbol capture pending",
-                    "SPI2 + hardware IMU_DRDY",
-                ],
+                placeholders,
             )
         elif name == "RADAR_IO_CAN":
             populate_radar_io_can(
