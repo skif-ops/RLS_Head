@@ -156,6 +156,74 @@ def populate_mcu(sch, placeholders: list[dict]) -> None:
         sch.add_label(name, position=p)
 
 
+
+def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
+    sch.add_text(
+        "RADAR_IO_CAN — external AWR2944-class EVM interface\n"
+        "CAN-FD control/metadata + P0 RADAR_REF timestamp + protected 12V",
+        position=pos(18, 9),
+        size=1.27,
+    )
+
+    add_placeholder(
+        sch,
+        "U4",
+        "TCAN3404DRBRQ1",
+        pos(50, 30),
+        placeholders,
+    )
+    add_placeholder(
+        sch,
+        "D4",
+        "ESD2CANFD24-Q1",
+        pos(68, 30),
+        placeholders,
+    )
+
+    sch.components.add(
+        "Connector_Generic:Conn_01x06",
+        "J4",
+        "RADAR_IO",
+        pos(86, 32),
+    )
+    sch.components.add(
+        "Connector_Generic:Conn_01x02",
+        "J5",
+        "RADAR_PWR",
+        pos(86, 50),
+    )
+    sch.components.add(
+        "Device:R",
+        "R40",
+        "120R 1% DNP_DEFAULT",
+        pos(70, 45),
+    )
+    sch.components.add(
+        "Device:C",
+        "C40",
+        "100nF",
+        pos(42, 42),
+    )
+
+    for name, p in [
+        ("3V3", pos(37, 18)),
+        ("GND", pos(37, 54)),
+        ("CAN_TX", pos(37, 27)),
+        ("CAN_RX", pos(37, 34)),
+        ("RADAR_CANH", pos(76, 25)),
+        ("RADAR_CANL", pos(76, 34)),
+        ("RADAR_REF", pos(76, 40)),
+        ("RADAR_12V", pos(76, 50)),
+    ]:
+        sch.add_label(name, position=p)
+
+    sch.add_text(
+        "R40 is populated only when carrier is the CAN bus endpoint.\n"
+        "RADAR_REF requires adjacent ground return in the harness.",
+        position=pos(18, 62),
+        size=1.0,
+    )
+
 def populate_text_sheet(sch, title: str, notes: list[str]) -> None:
     sch.add_text(
         title + "\n" + "\n".join(notes),
@@ -222,14 +290,9 @@ def build(output_dir: Path) -> dict:
                 ],
             )
         elif name == "RADAR_IO_CAN":
-            populate_text_sheet(
+            populate_radar_io_can(
                 child,
-                "RADAR_IO_CAN",
-                [
-                    "U4 TCAN3404DRBRQ1 — symbol capture pending",
-                    "J_RADAR_IO CAN-FD + P0 RADAR_REF",
-                    "J_RADAR_PWR protected RADAR_12V",
-                ],
+                placeholders,
             )
         elif name == "ETHERNET":
             populate_text_sheet(
