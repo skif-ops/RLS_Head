@@ -26,6 +26,9 @@ REQUIRED_MPNS = {
     "TPS259470ARPWR",
     "ECS-2520S33-250-FN-TR",
     "ECS-2520S33-500-FN-TR",
+    "NEO-M9N-00B",
+    "43650-0200",
+    "43045-0600",
 }
 
 REQUIRED_PINMAP = {
@@ -79,6 +82,9 @@ REQUIRED_NETS = {
     "VIN_RAW",
     "VIN_PROTECTED",
     "3V3",
+    "RADAR_12V",
+    "RADAR_CANH",
+    "RADAR_CANL",
 }
 
 REQUIRED_CLOCKS = {
@@ -274,6 +280,7 @@ def validate_power_tree(path: Path) -> dict:
     for pair in {
         ("VIN_TVS", "VIN_PROTECTED"),
         ("VIN_PROTECTED", "3V3"),
+        ("VIN_PROTECTED", "RADAR_12V"),
     }:
         if pair not in transitions:
             findings.append(f"missing_transition:{pair[0]}->{pair[1]}")
