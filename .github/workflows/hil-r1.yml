@@ -582,6 +582,7 @@ jobs:
               "kicad_version": erc.get("kicad_version"),
               "sheet_count": manifest["sheet_count"],
               "placeholder_count": validation["placeholder_count"],
+              "local_symbol_count": validation["local_symbol_count"],
               "erc_violation_count": violations,
               "review_a_closed": False,
           }
@@ -598,5 +599,6 @@ jobs:
           path: |
             build-cad/system_carrier/*.kicad_sch
             build-cad/system_carrier/*.kicad_pro
+            build-cad/system_carrier/*.kicad_sym
             build-cad/system_carrier/*.json
 
