@@ -4,8 +4,8 @@ U2,ICM-42688-P,LGA14,PROJECT_LOCAL,SystemCarrier_Local:ICM-42688-P_LGA14_2.5x3mm
 U3,LAN8742Ai-CZ-TR,SQFN24_EP,KICAD_STOCK,Package_DFN_QFN:QFN-24-1EP_4x4mm_P0.5mm_EP2.6x2.6mm,LOCKED,Microchip 4x4mm P0.5mm center pad 2.6x2.6mm matches KiCad stock footprint,Stock symbol and footprint independently verified
 U4,TCAN3404DRBRQ1,DRB0008A,KICAD_STOCK,Package_SON:Texas_DRB0008A,LOCKED,TI DRB package code plus existing KiCad manufacturer footprint,Verify courtyard against assembly rules
 U5,TPS62132RGTR,RGT0016,KICAD_STOCK,Package_DFN_QFN:VQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm,LOCKED,TI RGT0016C 3x3mm P0.5mm EP1.68x1.68mm matches KiCad stock footprint,Use non-via variant for baseline; thermal via decision remains PCB-level
-U6,TPS259470ARPWR,RPW0010A,PROJECT_LOCAL,,CUSTOM_REQUIRED,TI RPW VQFN-HR 10-pin package drawing,Upstream KiCad footprint is too recent for Rev.A lock
-U7,TPS259470ARPWR,RPW0010A,PROJECT_LOCAL,,CUSTOM_REQUIRED,TI RPW VQFN-HR 10-pin package drawing,Same local footprint as U6 after verification
+U6,TPS259470ARPWR,RPW0010A,PROJECT_LOCAL,SystemCarrier_Local:TPS259470A_RPW0010A_VQFN-HR-10_2x2mm_P0.475mm,LOCKED,TI RPW0010A package/land-pattern drawing cross-checked with KiCad MR 4677,Shared verified local footprint
+U7,TPS259470ARPWR,RPW0010A,PROJECT_LOCAL,SystemCarrier_Local:TPS259470A_RPW0010A_VQFN-HR-10_2x2mm_P0.475mm,LOCKED,TI RPW0010A package/land-pattern drawing cross-checked with KiCad MR 4677,Same verified local footprint as U6
 U8,NEO-M9N-00B,NEO_M9N_LCC24,PROJECT_LOCAL,SystemCarrier_Local:NEO-M9N_LCC24_12.2x16mm,LOCKED,u-blox NEO-M9N integration manual suggested footprint and pin assignment,24x 1.0x0.8mm lands P1.1mm with 3.0mm center gap
 D_GNSS,ESD0P2RF-02LS,PG-TSSLP-2-1,PROJECT_LOCAL,SystemCarrier_Local:ESD0P2RF-02LS_PG-TSSLP-2-1,LOCKED,Infineon PG-TSSLP-2-1 package drawing copper/stencil footprint,Place immediately behind U.FL with minimum RF shunt path
 D_ETH,TPD4E05U06DQAR,DQA0010A,KICAD_STOCK,Package_SON:USON-10_2.5x1.0mm_P0.5mm,LOCKED,TI DQA0010A 2.5x1.0mm P0.5mm land pattern matches KiCad stock footprint,Use straight-through routing orientation per high-speed ESD layout
