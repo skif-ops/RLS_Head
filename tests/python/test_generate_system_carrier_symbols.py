@@ -105,7 +105,10 @@ def test_locked_footprints_are_embedded_only_when_available(tmp_path):
         "SystemCarrier_Local:"
         "ICM-42688-P_LGA14_2.5x3mm_P0.5mm"
     )
-    assert by_name["TPS259470ARPWR"]["footprint"] == ""
+    assert by_name["TPS259470ARPWR"]["footprint"] == (
+        "SystemCarrier_Local:"
+        "TPS259470A_RPW0010A_VQFN-HR-10_2x2mm_P0.475mm"
+    )
 
 
 def test_auxiliary_symbol_pin_counts_and_footprints(tmp_path):

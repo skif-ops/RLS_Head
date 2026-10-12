@@ -1,26 +1,45 @@
 # System Carrier footprint readiness
 
-Rev.A now separates package selection from footprint freeze.
+Rev.A separates package selection from footprint freeze.
 
 A component may be:
 
 - `LOCKED` — exact footprint ID is accepted for Rev.A;
-- `VERIFY_REQUIRED` — a stock/project candidate may exist but must be compared
-  against the manufacturer land pattern;
-- `CUSTOM_REQUIRED` — project-local footprint is required.
+- `VERIFY_REQUIRED` — a candidate exists but still requires manufacturer
+  land-pattern verification;
+- `CUSTOM_REQUIRED` — a project-local footprint is still required.
 
-The PCB placement gate must not be treated as frozen while
-`unresolved_refs` is non-empty.
+## Rev.A footprint freeze
 
-Current conservative decisions include:
+The current authoritative plan is expected to be
+`FOOTPRINT_FREEZE_READY`: every device tracked by
+`FOOTPRINT_PLAN_SYS_001.csv` is `LOCKED`.
 
-- STM32H753 LQFP176 — locked existing stock footprint;
-- LAN8742A SQFN24-EP — locked to the matching 4×4 mm / 0.5 mm / EP 2.6×2.6 mm KiCad footprint;
-- TCAN3404 DRB0008A — locked manufacturer-specific KiCad footprint;
-- TPS62132 RGT0016C — locked to the matching 3×3 mm / 0.5 mm / EP 1.68×1.68 mm KiCad footprint;
-- CAN ESD DBZ/SOT-23 — locked stock footprint;
-- TPS259470 RPW, ICM-42688-P LGA and NEO-M9N module — project-local footprint
-  path until their land patterns are verified.
+Project-local verified footprints include:
 
-This gate intentionally prefers an unresolved status over guessing a pad
-geometry.
+- ICM-42688-P LGA14;
+- NEO-M9N LCC24;
+- ESD0P2RF-02LS PG-TSSLP-2-1;
+- TPS259470A RPW0010A, shared by U6 and U7.
+
+The RPW0010A footprint deliberately preserves the manufacturer's non-generic
+VQFN-HR topology with four custom corner pads, side pads and two long center
+pads. It is not substituted with a generic 2×2 mm QFN.
+
+Stock footprints remain locked where the manufacturer package matches the
+KiCad library geometry, including STM32H753 LQFP176, LAN8742A SQFN24-EP,
+TCAN3404 DRB0008A, TPS62132 RGT0016C and the selected ESD packages.
+
+## Validation
+
+The footprint readiness gate verifies that every project-local `LOCKED`
+library ID resolves to an actual `.kicad_mod` file.
+
+The dedicated CAD CI job additionally copies the generated
+`SystemCarrier_Local.pretty` library and runs KiCad 9
+`kicad-cli fp upgrade --force` on a disposable copy. This makes malformed
+local footprint syntax a CI failure before Review A or PCB placement.
+
+Footprint freeze does not close schematic Review A. The separate MagJack
+manufacturer drawing/pinout blocker and any remaining schematic placeholders
+must still be resolved independently.

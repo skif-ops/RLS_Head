@@ -551,6 +551,16 @@ jobs:
             build-cad/system_carrier \
             --output build-cad/system_carrier/cad_scaffold_validation.json
 
+      - name: Validate local Carrier footprints with KiCad
+        run: |
+          cp -r \
+            build-cad/system_carrier/SystemCarrier_Local.pretty \
+            build-cad/system_carrier/SystemCarrier_Local.validate.pretty
+          kicad-cli fp upgrade --force \
+            build-cad/system_carrier/SystemCarrier_Local.validate.pretty
+          rm -rf \
+            build-cad/system_carrier/SystemCarrier_Local.validate.pretty
+
       - name: Run real KiCad ERC
         run: |
           kicad-cli sch erc \
