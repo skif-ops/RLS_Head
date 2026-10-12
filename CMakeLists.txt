@@ -36,6 +36,10 @@ add_library(time_service STATIC
     src/time_service.c
 )
 
+add_library(radar_link STATIC
+    src/radar_link.c
+)
+
 target_include_directories(hil_r1 PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -64,6 +68,10 @@ target_include_directories(time_service PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_include_directories(radar_link PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 if(MSVC)
     target_compile_options(hil_r1 PRIVATE /W4 /WX)
     target_compile_options(hil_r2 PRIVATE /W4 /WX)
@@ -72,6 +80,7 @@ if(MSVC)
     target_compile_options(targetstate_error_ledger PRIVATE /W4 /WX)
     target_compile_options(hil_r2_evidence PRIVATE /W4 /WX)
     target_compile_options(time_service PRIVATE /W4 /WX)
+    target_compile_options(radar_link PRIVATE /W4 /WX)
 else()
     target_compile_options(hil_r1 PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(hil_r2 PRIVATE -Wall -Wextra -Wpedantic -Werror)
@@ -80,6 +89,7 @@ else()
     target_compile_options(targetstate_error_ledger PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(hil_r2_evidence PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(time_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(radar_link PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_link_libraries(hil_r1 PUBLIC m)
     target_link_libraries(hil_r2 PUBLIC m)
 endif()
@@ -193,6 +203,20 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     endif()
 
     add_test(NAME time_service_discipline COMMAND test_time_service)
+
+    add_executable(test_radar_link
+        tests/test_radar_link.c
+    )
+
+    target_link_libraries(test_radar_link PRIVATE radar_link)
+
+    if(MSVC)
+        target_compile_options(test_radar_link PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_radar_link PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+
+    add_test(NAME radar_link_wire COMMAND test_radar_link)
 endif()
 
 if(HIL_BUILD_STM32H753_SMOKE)
@@ -229,6 +253,7 @@ if(HIL_BUILD_STM32H753_SMOKE)
         targetstate_error_ledger
         hil_r2_evidence
         time_service
+        radar_link
         c
         nosys
     )
