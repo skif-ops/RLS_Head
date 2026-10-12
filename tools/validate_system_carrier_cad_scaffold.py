@@ -111,6 +111,26 @@ def validate(root: Path) -> dict:
                 f"local_symbol_fell_back:{ref}"
             )
 
+    assigned_gpio_count = int(
+        manifest.get("mcu_assigned_gpio_count", 0)
+    )
+    unused_gpio_nc_count = int(
+        manifest.get(
+            "mcu_unused_gpio_no_connect_count",
+            0,
+        )
+    )
+
+    if assigned_gpio_count < 20:
+        errors.append(
+            "mcu_assigned_gpio_count"
+        )
+
+    if unused_gpio_nc_count < 80:
+        errors.append(
+            "mcu_unused_gpio_no_connect_count"
+        )
+
     files = [
         root / "EVT_SYS_CARRIER.kicad_sch",
         *[root / name for name in sorted(EXPECTED_CHILDREN)],
@@ -138,6 +158,9 @@ def validate(root: Path) -> dict:
             manifest.get("symbol_placeholders", [])
         ),
         "local_symbol_count": local_symbol_count,
+        "mcu_assigned_gpio_count": assigned_gpio_count,
+        "mcu_unused_gpio_no_connect_count":
+            unused_gpio_nc_count,
         "notes": [
             "PASS verifies generated KiCad syntax/hierarchy files parse through kicad-sch-api.",
             "Placeholder count is informational and must reach zero before Review A.",
