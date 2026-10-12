@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
+import re
 import shutil
 from pathlib import Path
 
@@ -60,6 +62,60 @@ def write_symbol_library_table(output_dir: Path) -> None:
         "\n".join(lines) + "\n",
         encoding="utf-8",
     )
+
+
+
+def load_assigned_mcu_gpio(pinmap_path: Path) -> set[str]:
+    with pinmap_path.open(
+        "r",
+        encoding="utf-8",
+        newline="",
+    ) as handle:
+        reader = csv.DictReader(handle)
+        if reader.fieldnames is None:
+            raise ValueError("PINMAP_SYS_001.csv missing header")
+
+        return {
+            str(row.get("mcu_pin", "")).strip()
+            for row in reader
+            if str(row.get("mcu_pin", "")).strip()
+        }
+
+
+def mark_unused_mcu_gpio_no_connect(
+    sch,
+    assigned_gpio: set[str],
+) -> int:
+    component = sch.components.get("U1")
+    if component is None:
+        return 0
+
+    count = 0
+
+    for pin in component.pins:
+        pin_name = str(pin.name).strip()
+
+        if not re.fullmatch(r"P[A-K][0-9]+", pin_name):
+            continue
+
+        if pin_name in assigned_gpio:
+            continue
+
+        pin_position = component.get_pin_position(
+            str(pin.number)
+        )
+        if pin_position is None:
+            continue
+
+        sch.no_connects.add(
+            position=(
+                pin_position.x,
+                pin_position.y,
+            )
+        )
+        count += 1
+
+    return count
 
 
 def pos(x_grid: int, y_grid: int) -> tuple[float, float]:
@@ -179,7 +235,11 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         sch.add_label(name, position=p)
 
 
-def populate_mcu(sch, placeholders: list[dict]) -> None:
+def populate_mcu(
+    sch,
+    placeholders: list[dict],
+    assigned_gpio: set[str],
+) -> int:
     sch.add_text(
         "MCU_CORE — STM32H753IIT6\n"
         "P0 time capture pins remain fixed by PINMAP_SYS_001.csv",
@@ -228,6 +288,10 @@ def populate_mcu(sch, placeholders: list[dict]) -> None:
     ]:
         sch.add_label(name, position=p)
 
+    return mark_unused_mcu_gpio_no_connect(
+        sch,
+        assigned_gpio,
+    )
 
 
 
@@ -692,9 +756,17 @@ def build(output_dir: Path) -> dict:
         str(local_symbol_path)
     )
 
+    assigned_mcu_gpio = load_assigned_mcu_gpio(
+        repo_root
+        / "hardware"
+        / "system_carrier"
+        / "PINMAP_SYS_001.csv"
+    )
+
     main = ksa.create_schematic(PROJECT_NAME)
     parent_uuid = main.uuid
     placeholders: list[dict] = []
+    mcu_unused_gpio_no_connect_count = 0
 
     sheet_uuids: dict[str, str] = {}
     for index, (name, filename) in enumerate(SHEETS):
@@ -726,7 +798,13 @@ def build(output_dir: Path) -> dict:
         if name == "POWER_INPUT":
             populate_power(child, placeholders)
         elif name == "MCU_CORE":
-            populate_mcu(child, placeholders)
+            mcu_unused_gpio_no_connect_count = (
+                populate_mcu(
+                    child,
+                    placeholders,
+                    assigned_mcu_gpio,
+                )
+            )
         elif name == "TIME_GNSS":
             populate_time_gnss(
                 child,
@@ -786,6 +864,11 @@ def build(output_dir: Path) -> dict:
         "sym_lib_table": "sym-lib-table",
         "symbol_library_bindings": dict(SYMBOL_LIBRARIES),
         "symbol_placeholders": placeholders,
+        "mcu_assigned_gpio_count": len(
+            assigned_mcu_gpio
+        ),
+        "mcu_unused_gpio_no_connect_count":
+            mcu_unused_gpio_no_connect_count,
         "notes": [
             "This is an authoritative generated CAD scaffold, not Review A.",
             "POWER_INPUT and MCU_CORE contain initial capture content.",
