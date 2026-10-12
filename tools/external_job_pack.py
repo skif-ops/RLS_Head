@@ -7,6 +7,9 @@ from pathlib import Path
 from tools.ant_d1_em_external_preflight import (
     evaluate_preflight as evaluate_ant_d1_em_preflight,
 )
+from tools.carrier_review_a_external_preflight import (
+    evaluate_preflight as evaluate_carrier_review_a_preflight,
+)
 from tools.external_execution_recipe import build_recipes
 from tools.hil_r2_external_preflight import (
     evaluate_preflight as evaluate_hil_r2_preflight,
@@ -28,6 +31,14 @@ def _write_json(path: Path, data: dict) -> None:
         json.dumps(data, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+
+
+def _repo_text(relative: str) -> str:
+    path = (
+        Path(__file__).resolve().parents[1]
+        / relative
+    )
+    return path.read_text(encoding="utf-8")
 
 
 def _load_d1_map_validation_config() -> dict:
@@ -95,6 +106,14 @@ def build_job_pack(
             "python -m tools.ant_em_evidence "
             "--manifest em_package/d1_em_manifest.json "
             "--map-config d1_map_validation_config.json "
+            "--repository-root . "
+            "--output result.json"
+        )
+
+    elif selected["item_id"] == "CARRIER_REVIEW_A":
+        selected["validator_command"] = (
+            "python -m tools.carrier_review_a "
+            "carrier_package/carrier_review_a_manifest.json "
             "--repository-root . "
             "--output result.json"
         )
@@ -311,6 +330,153 @@ def build_job_pack(
         )
         generated.append("preflight_config.json")
 
+    elif selected["item_id"] == "CARRIER_REVIEW_A":
+        package = root / "carrier_package"
+        inputs_dir = package / "inputs"
+        output_dir_carrier = package / "output"
+        inputs_dir.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+        output_dir_carrier.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+        pinmap_path = inputs_dir / "pinmap.csv"
+        pinmap_path.write_text(
+            _repo_text(
+                "hardware/system_carrier/PINMAP_SYS_001.csv"
+            ),
+            encoding="utf-8",
+        )
+        generated.append(
+            "carrier_package/inputs/pinmap.csv"
+        )
+
+        bom_path = inputs_dir / "bom.csv"
+        bom_path.write_text(
+            _repo_text(
+                "hardware/system_carrier/BOM_SYS_CARRIER_002.csv"
+            ),
+            encoding="utf-8",
+        )
+        generated.append(
+            "carrier_package/inputs/bom.csv"
+        )
+
+        manifest_template = {
+            "schema": "CARRIER-REVIEW-A-MANIFEST-001",
+            "board_id": "EVT-SYS-CARRIER",
+            "hardware_revision": "A",
+            "cad_tool": "KiCad",
+            "cad_version": "<FILL_CAD_VERSION>",
+            "synthetic_fixture": False,
+            "evidence_level": "CAD_REVIEW",
+            "erc_policy": {
+                "errors_allowed": 0,
+                "warnings_allowed": 0,
+            },
+            "artifacts": [
+                {
+                    "id": "schematic",
+                    "path": (
+                        "carrier_package/output/"
+                        "system_carrier.kicad_sch"
+                    ),
+                    "sha256": "<FILL_SHA256>",
+                },
+                {
+                    "id": "erc_json",
+                    "path": (
+                        "carrier_package/output/"
+                        "erc.json"
+                    ),
+                    "sha256": "<FILL_SHA256>",
+                },
+                {
+                    "id": "pinmap",
+                    "path": (
+                        "carrier_package/inputs/"
+                        "pinmap.csv"
+                    ),
+                    "sha256": "<FILL_SHA256>",
+                },
+                {
+                    "id": "bom",
+                    "path": (
+                        "carrier_package/inputs/"
+                        "bom.csv"
+                    ),
+                    "sha256": "<FILL_SHA256>",
+                },
+            ],
+            "audits": {
+                "power": "PENDING",
+                "clock": "PENDING",
+                "reset_boot": "PENDING",
+                "timing_capture": "PENDING",
+                "imu": "PENDING",
+                "ethernet": "PENDING",
+                "can_fd": "PENDING",
+            },
+        }
+        _write_json(
+            package
+            / "carrier_review_a_manifest.json",
+            manifest_template,
+        )
+        generated.append(
+            "carrier_package/"
+            "carrier_review_a_manifest.json"
+        )
+
+        (
+            output_dir_carrier
+            / "README.txt"
+        ).write_text(
+            (
+                "Place the captured KiCad schematic and ERC JSON "
+                "here using the manifest paths.\n"
+            ),
+            encoding="utf-8",
+        )
+        generated.append(
+            "carrier_package/output/README.txt"
+        )
+
+        preflight = {
+            "schema": (
+                "CARRIER-REVIEW-A-JOB-PACK-"
+                "PREFLIGHT-001"
+            ),
+            "manifest": (
+                "carrier_package/"
+                "carrier_review_a_manifest.json"
+            ),
+            "repository_root": ".",
+            "output": (
+                "carrier_review_a_preflight_result.json"
+            ),
+            "command": (
+                "python -m "
+                "tools.carrier_review_a_external_preflight "
+                "--manifest carrier_package/"
+                "carrier_review_a_manifest.json "
+                "--repository-root . "
+                "--output "
+                "carrier_review_a_preflight_result.json"
+            ),
+            "expected_ready_status": (
+                "READY_FOR_CAD_REVIEW_EXECUTION"
+            ),
+        }
+        _write_json(
+            root / "preflight_config.json",
+            preflight,
+        )
+        generated.append("preflight_config.json")
+
     checklist = [
         "Confirm target/range/geometry and measurement conditions before capture.",
         "Collect only real external measurements; do not use CI fixtures.",
@@ -494,6 +660,19 @@ def validate_job_pack(path: str | Path) -> dict:
                 )
                 preflight_result = evaluate_ant_d1_em_preflight(
                     manifest=em_manifest,
+                    repository_root=root,
+                )
+
+            elif manifest.get("item_id") == "CARRIER_REVIEW_A":
+                carrier_manifest = json.loads(
+                    (
+                        root
+                        / "carrier_package"
+                        / "carrier_review_a_manifest.json"
+                    ).read_text(encoding="utf-8")
+                )
+                preflight_result = evaluate_carrier_review_a_preflight(
+                    manifest=carrier_manifest,
                     repository_root=root,
                 )
 
