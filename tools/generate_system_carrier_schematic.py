@@ -101,8 +101,9 @@ def mark_unused_mcu_gpio_no_connect(
         if pin_name in assigned_gpio:
             continue
 
-        pin_position = component.get_pin_position(
-            str(pin.number)
+        pin_position = sch.get_component_pin_position(
+            "U1",
+            str(pin.number),
         )
         if pin_position is None:
             continue
