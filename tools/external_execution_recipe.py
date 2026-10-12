@@ -65,8 +65,14 @@ RECIPES = {
             "validated EVM-RUN-MANIFEST-001 for TRACK/LR1/LR2/LRX",
         ],
         "validate": (
-            "python -m tools.evm_profile_gate profile_metrics.csv "
-            "--manifest-dir <MANIFEST_DIR> --output result.json"
+            "python -m tools.evm_profile_gate "
+            "--metrics profile_metrics.csv "
+            "--manifest <TRACK_MANIFEST> "
+            "--manifest <LR1_MANIFEST> "
+            "--manifest <LR2_MANIFEST> "
+            "--manifest <LRX_MANIFEST> "
+            "--config <PROFILE_GATE_CONFIG> "
+            "--output result.json"
         ),
         "result_schema": "EVM-PROFILE-RESULT-001",
         "pack_kind": "evm_profile",
