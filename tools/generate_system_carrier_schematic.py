@@ -88,6 +88,8 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     sch.components.add("Device:C", "C3", "3.3nF", pos(64, 36))
     sch.components.add("Device:R", "R1", "665R 1%", pos(39, 34))
     sch.components.add("Device:R", "R2", "1.05k 1%", pos(39, 52))
+    sch.components.add("Device:R", "R6F", "10k 1% FLT_PU", pos(48, 34))
+    sch.components.add("Device:R", "R7F", "10k 1% FLT_PU", pos(48, 52))
     sch.components.add(
         "Connector_Generic:Conn_01x02",
         "J2",
@@ -101,6 +103,8 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         ("VIN_PROTECTED", pos(46, 18)),
         ("3V3", pos(76, 18)),
         ("RADAR_12V", pos(68, 47)),
+        ("SYS_EFUSE_FLT", pos(50, 30)),
+        ("RADAR_EFUSE_FLT", pos(50, 48)),
         ("GND", pos(53, 58)),
     ]:
         sch.add_label(name, position=p)
@@ -336,6 +340,18 @@ def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
         "100nF",
         pos(42, 42),
     )
+    sch.components.add(
+        "Device:R",
+        "R41",
+        "10k 1% STB_PD",
+        pos(52, 46),
+    )
+    sch.components.add(
+        "Device:R",
+        "R42",
+        "10k 1% SHDN_PD",
+        pos(59, 46),
+    )
 
     for name, p in [
         ("3V3", pos(37, 18)),
@@ -351,7 +367,7 @@ def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
 
     sch.add_text(
         "R40 is populated only when carrier is the CAN bus endpoint.\n"
-        "RADAR_REF requires adjacent ground return in the harness.",
+        "R41 pulls STB low and R42 pulls SHDN low for deterministic normal mode. RADAR_REF requires adjacent ground return.",
         position=pos(18, 62),
         size=1.0,
     )
