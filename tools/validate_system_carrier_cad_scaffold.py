@@ -33,6 +33,39 @@ def validate(root: Path) -> dict:
     if set(manifest.get("child_sheets", [])) != EXPECTED_CHILDREN:
         errors.append("child_sheet_set")
 
+    local_library_name = str(
+        manifest.get("local_symbol_library", "")
+    ).strip()
+    local_manifest = manifest.get("local_symbol_manifest")
+
+    if local_library_name != "SystemCarrier_Local.kicad_sym":
+        errors.append("local_symbol_library_name")
+    elif not (root / local_library_name).is_file():
+        errors.append("missing_local_symbol_library")
+
+    if not isinstance(local_manifest, dict):
+        errors.append("missing_local_symbol_manifest")
+        local_symbol_count = 0
+    else:
+        local_symbol_count = int(
+            local_manifest.get("symbol_count", 0)
+        )
+        if local_symbol_count != 4:
+            errors.append(
+                f"local_symbol_count:{local_symbol_count}!=4"
+            )
+
+    pending_refs = {
+        str(item.get("reference", "")).strip()
+        for item in manifest.get("symbol_placeholders", [])
+        if isinstance(item, dict)
+    }
+    for ref in {"U2", "U4", "U5", "U6", "U7"}:
+        if ref in pending_refs:
+            errors.append(
+                f"local_symbol_fell_back:{ref}"
+            )
+
     files = [
         root / "EVT_SYS_CARRIER.kicad_sch",
         *[root / name for name in sorted(EXPECTED_CHILDREN)],
@@ -59,6 +92,7 @@ def validate(root: Path) -> dict:
         "placeholder_count": len(
             manifest.get("symbol_placeholders", [])
         ),
+        "local_symbol_count": local_symbol_count,
         "notes": [
             "PASS verifies generated KiCad syntax/hierarchy files parse through kicad-sch-api.",
             "Placeholder count is informational and must reach zero before Review A.",

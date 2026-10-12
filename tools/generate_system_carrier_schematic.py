@@ -6,6 +6,11 @@ from pathlib import Path
 
 import kicad_sch_api as ksa
 
+from tools.generate_system_carrier_symbols import (
+    LIBRARY_NAME as LOCAL_SYMBOL_LIBRARY,
+    generate as generate_local_symbols,
+)
+
 
 PROJECT_NAME = "EVT_SYS_CARRIER"
 STATUS_SCHEMA = "SYSTEM-CARRIER-CAD-SCAFFOLD-001"
@@ -25,6 +30,33 @@ PLACEHOLDER_LIB = "Connector_Generic:Conn_01x08"
 
 def pos(x_grid: int, y_grid: int) -> tuple[float, float]:
     return (1.27 * x_grid, 1.27 * y_grid)
+
+
+def add_local_symbol(
+    sch,
+    reference: str,
+    mpn: str,
+    value: str,
+    position: tuple[float, float],
+    placeholders: list[dict],
+) -> None:
+    try:
+        sch.components.add(
+            f"{LOCAL_SYMBOL_LIBRARY}:{mpn}",
+            reference,
+            value,
+            position,
+            MPN=mpn,
+            Capture_Status="LOCAL_CONTRACT_SYMBOL",
+        )
+    except Exception:
+        add_placeholder(
+            sch,
+            reference,
+            value,
+            position,
+            placeholders,
+        )
 
 
 def add_placeholder(
@@ -72,14 +104,17 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         pos(30, 24),
     )
 
-    add_placeholder(
-        sch, "U6", "TPS259470ARPWR_SYS", pos(43, 24), placeholders
+    add_local_symbol(
+        sch, "U6", "TPS259470ARPWR", "TPS259470ARPWR_SYS",
+        pos(43, 24), placeholders
     )
-    add_placeholder(
-        sch, "U5", "TPS62132RGTR_3V3", pos(60, 24), placeholders
+    add_local_symbol(
+        sch, "U5", "TPS62132RGTR", "TPS62132RGTR_3V3",
+        pos(60, 24), placeholders
     )
-    add_placeholder(
-        sch, "U7", "TPS259470ARPWR_RADAR", pos(43, 42), placeholders
+    add_local_symbol(
+        sch, "U7", "TPS259470ARPWR", "TPS259470ARPWR_RADAR",
+        pos(43, 42), placeholders
     )
 
     sch.components.add("Device:L", "L1", "2.2uH", pos(72, 24))
@@ -263,9 +298,10 @@ def populate_imu(sch, placeholders: list[dict]) -> None:
         size=1.27,
     )
 
-    add_placeholder(
+    add_local_symbol(
         sch,
         "U2",
+        "ICM-42688-P",
         "ICM-42688-P",
         pos(52, 31),
         placeholders,
@@ -316,9 +352,10 @@ def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
         size=1.27,
     )
 
-    add_placeholder(
+    add_local_symbol(
         sch,
         "U4",
+        "TCAN3404DRBRQ1",
         "TCAN3404DRBRQ1",
         pos(50, 30),
         placeholders,
@@ -556,6 +593,29 @@ def populate_text_sheet(sch, title: str, notes: list[str]) -> None:
 def build(output_dir: Path) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    repo_root = Path(__file__).resolve().parents[1]
+    local_symbol_path = output_dir / f"{LOCAL_SYMBOL_LIBRARY}.kicad_sym"
+    local_symbol_manifest = generate_local_symbols(
+        pin_contract=(
+            repo_root
+            / "hardware"
+            / "system_carrier"
+            / "SYMBOL_PIN_CONTRACT_SYS_001.csv"
+        ),
+        footprint_plan=(
+            repo_root
+            / "hardware"
+            / "system_carrier"
+            / "FOOTPRINT_PLAN_SYS_001.csv"
+        ),
+        output=local_symbol_path,
+    )
+
+    symbol_cache = ksa.library.get_symbol_cache()
+    symbol_cache.add_library_path(
+        str(local_symbol_path)
+    )
+
     main = ksa.create_schematic(PROJECT_NAME)
     parent_uuid = main.uuid
     placeholders: list[dict] = []
@@ -643,11 +703,14 @@ def build(output_dir: Path) -> dict:
         "sheet_count": len(SHEETS) + 1,
         "child_sheets": [filename for _, filename in SHEETS],
         "sheet_uuids": sheet_uuids,
+        "local_symbol_library": local_symbol_path.name,
+        "local_symbol_manifest": local_symbol_manifest,
         "symbol_placeholders": placeholders,
         "notes": [
             "This is an authoritative generated CAD scaffold, not Review A.",
             "POWER_INPUT and MCU_CORE contain initial capture content.",
-            "Placeholder symbols must be replaced before CARRIER_REVIEW_A.",
+            "Local U2/U4/U5/U6/U7 symbols are generated from the authoritative pin contract.",
+            "Remaining placeholder symbols must be replaced before CARRIER_REVIEW_A.",
             "Real KiCad ERC is generated in CI and may contain expected capture-stage violations.",
         ],
     }
