@@ -515,7 +515,7 @@ def build_job_pack(
         bom_path = inputs_dir / "bom.csv"
         bom_path.write_text(
             _repo_text(
-                "hardware/system_carrier/BOM_SYS_CARRIER_002.csv"
+                "hardware/system_carrier/BOM_SYS_CARRIER_003.csv"
             ),
             encoding="utf-8",
         )
