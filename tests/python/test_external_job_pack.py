@@ -39,6 +39,13 @@ def queue_fixture():
                 "requires_measured_evidence": True,
                 "directly_unlocks": 0,
             },
+            {
+                "item_id": "CARRIER_REVIEW_A",
+                "next_action": "CAPTURE_KICAD_AND_RUN_REVIEW_A",
+                "measurement_pack_kind": None,
+                "requires_measured_evidence": False,
+                "directly_unlocks": 0,
+            },
         ],
     }
 
@@ -330,6 +337,104 @@ def test_d1_validator_command_is_self_contained(tmp_path):
         "--map-config d1_map_validation_config.json"
         in manifest["validator_command"]
     )
+
+
+def test_priority_five_selects_carrier_review_a_with_preflight(tmp_path):
+    manifest = build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=5,
+    )
+
+    assert manifest["item_id"] == "CARRIER_REVIEW_A"
+    assert manifest["pack_kind"] is None
+    assert (
+        manifest["preflight"]["schema"]
+        == "CARRIER-REVIEW-A-JOB-PACK-PREFLIGHT-001"
+    )
+
+    pinmap = (
+        tmp_path
+        / "carrier_package"
+        / "inputs"
+        / "pinmap.csv"
+    )
+    bom = (
+        tmp_path
+        / "carrier_package"
+        / "inputs"
+        / "bom.csv"
+    )
+
+    assert pinmap.is_file()
+    assert bom.is_file()
+
+    result = validate_job_pack(tmp_path)
+
+    assert result["status"] == "TEMPLATE_READY"
+    assert (
+        result["preflight_status"]
+        == "READY_FOR_CAD_REVIEW_EXECUTION"
+    )
+    assert "schematic:not_present_yet" in result["preflight_warnings"]
+    assert "erc_json:not_present_yet" in result["preflight_warnings"]
+
+
+def test_carrier_job_pack_uses_authoritative_timing_pinmap(tmp_path):
+    build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=5,
+    )
+
+    pinmap = (
+        tmp_path
+        / "carrier_package"
+        / "inputs"
+        / "pinmap.csv"
+    ).read_text(encoding="utf-8")
+
+    assert "GNSS_PPS,PA0" in pinmap
+    assert "RADAR_REF,PB10" in pinmap
+    assert "IMU_DRDY,PB11" in pinmap
+
+
+def test_carrier_bad_pinmap_blocks_preflight(tmp_path):
+    build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=5,
+    )
+
+    pinmap = (
+        tmp_path
+        / "carrier_package"
+        / "inputs"
+        / "pinmap.csv"
+    )
+    pinmap.write_text(
+        "signal,mcu_pin,peripheral,direction,criticality\n",
+        encoding="utf-8",
+    )
+
+    result = validate_job_pack(tmp_path)
+
+    assert result["preflight_status"] == "BLOCKED"
+    assert "pinmap_not_ready" in result["preflight_errors"]
+
+
+def test_carrier_validator_command_is_self_contained(tmp_path):
+    manifest = build_job_pack(
+        queue_fixture(),
+        tmp_path,
+        priority=5,
+    )
+
+    assert (
+        "carrier_package/carrier_review_a_manifest.json"
+        in manifest["validator_command"]
+    )
+    assert "<" not in manifest["validator_command"]
 
 
 def test_invalid_priority_rejected(tmp_path):
