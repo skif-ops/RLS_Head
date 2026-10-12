@@ -8,6 +8,7 @@
 #include "rls/radar_link.h"
 #include "rls/carrier_health.h"
 #include "rls/measurement_session.h"
+#include "rls/evidence_export.h"
 #include "stm32h753_memory.h"
 
 #include <stddef.h>
@@ -211,6 +212,21 @@ int main(void)
             &measurement_session,
             2500000u);
 
+    rls_evidence_export_record_t evidence_record;
+    uint8_t evidence_wire[RLS_EVIDENCE_EXPORT_WIRE_SIZE] = {0};
+    const bool evidence_export_ok =
+        measurement_session_ok
+        && rls_evidence_export_build(
+            &measurement_session,
+            &time_service,
+            &carrier_report,
+            2500000u,
+            &evidence_record) == 0
+        && rls_evidence_export_encode(
+            &evidence_record,
+            evidence_wire,
+            sizeof(evidence_wire)) == 0;
+
     TargetStateErrorLedger error_ledger;
     const bool ledger_ok =
         targetstate_syserr_ok &&
@@ -245,7 +261,10 @@ int main(void)
             : UINT32_C(0x80000000)) ^
         (measurement_session_ok
             ? measurement_session.session_id
-            : UINT32_C(0x20000000));
+            : UINT32_C(0x20000000)) ^
+        (evidence_export_ok
+            ? (uint32_t)evidence_wire[0]
+            : UINT32_C(0x10000000));
 
     g_smoke_response_len =
         (uint32_t)response_len;
