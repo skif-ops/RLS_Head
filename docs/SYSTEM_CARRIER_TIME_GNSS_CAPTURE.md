@@ -16,3 +16,5 @@ KiCad symbols are introduced. The optional bias network is DNP by default.
 
 This sheet is timing/navigation instrumentation only and contains no radar
 RF or control-actuation circuitry.
+
+USB is unused on Rev.A; V_USB is pulled to GND through 100 kΩ per the u-blox integration guidance.
