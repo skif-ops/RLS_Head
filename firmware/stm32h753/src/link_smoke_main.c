@@ -10,6 +10,7 @@
 #include "rls/measurement_session.h"
 #include "rls/evidence_export.h"
 #include "rls/capture_router.h"
+#include "rls/ethernet_reset.h"
 #include "stm32h753_memory.h"
 
 #include <stddef.h>
@@ -240,6 +241,19 @@ int main(void)
             &capture_router,
             &capture_event);
 
+    rls_ethernet_reset_t eth_reset;
+    rls_ethernet_reset_init(&eth_reset);
+    const bool eth_reset_ok =
+        rls_ethernet_reset_note_power_ready(
+            &eth_reset,
+            2400000u)
+        && rls_ethernet_reset_update(
+            &eth_reset,
+            2424999u) == RLS_ETH_RESET_ASSERT_LOW
+        && rls_ethernet_reset_update(
+            &eth_reset,
+            2425000u) == RLS_ETH_RESET_DRIVE_HIGH;
+
     TargetStateErrorLedger error_ledger;
     const bool ledger_ok =
         targetstate_syserr_ok &&
@@ -280,7 +294,10 @@ int main(void)
             : UINT32_C(0x10000000)) ^
         (capture_router_ok
             ? capture_event.sequence
-            : UINT32_C(0x40000000));
+            : UINT32_C(0x40000000)) ^
+        (eth_reset_ok
+            ? UINT32_C(0x00000080)
+            : UINT32_C(0x08000000));
 
     g_smoke_response_len =
         (uint32_t)response_len;

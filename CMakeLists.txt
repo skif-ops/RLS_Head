@@ -56,6 +56,10 @@ add_library(capture_router STATIC
     src/capture_router.c
 )
 
+add_library(ethernet_reset STATIC
+    src/ethernet_reset.c
+)
+
 target_include_directories(hil_r1 PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -104,6 +108,10 @@ target_include_directories(capture_router PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_include_directories(ethernet_reset PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 if(MSVC)
     target_compile_options(hil_r1 PRIVATE /W4 /WX)
     target_compile_options(hil_r2 PRIVATE /W4 /WX)
@@ -117,6 +125,7 @@ if(MSVC)
     target_compile_options(measurement_session PRIVATE /W4 /WX)
     target_compile_options(evidence_export PRIVATE /W4 /WX)
     target_compile_options(capture_router PRIVATE /W4 /WX)
+    target_compile_options(ethernet_reset PRIVATE /W4 /WX)
 else()
     target_compile_options(hil_r1 PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(hil_r2 PRIVATE -Wall -Wextra -Wpedantic -Werror)
@@ -130,6 +139,7 @@ else()
     target_compile_options(measurement_session PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(evidence_export PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(capture_router PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(ethernet_reset PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_link_libraries(hil_r1 PUBLIC m)
     target_link_libraries(hil_r2 PUBLIC m)
 endif()
@@ -314,6 +324,20 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     endif()
 
     add_test(NAME carrier_capture_router COMMAND test_capture_router)
+
+    add_executable(test_ethernet_reset
+        tests/test_ethernet_reset.c
+    )
+
+    target_link_libraries(test_ethernet_reset PRIVATE ethernet_reset)
+
+    if(MSVC)
+        target_compile_options(test_ethernet_reset PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_ethernet_reset PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+
+    add_test(NAME carrier_ethernet_reset COMMAND test_ethernet_reset)
 endif()
 
 if(HIL_BUILD_STM32H753_SMOKE)
@@ -355,6 +379,7 @@ if(HIL_BUILD_STM32H753_SMOKE)
         measurement_session
         evidence_export
         capture_router
+        ethernet_reset
         c
         nosys
     )
