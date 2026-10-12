@@ -44,6 +44,10 @@ add_library(carrier_health STATIC
     src/carrier_health.c
 )
 
+add_library(measurement_session STATIC
+    src/measurement_session.c
+)
+
 target_include_directories(hil_r1 PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -80,6 +84,10 @@ target_include_directories(carrier_health PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_include_directories(measurement_session PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 if(MSVC)
     target_compile_options(hil_r1 PRIVATE /W4 /WX)
     target_compile_options(hil_r2 PRIVATE /W4 /WX)
@@ -90,6 +98,7 @@ if(MSVC)
     target_compile_options(time_service PRIVATE /W4 /WX)
     target_compile_options(radar_link PRIVATE /W4 /WX)
     target_compile_options(carrier_health PRIVATE /W4 /WX)
+    target_compile_options(measurement_session PRIVATE /W4 /WX)
 else()
     target_compile_options(hil_r1 PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(hil_r2 PRIVATE -Wall -Wextra -Wpedantic -Werror)
@@ -100,6 +109,7 @@ else()
     target_compile_options(time_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(radar_link PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(carrier_health PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(measurement_session PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_link_libraries(hil_r1 PUBLIC m)
     target_link_libraries(hil_r2 PUBLIC m)
 endif()
@@ -241,6 +251,20 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     endif()
 
     add_test(NAME carrier_health_logic COMMAND test_carrier_health)
+
+    add_executable(test_measurement_session
+        tests/test_measurement_session.c
+    )
+
+    target_link_libraries(test_measurement_session PRIVATE measurement_session)
+
+    if(MSVC)
+        target_compile_options(test_measurement_session PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_measurement_session PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+
+    add_test(NAME measurement_session_logic COMMAND test_measurement_session)
 endif()
 
 if(HIL_BUILD_STM32H753_SMOKE)
@@ -279,6 +303,7 @@ if(HIL_BUILD_STM32H753_SMOKE)
         time_service
         radar_link
         carrier_health
+        measurement_session
         c
         nosys
     )
