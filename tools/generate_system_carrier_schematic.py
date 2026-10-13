@@ -304,9 +304,18 @@ def add_pin_label(
             f"missing component:{reference}"
         )
 
+    # PWR_FLAG symbols are single-pin ERC markers; keep their label
+    # directly on the pin rather than creating geometry around them.
+    if reference.startswith("#FLG"):
+        sch.add_label(
+            net_name,
+            pin=(reference, pin_number),
+        )
+        return
+
     dx = pin_position.x - component.position.x
     dy = pin_position.y - component.position.y
-    stub = 1.27
+    stub = 0.635
 
     if abs(dx) < 1e-9 and abs(dy) < 1e-9:
         step = (stub, 0.0)
