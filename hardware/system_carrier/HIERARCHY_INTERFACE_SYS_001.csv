@@ -50,7 +50,7 @@ RADAR_IO_CAN,CAN_RX,output,U4,4,P1,Transceiver RXD
 RADAR_IO_CAN,RADAR_REF,output,J4,4,P0,Radar frame reference from harness
 RADAR_IO_CAN,RADAR_12V,input,J5,1,P0,Protected radar supply
 ETHERNET,3V3,input,U3,1,P0,PHY supply
-ETHERNET,GND,passive,U3,EP,P0,PHY exposed-pad return
+ETHERNET,GND,passive,C62,2,P0,PHY sheet ground anchor; U3 exposed pad is closed separately
 ETHERNET,ETH_50M,output,U3,5,P0,Shared 50 MHz reference clock net
 ETHERNET,ETH_MDIO,bidirectional,U3,12,P1,Management data
 ETHERNET,ETH_MDC,input,U3,13,P1,Management clock
