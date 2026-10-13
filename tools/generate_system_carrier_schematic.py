@@ -1468,36 +1468,11 @@ def build(output_dir: Path) -> dict:
                     offset,
                 )
             )
-            stub = 5.08
-            if edge == "left":
-                label_position = (
-                    root_position[0] - stub,
-                    root_position[1],
-                )
-            elif edge == "right":
-                label_position = (
-                    root_position[0] + stub,
-                    root_position[1],
-                )
-            elif edge == "top":
-                label_position = (
-                    root_position[0],
-                    root_position[1] - stub,
-                )
-            else:
-                label_position = (
-                    root_position[0],
-                    root_position[1] + stub,
-                )
-            main.wires.add(
-                start=root_position,
-                end=label_position,
-            )
             main.add_label(
                 str(
                     item["net_name"]
                 ).strip(),
-                position=label_position,
+                position=root_position,
             )
 
     main.add_text(
