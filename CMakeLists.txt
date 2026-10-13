@@ -68,6 +68,10 @@ add_library(gnss_service STATIC
     src/gnss_service.c
 )
 
+add_library(imu_service STATIC
+    src/imu_service.c
+)
+
 target_include_directories(hil_r1 PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -128,6 +132,10 @@ target_include_directories(gnss_service PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_include_directories(imu_service PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 if(MSVC)
     target_compile_options(hil_r1 PRIVATE /W4 /WX)
     target_compile_options(hil_r2 PRIVATE /W4 /WX)
@@ -144,6 +152,7 @@ if(MSVC)
     target_compile_options(ethernet_reset PRIVATE /W4 /WX)
     target_compile_options(config_lock PRIVATE /W4 /WX)
     target_compile_options(gnss_service PRIVATE /W4 /WX)
+    target_compile_options(imu_service PRIVATE /W4 /WX)
 else()
     target_compile_options(hil_r1 PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(hil_r2 PRIVATE -Wall -Wextra -Wpedantic -Werror)
@@ -160,6 +169,7 @@ else()
     target_compile_options(ethernet_reset PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(config_lock PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(gnss_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(imu_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_link_libraries(hil_r1 PUBLIC m)
     target_link_libraries(hil_r2 PUBLIC m)
 endif()
@@ -386,6 +396,20 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     endif()
 
     add_test(NAME carrier_gnss_service COMMAND test_gnss_service)
+
+    add_executable(test_imu_service
+        tests/test_imu_service.c
+    )
+
+    target_link_libraries(test_imu_service PRIVATE imu_service)
+
+    if(MSVC)
+        target_compile_options(test_imu_service PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_imu_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+
+    add_test(NAME carrier_imu_service COMMAND test_imu_service)
 endif()
 
 if(HIL_BUILD_STM32H753_SMOKE)
@@ -430,6 +454,7 @@ if(HIL_BUILD_STM32H753_SMOKE)
         ethernet_reset
         config_lock
         gnss_service
+        imu_service
         c
         nosys
     )
