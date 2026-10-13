@@ -202,6 +202,17 @@ def _symbol_text(
         ):
             ptype = "passive"
 
+        # Protection-array ground pins are shunt-return terminals,
+        # not rail consumers. Model them passive for ERC.
+        if (
+            name in {
+                "TPD4E05U06DQAR",
+                "ESD2CANFD24DBZRQ1",
+            }
+            and role == "GROUND"
+        ):
+            ptype = "passive"
+
         y = half_height - pitch * (index + 1)
         x = -half_width - 2.54 if left_side else half_width + 2.54
         angle = 0 if left_side else 180
