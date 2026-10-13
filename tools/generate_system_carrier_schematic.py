@@ -1580,19 +1580,6 @@ def build(output_dir: Path) -> dict:
                 position=label_position,
             )
 
-    main.components.add(
-        "power:PWR_FLAG",
-        "#FLG0001",
-        "PWR_FLAG",
-        pos(12, 8),
-    )
-    add_pin_label(
-        main,
-        "GND",
-        "#FLG0001",
-        "1",
-    )
-
     main.add_text(
         "EVT System Carrier\n"
         "External radar front-end: TI AWR2944PEVM\n"
