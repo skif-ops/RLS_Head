@@ -65,6 +65,18 @@ def write_symbol_library_table(output_dir: Path) -> None:
 
 
 
+def load_mcu_pinmap(pinmap_path: Path) -> list[dict[str, str]]:
+    with pinmap_path.open(
+        "r",
+        encoding="utf-8",
+        newline="",
+    ) as handle:
+        reader = csv.DictReader(handle)
+        if reader.fieldnames is None:
+            raise ValueError("PINMAP_SYS_001.csv missing header")
+        return list(reader)
+
+
 def load_assigned_mcu_gpio(pinmap_path: Path) -> set[str]:
     with pinmap_path.open(
         "r",
@@ -95,10 +107,12 @@ def mark_unused_mcu_gpio_no_connect(
     for pin in component.pins:
         pin_name = str(pin.name).strip()
 
-        if not re.fullmatch(r"P[A-K][0-9]+", pin_name):
+        match = re.fullmatch(r"(P[A-K][0-9]+)(?:_C)?", pin_name)
+        if match is None:
             continue
 
-        if pin_name in assigned_gpio:
+        base_name = match.group(1)
+        if base_name in assigned_gpio:
             continue
 
         pin_position = sch.get_component_pin_position(
@@ -117,6 +131,48 @@ def mark_unused_mcu_gpio_no_connect(
         count += 1
 
     return count
+
+
+def add_pin_label(
+    sch,
+    net_name: str,
+    reference: str,
+    pin_number: str,
+) -> None:
+    if sch.get_component_pin_position(
+        reference,
+        pin_number,
+    ) is None:
+        raise ValueError(
+            f"missing pin:{reference}:{pin_number}"
+        )
+
+    sch.add_label(
+        net_name,
+        pin=(reference, pin_number),
+    )
+
+
+def add_labels_by_pin_name(
+    sch,
+    reference: str,
+    mapping: dict[str, str],
+) -> None:
+    component = sch.components.get(reference)
+    if component is None:
+        raise ValueError(f"missing component:{reference}")
+
+    for pin in component.pins:
+        name = str(pin.name).strip()
+        net = mapping.get(name)
+        if net is None:
+            continue
+        add_pin_label(
+            sch,
+            net,
+            reference,
+            str(pin.number),
+        )
 
 
 def pos(x_grid: int, y_grid: int) -> tuple[float, float]:
@@ -240,6 +296,7 @@ def populate_mcu(
     sch,
     placeholders: list[dict],
     assigned_gpio: set[str],
+    pinmap_rows: list[dict[str, str]],
 ) -> int:
     sch.add_text(
         "MCU_CORE — STM32H753IIT6\n"
@@ -278,16 +335,146 @@ def populate_mcu(
         pos(83, 52),
     )
 
-    for name, p in [
-        ("3V3", pos(26, 18)),
-        ("GND", pos(26, 52)),
-        ("GNSS_PPS", pos(74, 18)),
-        ("RADAR_REF", pos(74, 22)),
-        ("IMU_DRDY", pos(74, 26)),
-        ("SWDIO", pos(77, 49)),
-        ("SWCLK", pos(77, 53)),
-    ]:
-        sch.add_label(name, position=p)
+    # Power-domain support components required by the Rev.A contract.
+    sch.components.add(
+        "Device:Ferrite_Bead",
+        "FB1",
+        "BLM18BD601SH1",
+        pos(30, 18),
+        MPN="BLM18BD601SH1",
+    )
+    sch.components.add(
+        "Device:C",
+        "C14",
+        "1uF",
+        pos(36, 22),
+    )
+    sch.components.add(
+        "power:PWR_FLAG",
+        "#FLG0101",
+        "PWR_FLAG",
+        pos(22, 18),
+    )
+    sch.components.add(
+        "power:PWR_FLAG",
+        "#FLG0102",
+        "PWR_FLAG",
+        pos(22, 52),
+    )
+
+    # Bind every assigned MCU signal directly to the authoritative net name.
+    for row in pinmap_rows:
+        physical = str(
+            row.get("physical_pin", "")
+        ).strip()
+        net_name = str(
+            row.get("net_name", "")
+        ).strip()
+        if physical and net_name:
+            add_pin_label(
+                sch,
+                net_name,
+                "U1",
+                physical,
+            )
+
+    # Core and analog supply pins.
+    add_labels_by_pin_name(
+        sch,
+        "U1",
+        {
+            "VDD": "3V3",
+            "VBAT": "3V3",
+            "VDD33_USB": "3V3",
+            "VSS": "GND",
+            "VSSA": "GND",
+            "VDDA": "VDDA_FILTERED",
+            "VREF+": "VDDA_FILTERED",
+            "PDR_ON": "3V3",
+        },
+    )
+
+    # VCAP pins each receive their own 2.2 uF low-ESR capacitor.
+    sch.add_wire_between_pins(
+        "U1",
+        "81",
+        "C10",
+        "1",
+    )
+    add_pin_label(sch, "GND", "C10", "2")
+    sch.add_wire_between_pins(
+        "U1",
+        "125",
+        "C11",
+        "1",
+    )
+    add_pin_label(sch, "GND", "C11", "2")
+
+    # Digital bulk capacitor.
+    add_pin_label(sch, "3V3", "C12", "1")
+    add_pin_label(sch, "GND", "C12", "2")
+
+    # VDDA filter and local decoupling.
+    add_pin_label(sch, "3V3", "FB1", "1")
+    add_pin_label(
+        sch,
+        "VDDA_FILTERED",
+        "FB1",
+        "2",
+    )
+    add_pin_label(
+        sch,
+        "VDDA_FILTERED",
+        "C13",
+        "1",
+    )
+    add_pin_label(sch, "GND", "C13", "2")
+    add_pin_label(
+        sch,
+        "VDDA_FILTERED",
+        "C14",
+        "1",
+    )
+    add_pin_label(sch, "GND", "C14", "2")
+
+    # BOOT0 default-low strap.
+    sch.add_wire_between_pins(
+        "U1",
+        "166",
+        "R10",
+        "1",
+    )
+    add_pin_label(sch, "GND", "R10", "2")
+
+    # SWD Tag-Connect pinout from CONNECTOR_PINOUT_SYS_001.
+    for pin_number, net_name in {
+        "1": "3V3",
+        "2": "SWDIO",
+        "3": "GND",
+        "4": "SWCLK",
+        "5": "GND",
+        "6": "SWO",
+    }.items():
+        add_pin_label(
+            sch,
+            net_name,
+            "J10",
+            pin_number,
+        )
+
+    # Mark the local rails as explicitly driven for ERC.
+    add_pin_label(
+        sch,
+        "3V3",
+        "#FLG0101",
+        "1",
+    )
+    add_pin_label(
+        sch,
+        "GND",
+        "#FLG0102",
+        "1",
+    )
 
     return mark_unused_mcu_gpio_no_connect(
         sch,
@@ -757,11 +944,17 @@ def build(output_dir: Path) -> dict:
         str(local_symbol_path)
     )
 
-    assigned_mcu_gpio = load_assigned_mcu_gpio(
+    pinmap_path = (
         repo_root
         / "hardware"
         / "system_carrier"
         / "PINMAP_SYS_001.csv"
+    )
+    pinmap_rows = load_mcu_pinmap(
+        pinmap_path
+    )
+    assigned_mcu_gpio = load_assigned_mcu_gpio(
+        pinmap_path
     )
 
     main = ksa.create_schematic(PROJECT_NAME)
@@ -804,6 +997,7 @@ def build(output_dir: Path) -> dict:
                     child,
                     placeholders,
                     assigned_mcu_gpio,
+                    pinmap_rows,
                 )
             )
         elif name == "TIME_GNSS":
