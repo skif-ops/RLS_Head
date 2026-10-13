@@ -666,7 +666,7 @@ def populate_mcu(
     )
     sch.components.add(
         f"{LOCAL_SYMBOL_LIBRARY}:ERC_LOCAL_POWER_SOURCE",
-        "#SRC3V3",
+        "SRC1",
         "3V3_ERC_SOURCE",
         pos(110, 75),
         Capture_Status="LOCAL_ERC_SOURCE",
@@ -797,7 +797,7 @@ def populate_mcu(
     add_pin_label(
         sch,
         "3V3",
-        "#SRC3V3",
+        "SRC1",
         "1",
     )
     add_pin_label(
