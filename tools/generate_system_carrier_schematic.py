@@ -315,7 +315,7 @@ def add_pin_label(
 
     dx = pin_position.x - component.position.x
     dy = pin_position.y - component.position.y
-    stub = 0.635
+    stub = 1.27
 
     if abs(dx) < 1e-9 and abs(dy) < 1e-9:
         step = (stub, 0.0)
