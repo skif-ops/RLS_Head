@@ -676,6 +676,7 @@ jobs:
           PY
 
       - name: Upload generated System Carrier CAD
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: system-carrier-cad-scaffold
