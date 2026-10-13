@@ -7,7 +7,7 @@ from pathlib import Path
 
 LIBRARY_NAME = "SystemCarrier_Local"
 CORE_TARGET_REFS = {"U2", "U4", "U5", "U6", "U7"}
-AUX_TARGET_REFS = {"Y2", "D3", "D4"}
+AUX_TARGET_REFS = {"Y1", "Y2", "D3", "D4"}
 TARGET_REFS = CORE_TARGET_REFS | AUX_TARGET_REFS
 
 PIN_TYPE = {
@@ -40,6 +40,7 @@ REF_PREFIX = {
     "TCAN3404DRBRQ1": "U",
     "TPS62132RGTR": "U",
     "TPS259470ARPWR": "U",
+    "ECS-2520S33-250-FN-TR": "Y",
     "ECS-2520S33-500-FN-TR": "Y",
     "ESD2CANFD24DBZRQ1": "D",
     "TPD4E05U06DQAR": "D",

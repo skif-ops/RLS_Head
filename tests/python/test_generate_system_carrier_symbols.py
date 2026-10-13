@@ -22,7 +22,7 @@ def test_generates_expected_local_symbols(tmp_path):
 
     assert result["schema"] == "SYSTEM-CARRIER-LOCAL-SYMBOL-LIBRARY-001"
     assert result["status"] == "GENERATED"
-    assert result["symbol_count"] == 7
+    assert result["symbol_count"] == 8
     assert output.is_file()
 
     names = {
@@ -34,6 +34,7 @@ def test_generates_expected_local_symbols(tmp_path):
         "TCAN3404DRBRQ1",
         "TPS62132RGTR",
         "TPS259470ARPWR",
+        "ECS-2520S33-250-FN-TR",
         "ECS-2520S33-500-FN-TR",
         "ESD2CANFD24DBZRQ1",
         "TPD4E05U06DQAR",
@@ -126,8 +127,17 @@ def test_auxiliary_symbol_pin_counts_and_footprints(tmp_path):
         for item in result["symbols"]
     }
 
+    assert by_name["ECS-2520S33-250-FN-TR"]["pin_count"] == 4
+    assert by_name["ECS-2520S33-250-FN-TR"]["footprint"] == (
+        "Oscillator:"
+        "Oscillator_SMD_ECS_2520MV-xxx-xx-4Pin_2.5x2.0mm"
+    )
+
     assert by_name["ECS-2520S33-500-FN-TR"]["pin_count"] == 4
-    assert by_name["ECS-2520S33-500-FN-TR"]["footprint"] == ""
+    assert by_name["ECS-2520S33-500-FN-TR"]["footprint"] == (
+        "Oscillator:"
+        "Oscillator_SMD_ECS_2520MV-xxx-xx-4Pin_2.5x2.0mm"
+    )
 
     assert by_name["ESD2CANFD24DBZRQ1"]["pin_count"] == 3
     assert by_name["ESD2CANFD24DBZRQ1"]["footprint"] == (
