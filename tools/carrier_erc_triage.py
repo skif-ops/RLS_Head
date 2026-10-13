@@ -68,6 +68,29 @@ def build_triage(
 
     total = sum(by_severity.values())
 
+    detailed_violations = []
+    for sheet in sheets:
+        sheet_name = str(sheet.get("path", ""))
+        for violation in sheet.get("violations", []):
+            detailed_violations.append(
+                {
+                    "sheet": sheet_name,
+                    "severity": str(
+                        violation.get("severity", "")
+                    ).lower(),
+                    "type": str(
+                        violation.get("type", "")
+                    ),
+                    "description": str(
+                        violation.get("description", "")
+                    ),
+                    "items": violation.get(
+                        "items",
+                        [],
+                    ),
+                }
+            )
+
     result = {
         "schema": SCHEMA,
         "status": "READY",
@@ -87,6 +110,7 @@ def build_triage(
         "by_ref": dict(
             by_ref.most_common()
         ),
+        "violations": detailed_violations,
         "sheet_type": [
             {
                 "sheet": sheet,
