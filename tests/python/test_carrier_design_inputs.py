@@ -117,7 +117,7 @@ def test_power_tree_requires_protection_chain(tmp_path):
     assert result["status"] == "FAIL"
     assert "missing_device:TPS259470ARPWR" in result["findings"]
     assert any(
-        item.startswith("missing_transition:VIN_TVS")
+        item.startswith("missing_transition:VIN_RAW->VIN_PROTECTED")
         for item in result["findings"]
     )
 
