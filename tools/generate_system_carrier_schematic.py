@@ -531,6 +531,22 @@ def populate_mcu(
         "100nF",
         pos(34, 12),
     )
+    tp1 = sch.components.add(
+        "Connector:TestPoint",
+        "TP1",
+        "DEBUG_TX",
+        pos(88, 58),
+        footprint="TestPoint:TestPoint_Pad_D1.0mm",
+    )
+    tp2 = sch.components.add(
+        "Connector:TestPoint",
+        "TP2",
+        "DEBUG_RX",
+        pos(88, 62),
+        footprint="TestPoint:TestPoint_Pad_D1.0mm",
+    )
+    tp1.in_bom = False
+    tp2.in_bom = False
 
     validate_mcu_pinmap_against_symbol(
         sch,
@@ -575,7 +591,11 @@ def populate_mcu(
         if (
             physical
             and net_name
-            and net_name != "MCU_HSE_25M"
+            and net_name not in {
+                "MCU_HSE_25M",
+                "DEBUG_TX",
+                "DEBUG_RX",
+            }
         ):
             add_pin_label(
                 sch,
@@ -591,6 +611,8 @@ def populate_mcu(
         sch.no_connects.add(position=(p.x, p.y))
     add_pin_label(sch, "GND", "Y1", "2")
     sch.add_wire_between_pins("Y1", "3", "U1", "29")
+    sch.add_wire_between_pins("U1", "147", "TP1", "1")
+    sch.add_wire_between_pins("U1", "150", "TP2", "1")
     add_pin_label(sch, "3V3", "Y1", "4")
     add_pin_label(sch, "3V3", "C15", "1")
     add_pin_label(sch, "GND", "C15", "2")
