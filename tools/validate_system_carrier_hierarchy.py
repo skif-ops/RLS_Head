@@ -129,7 +129,13 @@ def main() -> int:
         encoding="utf-8",
     )
 
-    print(result["status"])
+    print(
+        json.dumps(
+            result,
+            indent=2,
+            sort_keys=True,
+        )
+    )
     return (
         0
         if result["status"] == "PASS"
