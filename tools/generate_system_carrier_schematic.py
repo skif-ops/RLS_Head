@@ -361,64 +361,110 @@ def add_placeholder(
 
 def populate_power(sch, placeholders: list[dict]) -> None:
     sch.add_text(
-        "POWER_INPUT — Rev A capture scaffold\n"
-        "Locked values come from SCHEMATIC_COMPONENTS_SYS_001.csv",
+        "POWER_INPUT — Rev A authoritative capture\n"
+        "TPS259470A protection + fixed 3.3V TPS62132",
         position=pos(20, 10),
         size=1.27,
     )
 
-    sch.components.add(
-        "Connector_Generic:Conn_01x02",
-        "J1",
-        "12V_IN",
-        pos(18, 24),
-    )
-    sch.components.add(
-        "Device:D_TVS",
-        "D1",
-        "SMAJ15CA",
-        pos(30, 24),
-    )
-
-    add_local_symbol(
-        sch, "U6", "TPS259470ARPWR", "TPS259470ARPWR_SYS",
-        pos(43, 24), placeholders
-    )
-    add_local_symbol(
-        sch, "U5", "TPS62132RGTR", "TPS62132RGTR_3V3",
-        pos(60, 24), placeholders
-    )
-    add_local_symbol(
-        sch, "U7", "TPS259470ARPWR", "TPS259470ARPWR_RADAR",
-        pos(43, 42), placeholders
-    )
+    sch.components.add("Connector_Generic:Conn_01x02", "J1", "12V_IN", pos(18, 24))
+    sch.components.add("Device:D_TVS", "D1", "SMAJ15CA", pos(30, 24))
+    add_local_symbol(sch, "U6", "TPS259470ARPWR", "TPS259470ARPWR_SYS", pos(43, 24), placeholders)
+    add_local_symbol(sch, "U5", "TPS62132RGTR", "TPS62132RGTR_3V3", pos(60, 24), placeholders)
+    add_local_symbol(sch, "U7", "TPS259470ARPWR", "TPS259470ARPWR_RADAR", pos(43, 42), placeholders)
 
     sch.components.add("Device:L", "L1", "2.2uH", pos(72, 24))
     sch.components.add("Device:C", "C1", "10uF/25V", pos(55, 36))
     sch.components.add("Device:C", "C2", "22uF/6.3V", pos(76, 36))
     sch.components.add("Device:C", "C3", "3.3nF", pos(64, 36))
+    sch.components.add("Device:C", "C4", "100nF/25V", pos(58, 40))
     sch.components.add("Device:R", "R1", "665R 1%", pos(39, 34))
     sch.components.add("Device:R", "R2", "1.05k 1%", pos(39, 52))
+    sch.components.add("Device:R", "R5P", "100k 1% PG_PU", pos(68, 34))
     sch.components.add("Device:R", "R6F", "10k 1% FLT_PU", pos(48, 34))
     sch.components.add("Device:R", "R7F", "10k 1% FLT_PU", pos(48, 52))
-    sch.components.add(
-        "Connector_Generic:Conn_01x02",
-        "J2",
-        "RADAR_12V_OUT",
-        pos(75, 50),
-    )
 
-    for name, p in [
-        ("12V_IN", pos(22, 18)),
-        ("VIN_RAW", pos(31, 18)),
-        ("VIN_PROTECTED", pos(46, 18)),
-        ("3V3", pos(76, 18)),
-        ("RADAR_12V", pos(68, 47)),
-        ("SYS_EFUSE_FLT", pos(50, 30)),
-        ("RADAR_EFUSE_FLT", pos(50, 48)),
-        ("GND", pos(53, 58)),
+    for ref, value, p in [
+        ("R61", "470k 1%", pos(25, 30)), ("R62", "36.0k 1%", pos(29, 34)), ("R63", "41.2k 1%", pos(33, 38)),
+        ("R71", "470k 1%", pos(25, 48)), ("R72", "16.9k 1%", pos(29, 52)), ("R73", "43.7k 1%", pos(33, 56)),
     ]:
-        sch.add_label(name, position=p)
+        sch.components.add("Device:R", ref, value, p)
+
+    sch.components.add("Device:C", "C6D", "3.3nF", pos(43, 36))
+    sch.components.add("Device:C", "C7D", "3.3nF", pos(43, 54))
+    sch.components.add("Connector_Generic:Conn_01x02", "J2", "RADAR_12V_OUT", pos(75, 50))
+
+    add_pin_label(sch, "VIN_RAW", "J1", "1")
+    add_pin_label(sch, "GND", "J1", "2")
+    add_pin_label(sch, "VIN_RAW", "D1", "1")
+    add_pin_label(sch, "GND", "D1", "2")
+
+    for pin, net in {"4":"SYS_EFUSE_FLT","5":"VIN_RAW","6":"VIN_PROTECTED","8":"GND"}.items():
+        add_pin_label(sch, net, "U6", pin)
+    add_pin_label(sch, "VIN_RAW", "R61", "1")
+    sch.add_wire_between_pins("R61", "2", "U6", "1")
+    sch.add_wire_between_pins("U6", "1", "R62", "1")
+    sch.add_wire_between_pins("R62", "2", "U6", "2")
+    sch.add_wire_between_pins("U6", "2", "R63", "1")
+    add_pin_label(sch, "GND", "R63", "2")
+    sch.add_wire_between_pins("U6", "9", "R1", "1")
+    add_pin_label(sch, "GND", "R1", "2")
+    sch.add_wire_between_pins("U6", "7", "C6D", "1")
+    add_pin_label(sch, "GND", "C6D", "2")
+    add_pin_label(sch, "SYS_EFUSE_FLT", "R6F", "1")
+    add_pin_label(sch, "3V3", "R6F", "2")
+    for pin in ("3","10"):
+        p=sch.get_component_pin_position("U6", pin)
+        if p is not None:
+            sch.no_connects.add(position=(p.x,p.y))
+
+    for pin, net in {"4":"RADAR_EFUSE_FLT","5":"VIN_PROTECTED","6":"RADAR_12V","8":"GND"}.items():
+        add_pin_label(sch, net, "U7", pin)
+    add_pin_label(sch, "VIN_PROTECTED", "R71", "1")
+    sch.add_wire_between_pins("R71", "2", "U7", "1")
+    sch.add_wire_between_pins("U7", "1", "R72", "1")
+    sch.add_wire_between_pins("R72", "2", "U7", "2")
+    sch.add_wire_between_pins("U7", "2", "R73", "1")
+    add_pin_label(sch, "GND", "R73", "2")
+    sch.add_wire_between_pins("U7", "9", "R2", "1")
+    add_pin_label(sch, "GND", "R2", "2")
+    sch.add_wire_between_pins("U7", "7", "C7D", "1")
+    add_pin_label(sch, "GND", "C7D", "2")
+    add_pin_label(sch, "RADAR_EFUSE_FLT", "R7F", "1")
+    add_pin_label(sch, "3V3", "R7F", "2")
+    for pin in ("3","10"):
+        p=sch.get_component_pin_position("U7", pin)
+        if p is not None:
+            sch.no_connects.add(position=(p.x,p.y))
+
+    for pin in ("1","2","3"):
+        add_pin_label(sch, "BUCK_SW", "U5", pin)
+    add_pin_label(sch, "BUCK_SW", "L1", "1")
+    add_pin_label(sch, "3V3", "L1", "2")
+    add_pin_label(sch, "U5_PG", "U5", "4")
+    add_pin_label(sch, "U5_PG", "R5P", "1")
+    add_pin_label(sch, "3V3", "R5P", "2")
+    for pin in ("5","6","15","16","EP"):
+        if sch.get_component_pin_position("U5", pin) is not None:
+            add_pin_label(sch, "GND", "U5", pin)
+    for pin in ("7","8"):
+        p=sch.get_component_pin_position("U5", pin)
+        if p is not None:
+            sch.no_connects.add(position=(p.x,p.y))
+    sch.add_wire_between_pins("U5", "9", "C3", "1")
+    add_pin_label(sch, "GND", "C3", "2")
+    for pin in ("10","11","12","13"):
+        add_pin_label(sch, "VIN_PROTECTED", "U5", pin)
+    add_pin_label(sch, "3V3", "U5", "14")
+
+    add_pin_label(sch, "VIN_PROTECTED", "C1", "1")
+    add_pin_label(sch, "GND", "C1", "2")
+    add_pin_label(sch, "3V3", "C2", "1")
+    add_pin_label(sch, "GND", "C2", "2")
+    add_pin_label(sch, "VIN_PROTECTED", "C4", "1")
+    add_pin_label(sch, "GND", "C4", "2")
+    add_pin_label(sch, "RADAR_12V", "J2", "1")
+    add_pin_label(sch, "GND", "J2", "2")
 
 
 def populate_mcu(
