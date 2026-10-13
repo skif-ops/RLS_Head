@@ -202,6 +202,15 @@ def _symbol_text(
         ):
             ptype = "passive"
 
+        # TPD4E05U06 DQA package pins 6/7/9/10 are true NC pins.
+        # Model them as no_connect in the symbol rather than placing
+        # geometry-dependent NC markers after schematic instantiation.
+        if (
+            name == "TPD4E05U06DQAR"
+            and pin_num in {"6", "7", "9", "10"}
+        ):
+            ptype = "no_connect"
+
         y = half_height - pitch * (index + 1)
         x = -half_width - 2.54 if left_side else half_width + 2.54
         angle = 0 if left_side else 180
