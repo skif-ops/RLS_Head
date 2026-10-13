@@ -997,7 +997,7 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
     )
 
     sch.components.add("Device:R", "R60", "12.1k 1%", pos(42, 45))
-    for ref, y in [("R61", 42), ("R62", 46), ("R63", 50), ("R64", 54)]:
+    for ref, y in [("R61", 42), ("R62", 52), ("R63", 62), ("R64", 72)]:
         sch.components.add("Device:R", ref, "49.9R 1%", pos(68, y))
 
     sch.components.add("Device:C", "C60", "1uF", pos(50, 45))
@@ -1055,7 +1055,14 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
     if p is not None:
         sch.no_connects.add(position=(p.x, p.y))
 
-    # MDI nets are wired explicitly through D3 below.
+    # Name MDI nets at the PHY side. D3/J6 remain physically wired.
+    for pin, net in {
+        "20": "ETH_TXN",
+        "21": "ETH_TXP",
+        "22": "ETH_RXN",
+        "23": "ETH_RXP",
+    }.items():
+        add_pin_label(sch, net, "U3", pin)
 
     # ESD array is wired explicitly to avoid pin-position label/NC
     # ambiguity in generated local symbols.
@@ -1068,14 +1075,16 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
         sch.add_wire_between_pins("U3", phy_pin, "D3", esd_pin)
         sch.add_wire_between_pins("D3", esd_pin, "J6", jack_pin)
 
-    sch.components.add(
-        "power:PWR_FLAG",
-        "#FLG0603",
-        "PWR_FLAG",
-        pos(74, 39),
-    )
-    sch.add_wire_between_pins("D3", "3", "#FLG0603", "1")
-    sch.add_wire_between_pins("D3", "8", "#FLG0603", "1")
+    def add_d3_ground_stub(pin_number: str, dx: float) -> None:
+        p = sch.get_component_pin_position("D3", pin_number)
+        if p is None:
+            raise ValueError(f"missing D3 pin:{pin_number}")
+        end = (p.x + dx, p.y)
+        sch.wires.add(start=(p.x, p.y), end=end)
+        sch.add_label("GND", position=end)
+
+    add_d3_ground_stub("3", -2.54)
+    add_d3_ground_stub("8", 2.54)
 
     # Four 49.9-ohm MDI terminations to analog 3.3V rail.
     for ref, net in {
