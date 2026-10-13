@@ -79,6 +79,7 @@ def validate(root: Path) -> dict:
         "Connector",
         "RF_GPS",
         "Switch",
+        "power",
         "MCU_ST_STM32H7",
         "Interface_Ethernet",
     }
