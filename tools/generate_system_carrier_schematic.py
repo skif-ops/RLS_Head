@@ -1066,14 +1066,28 @@ def add_child_hierarchy_labels(
                 HierarchicalLabelShape.PASSIVE,
         }[pin_type]
 
-        sch.add_hierarchical_label(
-            text=net_name,
-            position=(
-                position.x,
-                position.y,
-            ),
-            shape=shape,
-        )
+        # kicad-sch-api hierarchy validation keys off the
+        # hierarchical label electrical type.  Prefer the explicit
+        # label_type API; retain shape as a compatibility fallback for
+        # releases that expose only the enum-based signature.
+        try:
+            sch.add_hierarchical_label(
+                text=net_name,
+                label_type=pin_type,
+                position=(
+                    position.x,
+                    position.y,
+                ),
+            )
+        except TypeError:
+            sch.add_hierarchical_label(
+                text=net_name,
+                position=(
+                    position.x,
+                    position.y,
+                ),
+                shape=shape,
+            )
 
 
 def build(output_dir: Path) -> dict:
