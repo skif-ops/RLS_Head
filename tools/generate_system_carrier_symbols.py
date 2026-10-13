@@ -211,6 +211,17 @@ def _symbol_text(
         ):
             ptype = "no_connect"
 
+        # ESD-array ground contacts are passive return pins. Modeling
+        # them as power_in incorrectly requires an artificial PWR_FLAG.
+        if (
+            name in {
+                "TPD4E05U06DQAR",
+                "ESD2CANFD24DBZRQ1",
+            }
+            and role == "GROUND"
+        ):
+            ptype = "passive"
+
         y = half_height - pitch * (index + 1)
         x = -half_width - 2.54 if left_side else half_width + 2.54
         angle = 0 if left_side else 180
