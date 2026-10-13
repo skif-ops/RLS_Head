@@ -897,7 +897,7 @@ def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
 def populate_ethernet(sch, placeholders: list[dict]) -> None:
     sch.add_text(
         "ETHERNET — LAN8742A RMII instrumentation link\n"
-        "Dedicated 50 MHz reference clock shared with STM32 RMII",
+        "External 50 MHz clock + integrated 10/100BASE-T MagJack",
         position=pos(18, 9),
         size=1.27,
     )
@@ -918,6 +918,7 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
             pos(48, 31),
             placeholders,
         )
+
     add_local_symbol(
         sch,
         "Y2",
@@ -944,71 +945,106 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
         Compatibility_Basis="Bel_SI-60182-F_vs_SI-60062-F_verified",
     )
 
-    sch.components.add(
-        "Device:R",
-        "R60",
-        "12.1k 1%",
-        pos(42, 45),
-    )
-    for ref, y in [
-        ("R61", 42),
-        ("R62", 46),
-        ("R63", 50),
-        ("R64", 54),
-    ]:
-        sch.components.add(
-            "Device:R",
-            ref,
-            "49.9R 1%",
-            pos(68, y),
-        )
+    sch.components.add("Device:R", "R60", "12.1k 1%", pos(42, 45))
+    for ref, y in [("R61", 42), ("R62", 46), ("R63", 50), ("R64", 54)]:
+        sch.components.add("Device:R", ref, "49.9R 1%", pos(68, y))
 
-    sch.components.add(
-        "Device:C",
-        "C60",
-        "1uF",
-        pos(50, 45),
-    )
-    sch.components.add(
-        "Device:C",
-        "C61",
-        "470pF C0G",
-        pos(56, 45),
-    )
-    sch.components.add(
-        "Device:C",
-        "C62",
-        "100nF",
-        pos(36, 45),
-    )
-    sch.components.add(
-        "Device:R",
-        "R65",
-        "10k 1% NRST_PD",
-        pos(58, 51),
-    )
+    sch.components.add("Device:C", "C60", "1uF", pos(50, 45))
+    sch.components.add("Device:C", "C61", "470pF C0G", pos(56, 45))
+    sch.components.add("Device:C", "C62", "100nF", pos(36, 45))
+    sch.components.add("Device:C", "C63", "22nF C0G", pos(82, 54))
+    sch.components.add("Device:R", "R65", "10k 1% NRST_PD", pos(58, 51))
 
-    for name, p in [
-        ("3V3", pos(34, 17)),
-        ("GND", pos(34, 58)),
-        ("ETH_50M", pos(34, 22)),
-        ("ETH_MDIO", pos(34, 28)),
-        ("ETH_MDC", pos(34, 33)),
-        ("ETH_CRS_DV", pos(34, 38)),
-        ("ETH_RXD0", pos(34, 43)),
-        ("ETH_RXD1", pos(34, 48)),
-        ("ETH_TX_EN", pos(61, 24)),
-        ("ETH_TXD0", pos(61, 29)),
-        ("ETH_TXD1", pos(61, 34)),
-        ("ETH_NRST", pos(61, 39)),
-        ("ETH_MDI", pos(78, 31)),
-    ]:
-        sch.add_label(name, position=p)
+    # LAN8742 power and mandatory local bias/support network.
+    for pin in ("1", "9", "19"):
+        add_pin_label(sch, "3V3", "U3", pin)
+    if sch.get_component_pin_position("U3", "25") is not None:
+        add_pin_label(sch, "GND", "U3", "25")
+
+    sch.add_wire_between_pins("U3", "24", "R60", "1")
+    add_pin_label(sch, "GND", "R60", "2")
+
+    sch.add_wire_between_pins("U3", "6", "C60", "1")
+    add_pin_label(sch, "GND", "C60", "2")
+
+    # Local 3V3 decoupling / analog filter caps.
+    add_pin_label(sch, "3V3", "C62", "1")
+    add_pin_label(sch, "GND", "C62", "2")
+    add_pin_label(sch, "3V3", "C61", "1")
+    add_pin_label(sch, "GND", "C61", "2")
+
+    # Internal strap/default pins and unused outputs.
+    for pin in ("2", "3", "4", "10", "14"):
+        p = sch.get_component_pin_position("U3", pin)
+        if p is not None:
+            sch.no_connects.add(position=(p.x, p.y))
+
+    # PHY controlled reset pulldown.
+    add_pin_label(sch, "ETH_NRST", "R65", "1")
+    add_pin_label(sch, "GND", "R65", "2")
+
+    # 50 MHz oscillator.
+    add_pin_label(sch, "GND", "Y2", "2")
+    add_pin_label(sch, "ETH_50M", "Y2", "3")
+    add_pin_label(sch, "3V3", "Y2", "4")
+    p = sch.get_component_pin_position("Y2", "1")
+    if p is not None:
+        sch.no_connects.add(position=(p.x, p.y))
+
+    # MDI nets at PHY and ESD array.
+    mdi = {
+        "20": "ETH_TXN",
+        "21": "ETH_TXP",
+        "22": "ETH_RXN",
+        "23": "ETH_RXP",
+    }
+    for pin, net in mdi.items():
+        add_pin_label(sch, net, "U3", pin)
+
+    for pin, net in {
+        "1": "ETH_TXP",
+        "2": "ETH_TXN",
+        "4": "ETH_RXP",
+        "5": "ETH_RXN",
+        "3": "GND",
+        "8": "GND",
+    }.items():
+        add_pin_label(sch, net, "D3", pin)
+
+    for pin in ("6", "7", "9", "10"):
+        p = sch.get_component_pin_position("D3", pin)
+        if p is not None:
+            sch.no_connects.add(position=(p.x, p.y))
+
+    # Four 49.9-ohm MDI terminations to analog 3.3V rail.
+    for ref, net in {
+        "R61": "ETH_TXP",
+        "R62": "ETH_TXN",
+        "R63": "ETH_RXP",
+        "R64": "ETH_RXN",
+    }.items():
+        add_pin_label(sch, net, ref, "1")
+        add_pin_label(sch, "3V3", ref, "2")
+
+    # MagJack PHY-side pairs.
+    for pin, net in {
+        "1": "ETH_TXP",
+        "3": "ETH_TXN",
+        "4": "ETH_RXP",
+        "6": "ETH_RXN",
+    }.items():
+        add_pin_label(sch, net, "J6", pin)
+
+    # TX/RX center taps tied together and AC-shunted to ground.
+    add_pin_label(sch, "ETH_CT", "J6", "2")
+    add_pin_label(sch, "ETH_CT", "J6", "5")
+    add_pin_label(sch, "ETH_CT", "C63", "1")
+    add_pin_label(sch, "GND", "C63", "2")
 
     sch.add_text(
-        "R60 = PHY RBIAS. R61-R64 = 49.9R MDI termination.\n"
-        "C60 = VDDCR, C61 = analog filter, C62 = local bypass.\n"
-        "R65 holds nRST low until STM32 PE4 releases it after the required startup delay.",
+        "R60 = PHY RBIAS. R61-R64 = 49.9R MDI terminations to 3V3.\n"
+        "C60 = VDDCR. C63 = 22nF center-tap AC shunt.\n"
+        "MagJack LED/shield service pins remain unresolved until the exact SI-60182-F drawing is bound.",
         position=pos(18, 64),
         size=1.0,
     )
