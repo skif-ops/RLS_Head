@@ -13,6 +13,7 @@
 #include "rls/ethernet_reset.h"
 #include "rls/config_lock.h"
 #include "rls/gnss_service.h"
+#include "rls/imu_service.h"
 #include "stm32h753_memory.h"
 
 #include <stddef.h>
@@ -289,6 +290,31 @@ int main(void)
             &gnss_report) == 0
         && gnss_report.healthy;
 
+    rls_imu_service_t imu_service;
+    rls_imu_report_t imu_report;
+    const rls_imu_limits_t imu_limits = {
+        .sample_timeout_us = 20000u,
+    };
+    rls_imu_service_init(&imu_service);
+    uint32_t imu_sequence = 0u;
+    const bool imu_service_ok =
+        rls_imu_service_note_drdy(
+            &imu_service,
+            2495000u,
+            &imu_sequence)
+        && imu_sequence == 0u
+        && rls_imu_service_begin_transfer(
+            &imu_service)
+        && rls_imu_service_complete_transfer(
+            &imu_service,
+            true)
+        && rls_imu_service_evaluate(
+            &imu_service,
+            &imu_limits,
+            2500000u,
+            &imu_report) == 0
+        && imu_report.fresh;
+
     rls_ethernet_reset_t eth_reset;
     rls_ethernet_reset_init(&eth_reset);
     const bool eth_reset_ok =
@@ -351,7 +377,10 @@ int main(void)
             : UINT32_C(0x04000000)) ^
         (gnss_service_ok
             ? gnss_report.flags
-            : UINT32_C(0x02000000));
+            : UINT32_C(0x02000000)) ^
+        (imu_service_ok
+            ? imu_report.completed_samples
+            : UINT32_C(0x01000000));
 
     g_smoke_response_len =
         (uint32_t)response_len;
