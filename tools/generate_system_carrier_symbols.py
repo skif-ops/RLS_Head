@@ -344,6 +344,39 @@ def generate(
             }
         )
 
+    parts.append(
+        '''  (symbol "ERC_LOCAL_POWER_SOURCE"
+    (pin_names (offset 1.016))
+    (exclude_from_sim yes)
+    (in_bom no)
+    (on_board no)
+    (property "Reference" "#SRC" (at 0 2.54 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Value" "ERC_LOCAL_POWER_SOURCE" (at 0 -2.54 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Footprint" "" (at 0 0 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Datasheet" "" (at 0 0 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Description" "Local ERC power source marker" (at 0 0 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (symbol "ERC_LOCAL_POWER_SOURCE_1_1"
+      (pin power_out line (at 0 0 0) (length 2.54)
+        (name "OUT" (effects (font (size 1.0 1.0))))
+        (number "1" (effects (font (size 1.0 1.0))))
+      )
+    )
+  )'''
+    )
+    manifest_symbols.append(
+        {
+            "name": "ERC_LOCAL_POWER_SOURCE",
+            "refs": ["#SRC"],
+            "pin_count": 1,
+            "footprint": "",
+        }
+    )
+
     parts.append(')')
 
     output.parent.mkdir(
