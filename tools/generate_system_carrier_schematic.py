@@ -68,6 +68,93 @@ def write_symbol_library_table(output_dir: Path) -> None:
 
 
 
+def load_symbol_pin_contract(
+    path: Path,
+) -> list[dict[str, str]]:
+    with path.open(
+        "r",
+        encoding="utf-8",
+        newline="",
+    ) as handle:
+        reader = csv.DictReader(handle)
+        if reader.fieldnames is None:
+            raise ValueError("SYMBOL_PIN_CONTRACT_SYS_001.csv missing header")
+        return list(reader)
+
+
+def apply_symbol_pin_contract(
+    sch,
+    rows: list[dict[str, str]],
+    references: set[str],
+    hierarchy_nets: set[str],
+) -> dict[str, int]:
+    direct_prefixes = (
+        "IMU_",
+        "ETH_",
+        "CAN_",
+        "GNSS_",
+        "RADAR_",
+    )
+    direct_exact = {
+        "3V3",
+        "GND",
+    }
+
+    connected = 0
+    no_connect = 0
+
+    for row in rows:
+        reference = str(row.get("ref", "")).strip()
+        if reference not in references:
+            continue
+
+        pin_number = str(row.get("pin_number", "")).strip()
+        connection = str(row.get("connection", "")).strip()
+        policy = str(row.get("policy", "")).strip()
+
+        position = sch.get_component_pin_position(
+            reference,
+            pin_number,
+        )
+        if position is None:
+            continue
+
+        if policy == "NC_ALLOWED":
+            sch.no_connects.add(
+                position=(
+                    position.x,
+                    position.y,
+                )
+            )
+            no_connect += 1
+            continue
+
+        if policy != "CONNECT":
+            continue
+
+        if connection in hierarchy_nets:
+            # The authoritative hierarchical label is placed directly
+            # on this component pin later in the generation pass.
+            continue
+
+        if (
+            connection in direct_exact
+            or connection.startswith(direct_prefixes)
+        ):
+            add_pin_label(
+                sch,
+                connection,
+                reference,
+                pin_number,
+            )
+            connected += 1
+
+    return {
+        "connected": connected,
+        "no_connect": no_connect,
+    }
+
+
 def load_mcu_pinmap(pinmap_path: Path) -> list[dict[str, str]]:
     with pinmap_path.open(
         "r",
@@ -1205,6 +1292,12 @@ def build(output_dir: Path) -> dict:
     assigned_mcu_gpio = load_assigned_mcu_gpio(
         pinmap_path
     )
+    symbol_pin_contract_rows = load_symbol_pin_contract(
+        repo_root
+        / "hardware"
+        / "system_carrier"
+        / "SYMBOL_PIN_CONTRACT_SYS_001.csv"
+    )
 
     hierarchy_interface_path = (
         repo_root
@@ -1375,12 +1468,32 @@ def build(output_dir: Path) -> dict:
                 placeholders,
             )
 
+        sheet_hierarchy_rows = hierarchy_rows_for_sheet(
+            hierarchy_rows,
+            name,
+        )
+        hierarchy_nets = {
+            str(row["net_name"]).strip()
+            for row in sheet_hierarchy_rows
+        }
+
+        contract_refs_by_sheet = {
+            "TIME_GNSS": {"U8"},
+            "IMU": {"U2"},
+            "RADAR_IO_CAN": {"U4"},
+            "ETHERNET": {"U3"},
+        }
+        if name in contract_refs_by_sheet:
+            apply_symbol_pin_contract(
+                child,
+                symbol_pin_contract_rows,
+                contract_refs_by_sheet[name],
+                hierarchy_nets,
+            )
+
         add_child_hierarchy_labels(
             child,
-            hierarchy_rows_for_sheet(
-                hierarchy_rows,
-                name,
-            ),
+            sheet_hierarchy_rows,
         )
 
         child_path = output_dir / filename
