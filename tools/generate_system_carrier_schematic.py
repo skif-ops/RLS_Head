@@ -8,6 +8,9 @@ import shutil
 from pathlib import Path
 
 import kicad_sch_api as ksa
+from kicad_sch_api.core.types import (
+    HierarchicalLabelShape,
+)
 
 from tools.generate_system_carrier_symbols import (
     LIBRARY_NAME as LOCAL_SYMBOL_LIBRARY,
@@ -927,6 +930,209 @@ def populate_text_sheet(sch, title: str, notes: list[str]) -> None:
     )
 
 
+HIERARCHY_PIN_TYPES = {
+    "input",
+    "output",
+    "bidirectional",
+    "passive",
+}
+
+
+def load_hierarchy_interface(
+    path: Path,
+) -> list[dict[str, str]]:
+    with path.open(
+        "r",
+        encoding="utf-8",
+        newline="",
+    ) as handle:
+        reader = csv.DictReader(handle)
+        required = {
+            "sheet",
+            "net_name",
+            "pin_type",
+            "anchor_ref",
+            "anchor_pin",
+            "criticality",
+            "notes",
+        }
+        if (
+            reader.fieldnames is None
+            or not required.issubset(
+                reader.fieldnames
+            )
+        ):
+            raise ValueError(
+                "HIERARCHY_INTERFACE_SYS_001.csv missing required columns"
+            )
+        rows = list(reader)
+
+    for row in rows:
+        pin_type = str(
+            row.get("pin_type", "")
+        ).strip()
+        if pin_type not in HIERARCHY_PIN_TYPES:
+            raise ValueError(
+                f"invalid hierarchy pin type:{pin_type}"
+            )
+
+    return rows
+
+
+def hierarchy_rows_for_sheet(
+    rows: list[dict[str, str]],
+    sheet_name: str,
+) -> list[dict[str, str]]:
+    return [
+        row
+        for row in rows
+        if str(
+            row.get("sheet", "")
+        ).strip()
+        == sheet_name
+    ]
+
+
+def sheet_pin_edge(
+    pin_type: str,
+) -> str:
+    return {
+        "input": "left",
+        "output": "right",
+        "bidirectional": "top",
+        "passive": "bottom",
+    }[pin_type]
+
+
+def sheet_pin_root_position(
+    sheet_position: tuple[float, float],
+    sheet_size: tuple[float, float],
+    edge: str,
+    offset: float,
+) -> tuple[float, float]:
+    x, y = sheet_position
+    width, height = sheet_size
+
+    if edge == "left":
+        return (x, y + offset)
+    if edge == "right":
+        return (x + width, y + offset)
+    if edge == "top":
+        return (x + offset, y)
+    if edge == "bottom":
+        return (x + offset, y + height)
+
+    raise ValueError(
+        f"unsupported sheet pin edge:{edge}"
+    )
+
+
+def normalize_serialized_hierarchy_shapes(
+    schematic_path: Path,
+    rows: list[dict[str, str]],
+) -> None:
+    """Correct hierarchical-label shapes after kicad-sch-api serialization.
+
+    kicad-sch-api 0.x currently serializes generated hierarchical labels
+    as input regardless of the requested electrical type.  The contract
+    remains authoritative, so patch only the shape token immediately
+    following each known hierarchical label.  Real kicad-cli ERC then
+    validates the resulting native KiCad schematic.
+    """
+    text = schematic_path.read_text(encoding="utf-8")
+
+    for row in rows:
+        net_name = str(row["net_name"]).strip()
+        pin_type = str(row["pin_type"]).strip()
+        pattern = (
+            r'(\(hierarchical_label\s+"'
+            + re.escape(net_name)
+            + r'"\s*\n\s*\(shape\s+)'
+            + r'(input|output|bidirectional|tri_state|passive)'
+            + r'(\))'
+        )
+        text, count = re.subn(
+            pattern,
+            lambda match: (
+                match.group(1)
+                + pin_type
+                + match.group(3)
+            ),
+            text,
+            count=1,
+        )
+        if count != 1:
+            raise ValueError(
+                "unable to normalize hierarchical label:"
+                f"{net_name}:{pin_type}:{schematic_path.name}"
+            )
+
+    schematic_path.write_text(text, encoding="utf-8")
+
+
+def add_child_hierarchy_labels(
+    sch,
+    rows: list[dict[str, str]],
+) -> None:
+    for row in rows:
+        net_name = str(
+            row["net_name"]
+        ).strip()
+        pin_type = str(
+            row["pin_type"]
+        ).strip()
+        reference = str(
+            row["anchor_ref"]
+        ).strip()
+        pin_number = str(
+            row["anchor_pin"]
+        ).strip()
+
+        position = (
+            sch.get_component_pin_position(
+                reference,
+                pin_number,
+            )
+        )
+        if position is None:
+            raise ValueError(
+                "hierarchy anchor missing:"
+                f"{reference}:{pin_number}:{net_name}"
+            )
+
+        shape = {
+            "input": HierarchicalLabelShape.INPUT,
+            "output": HierarchicalLabelShape.OUTPUT,
+            "bidirectional":
+                HierarchicalLabelShape.BIDIRECTIONAL,
+            "passive":
+                HierarchicalLabelShape.PASSIVE,
+        }[pin_type]
+
+        # kicad-sch-api hierarchy validation keys off the
+        # hierarchical label electrical type.  Prefer the explicit
+        # label_type API; retain shape as a compatibility fallback for
+        # releases that expose only the enum-based signature.
+        try:
+            sch.add_hierarchical_label(
+                text=net_name,
+                label_type=pin_type,
+                position=(
+                    position.x,
+                    position.y,
+                ),
+            )
+        except TypeError:
+            sch.add_hierarchical_label(
+                text=net_name,
+                position=(
+                    position.x,
+                    position.y,
+                ),
+                shape=shape,
+            )
+
+
 def build(output_dir: Path) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -1001,24 +1207,99 @@ def build(output_dir: Path) -> dict:
         pinmap_path
     )
 
+    hierarchy_interface_path = (
+        repo_root
+        / "hardware"
+        / "system_carrier"
+        / "HIERARCHY_INTERFACE_SYS_001.csv"
+    )
+    hierarchy_rows = load_hierarchy_interface(
+        hierarchy_interface_path
+    )
+
     main = ksa.create_schematic(PROJECT_NAME)
     parent_uuid = main.uuid
     placeholders: list[dict] = []
     mcu_unused_gpio_no_connect_count = 0
 
     sheet_uuids: dict[str, str] = {}
+    sheet_geometry: dict[
+        str,
+        tuple[
+            tuple[float, float],
+            tuple[float, float],
+        ],
+    ] = {}
+
     for index, (name, filename) in enumerate(SHEETS):
         col = index % 2
         row = index // 2
+        sheet_position = (
+            30.48 + 101.6 * col,
+            25.4 + 50.8 * row,
+        )
+        sheet_size = (88.9, 38.1)
+
         sheet_uuid = main.sheets.add_sheet(
             name=name,
             filename=filename,
-            position=(30.48 + 101.6 * col, 25.4 + 50.8 * row),
-            size=(88.9, 38.1),
+            position=sheet_position,
+            size=sheet_size,
             project_name=PROJECT_NAME,
             page_number=str(index + 2),
         )
         sheet_uuids[name] = str(sheet_uuid)
+        sheet_geometry[name] = (
+            sheet_position,
+            sheet_size,
+        )
+
+        rows = hierarchy_rows_for_sheet(
+            hierarchy_rows,
+            name,
+        )
+        by_type_count = {
+            pin_type: 0
+            for pin_type in HIERARCHY_PIN_TYPES
+        }
+
+        for item in rows:
+            pin_type = str(
+                item["pin_type"]
+            ).strip()
+            edge = sheet_pin_edge(
+                pin_type
+            )
+            by_type_count[pin_type] += 1
+            offset = (
+                2.54
+                * by_type_count[pin_type]
+            )
+
+            main.sheets.add_sheet_pin(
+                sheet_uuid,
+                str(
+                    item["net_name"]
+                ).strip(),
+                pin_type,
+                edge,
+                offset,
+            )
+
+            root_position = (
+                sheet_pin_root_position(
+                    sheet_position,
+                    sheet_size,
+                    edge,
+                    offset,
+                )
+            )
+            main.add_label(
+                str(
+                    item["net_name"]
+                ).strip(),
+                position=root_position,
+            )
 
     main.add_text(
         "EVT System Carrier\n"
@@ -1070,7 +1351,23 @@ def build(output_dir: Path) -> dict:
                 placeholders,
             )
 
-        child.save(str(output_dir / filename))
+        add_child_hierarchy_labels(
+            child,
+            hierarchy_rows_for_sheet(
+                hierarchy_rows,
+                name,
+            ),
+        )
+
+        child_path = output_dir / filename
+        child.save(str(child_path))
+        normalize_serialized_hierarchy_shapes(
+            child_path,
+            hierarchy_rows_for_sheet(
+                hierarchy_rows,
+                name,
+            ),
+        )
 
     (output_dir / f"{PROJECT_NAME}.kicad_pro").write_text(
         json.dumps(
@@ -1096,6 +1393,10 @@ def build(output_dir: Path) -> dict:
         "sheet_count": len(SHEETS) + 1,
         "child_sheets": [filename for _, filename in SHEETS],
         "sheet_uuids": sheet_uuids,
+        "hierarchy_interface_contract":
+            "HIERARCHY_INTERFACE_SYS_001.csv",
+        "hierarchy_interface_count":
+            len(hierarchy_rows),
         "local_symbol_library": local_symbol_path.name,
         "local_symbol_manifest": local_symbol_manifest,
         "local_footprint_library": "SystemCarrier_Local.pretty",

@@ -288,6 +288,25 @@ jobs:
           print("System Carrier design-input smoke PASS")
           PY
 
+      - name: Validate System Carrier hierarchy contract
+        run: |
+          python -m tools.carrier_hierarchy_contract \
+            hardware/system_carrier/HIERARCHY_INTERFACE_SYS_001.csv \
+            --output carrier_hierarchy_contract.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path("carrier_hierarchy_contract.json").read_text()
+          )
+          assert data["schema"] == "SYSTEM-CARRIER-HIERARCHY-CONTRACT-001"
+          assert data["status"] == "PASS"
+          assert data["errors"] == []
+          assert data["sheet_count"] == 7
+          print("System Carrier hierarchy contract PASS")
+          PY
+
       - name: Validate System Carrier schematic contract
         run: |
           python -m tools.carrier_schematic_contract \
@@ -561,6 +580,34 @@ jobs:
           rm -rf \
             build-cad/system_carrier/SystemCarrier_Local.validate.pretty
 
+      - name: Validate generated System Carrier hierarchy
+        run: |
+          python -m tools.validate_system_carrier_hierarchy \
+            build-cad/system_carrier/EVT_SYS_CARRIER.kicad_sch \
+            --output build-cad/system_carrier/hierarchy_validation.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/hierarchy_validation.json"
+              ).read_text()
+          )
+          assert data["schema"] == "SYSTEM-CARRIER-HIERARCHY-CAD-001"
+          assert data["status"] == "PASS"
+          assert data["errors"] == []
+          assert (
+              data["connection_count"]
+              == data["validated_connection_count"]
+          )
+          print(
+              "System Carrier hierarchy PASS:",
+              data["connection_count"],
+              "connections",
+          )
+          PY
+
       - name: Validate System Carrier Review A readiness
         run: |
           python -m tools.carrier_review_a_readiness \
@@ -629,6 +676,7 @@ jobs:
           PY
 
       - name: Upload generated System Carrier CAD
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: system-carrier-cad-scaffold

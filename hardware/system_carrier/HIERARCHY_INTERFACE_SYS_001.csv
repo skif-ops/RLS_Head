@@ -1,0 +1,66 @@
+sheet,net_name,pin_type,anchor_ref,anchor_pin,criticality,notes
+POWER_INPUT,3V3,output,L1,2,P0,Carrier 3V3 source
+POWER_INPUT,RADAR_12V,output,J2,1,P0,Protected radar supply
+POWER_INPUT,SYS_EFUSE_FLT,output,U6,4,P0,System eFuse fault
+POWER_INPUT,RADAR_EFUSE_FLT,output,U7,4,P0,Radar eFuse fault
+POWER_INPUT,GND,passive,J1,2,P0,Power return
+MCU_CORE,3V3,input,U1,23,P0,Digital supply representative pin
+MCU_CORE,GND,passive,U1,14,P0,Ground representative pin
+MCU_CORE,GNSS_PPS,input,U1,40,P0,TIM2_CH1
+MCU_CORE,RADAR_REF,input,U1,79,P0,TIM2_CH3
+MCU_CORE,IMU_DRDY,input,U1,80,P0,TIM2_CH4
+MCU_CORE,IMU_NSS,output,U1,92,P1,SPI2_NSS
+MCU_CORE,IMU_SCK,output,U1,93,P1,SPI2_SCK
+MCU_CORE,IMU_MISO,input,U1,94,P1,SPI2_MISO
+MCU_CORE,IMU_MOSI,output,U1,95,P1,SPI2_MOSI
+MCU_CORE,GNSS_RX_EXT,output,U1,96,P1,USART3_TX toward GNSS
+MCU_CORE,GNSS_TX_EXT,input,U1,97,P1,USART3_RX from GNSS
+MCU_CORE,CAN_RX,input,U1,142,P1,FDCAN1_RX
+MCU_CORE,CAN_TX,output,U1,143,P1,FDCAN1_TX
+MCU_CORE,ETH_50M,input,U1,41,P0,RMII reference clock
+MCU_CORE,ETH_MDIO,bidirectional,U1,42,P1,RMII management data
+MCU_CORE,ETH_MDC,output,U1,33,P1,RMII management clock
+MCU_CORE,ETH_CRS_DV,input,U1,53,P1,RMII receive control
+MCU_CORE,ETH_RXD0,input,U1,54,P1,RMII receive data
+MCU_CORE,ETH_RXD1,input,U1,55,P1,RMII receive data
+MCU_CORE,ETH_TX_EN,output,U1,154,P1,RMII transmit enable
+MCU_CORE,ETH_TXD0,output,U1,156,P1,RMII transmit data
+MCU_CORE,ETH_TXD1,output,U1,157,P1,RMII transmit data
+MCU_CORE,ETH_NRST,output,U1,3,P1,PHY controlled reset
+MCU_CORE,SYS_EFUSE_FLT,input,U1,1,P0,System power fault
+MCU_CORE,RADAR_EFUSE_FLT,input,U1,2,P0,Radar power fault
+MCU_CORE,NRST,bidirectional,U1,31,P0,MCU reset
+MCU_CORE,BOOT0,input,U1,166,P0,Boot strap service
+TIME_GNSS,3V3,input,U8,23,P0,GNSS supply
+TIME_GNSS,GND,passive,U8,24,P0,GNSS return
+TIME_GNSS,GNSS_PPS,output,U8,3,P0,TIMEPULSE
+TIME_GNSS,GNSS_TX_EXT,output,U8,20,P1,GNSS UART TX
+TIME_GNSS,GNSS_RX_EXT,input,U8,21,P1,GNSS UART RX
+IMU,3V3,input,U2,8,P0,IMU VDD
+IMU,GND,passive,U2,6,P0,IMU return
+IMU,IMU_DRDY,output,U2,4,P0,Data ready
+IMU,IMU_NSS,input,U2,12,P1,SPI chip select
+IMU,IMU_SCK,input,U2,13,P1,SPI clock
+IMU,IMU_MISO,output,U2,1,P1,SPI data out
+IMU,IMU_MOSI,input,U2,14,P1,SPI data in
+RADAR_IO_CAN,3V3,input,U4,3,P0,CAN transceiver supply
+RADAR_IO_CAN,GND,passive,U4,2,P0,CAN return
+RADAR_IO_CAN,CAN_TX,input,U4,1,P1,Transceiver TXD
+RADAR_IO_CAN,CAN_RX,output,U4,4,P1,Transceiver RXD
+RADAR_IO_CAN,RADAR_REF,output,J4,4,P0,Radar frame reference from harness
+RADAR_IO_CAN,RADAR_12V,input,J5,1,P0,Protected radar supply
+ETHERNET,3V3,input,U3,1,P0,PHY supply
+ETHERNET,GND,passive,C62,2,P0,PHY sheet ground anchor; U3 exposed pad is closed separately
+ETHERNET,ETH_50M,output,U3,5,P0,Shared 50 MHz reference clock net
+ETHERNET,ETH_MDIO,bidirectional,U3,12,P1,Management data
+ETHERNET,ETH_MDC,input,U3,13,P1,Management clock
+ETHERNET,ETH_CRS_DV,output,U3,11,P1,RMII receive control
+ETHERNET,ETH_RXD0,output,U3,8,P1,RMII RXD0
+ETHERNET,ETH_RXD1,output,U3,7,P1,RMII RXD1
+ETHERNET,ETH_TX_EN,input,U3,16,P1,RMII transmit enable
+ETHERNET,ETH_TXD0,input,U3,17,P1,RMII TXD0
+ETHERNET,ETH_TXD1,input,U3,18,P1,RMII TXD1
+ETHERNET,ETH_NRST,input,U3,15,P1,PHY controlled reset
+DEBUG_BOOT,GND,passive,SW1,2,P0,Service return
+DEBUG_BOOT,NRST,bidirectional,SW1,1,P0,Reset switch
+DEBUG_BOOT,BOOT0,passive,R70,1,P1,Service boot override
