@@ -681,78 +681,61 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
             MPN="NEO-M9N-00B",
         )
     except Exception:
-        add_placeholder(
-            sch,
-            "U8",
-            "NEO-M9N-00B",
-            pos(50, 32),
-            placeholders,
-        )
+        add_placeholder(sch, "U8", "NEO-M9N-00B", pos(50, 32), placeholders)
+
     sch.components.add(
-        "Device:D_TVS",
-        "D8",
-        "ESD0P2RF-02LS",
-        pos(72, 28),
+        "Device:D_TVS", "D8", "ESD0P2RF-02LS", pos(72, 28),
         footprint="SystemCarrier_Local:ESD0P2RF-02LS_PG-TSSLP-2-1",
         MPN="ESD0P2RF-02LS",
     )
+    sch.components.add("Connector_Generic:Conn_01x02", "J8", "GNSS_UFL", pos(86, 28))
+    sch.components.add("Device:C", "C80", "100nF", pos(36, 42))
+    sch.components.add("Device:C", "C81", "10uF", pos(42, 42))
+    sch.components.add("Device:L", "L80", "27nH DNP_OPTION", pos(72, 42))
+    sch.components.add("Device:R", "R80", "10R 0.25W DNP_OPTION", pos(64, 48))
+    sch.components.add("Device:C", "C82", "100nF DNP_OPTION", pos(78, 48))
+    sch.components.add("Device:R", "R81", "100k 1% VUSB_PD", pos(57, 48))
+    sch.components.add("Device:R", "R82", "0R V_BCKP", pos(57, 53))
 
-    sch.components.add(
-        "Connector_Generic:Conn_01x02",
-        "J8",
-        "GNSS_UFL",
-        pos(86, 28),
-    )
-    sch.components.add(
-        "Device:C",
-        "C80",
-        "100nF",
-        pos(36, 42),
-    )
-    sch.components.add(
-        "Device:C",
-        "C81",
-        "10uF",
-        pos(42, 42),
-    )
-    sch.components.add(
-        "Device:L",
-        "L80",
-        "27nH DNP_OPTION",
-        pos(72, 42),
-    )
-    sch.components.add(
-        "Device:R",
-        "R80",
-        "10R 0.25W DNP_OPTION",
-        pos(64, 48),
-    )
-    sch.components.add(
-        "Device:C",
-        "C82",
-        "100nF DNP_OPTION",
-        pos(78, 48),
-    )
-    sch.components.add(
-        "Device:R",
-        "R81",
-        "100k 1% VUSB_PD",
-        pos(57, 48),
-    )
+    # Main supply decoupling.
+    add_pin_label(sch, "3V3", "C80", "1")
+    add_pin_label(sch, "GND", "C80", "2")
+    add_pin_label(sch, "3V3", "C81", "1")
+    add_pin_label(sch, "GND", "C81", "2")
 
-    for name, p in [
-        ("3V3", pos(34, 18)),
-        ("GND", pos(34, 55)),
-        ("GNSS_TX_EXT", pos(34, 28)),
-        ("GNSS_RX_EXT", pos(34, 34)),
-        ("GNSS_PPS", pos(62, 20)),
-        ("GNSS_RF", pos(78, 28)),
-    ]:
-        sch.add_label(name, position=p)
+    # Backup-domain and unused USB supply requirements.
+    sch.add_wire_between_pins("U8", "22", "R82", "1")
+    add_pin_label(sch, "3V3", "R82", "2")
+    sch.add_wire_between_pins("U8", "7", "R81", "1")
+    add_pin_label(sch, "GND", "R81", "2")
+
+    # Internal straps intentionally left open by contract.
+    for pin in ("2", "8"):
+        p = sch.get_component_pin_position("U8", pin)
+        if p is not None:
+            sch.no_connects.add(position=(p.x, p.y))
+
+    # RF path: RF_IN / U.FL signal on GNSS_RF, with shunt ESD.
+    add_pin_label(sch, "GNSS_RF", "U8", "11")
+    add_pin_label(sch, "GNSS_RF", "J8", "1")
+    add_pin_label(sch, "GND", "J8", "2")
+    add_pin_label(sch, "GNSS_RF", "D8", "1")
+    add_pin_label(sch, "GND", "D8", "2")
+
+    # Optional active-antenna bias-T:
+    # VCC_RF -> 10R -> filtered node -> 27nH -> GNSS_RF,
+    # with 100nF from filtered node to GND.
+    add_pin_label(sch, "GNSS_VCC_RF", "U8", "9")
+    add_pin_label(sch, "GNSS_VCC_RF", "R80", "1")
+    add_pin_label(sch, "GNSS_BIAS_FILTER", "R80", "2")
+    add_pin_label(sch, "GNSS_BIAS_FILTER", "L80", "1")
+    add_pin_label(sch, "GNSS_RF", "L80", "2")
+    add_pin_label(sch, "GNSS_BIAS_FILTER", "C82", "1")
+    add_pin_label(sch, "GND", "C82", "2")
 
     sch.add_text(
-        "L80/R80/C82 are optional active-antenna bias population.\n"
-        "R81 pulls unused V_USB to GND. D8 must sit immediately behind the antenna connector.",
+        "R82 ties V_BCKP to 3V3 for EVT. R81 pulls unused V_USB to GND.\n"
+        "L80/R80/C82 implement the optional active-antenna VCC_RF bias-T.",
         position=pos(18, 62),
         size=1.0,
     )
@@ -821,74 +804,59 @@ def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
     )
 
     add_local_symbol(
-        sch,
-        "U4",
-        "TCAN3404DRBRQ1",
-        "TCAN3404DRBRQ1",
-        pos(50, 30),
-        placeholders,
+        sch, "U4", "TCAN3404DRBRQ1", "TCAN3404DRBRQ1",
+        pos(50, 30), placeholders
     )
     add_local_symbol(
-        sch,
-        "D4",
-        "ESD2CANFD24DBZRQ1",
-        "ESD2CANFD24-Q1",
-        pos(68, 30),
-        placeholders,
+        sch, "D4", "ESD2CANFD24DBZRQ1", "ESD2CANFD24-Q1",
+        pos(68, 30), placeholders
     )
 
-    sch.components.add(
-        "Connector_Generic:Conn_01x06",
-        "J4",
-        "RADAR_IO",
-        pos(86, 32),
-    )
-    sch.components.add(
-        "Connector_Generic:Conn_01x02",
-        "J5",
-        "RADAR_PWR",
-        pos(86, 50),
-    )
-    sch.components.add(
-        "Device:R",
-        "R40",
-        "120R 1% DNP_DEFAULT",
-        pos(70, 45),
-    )
-    sch.components.add(
-        "Device:C",
-        "C40",
-        "100nF",
-        pos(42, 42),
-    )
-    sch.components.add(
-        "Device:R",
-        "R41",
-        "10k 1% STB_PD",
-        pos(52, 46),
-    )
-    sch.components.add(
-        "Device:R",
-        "R42",
-        "10k 1% SHDN_PD",
-        pos(59, 46),
-    )
+    sch.components.add("Connector_Generic:Conn_01x06", "J4", "RADAR_IO", pos(86, 32))
+    sch.components.add("Connector_Generic:Conn_01x02", "J5", "RADAR_PWR", pos(86, 50))
+    sch.components.add("Device:R", "R40", "120R 1% DNP_DEFAULT", pos(70, 45))
+    sch.components.add("Device:C", "C40", "100nF", pos(42, 42))
+    sch.components.add("Device:R", "R41", "10k 1% STB_PD", pos(52, 46))
+    sch.components.add("Device:R", "R42", "10k 1% SHDN_PD", pos(59, 46))
 
-    for name, p in [
-        ("3V3", pos(37, 18)),
-        ("GND", pos(37, 54)),
-        ("CAN_TX", pos(37, 27)),
-        ("CAN_RX", pos(37, 34)),
-        ("RADAR_CANH", pos(76, 25)),
-        ("RADAR_CANL", pos(76, 34)),
-        ("RADAR_REF", pos(76, 40)),
-        ("RADAR_12V", pos(76, 50)),
-    ]:
-        sch.add_label(name, position=p)
+    # Transceiver local power and exposed-pad ground.
+    add_pin_label(sch, "3V3", "C40", "1")
+    add_pin_label(sch, "GND", "C40", "2")
+    if sch.get_component_pin_position("U4", "EP") is not None:
+        add_pin_label(sch, "GND", "U4", "EP")
+
+    # Deterministic normal mode defaults.
+    sch.add_wire_between_pins("U4", "8", "R41", "1")
+    add_pin_label(sch, "GND", "R41", "2")
+    sch.add_wire_between_pins("U4", "5", "R42", "1")
+    add_pin_label(sch, "GND", "R42", "2")
+
+    # CAN bus and ESD.
+    add_pin_label(sch, "RADAR_CANH", "D4", "1")
+    add_pin_label(sch, "RADAR_CANL", "D4", "2")
+    add_pin_label(sch, "GND", "D4", "3")
+
+    # Radar I/O connector according to CONNECTOR_PINOUT_SYS_001.csv.
+    add_pin_label(sch, "RADAR_CANL", "J4", "1")
+    add_pin_label(sch, "GND", "J4", "2")
+    add_pin_label(sch, "RADAR_CANH", "J4", "3")
+    add_pin_label(sch, "RADAR_REF", "J4", "4")
+    add_pin_label(sch, "GND", "J4", "5")
+    p = sch.get_component_pin_position("J4", "6")
+    if p is not None:
+        sch.no_connects.add(position=(p.x, p.y))
+
+    # Optional endpoint termination across CANH/CANL.
+    add_pin_label(sch, "RADAR_CANH", "R40", "1")
+    add_pin_label(sch, "RADAR_CANL", "R40", "2")
+
+    # Protected radar power connector.
+    add_pin_label(sch, "RADAR_12V", "J5", "1")
+    add_pin_label(sch, "GND", "J5", "2")
 
     sch.add_text(
-        "R40 is populated only when carrier is the CAN bus endpoint.\n"
-        "R41 pulls STB low and R42 pulls SHDN low for deterministic normal mode. RADAR_REF requires adjacent ground return.",
+        "R40 is DNP by default and populated only when the carrier is the CAN endpoint.\n"
+        "R41/R42 force normal mode defaults. J4 pin6 remains NC by Rev.A contract.",
         position=pos(18, 62),
         size=1.0,
     )
