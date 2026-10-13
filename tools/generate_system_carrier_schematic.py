@@ -600,6 +600,13 @@ def populate_mcu(
         "PWR_FLAG",
         pos(40, 18),
     )
+    sch.components.add(
+        "power:PWR_FLAG",
+        "#FLG0102",
+        "PWR_FLAG",
+        pos(22, 52),
+    )
+    add_pin_label(sch, "GND", "#FLG0102", "1")
 
     # Bind every assigned MCU signal directly to the authoritative net name.
     for row in pinmap_rows:
@@ -983,7 +990,7 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
         "D3",
         "TPD4E05U06DQAR",
         "TPD4E05U06DQAR",
-        pos(72, 31),
+        pos(72, 40),
         placeholders,
     )
     sch.components.add(
@@ -1064,16 +1071,24 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
     }.items():
         add_pin_label(sch, net, "U3", pin)
 
-    # ESD array is wired explicitly to avoid pin-position label/NC
-    # ambiguity in generated local symbols.
-    for phy_pin, esd_pin, jack_pin in [
-        ("21", "1", "1"),  # ETH_TXP
-        ("20", "2", "3"),  # ETH_TXN
-        ("23", "4", "4"),  # ETH_RXP
-        ("22", "5", "6"),  # ETH_RXN
-    ]:
-        sch.add_wire_between_pins("U3", phy_pin, "D3", esd_pin)
-        sch.add_wire_between_pins("D3", esd_pin, "J6", jack_pin)
+    # ESD channels use short outward stubs and labels. This avoids
+    # long through-symbol wires while keeping the U3/D3/J6 nets identical.
+    def add_d3_signal_stub(
+        pin_number: str,
+        net_name: str,
+        dx: float,
+    ) -> None:
+        p = sch.get_component_pin_position("D3", pin_number)
+        if p is None:
+            raise ValueError(f"missing D3 pin:{pin_number}")
+        end = (p.x + dx, p.y)
+        sch.wires.add(start=(p.x, p.y), end=end)
+        sch.add_label(net_name, position=end)
+
+    add_d3_signal_stub("1", "ETH_TXP", -1.27)
+    add_d3_signal_stub("2", "ETH_TXN", 1.27)
+    add_d3_signal_stub("4", "ETH_RXP", 1.27)
+    add_d3_signal_stub("5", "ETH_RXN", -1.27)
 
     def add_d3_ground_stub(pin_number: str, dx: float) -> None:
         p = sch.get_component_pin_position("D3", pin_number)
@@ -1097,6 +1112,15 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
         add_pin_label(sch, "3V3", ref, "2")
 
     # MagJack PHY-side pairs are wired explicitly through D3 above.
+
+    # MagJack PHY-side data pairs join the same named nets.
+    for pin, net in {
+        "1": "ETH_TXP",
+        "3": "ETH_TXN",
+        "4": "ETH_RXP",
+        "6": "ETH_RXN",
+    }.items():
+        add_pin_label(sch, net, "J6", pin)
 
     # TX/RX center taps tied together and AC-shunted to ground.
     add_pin_label(sch, "ETH_CT", "J6", "2")
