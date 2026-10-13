@@ -94,6 +94,45 @@ def load_assigned_mcu_gpio(pinmap_path: Path) -> set[str]:
         }
 
 
+def validate_mcu_pinmap_against_symbol(
+    sch,
+    pinmap_rows: list[dict[str, str]],
+) -> None:
+    component = sch.components.get("U1")
+    if component is None:
+        raise ValueError("missing component:U1")
+
+    by_number = {
+        str(pin.number).strip():
+            str(pin.name).strip()
+        for pin in component.pins
+    }
+
+    for row in pinmap_rows:
+        physical = str(
+            row.get("physical_pin", "")
+        ).strip()
+        expected_name = str(
+            row.get("mcu_pin", "")
+        ).strip()
+
+        if not physical or not expected_name:
+            continue
+
+        actual_name = by_number.get(physical)
+        if actual_name is None:
+            raise ValueError(
+                f"U1 physical pin missing:{physical}:{expected_name}"
+            )
+
+        normalized = actual_name.removesuffix("_C")
+        if normalized != expected_name:
+            raise ValueError(
+                "U1 pinmap mismatch:"
+                f"{physical}:{actual_name}!={expected_name}"
+            )
+
+
 def mark_unused_mcu_gpio_no_connect(
     sch,
     assigned_gpio: set[str],
@@ -333,6 +372,11 @@ def populate_mcu(
         "J10",
         "TC2030_SWD",
         pos(83, 52),
+    )
+
+    validate_mcu_pinmap_against_symbol(
+        sch,
+        pinmap_rows,
     )
 
     # Power-domain support components required by the Rev.A contract.
