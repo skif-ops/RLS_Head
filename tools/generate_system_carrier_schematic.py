@@ -1404,6 +1404,10 @@ def build(output_dir: Path) -> dict:
             tuple[float, float],
         ],
     ] = {}
+    root_net_positions: dict[
+        str,
+        list[tuple[float, float]],
+    ] = {}
 
     for index, (name, filename) in enumerate(SHEETS):
         col = index % 2
@@ -1468,11 +1472,39 @@ def build(output_dir: Path) -> dict:
                     offset,
                 )
             )
-            main.add_label(
-                str(
-                    item["net_name"]
-                ).strip(),
-                position=root_position,
+            root_net_positions.setdefault(
+                str(item["net_name"]).strip(),
+                [],
+            ).append(root_position)
+
+    # Connect same-name hierarchy sheet pins directly on the root sheet.
+    # Avoid root labels entirely: KiCad 9 flags labels placed directly on
+    # hierarchical sheet pins as dangling/multiple-wire artifacts.
+    for net_name, positions in sorted(root_net_positions.items()):
+        if len(positions) < 2:
+            continue
+
+        hub_x = min(point[0] for point in positions) - 10.16
+        hub_y = sum(point[1] for point in positions) / len(positions)
+
+        first = positions[0]
+        main.wires.add(
+            start=first,
+            end=(hub_x, first[1]),
+        )
+        main.wires.add(
+            start=(hub_x, first[1]),
+            end=(hub_x, hub_y),
+        )
+
+        for point in positions[1:]:
+            main.wires.add(
+                start=point,
+                end=(hub_x, point[1]),
+            )
+            main.wires.add(
+                start=(hub_x, point[1]),
+                end=(hub_x, hub_y),
             )
 
     main.add_text(
