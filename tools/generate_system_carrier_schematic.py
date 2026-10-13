@@ -620,12 +620,6 @@ def populate_mcu(
     )
     sch.components.add(
         "power:PWR_FLAG",
-        "#FLG0101",
-        "PWR_FLAG",
-        pos(22, 18),
-    )
-    sch.components.add(
-        "power:PWR_FLAG",
         "#FLG0103",
         "PWR_FLAG",
         pos(40, 18),
@@ -753,12 +747,6 @@ def populate_mcu(
         )
 
     # Mark the local rails as explicitly driven for ERC.
-    add_pin_label(
-        sch,
-        "3V3",
-        "#FLG0101",
-        "1",
-    )
     add_pin_label(
         sch,
         "VDDA_FILTERED",
