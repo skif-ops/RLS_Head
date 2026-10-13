@@ -486,8 +486,7 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "GND", "R73", "2")
     sch.add_wire_between_pins("U7", "9", "R2", "1")
     add_pin_label(sch, "GND", "R2", "2")
-    add_pin_label(sch, "U7_DVDT", "U7", "7")
-    add_pin_label(sch, "U7_DVDT", "C7D", "1")
+    sch.add_wire_between_pins("U7", "7", "C7D", "1")
     add_pin_label(sch, "GND", "C7D", "2")
     add_pin_label(sch, "RADAR_EFUSE_FLT", "R7F", "1")
     add_pin_label(sch, "3V3", "R7F", "2")
@@ -624,6 +623,12 @@ def populate_mcu(
         "PWR_FLAG",
         pos(40, 18),
     )
+    sch.components.add(
+        "power:PWR_FLAG",
+        "#FLG0199",
+        "PWR_FLAG",
+        pos(120, 80),
+    )
 
     # Bind every assigned MCU signal directly to the authoritative net name.
     for row in pinmap_rows:
@@ -747,6 +752,12 @@ def populate_mcu(
         )
 
     # Mark the local rails as explicitly driven for ERC.
+    add_pin_label(
+        sch,
+        "3V3",
+        "#FLG0199",
+        "1",
+    )
     add_pin_label(
         sch,
         "VDDA_FILTERED",
