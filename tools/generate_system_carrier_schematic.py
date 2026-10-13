@@ -722,6 +722,14 @@ def populate_mcu(
             pin_number,
         )
 
+    # Mark MCU ground as locally driven for ERC.
+    add_power_flag(
+        sch,
+        "#FLG2002",
+        "GND",
+        pos(22, 52),
+    )
+
     # Mark the local rails as explicitly driven for ERC.
     add_pin_label(
         sch,
