@@ -1,7 +1,7 @@
 stage,input_net,output_net,device,setting,criticality,notes
 1,J1_POWER,VIN_RAW,CONNECTOR,Micro-Fit_3.0_12V_NOMINAL_SOURCE_GE_5A,P0,External system power entry
-2,VIN_RAW,VIN_TVS,SMAJ15CA,BIDIRECTIONAL,P0,Input transient clamp
-3,VIN_TVS,VIN_PROTECTED,TPS259470ARPWR,UVLO_8.51V_OVLO_15.94V_ILIM_5.01A_DVDT_3.3nF,P0,System eFuse; 470k/36.0k/41.2k divider and 665R ILIM
+2,VIN_RAW,GND,SMAJ15CA,SHUNT_TVS,P0,Input transient clamp from VIN_RAW to ground; not a series power stage
+3,VIN_RAW,VIN_PROTECTED,TPS259470ARPWR,UVLO_8.51V_OVLO_15.94V_ILIM_5.01A_DVDT_3.3nF,P0,System eFuse; 470k/36.0k/41.2k divider and 665R ILIM
 4A,VIN_PROTECTED,3V3,TPS62132RGTR,3.3V_3A_L2.2uH_CIN10uF_COUT22uF_SS3.3nF,P0,Fixed-output primary System Carrier rail
 4B,VIN_PROTECTED,RADAR_12V,TPS259470ARPWR,UVLO_10.51V_OVLO_14.57V_ILIM_3.18A_DVDT_3.3nF,P0,Dedicated radar branch; 470k/16.9k/43.7k divider and 1.05k ILIM
 5,3V3,VDDA_FILTERED,BLM18BD601SH1,FERRITE,P1,Precision/analog supply filtering

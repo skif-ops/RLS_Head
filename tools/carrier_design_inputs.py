@@ -293,7 +293,7 @@ def validate_power_tree(path: Path) -> dict:
     }
 
     for pair in {
-        ("VIN_TVS", "VIN_PROTECTED"),
+        ("VIN_RAW", "VIN_PROTECTED"),
         ("VIN_PROTECTED", "3V3"),
         ("VIN_PROTECTED", "RADAR_12V"),
     }:
