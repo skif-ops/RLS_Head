@@ -12,6 +12,7 @@
 #include "rls/capture_router.h"
 #include "rls/ethernet_reset.h"
 #include "rls/config_lock.h"
+#include "rls/gnss_service.h"
 #include "stm32h753_memory.h"
 
 #include <stddef.h>
@@ -261,6 +262,33 @@ int main(void)
             carrier_config,
             sizeof(carrier_config));
 
+    rls_gnss_service_t gnss_service;
+    rls_gnss_report_t gnss_report;
+    const rls_gnss_limits_t gnss_limits = {
+        .uart_timeout_us = 2000000u,
+        .pps_timeout_us = 1500000u,
+    };
+    rls_gnss_service_init(&gnss_service);
+    rls_gnss_service_note_uart(
+        &gnss_service,
+        2400000u);
+    rls_gnss_service_note_pps(
+        &gnss_service,
+        2000000u);
+    rls_gnss_service_update_quality(
+        &gnss_service,
+        true,
+        true,
+        false,
+        false);
+    const bool gnss_service_ok =
+        rls_gnss_service_evaluate(
+            &gnss_service,
+            &gnss_limits,
+            2500000u,
+            &gnss_report) == 0
+        && gnss_report.healthy;
+
     rls_ethernet_reset_t eth_reset;
     rls_ethernet_reset_init(&eth_reset);
     const bool eth_reset_ok =
@@ -320,7 +348,10 @@ int main(void)
             : UINT32_C(0x08000000)) ^
         (config_lock_ok
             ? config_lock.crc32
-            : UINT32_C(0x04000000));
+            : UINT32_C(0x04000000)) ^
+        (gnss_service_ok
+            ? gnss_report.flags
+            : UINT32_C(0x02000000));
 
     g_smoke_response_len =
         (uint32_t)response_len;
