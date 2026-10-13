@@ -1056,8 +1056,8 @@ def add_child_hierarchy_labels(
 
         sch.add_hierarchical_label(
             net_name,
+            pin_type,
             position=position,
-            shape=pin_type,
         )
 
 
