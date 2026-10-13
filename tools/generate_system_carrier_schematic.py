@@ -600,13 +600,6 @@ def populate_mcu(
         "PWR_FLAG",
         pos(40, 18),
     )
-    sch.components.add(
-        "power:PWR_FLAG",
-        "#FLG0102",
-        "PWR_FLAG",
-        pos(22, 52),
-    )
-    add_pin_label(sch, "GND", "#FLG0102", "1")
 
     # Bind every assigned MCU signal directly to the authoritative net name.
     for row in pinmap_rows:
@@ -1586,6 +1579,19 @@ def build(output_dir: Path) -> dict:
                 ).strip(),
                 position=label_position,
             )
+
+    main.components.add(
+        "power:PWR_FLAG",
+        "#FLG0001",
+        "PWR_FLAG",
+        pos(12, 8),
+    )
+    add_pin_label(
+        main,
+        "GND",
+        "#FLG0001",
+        "1",
+    )
 
     main.add_text(
         "EVT System Carrier\n"
