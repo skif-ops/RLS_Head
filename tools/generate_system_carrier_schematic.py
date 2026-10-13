@@ -8,6 +8,9 @@ import shutil
 from pathlib import Path
 
 import kicad_sch_api as ksa
+from kicad_sch_api.core.types import (
+    HierarchicalLabelShape,
+)
 
 from tools.generate_system_carrier_symbols import (
     LIBRARY_NAME as LOCAL_SYMBOL_LIBRARY,
@@ -1054,10 +1057,22 @@ def add_child_hierarchy_labels(
                 f"{reference}:{pin_number}:{net_name}"
             )
 
+        shape = {
+            "input": HierarchicalLabelShape.INPUT,
+            "output": HierarchicalLabelShape.OUTPUT,
+            "bidirectional":
+                HierarchicalLabelShape.BIDIRECTIONAL,
+            "passive":
+                HierarchicalLabelShape.PASSIVE,
+        }[pin_type]
+
         sch.add_hierarchical_label(
-            net_name,
-            pin_type,
-            position=position,
+            text=net_name,
+            position=(
+                position.x,
+                position.y,
+            ),
+            shape=shape,
         )
 
 
