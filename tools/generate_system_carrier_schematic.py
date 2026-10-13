@@ -423,12 +423,6 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "VIN_RAW", "#FLG0201", "1")
 
     add_pin_label(sch, "VIN_RAW", "J1", "1")
-    add_power_flag(
-        sch,
-        "#FLG1001",
-        "VIN_RAW",
-        pos(20, 18),
-    )
     add_pin_label(sch, "GND", "J1", "2")
     add_pin_label(sch, "VIN_RAW", "D1", "1")
     add_pin_label(sch, "GND", "D1", "2")
@@ -443,8 +437,7 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "GND", "R63", "2")
     sch.add_wire_between_pins("U6", "9", "R1", "1")
     add_pin_label(sch, "GND", "R1", "2")
-    add_pin_label(sch, "U6_DVDT", "U6", "7")
-    add_pin_label(sch, "U6_DVDT", "C6D", "1")
+    sch.add_wire_between_pins("U6", "7", "C6D", "1")
     add_pin_label(sch, "GND", "C6D", "2")
     add_pin_label(sch, "SYS_EFUSE_FLT", "R6F", "1")
     add_pin_label(sch, "3V3", "R6F", "2")
@@ -703,12 +696,6 @@ def populate_mcu(
         "1",
     )
     add_pin_label(sch, "GND", "C14", "2")
-    add_power_flag(
-        sch,
-        "#FLG2001",
-        "VDDA_FILTERED",
-        pos(40, 18),
-    )
 
     # BOOT0 default-low strap.
     sch.add_wire_between_pins(
@@ -1068,30 +1055,27 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
     if p is not None:
         sch.no_connects.add(position=(p.x, p.y))
 
-    # MDI nets at PHY and ESD array.
-    mdi = {
-        "20": "ETH_TXN",
-        "21": "ETH_TXP",
-        "22": "ETH_RXN",
-        "23": "ETH_RXP",
-    }
-    for pin, net in mdi.items():
-        add_pin_label(sch, net, "U3", pin)
+    # MDI nets are wired explicitly through D3 below.
 
-    for pin, net in {
-        "1": "ETH_TXP",
-        "2": "ETH_TXN",
-        "4": "ETH_RXP",
-        "5": "ETH_RXN",
-        "3": "GND",
-        "8": "GND",
-    }.items():
-        add_pin_label(sch, net, "D3", pin)
+    # ESD array is wired explicitly to avoid pin-position label/NC
+    # ambiguity in generated local symbols.
+    for phy_pin, esd_pin, jack_pin in [
+        ("21", "1", "1"),  # ETH_TXP
+        ("20", "2", "3"),  # ETH_TXN
+        ("23", "4", "4"),  # ETH_RXP
+        ("22", "5", "6"),  # ETH_RXN
+    ]:
+        sch.add_wire_between_pins("U3", phy_pin, "D3", esd_pin)
+        sch.add_wire_between_pins("D3", esd_pin, "J6", jack_pin)
 
-    for pin in ("6", "7", "9", "10"):
-        p = sch.get_component_pin_position("D3", pin)
-        if p is not None:
-            sch.no_connects.add(position=(p.x, p.y))
+    sch.components.add(
+        "power:PWR_FLAG",
+        "#FLG0603",
+        "PWR_FLAG",
+        pos(74, 39),
+    )
+    sch.add_wire_between_pins("D3", "3", "#FLG0603", "1")
+    sch.add_wire_between_pins("D3", "8", "#FLG0603", "1")
 
     # Four 49.9-ohm MDI terminations to analog 3.3V rail.
     for ref, net in {
@@ -1103,14 +1087,7 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
         add_pin_label(sch, net, ref, "1")
         add_pin_label(sch, "3V3", ref, "2")
 
-    # MagJack PHY-side pairs.
-    for pin, net in {
-        "1": "ETH_TXP",
-        "3": "ETH_TXN",
-        "4": "ETH_RXP",
-        "6": "ETH_RXN",
-    }.items():
-        add_pin_label(sch, net, "J6", pin)
+    # MagJack PHY-side pairs are wired explicitly through D3 above.
 
     # TX/RX center taps tied together and AC-shunted to ground.
     add_pin_label(sch, "ETH_CT", "J6", "2")
