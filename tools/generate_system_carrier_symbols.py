@@ -190,6 +190,17 @@ def _symbol_text(
         pin_name = str(row["pin_name"]).strip()
         role = str(row["electrical_role"]).strip()
         ptype = PIN_TYPE[role]
+
+        # TPS62132 exposes three internally common SW package pins.
+        # Model one as the power-output source and the other duplicated
+        # package contacts as passive to avoid false output-vs-output ERC.
+        if (
+            name == "TPS62132RGTR"
+            and role == "POWER_SWITCH"
+            and pin_num in {"2", "3"}
+        ):
+            ptype = "passive"
+
         y = half_height - pitch * (index + 1)
         x = -half_width - 2.54 if left_side else half_width + 2.54
         angle = 0 if left_side else 180
