@@ -639,6 +639,7 @@ jobs:
           python -m tools.carrier_erc_triage \
             build-cad/system_carrier/erc.json \
             --output build-cad/system_carrier/erc_triage.json
+          cat build-cad/system_carrier/erc_triage.json
           python - <<'PY'
           import json
           from pathlib import Path
