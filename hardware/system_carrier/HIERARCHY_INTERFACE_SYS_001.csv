@@ -61,6 +61,7 @@ ETHERNET,ETH_TX_EN,input,U3,16,P1,RMII transmit enable
 ETHERNET,ETH_TXD0,input,U3,17,P1,RMII TXD0
 ETHERNET,ETH_TXD1,input,U3,18,P1,RMII TXD1
 ETHERNET,ETH_NRST,input,U3,15,P1,PHY controlled reset
+DEBUG_BOOT,3V3,input,R70,2,P1,Service boot override supply
 DEBUG_BOOT,GND,passive,SW1,2,P0,Service return
 DEBUG_BOOT,NRST,bidirectional,SW1,1,P0,Reset switch
 DEBUG_BOOT,BOOT0,passive,R70,1,P1,Service boot override
