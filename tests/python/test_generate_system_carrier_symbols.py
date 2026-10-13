@@ -22,7 +22,7 @@ def test_generates_expected_local_symbols(tmp_path):
 
     assert result["schema"] == "SYSTEM-CARRIER-LOCAL-SYMBOL-LIBRARY-001"
     assert result["status"] == "GENERATED"
-    assert result["symbol_count"] == 8
+    assert result["symbol_count"] == 9
     assert output.is_file()
 
     names = {
