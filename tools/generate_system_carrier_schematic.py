@@ -263,6 +263,26 @@ def mark_unused_mcu_gpio_no_connect(
     return count
 
 
+def add_power_flag(
+    sch,
+    reference: str,
+    net_name: str,
+    position: tuple[float, float],
+) -> None:
+    sch.components.add(
+        "power:PWR_FLAG",
+        reference,
+        "PWR_FLAG",
+        position,
+    )
+    add_pin_label(
+        sch,
+        net_name,
+        reference,
+        "1",
+    )
+
+
 def add_pin_label(
     sch,
     net_name: str,
@@ -403,6 +423,12 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "VIN_RAW", "#FLG0201", "1")
 
     add_pin_label(sch, "VIN_RAW", "J1", "1")
+    add_power_flag(
+        sch,
+        "#FLG1001",
+        "VIN_RAW",
+        pos(20, 18),
+    )
     add_pin_label(sch, "GND", "J1", "2")
     add_pin_label(sch, "VIN_RAW", "D1", "1")
     add_pin_label(sch, "GND", "D1", "2")
@@ -417,7 +443,8 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "GND", "R63", "2")
     sch.add_wire_between_pins("U6", "9", "R1", "1")
     add_pin_label(sch, "GND", "R1", "2")
-    sch.add_wire_between_pins("U6", "7", "C6D", "1")
+    add_pin_label(sch, "U6_DVDT", "U6", "7")
+    add_pin_label(sch, "U6_DVDT", "C6D", "1")
     add_pin_label(sch, "GND", "C6D", "2")
     add_pin_label(sch, "SYS_EFUSE_FLT", "R6F", "1")
     add_pin_label(sch, "3V3", "R6F", "2")
@@ -436,7 +463,8 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "GND", "R73", "2")
     sch.add_wire_between_pins("U7", "9", "R2", "1")
     add_pin_label(sch, "GND", "R2", "2")
-    sch.add_wire_between_pins("U7", "7", "C7D", "1")
+    add_pin_label(sch, "U7_DVDT", "U7", "7")
+    add_pin_label(sch, "U7_DVDT", "C7D", "1")
     add_pin_label(sch, "GND", "C7D", "2")
     add_pin_label(sch, "RADAR_EFUSE_FLT", "R7F", "1")
     add_pin_label(sch, "3V3", "R7F", "2")
@@ -675,6 +703,12 @@ def populate_mcu(
         "1",
     )
     add_pin_label(sch, "GND", "C14", "2")
+    add_power_flag(
+        sch,
+        "#FLG2001",
+        "VDDA_FILTERED",
+        pos(40, 18),
+    )
 
     # BOOT0 default-low strap.
     sch.add_wire_between_pins(
