@@ -1027,6 +1027,49 @@ def sheet_pin_root_position(
     )
 
 
+def normalize_serialized_hierarchy_shapes(
+    schematic_path: Path,
+    rows: list[dict[str, str]],
+) -> None:
+    """Correct hierarchical-label shapes after kicad-sch-api serialization.
+
+    kicad-sch-api 0.x currently serializes generated hierarchical labels
+    as input regardless of the requested electrical type.  The contract
+    remains authoritative, so patch only the shape token immediately
+    following each known hierarchical label.  Real kicad-cli ERC then
+    validates the resulting native KiCad schematic.
+    """
+    text = schematic_path.read_text(encoding="utf-8")
+
+    for row in rows:
+        net_name = str(row["net_name"]).strip()
+        pin_type = str(row["pin_type"]).strip()
+        pattern = (
+            r'(\(hierarchical_label\s+"'
+            + re.escape(net_name)
+            + r'"\s*\n\s*\(shape\s+)'
+            + r'(input|output|bidirectional|tri_state|passive)'
+            + r'(\))'
+        )
+        text, count = re.subn(
+            pattern,
+            lambda match: (
+                match.group(1)
+                + pin_type
+                + match.group(3)
+            ),
+            text,
+            count=1,
+        )
+        if count != 1:
+            raise ValueError(
+                "unable to normalize hierarchical label:"
+                f"{net_name}:{pin_type}:{schematic_path.name}"
+            )
+
+    schematic_path.write_text(text, encoding="utf-8")
+
+
 def add_child_hierarchy_labels(
     sch,
     rows: list[dict[str, str]],
@@ -1316,7 +1359,15 @@ def build(output_dir: Path) -> dict:
             ),
         )
 
-        child.save(str(output_dir / filename))
+        child_path = output_dir / filename
+        child.save(str(child_path))
+        normalize_serialized_hierarchy_shapes(
+            child_path,
+            hierarchy_rows_for_sheet(
+                hierarchy_rows,
+                name,
+            ),
+        )
 
     (output_dir / f"{PROJECT_NAME}.kicad_pro").write_text(
         json.dumps(
