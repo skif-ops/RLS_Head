@@ -337,7 +337,7 @@ def populate_mcu(
 
     # Power-domain support components required by the Rev.A contract.
     sch.components.add(
-        "Device:Ferrite_Bead",
+        "Device:L_Ferrite",
         "FB1",
         "BLM18BD601SH1",
         pos(30, 18),
