@@ -64,6 +64,10 @@ add_library(config_lock STATIC
     src/config_lock.c
 )
 
+add_library(gnss_service STATIC
+    src/gnss_service.c
+)
+
 target_include_directories(hil_r1 PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -120,6 +124,10 @@ target_include_directories(config_lock PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_include_directories(gnss_service PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 if(MSVC)
     target_compile_options(hil_r1 PRIVATE /W4 /WX)
     target_compile_options(hil_r2 PRIVATE /W4 /WX)
@@ -135,6 +143,7 @@ if(MSVC)
     target_compile_options(capture_router PRIVATE /W4 /WX)
     target_compile_options(ethernet_reset PRIVATE /W4 /WX)
     target_compile_options(config_lock PRIVATE /W4 /WX)
+    target_compile_options(gnss_service PRIVATE /W4 /WX)
 else()
     target_compile_options(hil_r1 PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(hil_r2 PRIVATE -Wall -Wextra -Wpedantic -Werror)
@@ -150,6 +159,7 @@ else()
     target_compile_options(capture_router PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(ethernet_reset PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(config_lock PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(gnss_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_link_libraries(hil_r1 PUBLIC m)
     target_link_libraries(hil_r2 PUBLIC m)
 endif()
@@ -362,6 +372,20 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     endif()
 
     add_test(NAME carrier_config_lock COMMAND test_config_lock)
+
+    add_executable(test_gnss_service
+        tests/test_gnss_service.c
+    )
+
+    target_link_libraries(test_gnss_service PRIVATE gnss_service)
+
+    if(MSVC)
+        target_compile_options(test_gnss_service PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_gnss_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+
+    add_test(NAME carrier_gnss_service COMMAND test_gnss_service)
 endif()
 
 if(HIL_BUILD_STM32H753_SMOKE)
@@ -405,6 +429,7 @@ if(HIL_BUILD_STM32H753_SMOKE)
         capture_router
         ethernet_reset
         config_lock
+        gnss_service
         c
         nosys
     )
