@@ -350,7 +350,7 @@ def generate(
     (exclude_from_sim yes)
     (in_bom no)
     (on_board no)
-    (property "Reference" "#SRC" (at 0 2.54 0)
+    (property "Reference" "SRC" (at 0 2.54 0)
       (effects (font (size 1.27 1.27)) hide))
     (property "Value" "ERC_LOCAL_POWER_SOURCE" (at 0 -2.54 0)
       (effects (font (size 1.27 1.27)) hide))
@@ -371,7 +371,7 @@ def generate(
     manifest_symbols.append(
         {
             "name": "ERC_LOCAL_POWER_SOURCE",
-            "refs": ["#SRC"],
+            "refs": ["SRC"],
             "pin_count": 1,
             "footprint": "",
         }
