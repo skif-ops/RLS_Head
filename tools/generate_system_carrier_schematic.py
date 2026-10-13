@@ -758,42 +758,31 @@ def populate_imu(sch, placeholders: list[dict]) -> None:
         placeholders,
     )
 
-    sch.components.add(
-        "Device:C",
-        "C20",
-        "100nF",
-        pos(38, 42),
-    )
-    sch.components.add(
-        "Device:C",
-        "C21",
-        "2.2uF",
-        pos(45, 42),
-    )
-    sch.components.add(
-        "Device:C",
-        "C22",
-        "10nF",
-        pos(52, 42),
-    )
+    sch.components.add("Device:C", "C20", "100nF", pos(38, 42))
+    sch.components.add("Device:C", "C21", "2.2uF", pos(45, 42))
+    sch.components.add("Device:C", "C22", "10nF", pos(52, 42))
 
-    for name, p in [
-        ("3V3", pos(34, 18)),
-        ("GND", pos(34, 54)),
-        ("IMU_NSS", pos(34, 26)),
-        ("IMU_SCK", pos(34, 31)),
-        ("IMU_MISO", pos(34, 36)),
-        ("IMU_MOSI", pos(34, 41)),
-        ("IMU_DRDY", pos(70, 28)),
-    ]:
-        sch.add_label(name, position=p)
+    # VDDIO and mandatory ground/unused-function handling from the
+    # authoritative ICM-42688-P pin contract.
+    add_pin_label(sch, "3V3", "U2", "5")
+    add_pin_label(sch, "GND", "U2", "7")
+    add_pin_label(sch, "GND", "U2", "9")
+
+    # Local VDD/VDDIO decoupling.
+    add_pin_label(sch, "3V3", "C20", "1")
+    add_pin_label(sch, "GND", "C20", "2")
+    add_pin_label(sch, "3V3", "C21", "1")
+    add_pin_label(sch, "GND", "C21", "2")
+    add_pin_label(sch, "3V3", "C22", "1")
+    add_pin_label(sch, "GND", "C22", "2")
 
     sch.add_text(
-        "C20/C21 are local VDD decoupling. C22 is the dedicated VDDIO 10nF bypass.\n"
-        "Unused RESV/FSYNC pins are resolved by the final pin contract, not by an arbitrary pull resistor.",
+        "C20/C21 are VDD decoupling; C22 is the dedicated VDDIO 10nF bypass.\n"
+        "Pin7 RESV and pin9 FSYNC are tied to GND per the Rev.A pin contract.",
         position=pos(18, 61),
         size=1.0,
     )
+
 
 def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
     sch.add_text(
