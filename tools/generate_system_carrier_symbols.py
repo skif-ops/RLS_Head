@@ -19,7 +19,7 @@ PIN_TYPE = {
     "DIGITAL_OUT": "output",
     "DIGITAL_OUT_STRAP": "output",
     "ANALOG_OUT": "output",
-    "POWER_SWITCH": "power_out",
+    "POWER_SWITCH": "passive",
     "POWER_OUT": "power_out",
     "OPEN_DRAIN_OUT": "open_collector",
     "DIGITAL_IO": "bidirectional",
