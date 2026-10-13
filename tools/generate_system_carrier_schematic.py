@@ -1014,7 +1014,7 @@ def sheet_pin_root_position(
     width, height = sheet_size
 
     if edge == "left":
-        return (x, y + offset)
+        return (x, y + height - offset)
     if edge == "right":
         return (x + width, y + offset)
     if edge == "top":
@@ -1109,15 +1109,6 @@ def add_child_hierarchy_labels(
                 HierarchicalLabelShape.PASSIVE,
         }[pin_type]
 
-        label_position = (
-            position.x - 5.08,
-            position.y,
-        )
-        sch.wires.add(
-            start=(position.x, position.y),
-            end=label_position,
-        )
-
         # kicad-sch-api hierarchy validation keys off the
         # hierarchical label electrical type. Prefer the explicit
         # label_type API; retain shape as a compatibility fallback.
@@ -1125,12 +1116,18 @@ def add_child_hierarchy_labels(
             sch.add_hierarchical_label(
                 text=net_name,
                 label_type=pin_type,
-                position=label_position,
+                position=(
+                    position.x,
+                    position.y,
+                ),
             )
         except TypeError:
             sch.add_hierarchical_label(
                 text=net_name,
-                position=label_position,
+                position=(
+                    position.x,
+                    position.y,
+                ),
                 shape=shape,
             )
 
