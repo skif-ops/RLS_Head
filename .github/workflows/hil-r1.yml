@@ -589,6 +589,9 @@ jobs:
             --format json \
             --output build-cad/system_carrier/erc.json \
             build-cad/system_carrier/EVT_SYS_CARRIER.kicad_sch
+          python -m tools.carrier_erc_triage \
+            build-cad/system_carrier/erc.json \
+            --output build-cad/system_carrier/erc_triage.json
           python - <<'PY'
           import json
           from pathlib import Path
