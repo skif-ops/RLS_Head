@@ -1109,26 +1109,28 @@ def add_child_hierarchy_labels(
                 HierarchicalLabelShape.PASSIVE,
         }[pin_type]
 
+        label_position = (
+            position.x - 5.08,
+            position.y,
+        )
+        sch.wires.add(
+            start=(position.x, position.y),
+            end=label_position,
+        )
+
         # kicad-sch-api hierarchy validation keys off the
-        # hierarchical label electrical type.  Prefer the explicit
-        # label_type API; retain shape as a compatibility fallback for
-        # releases that expose only the enum-based signature.
+        # hierarchical label electrical type. Prefer the explicit
+        # label_type API; retain shape as a compatibility fallback.
         try:
             sch.add_hierarchical_label(
                 text=net_name,
                 label_type=pin_type,
-                position=(
-                    position.x,
-                    position.y,
-                ),
+                position=label_position,
             )
         except TypeError:
             sch.add_hierarchical_label(
                 text=net_name,
-                position=(
-                    position.x,
-                    position.y,
-                ),
+                position=label_position,
                 shape=shape,
             )
 
@@ -1294,11 +1296,36 @@ def build(output_dir: Path) -> dict:
                     offset,
                 )
             )
+            stub = 5.08
+            if edge == "left":
+                label_position = (
+                    root_position[0] - stub,
+                    root_position[1],
+                )
+            elif edge == "right":
+                label_position = (
+                    root_position[0] + stub,
+                    root_position[1],
+                )
+            elif edge == "top":
+                label_position = (
+                    root_position[0],
+                    root_position[1] - stub,
+                )
+            else:
+                label_position = (
+                    root_position[0],
+                    root_position[1] + stub,
+                )
+            main.wires.add(
+                start=root_position,
+                end=label_position,
+            )
             main.add_label(
                 str(
                     item["net_name"]
                 ).strip(),
-                position=root_position,
+                position=label_position,
             )
 
     main.add_text(
