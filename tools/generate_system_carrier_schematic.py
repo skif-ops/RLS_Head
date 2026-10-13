@@ -40,6 +40,7 @@ SYMBOL_LIBRARIES = {
     "Connector": "${KICAD9_SYMBOL_DIR}/Connector.kicad_sym",
     "RF_GPS": "${KICAD9_SYMBOL_DIR}/RF_GPS.kicad_sym",
     "Switch": "${KICAD9_SYMBOL_DIR}/Switch.kicad_sym",
+    "power": "${KICAD9_SYMBOL_DIR}/power.kicad_sym",
     "MCU_ST_STM32H7": "${KICAD9_SYMBOL_DIR}/MCU_ST_STM32H7.kicad_sym",
     "Interface_Ethernet": "${KICAD9_SYMBOL_DIR}/Interface_Ethernet.kicad_sym",
 }
@@ -393,6 +394,13 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     sch.components.add("Device:C", "C6D", "3.3nF", pos(43, 36))
     sch.components.add("Device:C", "C7D", "3.3nF", pos(43, 54))
     sch.components.add("Connector_Generic:Conn_01x02", "J2", "RADAR_12V_OUT", pos(75, 50))
+    sch.components.add(
+        "power:PWR_FLAG",
+        "#FLG0201",
+        "PWR_FLAG",
+        pos(20, 28),
+    )
+    add_pin_label(sch, "VIN_RAW", "#FLG0201", "1")
 
     add_pin_label(sch, "VIN_RAW", "J1", "1")
     add_pin_label(sch, "GND", "J1", "2")
@@ -537,9 +545,9 @@ def populate_mcu(
     )
     sch.components.add(
         "power:PWR_FLAG",
-        "#FLG0102",
+        "#FLG0103",
         "PWR_FLAG",
-        pos(22, 52),
+        pos(40, 18),
     )
 
     # Bind every assigned MCU signal directly to the authoritative net name.
@@ -651,8 +659,8 @@ def populate_mcu(
     )
     add_pin_label(
         sch,
-        "GND",
-        "#FLG0102",
+        "VDDA_FILTERED",
+        "#FLG0103",
         "1",
     )
 
@@ -696,6 +704,18 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
     sch.components.add("Device:C", "C82", "100nF DNP_OPTION", pos(78, 48))
     sch.components.add("Device:R", "R81", "100k 1% VUSB_PD", pos(57, 48))
     sch.components.add("Device:R", "R82", "0R V_BCKP", pos(57, 53))
+    sch.components.add(
+        "power:PWR_FLAG",
+        "#FLG0301",
+        "PWR_FLAG",
+        pos(64, 53),
+    )
+    sch.components.add(
+        "power:PWR_FLAG",
+        "#FLG0302",
+        "PWR_FLAG",
+        pos(64, 48),
+    )
 
     # Main supply decoupling.
     add_pin_label(sch, "3V3", "C80", "1")
@@ -705,8 +725,10 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
 
     # Backup-domain and unused USB supply requirements.
     sch.add_wire_between_pins("U8", "22", "R82", "1")
+    sch.add_wire_between_pins("U8", "22", "#FLG0301", "1")
     add_pin_label(sch, "3V3", "R82", "2")
     sch.add_wire_between_pins("U8", "7", "R81", "1")
+    sch.add_wire_between_pins("U8", "7", "#FLG0302", "1")
     add_pin_label(sch, "GND", "R81", "2")
 
     # Internal straps intentionally left open by contract.
@@ -911,6 +933,18 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
     sch.components.add("Device:C", "C62", "100nF", pos(36, 45))
     sch.components.add("Device:C", "C63", "22nF C0G", pos(82, 54))
     sch.components.add("Device:R", "R65", "10k 1% NRST_PD", pos(58, 51))
+    sch.components.add(
+        "power:PWR_FLAG",
+        "#FLG0601",
+        "PWR_FLAG",
+        pos(54, 45),
+    )
+    sch.components.add(
+        "power:PWR_FLAG",
+        "#FLG0602",
+        "PWR_FLAG",
+        pos(94, 50),
+    )
 
     # LAN8742 power and mandatory local bias/support network.
     for pin in ("1", "9", "19"):
@@ -922,6 +956,7 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "GND", "R60", "2")
 
     sch.add_wire_between_pins("U3", "6", "C60", "1")
+    sch.add_wire_between_pins("C60", "1", "#FLG0601", "1")
     add_pin_label(sch, "GND", "C60", "2")
 
     # Local 3V3 decoupling / analog filter caps.
@@ -998,6 +1033,17 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "ETH_CT", "C63", "1")
     add_pin_label(sch, "GND", "C63", "2")
 
+    # SI-60182-F P8 is the external Bob-Smith/EMI return and SH is
+    # the panel/shield domain. Tie both to the external chassis net.
+    sch.add_wire_between_pins("J6", "8", "J6", "SH")
+    sch.add_wire_between_pins("J6", "8", "#FLG0602", "1")
+
+    # LEDs are not used in Rev.A firmware/harness; leave them explicit NC.
+    for pin in ("L1", "L2", "L3", "L4"):
+        p = sch.get_component_pin_position("J6", pin)
+        if p is not None:
+            sch.no_connects.add(position=(p.x, p.y))
+
     sch.add_text(
         "R60 = PHY RBIAS. R61-R64 = 49.9R MDI terminations to 3V3.\n"
         "C60 = VDDCR. C63 = 22nF center-tap AC shunt.\n"
@@ -1029,17 +1075,6 @@ def populate_debug_boot(sch, placeholders: list[dict]) -> None:
         "0R DNP_BOOT_OVERRIDE",
         pos(52, 42),
     )
-
-    for name, p in [
-        ("3V3", pos(34, 18)),
-        ("GND", pos(34, 54)),
-        ("SWDIO", pos(34, 26)),
-        ("SWCLK", pos(34, 31)),
-        ("SWO", pos(34, 36)),
-        ("NRST", pos(66, 30)),
-        ("BOOT0", pos(66, 42)),
-    ]:
-        sch.add_label(name, position=p)
 
     sch.add_text(
         "Primary Tag-Connect SWD connector remains captured with MCU_CORE.\n"
