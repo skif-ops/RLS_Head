@@ -8,6 +8,9 @@ import shutil
 from pathlib import Path
 
 import kicad_sch_api as ksa
+from kicad_sch_api.core.pin_utils import (
+    get_component_pin_info,
+)
 from kicad_sch_api.core.types import (
     HierarchicalLabelShape,
 )
@@ -269,17 +272,51 @@ def add_pin_label(
     reference: str,
     pin_number: str,
 ) -> None:
-    if sch.get_component_pin_position(
-        reference,
+    component = sch.components.get(reference)
+    if component is None:
+        raise ValueError(
+            f"missing component:{reference}"
+        )
+
+    pin_info = get_component_pin_info(
+        component,
         pin_number,
-    ) is None:
+    )
+    if pin_info is None:
         raise ValueError(
             f"missing pin:{reference}:{pin_number}"
         )
 
+    pin_position, pin_rotation = pin_info
+    rotation = int(round(pin_rotation)) % 360
+    direction = {
+        0: (-1.0, 0.0),
+        90: (0.0, 1.0),
+        180: (1.0, 0.0),
+        270: (0.0, -1.0),
+    }.get(rotation)
+    if direction is None:
+        raise ValueError(
+            f"unsupported pin rotation:"
+            f"{reference}:{pin_number}:{pin_rotation}"
+        )
+
+    stub = 2.54
+    label_position = (
+        pin_position.x + direction[0] * stub,
+        pin_position.y + direction[1] * stub,
+    )
+    sch.wires.add(
+        start=(
+            pin_position.x,
+            pin_position.y,
+        ),
+        end=label_position,
+    )
     sch.add_label(
         net_name,
-        pin=(reference, pin_number),
+        position=label_position,
+        rotation=(rotation + 180) % 360,
     )
 
 
