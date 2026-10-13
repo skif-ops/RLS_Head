@@ -11,6 +11,7 @@
 #include "rls/evidence_export.h"
 #include "rls/capture_router.h"
 #include "rls/ethernet_reset.h"
+#include "rls/config_lock.h"
 #include "stm32h753_memory.h"
 
 #include <stddef.h>
@@ -241,6 +242,25 @@ int main(void)
             &capture_router,
             &capture_event);
 
+    static const uint8_t carrier_config[] = {
+        0x52u, 0x4Cu, 0x53u, 0x01u
+    };
+    rls_config_lock_t config_lock;
+    rls_config_lock_init(&config_lock);
+    const bool config_lock_ok =
+        rls_config_lock_stage(
+            &config_lock,
+            1u,
+            carrier_config,
+            sizeof(carrier_config))
+        && rls_config_lock_commit(
+            &config_lock)
+        && rls_config_lock_verify(
+            &config_lock,
+            1u,
+            carrier_config,
+            sizeof(carrier_config));
+
     rls_ethernet_reset_t eth_reset;
     rls_ethernet_reset_init(&eth_reset);
     const bool eth_reset_ok =
@@ -297,7 +317,10 @@ int main(void)
             : UINT32_C(0x40000000)) ^
         (eth_reset_ok
             ? UINT32_C(0x00000080)
-            : UINT32_C(0x08000000));
+            : UINT32_C(0x08000000)) ^
+        (config_lock_ok
+            ? config_lock.crc32
+            : UINT32_C(0x04000000));
 
     g_smoke_response_len =
         (uint32_t)response_len;
