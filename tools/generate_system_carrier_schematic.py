@@ -430,14 +430,16 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     for pin, net in {"4":"SYS_EFUSE_FLT","5":"VIN_RAW","6":"VIN_PROTECTED","8":"GND"}.items():
         add_pin_label(sch, net, "U6", pin)
     add_pin_label(sch, "VIN_RAW", "R61", "1")
-    sch.add_wire_between_pins("R61", "2", "U6", "1")
-    sch.add_wire_between_pins("U6", "1", "R62", "1")
-    sch.add_wire_between_pins("R62", "2", "U6", "2")
-    sch.add_wire_between_pins("U6", "2", "R63", "1")
+    for ref, pin in [("R61", "2"), ("U6", "1"), ("R62", "1")]:
+        add_pin_label(sch, "SYS_UVLO_DIV", ref, pin)
+    for ref, pin in [("R62", "2"), ("U6", "2"), ("R63", "1")]:
+        add_pin_label(sch, "SYS_OVLO_DIV", ref, pin)
     add_pin_label(sch, "GND", "R63", "2")
-    sch.add_wire_between_pins("U6", "9", "R1", "1")
+    add_pin_label(sch, "U6_ILM", "U6", "9")
+    add_pin_label(sch, "U6_ILM", "R1", "1")
     add_pin_label(sch, "GND", "R1", "2")
-    sch.add_wire_between_pins("U6", "7", "C6D", "1")
+    add_pin_label(sch, "U6_DVDT", "U6", "7")
+    add_pin_label(sch, "U6_DVDT", "C6D", "1")
     add_pin_label(sch, "GND", "C6D", "2")
     add_pin_label(sch, "SYS_EFUSE_FLT", "R6F", "1")
     add_pin_label(sch, "3V3", "R6F", "2")
@@ -449,12 +451,13 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     for pin, net in {"4":"RADAR_EFUSE_FLT","5":"VIN_PROTECTED","6":"RADAR_12V","8":"GND"}.items():
         add_pin_label(sch, net, "U7", pin)
     add_pin_label(sch, "VIN_PROTECTED", "R71", "1")
-    sch.add_wire_between_pins("R71", "2", "U7", "1")
-    sch.add_wire_between_pins("U7", "1", "R72", "1")
-    sch.add_wire_between_pins("R72", "2", "U7", "2")
-    sch.add_wire_between_pins("U7", "2", "R73", "1")
+    for ref, pin in [("R71", "2"), ("U7", "1"), ("R72", "1")]:
+        add_pin_label(sch, "RADAR_UVLO_DIV", ref, pin)
+    for ref, pin in [("R72", "2"), ("U7", "2"), ("R73", "1")]:
+        add_pin_label(sch, "RADAR_OVLO_DIV", ref, pin)
     add_pin_label(sch, "GND", "R73", "2")
-    sch.add_wire_between_pins("U7", "9", "R2", "1")
+    add_pin_label(sch, "U7_ILM", "U7", "9")
+    add_pin_label(sch, "U7_ILM", "R2", "1")
     add_pin_label(sch, "GND", "R2", "2")
     add_pin_label(sch, "U7_DVDT", "U7", "7")
     add_pin_label(sch, "U7_DVDT", "C7D", "1")
@@ -480,7 +483,8 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         p=sch.get_component_pin_position("U5", pin)
         if p is not None:
             sch.no_connects.add(position=(p.x,p.y))
-    sch.add_wire_between_pins("U5", "9", "C3", "1")
+    add_pin_label(sch, "U5_SS", "U5", "9")
+    add_pin_label(sch, "U5_SS", "C3", "1")
     add_pin_label(sch, "GND", "C3", "2")
     for pin in ("10","11","12","13"):
         add_pin_label(sch, "VIN_PROTECTED", "U5", pin)
@@ -631,9 +635,12 @@ def populate_mcu(
     if p is not None:
         sch.no_connects.add(position=(p.x, p.y))
     add_pin_label(sch, "GND", "Y1", "2")
-    sch.add_wire_between_pins("Y1", "3", "U1", "29")
-    sch.add_wire_between_pins("U1", "147", "TP1", "1")
-    sch.add_wire_between_pins("U1", "150", "TP2", "1")
+    add_pin_label(sch, "MCU_HSE_25M", "Y1", "3")
+    add_pin_label(sch, "MCU_HSE_25M", "U1", "29")
+    add_pin_label(sch, "DEBUG_TX", "U1", "147")
+    add_pin_label(sch, "DEBUG_TX", "TP1", "1")
+    add_pin_label(sch, "DEBUG_RX", "U1", "150")
+    add_pin_label(sch, "DEBUG_RX", "TP2", "1")
     add_pin_label(sch, "3V3", "Y1", "4")
     add_pin_label(sch, "3V3", "C15", "1")
     add_pin_label(sch, "GND", "C15", "2")
@@ -655,19 +662,11 @@ def populate_mcu(
     )
 
     # VCAP pins each receive their own 2.2 uF low-ESR capacitor.
-    sch.add_wire_between_pins(
-        "U1",
-        "81",
-        "C10",
-        "1",
-    )
+    add_pin_label(sch, "MCU_VCAP1", "U1", "81")
+    add_pin_label(sch, "MCU_VCAP1", "C10", "1")
     add_pin_label(sch, "GND", "C10", "2")
-    sch.add_wire_between_pins(
-        "U1",
-        "125",
-        "C11",
-        "1",
-    )
+    add_pin_label(sch, "MCU_VCAP2", "U1", "125")
+    add_pin_label(sch, "MCU_VCAP2", "C11", "1")
     add_pin_label(sch, "GND", "C11", "2")
 
     # Digital bulk capacitor.
@@ -698,12 +697,7 @@ def populate_mcu(
     add_pin_label(sch, "GND", "C14", "2")
 
     # BOOT0 default-low strap.
-    sch.add_wire_between_pins(
-        "U1",
-        "166",
-        "R10",
-        "1",
-    )
+    add_pin_label(sch, "BOOT0", "R10", "1")
     add_pin_label(sch, "GND", "R10", "2")
 
     # SWD Tag-Connect pinout from CONNECTOR_PINOUT_SYS_001.
@@ -796,11 +790,11 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "GND", "C81", "2")
 
     # Backup-domain and unused USB supply requirements.
-    sch.add_wire_between_pins("U8", "22", "R82", "1")
-    sch.add_wire_between_pins("U8", "22", "#FLG0301", "1")
+    for ref, pin in [("U8", "22"), ("R82", "1"), ("#FLG0301", "1")]:
+        add_pin_label(sch, "GNSS_BCKP_LOCAL", ref, pin)
     add_pin_label(sch, "3V3", "R82", "2")
-    sch.add_wire_between_pins("U8", "7", "R81", "1")
-    sch.add_wire_between_pins("U8", "7", "#FLG0302", "1")
+    for ref, pin in [("U8", "7"), ("R81", "1"), ("#FLG0302", "1")]:
+        add_pin_label(sch, "GNSS_VUSB_LOCAL", ref, pin)
     add_pin_label(sch, "GND", "R81", "2")
 
     # Internal straps intentionally left open by contract.
@@ -909,9 +903,11 @@ def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
         add_pin_label(sch, "GND", "U4", "EP")
 
     # Deterministic normal mode defaults.
-    sch.add_wire_between_pins("U4", "8", "R41", "1")
+    add_pin_label(sch, "CAN_STB_PD", "U4", "8")
+    add_pin_label(sch, "CAN_STB_PD", "R41", "1")
     add_pin_label(sch, "GND", "R41", "2")
-    sch.add_wire_between_pins("U4", "5", "R42", "1")
+    add_pin_label(sch, "CAN_SHDN_PD", "U4", "5")
+    add_pin_label(sch, "CAN_SHDN_PD", "R42", "1")
     add_pin_label(sch, "GND", "R42", "2")
 
     # CAN bus and ESD.
@@ -1024,11 +1020,12 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
     if sch.get_component_pin_position("U3", "25") is not None:
         add_pin_label(sch, "GND", "U3", "25")
 
-    sch.add_wire_between_pins("U3", "24", "R60", "1")
+    add_pin_label(sch, "ETH_RBIAS_LOCAL", "U3", "24")
+    add_pin_label(sch, "ETH_RBIAS_LOCAL", "R60", "1")
     add_pin_label(sch, "GND", "R60", "2")
 
-    sch.add_wire_between_pins("U3", "6", "C60", "1")
-    sch.add_wire_between_pins("C60", "1", "#FLG0601", "1")
+    for ref, pin in [("U3", "6"), ("C60", "1"), ("#FLG0601", "1")]:
+        add_pin_label(sch, "ETH_VDDCR_LOCAL", ref, pin)
     add_pin_label(sch, "GND", "C60", "2")
 
     # Local 3V3 decoupling / analog filter caps.
@@ -1123,8 +1120,8 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
 
     # SI-60182-F P8 is the external Bob-Smith/EMI return and SH is
     # the panel/shield domain. Tie both to the external chassis net.
-    sch.add_wire_between_pins("J6", "8", "J6", "SH")
-    sch.add_wire_between_pins("J6", "8", "#FLG0602", "1")
+    for ref, pin in [("J6", "8"), ("J6", "SH"), ("#FLG0602", "1")]:
+        add_pin_label(sch, "ETH_CHASSIS", ref, pin)
 
     # LEDs are not used in Rev.A firmware/harness; leave them explicit NC.
     for pin in ("L1", "L2", "L3", "L4"):
