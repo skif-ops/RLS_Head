@@ -517,6 +517,20 @@ def populate_mcu(
         "TC2030_SWD",
         pos(83, 52),
     )
+    add_local_symbol(
+        sch,
+        "Y1",
+        "ECS-2520S33-250-FN-TR",
+        "ECS-2520S33-250-FN-TR",
+        pos(25, 12),
+        placeholders,
+    )
+    sch.components.add(
+        "Device:C",
+        "C15",
+        "100nF",
+        pos(34, 12),
+    )
 
     validate_mcu_pinmap_against_symbol(
         sch,
@@ -558,13 +572,28 @@ def populate_mcu(
         net_name = str(
             row.get("net_name", "")
         ).strip()
-        if physical and net_name:
+        if (
+            physical
+            and net_name
+            and net_name != "MCU_HSE_25M"
+        ):
             add_pin_label(
                 sch,
                 net_name,
                 "U1",
                 physical,
             )
+
+    # Dedicated 25 MHz STM32 HSE oscillator.
+    # ECS-2520S pin1 may be NC for active operation.
+    p = sch.get_component_pin_position("Y1", "1")
+    if p is not None:
+        sch.no_connects.add(position=(p.x, p.y))
+    add_pin_label(sch, "GND", "Y1", "2")
+    sch.add_wire_between_pins("Y1", "3", "U1", "29")
+    add_pin_label(sch, "3V3", "Y1", "4")
+    add_pin_label(sch, "3V3", "C15", "1")
+    add_pin_label(sch, "GND", "C15", "2")
 
     # Core and analog supply pins.
     add_labels_by_pin_name(
@@ -1623,7 +1652,7 @@ def build(output_dir: Path) -> dict:
         "notes": [
             "This is an authoritative generated CAD scaffold, not Review A.",
             "POWER_INPUT and MCU_CORE contain initial capture content.",
-            "Local U2/U4/U5/U6/U7/Y2/D3/D4 symbols are generated from authoritative pin contracts.",
+            "Local U2/U4/U5/U6/U7/Y1/Y2/D3/D4 symbols are generated from authoritative pin contracts.",
             "Remaining placeholder symbols must be replaced before CARRIER_REVIEW_A.",
             "Real KiCad ERC is generated in CI and may contain expected capture-stage violations.",
         ],
