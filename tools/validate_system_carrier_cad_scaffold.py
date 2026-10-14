@@ -96,9 +96,9 @@ def validate(root: Path) -> dict:
         local_symbol_count = int(
             local_manifest.get("symbol_count", 0)
         )
-        if local_symbol_count != 8:
+        if local_symbol_count != 9:
             errors.append(
-                f"local_symbol_count:{local_symbol_count}!=8"
+                f"local_symbol_count:{local_symbol_count}!=9"
             )
 
     pending_refs = {
