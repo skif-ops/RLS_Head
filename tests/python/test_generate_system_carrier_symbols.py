@@ -38,6 +38,7 @@ def test_generates_expected_local_symbols(tmp_path):
         "ECS-2520S33-500-FN-TR",
         "ESD2CANFD24DBZRQ1",
         "TPD4E05U06DQAR",
+        "ERC_LOCAL_POWER_SOURCE",
     }
 
 
