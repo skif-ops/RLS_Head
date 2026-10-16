@@ -10,6 +10,10 @@ from pathlib import Path
 import kicad_sch_api as ksa
 from kicad_sch_api.core.types import (
     HierarchicalLabelShape,
+    PinType,
+)
+from kicad_sch_api.library.cache import (
+    get_symbol_cache,
 )
 
 from tools.generate_system_carrier_symbols import (
@@ -546,6 +550,37 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "GND", "J2", "2")
 
 
+def normalize_stm32_vss_cache_for_carrier() -> None:
+    """Make the stock STM32 VSS representative pin ERC-passive before use.
+
+    KiCad's STM32H753 symbol marks pin 14 VSS as the one power-input
+    representative while the other VSS pins are passive. The carrier has
+    a real ground return through hierarchy but kicad-sch-api does not carry
+    a stable cross-sheet power-output source. Adjust the cached library
+    definition before instantiation so both embedded lib symbol and U1 use
+    the same electrical type.
+    """
+    lib_id = "MCU_ST_STM32H7:STM32H753IITx"
+    symbol = get_symbol_cache().get_symbol(lib_id)
+    if symbol is None:
+        raise ValueError(
+            f"missing cached symbol:{lib_id}"
+        )
+
+    matches = [
+        pin
+        for pin in symbol.pins
+        if str(pin.number) == "14"
+        and str(pin.name) == "VSS"
+    ]
+    if len(matches) != 1:
+        raise ValueError(
+            f"unexpected STM32 VSS14 count:{len(matches)}"
+        )
+
+    matches[0].pin_type = PinType.PASSIVE
+
+
 def populate_mcu(
     sch,
     placeholders: list[dict],
@@ -558,6 +593,8 @@ def populate_mcu(
         position=pos(18, 9),
         size=1.27,
     )
+
+    normalize_stm32_vss_cache_for_carrier()
 
     try:
         sch.components.add(
