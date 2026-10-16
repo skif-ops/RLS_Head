@@ -1369,6 +1369,69 @@ def normalize_serialized_hierarchy_shapes(
     schematic_path.write_text(text, encoding="utf-8")
 
 
+def normalize_serialized_mcu_vss_erc_type(
+    schematic_path: Path,
+) -> None:
+    """Normalize only STM32 VSS pin 14 from power_in to passive.
+
+    KiCad's stock STM32H753 symbol marks one representative VSS pin as
+    power_in while the remaining VSS pins are passive. In this generated
+    hierarchical carrier the external ground source is not represented by
+    a stable cross-sheet power-output object, so that single representative
+    pin creates a false power_pin_not_driven error. Patch exactly that pin
+    after serialization and require exactly one match.
+    """
+    lines = schematic_path.read_text(
+        encoding="utf-8"
+    ).splitlines()
+
+    output: list[str] = []
+    index = 0
+    patched = 0
+
+    while index < len(lines):
+        line = lines[index]
+        if line.strip() != "(pin power_in line":
+            output.append(line)
+            index += 1
+            continue
+
+        block = [line]
+        depth = line.count("(") - line.count(")")
+        index += 1
+
+        while index < len(lines) and depth > 0:
+            current = lines[index]
+            block.append(current)
+            depth += current.count("(") - current.count(")")
+            index += 1
+
+        block_text = "\n".join(block)
+        if (
+            '(name "VSS"' in block_text
+            and '(number "14"' in block_text
+        ):
+            block[0] = block[0].replace(
+                "(pin power_in line",
+                "(pin passive line",
+                1,
+            )
+            patched += 1
+
+        output.extend(block)
+
+    if patched != 1:
+        raise ValueError(
+            "expected exactly one STM32 VSS pin 14 ERC patch:"
+            f"{schematic_path.name}:{patched}"
+        )
+
+    schematic_path.write_text(
+        "\n".join(output) + "\n",
+        encoding="utf-8",
+    )
+
+
 def add_child_hierarchy_labels(
     sch,
     rows: list[dict[str, str]],
@@ -1710,6 +1773,10 @@ def build(output_dir: Path) -> dict:
 
         child_path = output_dir / filename
         child.save(str(child_path))
+        if name == "MCU_CORE":
+            normalize_serialized_mcu_vss_erc_type(
+                child_path,
+            )
         normalize_serialized_hierarchy_shapes(
             child_path,
             hierarchy_rows_for_sheet(
