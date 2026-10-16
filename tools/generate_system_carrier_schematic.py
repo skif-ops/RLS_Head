@@ -303,6 +303,56 @@ def add_pin_label(
     )
 
 
+def add_pin_label_stub(
+    sch,
+    net_name: str,
+    reference: str,
+    pin_number: str,
+    *,
+    stub: float = 1.27,
+) -> None:
+    pin = sch.get_component_pin_position(
+        reference,
+        pin_number,
+    )
+    if pin is None:
+        raise ValueError(
+            f"missing pin:{reference}:{pin_number}"
+        )
+
+    component = sch.components.get(reference)
+    if component is None:
+        raise ValueError(
+            f"missing component:{reference}"
+        )
+
+    center = component.position
+    dx = pin.x - center.x
+    dy = pin.y - center.y
+
+    if abs(dx) >= abs(dy):
+        direction = 1.0 if dx >= 0 else -1.0
+        end = (
+            pin.x + direction * stub,
+            pin.y,
+        )
+    else:
+        direction = 1.0 if dy >= 0 else -1.0
+        end = (
+            pin.x,
+            pin.y + direction * stub,
+        )
+
+    sch.wires.add(
+        start=(pin.x, pin.y),
+        end=end,
+    )
+    sch.add_label(
+        net_name,
+        position=end,
+    )
+
+
 def add_labels_by_pin_name(
     sch,
     reference: str,
@@ -790,18 +840,18 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
     )
 
     # Main supply decoupling.
-    add_pin_label(sch, "3V3", "C80", "1")
-    add_pin_label(sch, "GND", "C80", "2")
-    add_pin_label(sch, "3V3", "C81", "1")
-    add_pin_label(sch, "GND", "C81", "2")
+    add_pin_label_stub(sch, "3V3", "C80", "1")
+    add_pin_label_stub(sch, "GND", "C80", "2")
+    add_pin_label_stub(sch, "3V3", "C81", "1")
+    add_pin_label_stub(sch, "GND", "C81", "2")
 
     # Backup-domain and unused USB supply requirements.
     sch.add_wire_between_pins("U8", "22", "R82", "1")
     sch.add_wire_between_pins("U8", "22", "#FLG0301", "1")
-    add_pin_label(sch, "3V3", "R82", "2")
+    add_pin_label_stub(sch, "3V3", "R82", "2")
     sch.add_wire_between_pins("U8", "7", "R81", "1")
     sch.add_wire_between_pins("U8", "7", "#FLG0302", "1")
-    add_pin_label(sch, "GND", "R81", "2")
+    add_pin_label_stub(sch, "GND", "R81", "2")
 
     # Internal straps intentionally left open by contract.
     for pin in ("2", "8"):
@@ -810,22 +860,22 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
             sch.no_connects.add(position=(p.x, p.y))
 
     # RF path: RF_IN / U.FL signal on GNSS_RF, with shunt ESD.
-    add_pin_label(sch, "GNSS_RF", "U8", "11")
-    add_pin_label(sch, "GNSS_RF", "J8", "1")
-    add_pin_label(sch, "GND", "J8", "2")
-    add_pin_label(sch, "GNSS_RF", "D8", "1")
-    add_pin_label(sch, "GND", "D8", "2")
+    add_pin_label_stub(sch, "GNSS_RF", "U8", "11")
+    add_pin_label_stub(sch, "GNSS_RF", "J8", "1")
+    add_pin_label_stub(sch, "GND", "J8", "2")
+    add_pin_label_stub(sch, "GNSS_RF", "D8", "1")
+    add_pin_label_stub(sch, "GND", "D8", "2")
 
     # Optional active-antenna bias-T:
     # VCC_RF -> 10R -> filtered node -> 27nH -> GNSS_RF,
     # with 100nF from filtered node to GND.
-    add_pin_label(sch, "GNSS_VCC_RF", "U8", "9")
-    add_pin_label(sch, "GNSS_VCC_RF", "R80", "1")
-    add_pin_label(sch, "GNSS_BIAS_FILTER", "R80", "2")
-    add_pin_label(sch, "GNSS_BIAS_FILTER", "L80", "1")
-    add_pin_label(sch, "GNSS_RF", "L80", "2")
-    add_pin_label(sch, "GNSS_BIAS_FILTER", "C82", "1")
-    add_pin_label(sch, "GND", "C82", "2")
+    add_pin_label_stub(sch, "GNSS_VCC_RF", "U8", "9")
+    add_pin_label_stub(sch, "GNSS_VCC_RF", "R80", "1")
+    add_pin_label_stub(sch, "GNSS_BIAS_FILTER", "R80", "2")
+    add_pin_label_stub(sch, "GNSS_BIAS_FILTER", "L80", "1")
+    add_pin_label_stub(sch, "GNSS_RF", "L80", "2")
+    add_pin_label_stub(sch, "GNSS_BIAS_FILTER", "C82", "1")
+    add_pin_label_stub(sch, "GND", "C82", "2")
 
     sch.add_text(
         "R82 ties V_BCKP to 3V3 for EVT. R81 pulls unused V_USB to GND.\n"
@@ -858,17 +908,17 @@ def populate_imu(sch, placeholders: list[dict]) -> None:
 
     # VDDIO and mandatory ground/unused-function handling from the
     # authoritative ICM-42688-P pin contract.
-    add_pin_label(sch, "3V3", "U2", "5")
-    add_pin_label(sch, "GND", "U2", "7")
-    add_pin_label(sch, "GND", "U2", "9")
+    add_pin_label_stub(sch, "3V3", "U2", "5")
+    add_pin_label_stub(sch, "GND", "U2", "7")
+    add_pin_label_stub(sch, "GND", "U2", "9")
 
     # Local VDD/VDDIO decoupling.
-    add_pin_label(sch, "3V3", "C20", "1")
-    add_pin_label(sch, "GND", "C20", "2")
-    add_pin_label(sch, "3V3", "C21", "1")
-    add_pin_label(sch, "GND", "C21", "2")
-    add_pin_label(sch, "3V3", "C22", "1")
-    add_pin_label(sch, "GND", "C22", "2")
+    add_pin_label_stub(sch, "3V3", "C20", "1")
+    add_pin_label_stub(sch, "GND", "C20", "2")
+    add_pin_label_stub(sch, "3V3", "C21", "1")
+    add_pin_label_stub(sch, "GND", "C21", "2")
+    add_pin_label_stub(sch, "3V3", "C22", "1")
+    add_pin_label_stub(sch, "GND", "C22", "2")
 
     sch.add_text(
         "C20/C21 are VDD decoupling; C22 is the dedicated VDDIO 10nF bypass.\n"
@@ -903,39 +953,39 @@ def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
     sch.components.add("Device:R", "R42", "10k 1% SHDN_PD", pos(59, 46))
 
     # Transceiver local power and exposed-pad ground.
-    add_pin_label(sch, "3V3", "C40", "1")
-    add_pin_label(sch, "GND", "C40", "2")
+    add_pin_label_stub(sch, "3V3", "C40", "1")
+    add_pin_label_stub(sch, "GND", "C40", "2")
     if sch.get_component_pin_position("U4", "EP") is not None:
-        add_pin_label(sch, "GND", "U4", "EP")
+        add_pin_label_stub(sch, "GND", "U4", "EP")
 
     # Deterministic normal mode defaults.
     sch.add_wire_between_pins("U4", "8", "R41", "1")
-    add_pin_label(sch, "GND", "R41", "2")
+    add_pin_label_stub(sch, "GND", "R41", "2")
     sch.add_wire_between_pins("U4", "5", "R42", "1")
-    add_pin_label(sch, "GND", "R42", "2")
+    add_pin_label_stub(sch, "GND", "R42", "2")
 
     # CAN bus and ESD.
-    add_pin_label(sch, "RADAR_CANH", "D4", "1")
-    add_pin_label(sch, "RADAR_CANL", "D4", "2")
-    add_pin_label(sch, "GND", "D4", "3")
+    add_pin_label_stub(sch, "RADAR_CANH", "D4", "1")
+    add_pin_label_stub(sch, "RADAR_CANL", "D4", "2")
+    add_pin_label_stub(sch, "GND", "D4", "3")
 
     # Radar I/O connector according to CONNECTOR_PINOUT_SYS_001.csv.
-    add_pin_label(sch, "RADAR_CANL", "J4", "1")
-    add_pin_label(sch, "GND", "J4", "2")
-    add_pin_label(sch, "RADAR_CANH", "J4", "3")
-    add_pin_label(sch, "RADAR_REF", "J4", "4")
-    add_pin_label(sch, "GND", "J4", "5")
+    add_pin_label_stub(sch, "RADAR_CANL", "J4", "1")
+    add_pin_label_stub(sch, "GND", "J4", "2")
+    add_pin_label_stub(sch, "RADAR_CANH", "J4", "3")
+    add_pin_label_stub(sch, "RADAR_REF", "J4", "4")
+    add_pin_label_stub(sch, "GND", "J4", "5")
     p = sch.get_component_pin_position("J4", "6")
     if p is not None:
         sch.no_connects.add(position=(p.x, p.y))
 
     # Optional endpoint termination across CANH/CANL.
-    add_pin_label(sch, "RADAR_CANH", "R40", "1")
-    add_pin_label(sch, "RADAR_CANL", "R40", "2")
+    add_pin_label_stub(sch, "RADAR_CANH", "R40", "1")
+    add_pin_label_stub(sch, "RADAR_CANL", "R40", "2")
 
     # Protected radar power connector.
-    add_pin_label(sch, "RADAR_12V", "J5", "1")
-    add_pin_label(sch, "GND", "J5", "2")
+    add_pin_label_stub(sch, "RADAR_12V", "J5", "1")
+    add_pin_label_stub(sch, "GND", "J5", "2")
 
     sch.add_text(
         "R40 is DNP by default and populated only when the carrier is the CAN endpoint.\n"
@@ -1020,22 +1070,22 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
 
     # LAN8742 power and mandatory local bias/support network.
     for pin in ("1", "9", "19"):
-        add_pin_label(sch, "3V3", "U3", pin)
+        add_pin_label_stub(sch, "3V3", "U3", pin)
     if sch.get_component_pin_position("U3", "25") is not None:
-        add_pin_label(sch, "GND", "U3", "25")
+        add_pin_label_stub(sch, "GND", "U3", "25")
 
     sch.add_wire_between_pins("U3", "24", "R60", "1")
-    add_pin_label(sch, "GND", "R60", "2")
+    add_pin_label_stub(sch, "GND", "R60", "2")
 
     sch.add_wire_between_pins("U3", "6", "C60", "1")
     sch.add_wire_between_pins("C60", "1", "#FLG0601", "1")
-    add_pin_label(sch, "GND", "C60", "2")
+    add_pin_label_stub(sch, "GND", "C60", "2")
 
     # Local 3V3 decoupling / analog filter caps.
-    add_pin_label(sch, "3V3", "C62", "1")
-    add_pin_label(sch, "GND", "C62", "2")
-    add_pin_label(sch, "3V3", "C61", "1")
-    add_pin_label(sch, "GND", "C61", "2")
+    add_pin_label_stub(sch, "3V3", "C62", "1")
+    add_pin_label_stub(sch, "GND", "C62", "2")
+    add_pin_label_stub(sch, "3V3", "C61", "1")
+    add_pin_label_stub(sch, "GND", "C61", "2")
 
     # Internal strap/default pins and unused outputs.
     for pin in ("2", "3", "4", "10", "14"):
@@ -1044,13 +1094,13 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
             sch.no_connects.add(position=(p.x, p.y))
 
     # PHY controlled reset pulldown.
-    add_pin_label(sch, "ETH_NRST", "R65", "1")
-    add_pin_label(sch, "GND", "R65", "2")
+    add_pin_label_stub(sch, "ETH_NRST", "R65", "1")
+    add_pin_label_stub(sch, "GND", "R65", "2")
 
     # 50 MHz oscillator.
-    add_pin_label(sch, "GND", "Y2", "2")
-    add_pin_label(sch, "ETH_50M", "Y2", "3")
-    add_pin_label(sch, "3V3", "Y2", "4")
+    add_pin_label_stub(sch, "GND", "Y2", "2")
+    add_pin_label_stub(sch, "ETH_50M", "Y2", "3")
+    add_pin_label_stub(sch, "3V3", "Y2", "4")
     p = sch.get_component_pin_position("Y2", "1")
     if p is not None:
         sch.no_connects.add(position=(p.x, p.y))
@@ -1062,7 +1112,7 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
         "22": "ETH_RXN",
         "23": "ETH_RXP",
     }.items():
-        add_pin_label(sch, net, "U3", pin)
+        add_pin_label_stub(sch, net, "U3", pin)
 
     # ESD channels use short outward stubs and labels. This avoids
     # long through-symbol wires while keeping the U3/D3/J6 nets identical.
@@ -1101,8 +1151,8 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
         "R63": "ETH_RXP",
         "R64": "ETH_RXN",
     }.items():
-        add_pin_label(sch, net, ref, "1")
-        add_pin_label(sch, "3V3", ref, "2")
+        add_pin_label_stub(sch, net, ref, "1")
+        add_pin_label_stub(sch, "3V3", ref, "2")
 
     # MagJack PHY-side pairs are wired explicitly through D3 above.
 
@@ -1113,13 +1163,13 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
         "4": "ETH_RXP",
         "6": "ETH_RXN",
     }.items():
-        add_pin_label(sch, net, "J6", pin)
+        add_pin_label_stub(sch, net, "J6", pin)
 
     # TX/RX center taps tied together and AC-shunted to ground.
-    add_pin_label(sch, "ETH_CT", "J6", "2")
-    add_pin_label(sch, "ETH_CT", "J6", "5")
-    add_pin_label(sch, "ETH_CT", "C63", "1")
-    add_pin_label(sch, "GND", "C63", "2")
+    add_pin_label_stub(sch, "ETH_CT", "J6", "2")
+    add_pin_label_stub(sch, "ETH_CT", "J6", "5")
+    add_pin_label_stub(sch, "ETH_CT", "C63", "1")
+    add_pin_label_stub(sch, "GND", "C63", "2")
 
     # SI-60182-F P8 is the external Bob-Smith/EMI return and SH is
     # the panel/shield domain. Tie both to the external chassis net.
