@@ -572,87 +572,87 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         position=pos(20, 32),
     )
 
-    add_pin_label(sch, "VIN_RAW", "J1", "1")
-    add_pin_label(sch, "GND", "J1", "2")
-    add_pin_label(sch, "VIN_RAW", "D1", "1")
-    add_pin_label(sch, "GND", "D1", "2")
+    add_pin_label_stub(sch, "VIN_RAW", "J1", "1")
+    add_pin_label_stub(sch, "GND", "J1", "2")
+    add_pin_label_stub(sch, "VIN_RAW", "D1", "1")
+    add_pin_label_stub(sch, "GND", "D1", "2")
 
     for pin, net in {"4":"SYS_EFUSE_FLT","5":"VIN_RAW","6":"VIN_PROTECTED"}.items():
-        add_pin_label(sch, net, "U6", pin)
+        add_pin_label_stub(sch, net, "U6", pin)
     add_tps25947_ground_label(sch, "U6")
-    add_pin_label(sch, "VIN_RAW", "R61", "1")
+    add_pin_label_stub(sch, "VIN_RAW", "R61", "1")
     sch.add_wire_between_pins("R61", "2", "U6", "1")
     sch.add_wire_between_pins("U6", "1", "R62", "1")
     sch.add_wire_between_pins("R62", "2", "U6", "2")
     sch.add_wire_between_pins("U6", "2", "R63", "1")
-    add_pin_label(sch, "GND", "R63", "2")
+    add_pin_label_stub(sch, "GND", "R63", "2")
     sch.add_wire_between_pins("U6", "9", "R1", "1")
-    add_pin_label(sch, "GND", "R1", "2")
+    add_pin_label_stub(sch, "GND", "R1", "2")
     add_tps25947_dvdt_labels(
         sch, "U6", "C6D", "U6_DVDT"
     )
     add_stock_pin_stub_label(
         sch, "GND", "C6D", "2", dx=1.27
     )
-    add_pin_label(sch, "SYS_EFUSE_FLT", "R6F", "1")
-    add_pin_label(sch, "3V3", "R6F", "2")
+    add_pin_label_stub(sch, "SYS_EFUSE_FLT", "R6F", "1")
+    add_pin_label_stub(sch, "3V3", "R6F", "2")
     for pin in ("3","10"):
         p=sch.get_component_pin_position("U6", pin)
         if p is not None:
             sch.no_connects.add(position=(p.x,p.y))
 
     for pin, net in {"4":"RADAR_EFUSE_FLT","5":"VIN_PROTECTED","6":"RADAR_12V"}.items():
-        add_pin_label(sch, net, "U7", pin)
+        add_pin_label_stub(sch, net, "U7", pin)
     add_tps25947_ground_label(sch, "U7")
-    add_pin_label(sch, "VIN_PROTECTED", "R71", "1")
+    add_pin_label_stub(sch, "VIN_PROTECTED", "R71", "1")
     sch.add_wire_between_pins("R71", "2", "U7", "1")
     sch.add_wire_between_pins("U7", "1", "R72", "1")
     sch.add_wire_between_pins("R72", "2", "U7", "2")
     sch.add_wire_between_pins("U7", "2", "R73", "1")
-    add_pin_label(sch, "GND", "R73", "2")
+    add_pin_label_stub(sch, "GND", "R73", "2")
     sch.add_wire_between_pins("U7", "9", "R2", "1")
-    add_pin_label(sch, "GND", "R2", "2")
+    add_pin_label_stub(sch, "GND", "R2", "2")
     add_tps25947_dvdt_labels(
         sch, "U7", "C7D", "U7_DVDT"
     )
     add_stock_pin_stub_label(
         sch, "GND", "C7D", "2", dx=1.27
     )
-    add_pin_label(sch, "RADAR_EFUSE_FLT", "R7F", "1")
-    add_pin_label(sch, "3V3", "R7F", "2")
+    add_pin_label_stub(sch, "RADAR_EFUSE_FLT", "R7F", "1")
+    add_pin_label_stub(sch, "3V3", "R7F", "2")
     for pin in ("3","10"):
         p=sch.get_component_pin_position("U7", pin)
         if p is not None:
             sch.no_connects.add(position=(p.x,p.y))
 
     for pin in ("1","2","3"):
-        add_pin_label(sch, "BUCK_SW", "U5", pin)
-    add_pin_label(sch, "BUCK_SW", "L1", "1")
-    add_pin_label(sch, "3V3", "L1", "2")
-    add_pin_label(sch, "U5_PG", "U5", "4")
-    add_pin_label(sch, "U5_PG", "R5P", "1")
-    add_pin_label(sch, "3V3", "R5P", "2")
+        add_pin_label_stub(sch, "BUCK_SW", "U5", pin)
+    add_pin_label_stub(sch, "BUCK_SW", "L1", "1")
+    add_pin_label_stub(sch, "3V3", "L1", "2")
+    add_pin_label_stub(sch, "U5_PG", "U5", "4")
+    add_pin_label_stub(sch, "U5_PG", "R5P", "1")
+    add_pin_label_stub(sch, "3V3", "R5P", "2")
     for pin in ("5","6","15","16","EP"):
         if sch.get_component_pin_position("U5", pin) is not None:
-            add_pin_label(sch, "GND", "U5", pin)
+            add_pin_label_stub(sch, "GND", "U5", pin)
     for pin in ("7","8"):
         p=sch.get_component_pin_position("U5", pin)
         if p is not None:
             sch.no_connects.add(position=(p.x,p.y))
     sch.add_wire_between_pins("U5", "9", "C3", "1")
-    add_pin_label(sch, "GND", "C3", "2")
+    add_pin_label_stub(sch, "GND", "C3", "2")
     for pin in ("10","11","12","13"):
-        add_pin_label(sch, "VIN_PROTECTED", "U5", pin)
-    add_pin_label(sch, "3V3", "U5", "14")
+        add_pin_label_stub(sch, "VIN_PROTECTED", "U5", pin)
+    add_pin_label_stub(sch, "3V3", "U5", "14")
 
-    add_pin_label(sch, "VIN_PROTECTED", "C1", "1")
-    add_pin_label(sch, "GND", "C1", "2")
-    add_pin_label(sch, "3V3", "C2", "1")
-    add_pin_label(sch, "GND", "C2", "2")
-    add_pin_label(sch, "VIN_PROTECTED", "C4", "1")
-    add_pin_label(sch, "GND", "C4", "2")
-    add_pin_label(sch, "RADAR_12V", "J2", "1")
-    add_pin_label(sch, "GND", "J2", "2")
+    add_pin_label_stub(sch, "VIN_PROTECTED", "C1", "1")
+    add_pin_label_stub(sch, "GND", "C1", "2")
+    add_pin_label_stub(sch, "3V3", "C2", "1")
+    add_pin_label_stub(sch, "GND", "C2", "2")
+    add_pin_label_stub(sch, "VIN_PROTECTED", "C4", "1")
+    add_pin_label_stub(sch, "GND", "C4", "2")
+    add_pin_label_stub(sch, "RADAR_12V", "J2", "1")
+    add_pin_label_stub(sch, "GND", "J2", "2")
 
 
 def populate_mcu(
@@ -777,7 +777,7 @@ def populate_mcu(
                 "DEBUG_RX",
             }
         ):
-            add_pin_label(
+            add_pin_label_stub(
                 sch,
                 net_name,
                 "U1",
@@ -789,19 +789,17 @@ def populate_mcu(
     p = sch.get_component_pin_position("Y1", "1")
     if p is not None:
         sch.no_connects.add(position=(p.x, p.y))
-    add_pin_label(sch, "GND", "Y1", "2")
+    add_pin_label_stub(sch, "GND", "Y1", "2")
     sch.add_wire_between_pins("Y1", "3", "U1", "29")
     sch.add_wire_between_pins("U1", "147", "TP1", "1")
     sch.add_wire_between_pins("U1", "150", "TP2", "1")
-    add_pin_label(sch, "3V3", "Y1", "4")
-    add_pin_label(sch, "3V3", "C15", "1")
-    add_pin_label(sch, "GND", "C15", "2")
+    add_pin_label_stub(sch, "3V3", "Y1", "4")
+    add_pin_label_stub(sch, "3V3", "C15", "1")
+    add_pin_label_stub(sch, "GND", "C15", "2")
 
     # Core and analog supply pins.
-    add_labels_by_pin_name(
-        sch,
-        "U1",
-        {
+    for pin in sch.components.get("U1").pins:
+        net_name = {
             "VDD": "3V3",
             "VBAT": "3V3",
             "VDD33_USB": "3V3",
@@ -810,8 +808,14 @@ def populate_mcu(
             "VDDA": "VDDA_FILTERED",
             "VREF+": "VDDA_FILTERED",
             "PDR_ON": "3V3",
-        },
-    )
+        }.get(str(pin.name).strip())
+        if net_name is not None:
+            add_pin_label_stub(
+                sch,
+                net_name,
+                "U1",
+                str(pin.number),
+            )
 
     # VCAP pins each receive their own 2.2 uF low-ESR capacitor.
     sch.add_wire_between_pins(
@@ -820,21 +824,21 @@ def populate_mcu(
         "C10",
         "1",
     )
-    add_pin_label(sch, "GND", "C10", "2")
+    add_pin_label_stub(sch, "GND", "C10", "2")
     sch.add_wire_between_pins(
         "U1",
         "125",
         "C11",
         "1",
     )
-    add_pin_label(sch, "GND", "C11", "2")
+    add_pin_label_stub(sch, "GND", "C11", "2")
 
     # Digital bulk capacitor.
-    add_pin_label(sch, "3V3", "C12", "1")
-    add_pin_label(sch, "GND", "C12", "2")
+    add_pin_label_stub(sch, "3V3", "C12", "1")
+    add_pin_label_stub(sch, "GND", "C12", "2")
 
     # VDDA filter and local decoupling.
-    add_pin_label(sch, "3V3", "FB1", "1")
+    add_pin_label_stub(sch, "3V3", "FB1", "1")
     add_pin_label(
         sch,
         "VDDA_FILTERED",
@@ -847,14 +851,14 @@ def populate_mcu(
         "C13",
         "1",
     )
-    add_pin_label(sch, "GND", "C13", "2")
+    add_pin_label_stub(sch, "GND", "C13", "2")
     add_pin_label(
         sch,
         "VDDA_FILTERED",
         "C14",
         "1",
     )
-    add_pin_label(sch, "GND", "C14", "2")
+    add_pin_label_stub(sch, "GND", "C14", "2")
 
     # BOOT0 default-low strap.
     sch.add_wire_between_pins(
@@ -863,7 +867,7 @@ def populate_mcu(
         "R10",
         "1",
     )
-    add_pin_label(sch, "GND", "R10", "2")
+    add_pin_label_stub(sch, "GND", "R10", "2")
 
     # SWD Tag-Connect pinout from CONNECTOR_PINOUT_SYS_001.
     for pin_number, net_name in {
