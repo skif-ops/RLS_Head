@@ -138,11 +138,16 @@ def apply_symbol_pin_contract(
             # on this component pin later in the generation pass.
             continue
 
+        if reference == "U8" and pin_number == "9":
+            # VCC_RF is captured explicitly by the GNSS bias-T network.
+            connected += 1
+            continue
+
         if (
             connection in direct_exact
             or connection.startswith(direct_prefixes)
         ):
-            add_pin_label(
+            add_pin_label_stub(
                 sch,
                 connection,
                 reference,
@@ -777,7 +782,7 @@ def populate_mcu(
                 "DEBUG_RX",
             }
         ):
-            add_pin_label(
+            add_pin_label_stub(
                 sch,
                 net_name,
                 "U1",
@@ -820,18 +825,18 @@ def populate_mcu(
         "C10",
         "1",
     )
-    add_pin_label(sch, "GND", "C10", "2")
+    add_pin_label_stub(sch, "GND", "C10", "2")
     sch.add_wire_between_pins(
         "U1",
         "125",
         "C11",
         "1",
     )
-    add_pin_label(sch, "GND", "C11", "2")
+    add_pin_label_stub(sch, "GND", "C11", "2")
 
     # Digital bulk capacitor.
-    add_pin_label(sch, "3V3", "C12", "1")
-    add_pin_label(sch, "GND", "C12", "2")
+    add_pin_label_stub(sch, "3V3", "C12", "1")
+    add_pin_label_stub(sch, "GND", "C12", "2")
 
     # VDDA filter and local decoupling.
     add_pin_label(sch, "3V3", "FB1", "1")

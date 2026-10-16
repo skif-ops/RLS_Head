@@ -557,8 +557,12 @@ jobs:
       - name: Install KiCad 9 and schematic generator
         run: |
           sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
-          sudo apt-get update
-          sudo apt-get install -y --install-recommends kicad
+          sudo apt-get -o Acquire::Retries=5 update
+          sudo apt-get -o Acquire::Retries=5 install -y \
+            --no-install-recommends \
+            kicad \
+            kicad-symbols \
+            kicad-footprints
           python -m pip install --upgrade "kicad-sch-api==0.5.6"
           kicad-cli version
 
