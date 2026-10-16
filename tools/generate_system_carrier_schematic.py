@@ -411,6 +411,41 @@ def add_stock_pin_stub_label(
     )
 
 
+def add_tps25947_dvdt_labels(
+    sch,
+    reference: str,
+    capacitor_reference: str,
+    net_name: str,
+) -> None:
+    component = sch.components.get(reference)
+    if component is None:
+        raise ValueError(f"missing component:{reference}")
+
+    # Generated TPS259470 symbol pin 7 is the fifth left-side pin:
+    # x = center - 12.70 mm, y = center.
+    dvdt_pin = (
+        component.position.x - 12.70,
+        component.position.y,
+    )
+    sch.add_label(
+        net_name,
+        position=dvdt_pin,
+    )
+
+    cap_pin = sch.get_component_pin_position(
+        capacitor_reference,
+        "1",
+    )
+    if cap_pin is None:
+        raise ValueError(
+            f"missing pin:{capacitor_reference}:1"
+        )
+    sch.add_label(
+        net_name,
+        position=(cap_pin.x, cap_pin.y),
+    )
+
+
 def add_tps25947_ground_label(
     sch,
     reference: str,
@@ -502,7 +537,9 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "GND", "R63", "2")
     sch.add_wire_between_pins("U6", "9", "R1", "1")
     add_pin_label(sch, "GND", "R1", "2")
-    sch.add_wire_between_pins("U6", "7", "C6D", "1")
+    add_tps25947_dvdt_labels(
+        sch, "U6", "C6D", "U6_DVDT"
+    )
     add_stock_pin_stub_label(
         sch, "GND", "C6D", "2", dx=1.27
     )
@@ -524,8 +561,9 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "GND", "R73", "2")
     sch.add_wire_between_pins("U7", "9", "R2", "1")
     add_pin_label(sch, "GND", "R2", "2")
-    add_pin_label(sch, "U7_DVDT", "U7", "7")
-    add_pin_label(sch, "U7_DVDT", "C7D", "1")
+    add_tps25947_dvdt_labels(
+        sch, "U7", "C7D", "U7_DVDT"
+    )
     add_stock_pin_stub_label(
         sch, "GND", "C7D", "2", dx=1.27
     )
