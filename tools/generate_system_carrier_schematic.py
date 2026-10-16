@@ -45,6 +45,92 @@ SYMBOL_LIBRARIES = {
     "Interface_Ethernet": "${KICAD9_SYMBOL_DIR}/Interface_Ethernet.kicad_sym",
 }
 
+LOCAL_PIN_OFFSETS: dict[
+    tuple[str, str],
+    tuple[float, float],
+] = {}
+
+
+def configure_local_pin_offsets(
+    rows: list[dict[str, str]],
+) -> None:
+    LOCAL_PIN_OFFSETS.clear()
+
+    grouped: dict[str, list[dict[str, str]]] = {}
+    for row in rows:
+        ref = str(row.get("ref", "")).strip()
+        pin = str(row.get("pin_number", "")).strip()
+        if ref and pin:
+            grouped.setdefault(ref, []).append(row)
+
+    def pin_sort_key(pin: str) -> tuple[int, str]:
+        try:
+            return (0, f"{int(pin):06d}")
+        except ValueError:
+            return (1, pin)
+
+    for ref, ref_rows in grouped.items():
+        ordered = sorted(
+            ref_rows,
+            key=lambda row: pin_sort_key(
+                str(row["pin_number"]).strip()
+            ),
+        )
+        left = ordered[::2]
+        right = ordered[1::2]
+        row_count = max(len(left), len(right), 1)
+        pitch = 2.54
+        half_height = max(
+            10.16,
+            (row_count + 1) * pitch / 2,
+        )
+        x_left = -12.70
+        x_right = 12.70
+
+        for index, row in enumerate(left):
+            pin = str(row["pin_number"]).strip()
+            y = half_height - pitch * (index + 1)
+            LOCAL_PIN_OFFSETS[(ref, pin)] = (
+                x_left,
+                y,
+            )
+
+        for index, row in enumerate(right):
+            pin = str(row["pin_number"]).strip()
+            y = half_height - pitch * (index + 1)
+            LOCAL_PIN_OFFSETS[(ref, pin)] = (
+                x_right,
+                y,
+            )
+
+
+def resolved_pin_position(
+    sch,
+    reference: str,
+    pin_number: str,
+):
+    offset = LOCAL_PIN_OFFSETS.get(
+        (reference, pin_number)
+    )
+    if offset is None:
+        return sch.get_component_pin_position(
+            reference,
+            pin_number,
+        )
+
+    component = sch.components.get(reference)
+    if component is None:
+        return None
+
+    return type(
+        "_PinPosition",
+        (),
+        {
+            "x": component.position.x + offset[0],
+            "y": component.position.y + offset[1],
+        },
+    )()
+
 
 def write_symbol_library_table(output_dir: Path) -> None:
     lines = [
@@ -289,7 +375,8 @@ def add_pin_label(
     reference: str,
     pin_number: str,
 ) -> None:
-    pin = sch.get_component_pin_position(
+    pin = resolved_pin_position(
+        sch,
         reference,
         pin_number,
     )
@@ -323,7 +410,7 @@ def add_pin_label(
     center = component.position
     dx = pin.x - center.x
     dy = pin.y - center.y
-    stub = 0.508
+    stub = 1.27
 
     if abs(dx) >= abs(dy):
         direction = 1.0 if dx >= 0 else -1.0
@@ -1546,6 +1633,18 @@ def build(output_dir: Path) -> dict:
         / "hardware"
         / "system_carrier"
         / "SYMBOL_PIN_CONTRACT_SYS_001.csv"
+    )
+    aux_symbol_pin_contract_rows = load_symbol_pin_contract(
+        repo_root
+        / "hardware"
+        / "system_carrier"
+        / "AUX_SYMBOL_PIN_CONTRACT_SYS_001.csv"
+    )
+    configure_local_pin_offsets(
+        [
+            *symbol_pin_contract_rows,
+            *aux_symbol_pin_contract_rows,
+        ]
     )
 
     hierarchy_interface_path = (
