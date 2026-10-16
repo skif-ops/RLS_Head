@@ -567,9 +567,17 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         "PWR_FLAG",
         pos(10, 68),
     )
-    sch.add_label(
+    sch.components.add(
+        "power:GND",
+        "#PWR0201",
         "GND",
-        position=pos(10, 68),
+        pos(14, 68),
+    )
+    sch.add_wire_between_pins(
+        "#FLG0202",
+        "1",
+        "#PWR0201",
+        "1",
     )
 
     add_pin_label(sch, "VIN_RAW", "J1", "1")
