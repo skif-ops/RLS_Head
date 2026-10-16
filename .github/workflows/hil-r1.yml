@@ -660,9 +660,13 @@ jobs:
               for sheet in erc.get("sheets", [])
           )
 
+          assert violations == 0, (
+              f"System Carrier strict ERC gate failed: {violations} violations"
+          )
+
           summary = {
               "schema": "SYSTEM-CARRIER-CAD-CI-001",
-              "status": "CAPTURE_IN_PROGRESS",
+              "status": "ERC_CLEAN",
               "kicad_version": erc.get("kicad_version"),
               "sheet_count": manifest["sheet_count"],
               "placeholder_count": validation["placeholder_count"],
