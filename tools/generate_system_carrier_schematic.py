@@ -289,17 +289,62 @@ def add_pin_label(
     reference: str,
     pin_number: str,
 ) -> None:
-    if sch.get_component_pin_position(
+    pin = sch.get_component_pin_position(
         reference,
         pin_number,
-    ) is None:
+    )
+    if pin is None:
         raise ValueError(
             f"missing pin:{reference}:{pin_number}"
         )
 
+    # kicad-sch-api 0.5.x can misplace labels attached through
+    # pin=(reference, number) on project-local generated symbols.
+    # Use the resolved native pin coordinate plus a short outward stub
+    # for those symbols; keep stock-library symbols on the compact API.
+    local_generated_refs = {
+        "U2", "U4", "U5", "U6", "U7",
+        "Y1", "Y2", "D3", "D4",
+    }
+
+    if reference not in local_generated_refs:
+        sch.add_label(
+            net_name,
+            pin=(reference, pin_number),
+        )
+        return
+
+    component = sch.components.get(reference)
+    if component is None:
+        raise ValueError(
+            f"missing component:{reference}"
+        )
+
+    center = component.position
+    dx = pin.x - center.x
+    dy = pin.y - center.y
+    stub = 0.508
+
+    if abs(dx) >= abs(dy):
+        direction = 1.0 if dx >= 0 else -1.0
+        end = (
+            pin.x + direction * stub,
+            pin.y,
+        )
+    else:
+        direction = 1.0 if dy >= 0 else -1.0
+        end = (
+            pin.x,
+            pin.y + direction * stub,
+        )
+
+    sch.wires.add(
+        start=(pin.x, pin.y),
+        end=end,
+    )
     sch.add_label(
         net_name,
-        pin=(reference, pin_number),
+        position=end,
     )
 
 
