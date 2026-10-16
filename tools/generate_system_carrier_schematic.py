@@ -353,6 +353,36 @@ def add_pin_label_stub(
     )
 
 
+def add_wire_via_x(
+    sch,
+    ref_a: str,
+    pin_a: str,
+    ref_b: str,
+    pin_b: str,
+    *,
+    corridor_x: float,
+) -> None:
+    a = sch.get_component_pin_position(ref_a, pin_a)
+    b = sch.get_component_pin_position(ref_b, pin_b)
+    if a is None or b is None:
+        raise ValueError(
+            f"missing route pin:{ref_a}:{pin_a}:{ref_b}:{pin_b}"
+        )
+
+    sch.wires.add(
+        start=(a.x, a.y),
+        end=(corridor_x, a.y),
+    )
+    sch.wires.add(
+        start=(corridor_x, a.y),
+        end=(corridor_x, b.y),
+    )
+    sch.wires.add(
+        start=(corridor_x, b.y),
+        end=(b.x, b.y),
+    )
+
+
 def add_power_pin_label(
     sch,
     net_name: str,
@@ -520,7 +550,14 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_power_pin_label(sch, "GND", "R63", "2")
     sch.add_wire_between_pins("U6", "9", "R1", "1")
     add_power_pin_label(sch, "GND", "R1", "2")
-    sch.add_wire_between_pins("U6", "7", "C6D", "1")
+    add_wire_via_x(
+        sch,
+        "U6",
+        "7",
+        "C6D",
+        "1",
+        corridor_x=pos(56, 0)[0],
+    )
     add_power_pin_label(sch, "GND", "C6D", "2")
     add_power_pin_label(sch, "SYS_EFUSE_FLT", "R6F", "1")
     add_power_pin_label(sch, "3V3", "R6F", "2")
@@ -539,8 +576,14 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_power_pin_label(sch, "GND", "R73", "2")
     sch.add_wire_between_pins("U7", "9", "R2", "1")
     add_power_pin_label(sch, "GND", "R2", "2")
-    add_power_pin_label(sch, "U7_DVDT", "U7", "7")
-    add_power_pin_label(sch, "U7_DVDT", "C7D", "1")
+    add_wire_via_x(
+        sch,
+        "U7",
+        "7",
+        "C7D",
+        "1",
+        corridor_x=pos(60, 0)[0],
+    )
     add_power_pin_label(sch, "GND", "C7D", "2")
     add_power_pin_label(sch, "RADAR_EFUSE_FLT", "R7F", "1")
     add_power_pin_label(sch, "3V3", "R7F", "2")
