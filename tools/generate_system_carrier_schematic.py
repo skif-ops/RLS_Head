@@ -303,6 +303,37 @@ def add_pin_label(
     )
 
 
+def add_pin_stub_label(
+    sch,
+    net_name: str,
+    reference: str,
+    pin_number: str,
+    *,
+    dx: float = 0.0,
+    dy: float = 0.0,
+) -> None:
+    pin = sch.get_component_pin_position(
+        reference,
+        pin_number,
+    )
+    if pin is None:
+        raise ValueError(
+            f"missing pin:{reference}:{pin_number}"
+        )
+    end = (
+        pin.x + dx,
+        pin.y + dy,
+    )
+    sch.wires.add(
+        start=(pin.x, pin.y),
+        end=end,
+    )
+    sch.add_label(
+        net_name,
+        position=end,
+    )
+
+
 def add_labels_by_pin_name(
     sch,
     reference: str,
@@ -435,9 +466,15 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "GND", "R63", "2")
     sch.add_wire_between_pins("U6", "9", "R1", "1")
     add_pin_label(sch, "GND", "R1", "2")
-    add_pin_label(sch, "U6_DVDT", "U6", "7")
-    add_pin_label(sch, "U6_DVDT", "C6D", "1")
-    add_pin_label(sch, "GND", "C6D", "2")
+    add_pin_stub_label(
+        sch, "U6_DVDT", "U6", "7", dx=-1.27
+    )
+    add_pin_stub_label(
+        sch, "U6_DVDT", "C6D", "1", dx=1.27
+    )
+    add_pin_stub_label(
+        sch, "GND", "C6D", "2", dx=1.27
+    )
     add_pin_label(sch, "SYS_EFUSE_FLT", "R6F", "1")
     add_pin_label(sch, "3V3", "R6F", "2")
     for pin in ("3","10"):
@@ -455,9 +492,15 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "GND", "R73", "2")
     sch.add_wire_between_pins("U7", "9", "R2", "1")
     add_pin_label(sch, "GND", "R2", "2")
-    add_pin_label(sch, "U7_DVDT", "U7", "7")
-    add_pin_label(sch, "U7_DVDT", "C7D", "1")
-    add_pin_label(sch, "GND", "C7D", "2")
+    add_pin_stub_label(
+        sch, "U7_DVDT", "U7", "7", dx=-1.27
+    )
+    add_pin_stub_label(
+        sch, "U7_DVDT", "C7D", "1", dx=1.27
+    )
+    add_pin_stub_label(
+        sch, "GND", "C7D", "2", dx=1.27
+    )
     add_pin_label(sch, "RADAR_EFUSE_FLT", "R7F", "1")
     add_pin_label(sch, "3V3", "R7F", "2")
     for pin in ("3","10"):
