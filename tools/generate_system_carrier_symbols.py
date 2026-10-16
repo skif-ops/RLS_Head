@@ -211,6 +211,16 @@ def _symbol_text(
         ):
             ptype = "no_connect"
 
+        # ICM-42688-P pin 9 (INT2/FSYNC/CLKIN) is intentionally
+        # strapped to GND in Rev.A. Model this strapped multifunction pin
+        # as passive for ERC so a legitimate ground source is not treated
+        # as an output/bidirectional conflict.
+        if (
+            name == "ICM-42688-P"
+            and pin_num == "9"
+        ):
+            ptype = "passive"
+
         # ESD-array ground contacts are passive return pins. Modeling
         # them as power_in incorrectly requires an artificial PWR_FLAG.
         if (
