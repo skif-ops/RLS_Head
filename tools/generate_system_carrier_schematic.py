@@ -443,13 +443,13 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         "power:GND",
         "#PWR0601",
         "GND",
-        (pos(43, 36)[0], pos(43, 36)[1] + 2.54),
+        (pos(43, 36)[0], pos(43, 36)[1] - 2.54),
     )
     sch.components.add(
         "power:GND",
         "#PWR0701",
         "GND",
-        (pos(43, 54)[0], pos(43, 54)[1] + 2.54),
+        (pos(43, 54)[0], pos(43, 54)[1] - 2.54),
     )
     sch.components.add("Connector_Generic:Conn_01x02", "J2", "RADAR_12V_OUT", pos(75, 50))
     sch.components.add(
