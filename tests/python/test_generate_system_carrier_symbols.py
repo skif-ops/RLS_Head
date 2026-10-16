@@ -22,7 +22,7 @@ def test_generates_expected_local_symbols(tmp_path):
 
     assert result["schema"] == "SYSTEM-CARRIER-LOCAL-SYMBOL-LIBRARY-001"
     assert result["status"] == "GENERATED"
-    assert result["symbol_count"] == 8
+    assert result["symbol_count"] == 9
     assert output.is_file()
 
     names = {
@@ -38,6 +38,7 @@ def test_generates_expected_local_symbols(tmp_path):
         "ECS-2520S33-500-FN-TR",
         "ESD2CANFD24DBZRQ1",
         "TPD4E05U06DQAR",
+        "POWER_INPUT_2PIN",
     }
 
 
