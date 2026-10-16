@@ -380,6 +380,32 @@ def add_placeholder(
     )
 
 
+def add_tps25947_ground_label(
+    sch,
+    reference: str,
+) -> None:
+    component = sch.components.get(reference)
+    if component is None:
+        raise ValueError(f"missing component:{reference}")
+
+    pin = (
+        component.position.x + 12.70,
+        component.position.y,
+    )
+    end = (
+        pin[0] + 1.27,
+        pin[1],
+    )
+    sch.wires.add(
+        start=pin,
+        end=end,
+    )
+    sch.add_label(
+        "GND",
+        position=end,
+    )
+
+
 def populate_power(sch, placeholders: list[dict]) -> None:
     sch.add_text(
         "POWER_INPUT — Rev A authoritative capture\n"
@@ -421,14 +447,22 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         pos(20, 28),
     )
     add_pin_label(sch, "VIN_RAW", "#FLG0201", "1")
+    sch.components.add(
+        "power:PWR_FLAG",
+        "#FLG0202",
+        "PWR_FLAG",
+        pos(20, 32),
+    )
+    add_pin_label(sch, "GND", "#FLG0202", "1")
 
     add_pin_label(sch, "VIN_RAW", "J1", "1")
     add_pin_label(sch, "GND", "J1", "2")
     add_pin_label(sch, "VIN_RAW", "D1", "1")
     add_pin_label(sch, "GND", "D1", "2")
 
-    for pin, net in {"4":"SYS_EFUSE_FLT","5":"VIN_RAW","6":"VIN_PROTECTED","8":"GND"}.items():
+    for pin, net in {"4":"SYS_EFUSE_FLT","5":"VIN_RAW","6":"VIN_PROTECTED"}.items():
         add_pin_label(sch, net, "U6", pin)
+    add_tps25947_ground_label(sch, "U6")
     add_pin_label(sch, "VIN_RAW", "R61", "1")
     sch.add_wire_between_pins("R61", "2", "U6", "1")
     sch.add_wire_between_pins("U6", "1", "R62", "1")
@@ -446,8 +480,9 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         if p is not None:
             sch.no_connects.add(position=(p.x,p.y))
 
-    for pin, net in {"4":"RADAR_EFUSE_FLT","5":"VIN_PROTECTED","6":"RADAR_12V","8":"GND"}.items():
+    for pin, net in {"4":"RADAR_EFUSE_FLT","5":"VIN_PROTECTED","6":"RADAR_12V"}.items():
         add_pin_label(sch, net, "U7", pin)
+    add_tps25947_ground_label(sch, "U7")
     add_pin_label(sch, "VIN_PROTECTED", "R71", "1")
     sch.add_wire_between_pins("R71", "2", "U7", "1")
     sch.add_wire_between_pins("U7", "1", "R72", "1")
