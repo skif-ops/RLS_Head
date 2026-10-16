@@ -519,7 +519,13 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         "PWR_FLAG",
         pos(20, 32),
     )
-    add_pin_label(sch, "GND", "#FLG0202", "1")
+    # PWR_FLAG pin 1 is at the symbol origin.  Bind by native
+    # coordinate instead of pin=(ref,pin), which is unreliable in the
+    # generated hierarchical capture.
+    sch.add_label(
+        "GND",
+        position=pos(20, 32),
+    )
 
     add_pin_label(sch, "VIN_RAW", "J1", "1")
     add_pin_label(sch, "GND", "J1", "2")
