@@ -439,6 +439,18 @@ def populate_power(sch, placeholders: list[dict]) -> None:
 
     sch.components.add("Device:C", "C6D", "3.3nF", pos(43, 36))
     sch.components.add("Device:C", "C7D", "3.3nF", pos(43, 54))
+    sch.components.add(
+        "power:GND",
+        "#PWR0601",
+        "GND",
+        (pos(43, 36)[0], pos(43, 36)[1] + 2.54),
+    )
+    sch.components.add(
+        "power:GND",
+        "#PWR0701",
+        "GND",
+        (pos(43, 54)[0], pos(43, 54)[1] + 2.54),
+    )
     sch.components.add("Connector_Generic:Conn_01x02", "J2", "RADAR_12V_OUT", pos(75, 50))
     sch.components.add(
         "power:PWR_FLAG",
@@ -472,7 +484,6 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     sch.add_wire_between_pins("U6", "9", "R1", "1")
     add_pin_label(sch, "GND", "R1", "2")
     sch.add_wire_between_pins("U6", "7", "C6D", "1")
-    add_pin_label(sch, "GND", "C6D", "2")
     add_pin_label(sch, "SYS_EFUSE_FLT", "R6F", "1")
     add_pin_label(sch, "3V3", "R6F", "2")
     for pin in ("3","10"):
@@ -493,7 +504,6 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "GND", "R2", "2")
     add_pin_label(sch, "U7_DVDT", "U7", "7")
     add_pin_label(sch, "U7_DVDT", "C7D", "1")
-    add_pin_label(sch, "GND", "C7D", "2")
     add_pin_label(sch, "RADAR_EFUSE_FLT", "R7F", "1")
     add_pin_label(sch, "3V3", "R7F", "2")
     for pin in ("3","10"):
