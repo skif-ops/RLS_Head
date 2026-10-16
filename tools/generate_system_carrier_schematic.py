@@ -388,7 +388,13 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         size=1.27,
     )
 
-    sch.components.add("Connector_Generic:Conn_01x02", "J1", "12V_IN", pos(18, 24))
+    sch.components.add(
+        f"{LOCAL_SYMBOL_LIBRARY}:POWER_INPUT_2PIN",
+        "J1",
+        "12V_IN",
+        pos(18, 24),
+        Capture_Status="LOCAL_POWER_SOURCE_SYMBOL",
+    )
     sch.components.add("Device:D_TVS", "D1", "SMAJ15CA", pos(30, 24))
     add_local_symbol(sch, "U6", "TPS259470ARPWR", "TPS259470ARPWR_SYS", pos(43, 24), placeholders)
     add_local_symbol(sch, "U5", "TPS62132RGTR", "TPS62132RGTR_3V3", pos(60, 24), placeholders)
