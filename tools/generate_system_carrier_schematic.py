@@ -430,6 +430,96 @@ def add_placeholder(
     )
 
 
+def add_stock_pin_stub_label(
+    sch,
+    net_name: str,
+    reference: str,
+    pin_number: str,
+    *,
+    dx: float = 0.0,
+    dy: float = 0.0,
+) -> None:
+    pin = sch.get_component_pin_position(
+        reference,
+        pin_number,
+    )
+    if pin is None:
+        raise ValueError(
+            f"missing pin:{reference}:{pin_number}"
+        )
+    end = (
+        pin.x + dx,
+        pin.y + dy,
+    )
+    sch.wires.add(
+        start=(pin.x, pin.y),
+        end=end,
+    )
+    sch.add_label(
+        net_name,
+        position=end,
+    )
+
+
+def add_tps25947_dvdt_labels(
+    sch,
+    reference: str,
+    capacitor_reference: str,
+    net_name: str,
+) -> None:
+    component = sch.components.get(reference)
+    if component is None:
+        raise ValueError(f"missing component:{reference}")
+
+    dvdt_pin = (
+        component.position.x - 12.70,
+        component.position.y,
+    )
+    sch.add_label(
+        net_name,
+        position=dvdt_pin,
+    )
+
+    cap_pin = sch.get_component_pin_position(
+        capacitor_reference,
+        "1",
+    )
+    if cap_pin is None:
+        raise ValueError(
+            f"missing pin:{capacitor_reference}:1"
+        )
+    sch.add_label(
+        net_name,
+        position=(cap_pin.x, cap_pin.y),
+    )
+
+
+def add_tps25947_ground_label(
+    sch,
+    reference: str,
+) -> None:
+    component = sch.components.get(reference)
+    if component is None:
+        raise ValueError(f"missing component:{reference}")
+
+    pin = (
+        component.position.x + 12.70,
+        component.position.y,
+    )
+    end = (
+        pin[0] + 1.27,
+        pin[1],
+    )
+    sch.wires.add(
+        start=pin,
+        end=end,
+    )
+    sch.add_label(
+        "GND",
+        position=end,
+    )
+
+
 def populate_power(sch, placeholders: list[dict]) -> None:
     sch.add_text(
         "POWER_INPUT — Rev A authoritative capture\n"
@@ -439,7 +529,7 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     )
 
     sch.components.add("Connector_Generic:Conn_01x02", "J1", "12V_IN", pos(18, 24))
-    sch.components.add("Device:D_TVS", "D1", "SMAJ15CA", pos(30, 24))
+    sch.components.add("Device:D_TVS", "D1", "SMAJ15CA", pos(30, 18))
     add_local_symbol(sch, "U6", "TPS259470ARPWR", "TPS259470ARPWR_SYS", pos(43, 24), placeholders)
     add_local_symbol(sch, "U5", "TPS62132RGTR", "TPS62132RGTR_3V3", pos(60, 24), placeholders)
     add_local_symbol(sch, "U7", "TPS259470ARPWR", "TPS259470ARPWR_RADAR", pos(43, 42), placeholders)
@@ -471,14 +561,25 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         pos(20, 28),
     )
     add_pin_label(sch, "VIN_RAW", "#FLG0201", "1")
+    sch.components.add(
+        "power:PWR_FLAG",
+        "#FLG0202",
+        "PWR_FLAG",
+        pos(20, 32),
+    )
+    sch.add_label(
+        "GND",
+        position=pos(20, 32),
+    )
 
     add_pin_label(sch, "VIN_RAW", "J1", "1")
     add_pin_label(sch, "GND", "J1", "2")
     add_pin_label(sch, "VIN_RAW", "D1", "1")
     add_pin_label(sch, "GND", "D1", "2")
 
-    for pin, net in {"4":"SYS_EFUSE_FLT","5":"VIN_RAW","6":"VIN_PROTECTED","8":"GND"}.items():
+    for pin, net in {"4":"SYS_EFUSE_FLT","5":"VIN_RAW","6":"VIN_PROTECTED"}.items():
         add_pin_label(sch, net, "U6", pin)
+    add_tps25947_ground_label(sch, "U6")
     add_pin_label(sch, "VIN_RAW", "R61", "1")
     sch.add_wire_between_pins("R61", "2", "U6", "1")
     sch.add_wire_between_pins("U6", "1", "R62", "1")
@@ -487,8 +588,12 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "GND", "R63", "2")
     sch.add_wire_between_pins("U6", "9", "R1", "1")
     add_pin_label(sch, "GND", "R1", "2")
-    sch.add_wire_between_pins("U6", "7", "C6D", "1")
-    add_pin_label(sch, "GND", "C6D", "2")
+    add_tps25947_dvdt_labels(
+        sch, "U6", "C6D", "U6_DVDT"
+    )
+    add_stock_pin_stub_label(
+        sch, "GND", "C6D", "2", dx=1.27
+    )
     add_pin_label(sch, "SYS_EFUSE_FLT", "R6F", "1")
     add_pin_label(sch, "3V3", "R6F", "2")
     for pin in ("3","10"):
@@ -496,8 +601,9 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         if p is not None:
             sch.no_connects.add(position=(p.x,p.y))
 
-    for pin, net in {"4":"RADAR_EFUSE_FLT","5":"VIN_PROTECTED","6":"RADAR_12V","8":"GND"}.items():
+    for pin, net in {"4":"RADAR_EFUSE_FLT","5":"VIN_PROTECTED","6":"RADAR_12V"}.items():
         add_pin_label(sch, net, "U7", pin)
+    add_tps25947_ground_label(sch, "U7")
     add_pin_label(sch, "VIN_PROTECTED", "R71", "1")
     sch.add_wire_between_pins("R71", "2", "U7", "1")
     sch.add_wire_between_pins("U7", "1", "R72", "1")
@@ -506,9 +612,12 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "GND", "R73", "2")
     sch.add_wire_between_pins("U7", "9", "R2", "1")
     add_pin_label(sch, "GND", "R2", "2")
-    add_pin_label(sch, "U7_DVDT", "U7", "7")
-    add_pin_label(sch, "U7_DVDT", "C7D", "1")
-    add_pin_label(sch, "GND", "C7D", "2")
+    add_tps25947_dvdt_labels(
+        sch, "U7", "C7D", "U7_DVDT"
+    )
+    add_stock_pin_stub_label(
+        sch, "GND", "C7D", "2", dx=1.27
+    )
     add_pin_label(sch, "RADAR_EFUSE_FLT", "R7F", "1")
     add_pin_label(sch, "3V3", "R7F", "2")
     for pin in ("3","10"):
