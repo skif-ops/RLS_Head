@@ -289,46 +289,17 @@ def add_pin_label(
     reference: str,
     pin_number: str,
 ) -> None:
-    pin = sch.get_component_pin_position(
+    if sch.get_component_pin_position(
         reference,
         pin_number,
-    )
-    if pin is None:
+    ) is None:
         raise ValueError(
             f"missing pin:{reference}:{pin_number}"
         )
 
-    component = sch.components.get(reference)
-    if component is None:
-        raise ValueError(
-            f"missing component:{reference}"
-        )
-
-    center = component.position
-    dx = pin.x - center.x
-    dy = pin.y - center.y
-    stub = 0.508
-
-    if abs(dx) >= abs(dy):
-        direction = 1.0 if dx >= 0 else -1.0
-        end = (
-            pin.x + direction * stub,
-            pin.y,
-        )
-    else:
-        direction = 1.0 if dy >= 0 else -1.0
-        end = (
-            pin.x,
-            pin.y + direction * stub,
-        )
-
-    sch.wires.add(
-        start=(pin.x, pin.y),
-        end=end,
-    )
     sch.add_label(
         net_name,
-        position=end,
+        pin=(reference, pin_number),
     )
 
 
