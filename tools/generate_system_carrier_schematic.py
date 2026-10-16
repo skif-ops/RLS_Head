@@ -394,11 +394,7 @@ def add_power_pin_label(
     # stubs to avoid KiCad label-at-junction warnings.
     if (
         reference == "#FLG0201"
-        or reference in {"C6D", "C7D"}
-        or (
-            reference in {"U6", "U7"}
-            and str(pin_number) == "7"
-        )
+        or reference in {"C6D", "C7D", "U6", "U7"}
     ):
         add_pin_label(
             sch,
@@ -550,14 +546,7 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_power_pin_label(sch, "GND", "R63", "2")
     sch.add_wire_between_pins("U6", "9", "R1", "1")
     add_power_pin_label(sch, "GND", "R1", "2")
-    add_wire_via_x(
-        sch,
-        "U6",
-        "7",
-        "C6D",
-        "1",
-        corridor_x=pos(56, 0)[0],
-    )
+    sch.add_wire_between_pins("U6", "7", "C6D", "1")
     add_power_pin_label(sch, "GND", "C6D", "2")
     add_power_pin_label(sch, "SYS_EFUSE_FLT", "R6F", "1")
     add_power_pin_label(sch, "3V3", "R6F", "2")
@@ -576,14 +565,8 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_power_pin_label(sch, "GND", "R73", "2")
     sch.add_wire_between_pins("U7", "9", "R2", "1")
     add_power_pin_label(sch, "GND", "R2", "2")
-    add_wire_via_x(
-        sch,
-        "U7",
-        "7",
-        "C7D",
-        "1",
-        corridor_x=pos(60, 0)[0],
-    )
+    add_power_pin_label(sch, "U7_DVDT", "U7", "7")
+    add_power_pin_label(sch, "U7_DVDT", "C7D", "1")
     add_power_pin_label(sch, "GND", "C7D", "2")
     add_power_pin_label(sch, "RADAR_EFUSE_FLT", "R7F", "1")
     add_power_pin_label(sch, "3V3", "R7F", "2")
