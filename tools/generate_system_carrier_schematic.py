@@ -1580,6 +1580,19 @@ def build(output_dir: Path) -> dict:
                 position=label_position,
             )
 
+    # Root-sheet ground source for project-wide ERC. Keeping the
+    # PWR_FLAG on the root avoids child-sheet coordinate/instance leakage.
+    main.components.add(
+        "power:PWR_FLAG",
+        "#FLG9001",
+        "PWR_FLAG",
+        pos(120, 75),
+    )
+    main.add_label(
+        "GND",
+        pin=("#FLG9001", "1"),
+    )
+
     main.add_text(
         "EVT System Carrier\n"
         "External radar front-end: TI AWR2944PEVM\n"
