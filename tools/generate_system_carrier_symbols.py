@@ -344,6 +344,44 @@ def generate(
             }
         )
 
+    parts.append(
+        '''  (symbol "POWER_INPUT_2PIN"
+    (pin_names (offset 1.016))
+    (exclude_from_sim yes)
+    (in_bom yes)
+    (on_board yes)
+    (property "Reference" "J" (at 0 5.08 0)
+      (effects (font (size 1.27 1.27))))
+    (property "Value" "POWER_INPUT_2PIN" (at 0 -5.08 0)
+      (effects (font (size 1.27 1.27))))
+    (property "Footprint" "" (at 0 0 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Datasheet" "" (at 0 0 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (property "Description" "External 12V power input connector" (at 0 0 0)
+      (effects (font (size 1.27 1.27)) hide))
+    (symbol "POWER_INPUT_2PIN_1_1"
+      (rectangle (start -2.54 2.54) (end 2.54 -2.54)
+        (stroke (width 0) (type default))
+        (fill (type background)))
+      (pin power_out line (at -5.08 1.27 0) (length 2.54)
+        (name "12V_IN" (effects (font (size 1.0 1.0))))
+        (number "1" (effects (font (size 1.0 1.0)))))
+      (pin power_out line (at -5.08 -1.27 0) (length 2.54)
+        (name "GND" (effects (font (size 1.0 1.0))))
+        (number "2" (effects (font (size 1.0 1.0)))))
+    )
+  )'''
+    )
+    manifest_symbols.append(
+        {
+            "name": "POWER_INPUT_2PIN",
+            "refs": ["J1"],
+            "pin_count": 2,
+            "footprint": "",
+        }
+    )
+
     parts.append(')')
 
     output.parent.mkdir(
