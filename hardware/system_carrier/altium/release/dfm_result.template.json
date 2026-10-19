@@ -9,6 +9,9 @@
     }
   ],
   "notes": [
-    "PASS requires all P0 DFM items closed against the selected fabrication/assembly process."
-  ]
+    "PASS requires all P0 DFM items from ALTIUM_DFM_PROFILE_SYS_001.csv to be explicitly listed in closed_p0_ids.",
+    "profile_sha256 must match the exact authoritative DFM profile used for the review."
+  ],
+  "profile_sha256": "<SHA256_OF_ALTIUM_DFM_PROFILE_SYS_001.csv>",
+  "closed_p0_ids": []
 }
