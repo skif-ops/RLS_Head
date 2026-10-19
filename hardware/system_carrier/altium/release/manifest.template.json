@@ -1,0 +1,45 @@
+{
+  "schema": "ALTIUM-PRODUCTION-RELEASE-MANIFEST-001",
+  "board_id": "EVT-SYS-CARRIER",
+  "hardware_revision": "A",
+  "primary_cad": "Altium Designer",
+  "synthetic_fixture": false,
+  "evidence_level": "NATIVE_ALTIUM_RELEASE",
+  "artifacts": [
+    {
+      "id": "equivalence_result",
+      "path": "hardware/system_carrier/altium/equivalence/altium_equivalence_result.json",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "native_drc_result",
+      "path": "hardware/system_carrier/altium/release/native_drc_result.json",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "mechanical_review",
+      "path": "hardware/system_carrier/altium/release/mechanical_review.json",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "fabricator_binding",
+      "path": "hardware/system_carrier/altium/release/fabricator_binding.json",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "return_path_si_review",
+      "path": "hardware/system_carrier/altium/release/return_path_si_review.json",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "dfm_result",
+      "path": "hardware/system_carrier/altium/release/dfm_result.json",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "outjob_release_manifest",
+      "path": "hardware/system_carrier/altium/release/outjob_release_manifest.json",
+      "sha256": "<SHA256>"
+    }
+  ]
+}
