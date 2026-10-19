@@ -9,14 +9,14 @@ U7,1,Texas Instruments,TPS259470ARPWR,Dedicated radar 12V branch eFuse/load prot
 U8,1,u-blox,NEO-M9N-00B,Multi-GNSS module with UART and TIMEPULSE,SELECTED
 Y1,1,ECS,ECS-2520S33-250-FN-TR,25MHz 3.3V MCU oscillator,SELECTED
 Y2,1,ECS,ECS-2520S33-500-FN-TR,50MHz 3.3V RMII oscillator,SELECTED
-J_ETH,1,Bel,SI-60182-F,10/100BASE-T MagJack THT Y/G -40C..+85C,SELECTED
-J_RADAR_PWR,1,Molex,43650-0200,Micro-Fit 3.0 2-circuit right-angle radar power output,SELECTED
-J_RADAR_IO,1,Molex,43045-0600,Micro-Fit 3.0 6-circuit right-angle radar CAN/ref harness,SELECTED
-J_GNSS_ANT,1,Hirose,U.FL-R-SMT-K(800),50-ohm SMT GNSS antenna receptacle,SELECTED
-D_GNSS,1,Infineon,ESD0P2RF-02LS,Ultra-low-capacitance GNSS RF ESD protection,SELECTED
-D_ETH,1,Texas Instruments,TPD4E05U06DQAR,Ethernet ESD array,SELECTED
-D_CAN,1,Texas Instruments,ESD2CANFD24DBZRQ1,CAN FD ESD protection SOT-23-3,SELECTED
+J6,1,Bel,SI-60182-F,10/100BASE-T MagJack THT Y/G -40C..+85C,SELECTED
+J1,1,Molex,43650-0200,Micro-Fit 3.0 2-circuit right-angle system power input,SELECTED
+J5,1,Molex,43650-0200,Micro-Fit 3.0 2-circuit right-angle radar power output,SELECTED
+J4,1,Molex,43045-0600,Micro-Fit 3.0 6-circuit right-angle radar CAN/ref harness,SELECTED
+J8,1,Hirose,U.FL-R-SMT-K(800),50-ohm SMT GNSS antenna receptacle,SELECTED
+D8,1,Infineon,ESD0P2RF-02LS,Ultra-low-capacitance GNSS RF ESD protection,SELECTED
+D3,1,Texas Instruments,TPD4E05U06DQAR,Ethernet ESD array,SELECTED
+D4,1,Texas Instruments,ESD2CANFD24DBZRQ1,CAN FD ESD protection SOT-23-3,SELECTED
 FB1,1,Murata,BLM18BD601SH1,Precision ferrite bead,SELECTED
-FB2,1,Murata,BLM18KG221SN1,High-current ferrite bead,SELECTED
 L1,1,Coilcraft,XFL4020-222MEC,2.2uH buck inductor,SELECTED
-D_IN,1,MULTISOURCE,SMAJ15CA,Bidirectional input TVS,SELECTED
+D1,1,MULTISOURCE,SMAJ15CA,Bidirectional input TVS,SELECTED
