@@ -1034,6 +1034,7 @@ jobs:
           assert data["rule_scope_gate_included"] is True
           assert data["room_gate_included"] is True
           assert data["routing_readiness_included"] is True
+          assert data["native_audit_script_included"] is True
           assert data["file_count"] >= 43
           print(
               "Altium import package READY:",

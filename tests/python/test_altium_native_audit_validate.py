@@ -1,0 +1,112 @@
+import csv
+from pathlib import Path
+
+from tools.altium_native_audit_validate import validate
+
+
+ROOT = Path(__file__).resolve().parents[2]
+SYSTEM = ROOT / "hardware" / "system_carrier"
+
+
+def _write_csv(path: Path, fieldnames: list[str], rows: list[dict[str, str]]) -> None:
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def _contract_rows(path: Path) -> list[dict[str, str]]:
+    with path.open("r", encoding="utf-8", newline="") as handle:
+        return list(csv.DictReader(handle))
+
+
+def test_native_audit_validator_passes_complete_fixture(tmp_path):
+    bom = _contract_rows(SYSTEM / "BOM_SYS_CARRIER_LAYOUT_004.csv")
+    netlist = _contract_rows(SYSTEM / "NETLIST_SYS_001.csv")
+    rule_contract = _contract_rows(
+        SYSTEM / "altium" / "ALTIUM_RULE_QUERY_SYS_001.csv"
+    )
+
+    _write_csv(
+        tmp_path / "component_inventory.csv",
+        ["designator", "pattern", "x_mil", "y_mil"],
+        [
+            {
+                "designator": row["ref"],
+                "pattern": "AUDIT_PATTERN",
+                "x_mil": "0",
+                "y_mil": "0",
+            }
+            for row in bom
+        ],
+    )
+    _write_csv(
+        tmp_path / "net_inventory.csv",
+        ["net_name"],
+        [
+            {"net_name": row["net_name"]}
+            for row in netlist
+            if row.get("net_name")
+        ],
+    )
+    _write_csv(
+        tmp_path / "rule_inventory.csv",
+        ["rule_name", "rule_kind", "unique_id"],
+        [
+            {
+                "rule_name": row["rule_name"],
+                "rule_kind": row["rule_family"],
+                "unique_id": "TEST",
+            }
+            for row in rule_contract
+        ],
+    )
+
+    result = validate(system_root=SYSTEM, audit_dir=tmp_path)
+    assert result["status"] == "PASS"
+    assert result["errors"] == []
+    assert result["component_count"] == result["expected_component_count"]
+    assert result["required_rule_count"] == 10
+
+
+def test_native_audit_validator_detects_missing_rule(tmp_path):
+    bom = _contract_rows(SYSTEM / "BOM_SYS_CARRIER_LAYOUT_004.csv")
+    netlist = _contract_rows(SYSTEM / "NETLIST_SYS_001.csv")
+    rule_contract = _contract_rows(
+        SYSTEM / "altium" / "ALTIUM_RULE_QUERY_SYS_001.csv"
+    )
+
+    _write_csv(
+        tmp_path / "component_inventory.csv",
+        ["designator", "pattern", "x_mil", "y_mil"],
+        [
+            {
+                "designator": row["ref"],
+                "pattern": "AUDIT_PATTERN",
+                "x_mil": "0",
+                "y_mil": "0",
+            }
+            for row in bom
+        ],
+    )
+    _write_csv(
+        tmp_path / "net_inventory.csv",
+        ["net_name"],
+        [{"net_name": row["net_name"]} for row in netlist if row.get("net_name")],
+    )
+    _write_csv(
+        tmp_path / "rule_inventory.csv",
+        ["rule_name", "rule_kind", "unique_id"],
+        [
+            {
+                "rule_name": row["rule_name"],
+                "rule_kind": row["rule_family"],
+                "unique_id": "TEST",
+            }
+            for row in rule_contract[:-1]
+        ],
+    )
+
+    result = validate(system_root=SYSTEM, audit_dir=tmp_path)
+    assert result["status"] == "FAIL"
+    assert any(item.startswith("missing_rules:") for item in result["errors"])
