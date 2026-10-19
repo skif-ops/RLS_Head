@@ -86,7 +86,7 @@ Before routing:
 18. Run:
     `python -m tools.altium_equivalence_gate hardware/system_carrier/altium/equivalence/manifest.json --repository-root . --output hardware/system_carrier/altium/equivalence/altium_equivalence_result.json`.
 
-Only `ALTIUM_EQUIVALENCE_GATE = PASS` changes layout authority to Altium.
+Only `ALTIUM_EQUIVALENCE_GATE = PASS` changes layout authority to Altium. That PASS binds the electrical `SchDoc` and the pre-routing `PcbDoc` snapshot. After layout authority is granted, `PcbDoc` is expected to evolve during placement/routing; lifecycle CI therefore keeps the approved SchDoc immutable while allowing the routed PCB to diverge from its pre-routing equivalence hash. A SchDoc change still requires a fresh equivalence PASS.
 
 ## CI phase protection
 
