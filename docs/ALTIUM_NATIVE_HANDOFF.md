@@ -22,9 +22,13 @@ The repository must report:
    `hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc`.
 7. Create/update the PCB and save as:
    `hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc`.
-8. Save/export the KiCad Import Wizard log as:
+8. Copy the exact CI Altium import-package `manifest.json` used for this import to:
+   `hardware/system_carrier/altium/equivalence/import_package_manifest.json`.
+9. Save/export the KiCad Import Wizard log as:
    `hardware/system_carrier/altium/equivalence/import_log.txt`.
-9. Do not delete or overwrite the retained KiCad source.
+10. Generate the provenance receipt, recording the actual Altium Designer and KiCad Importer versions:
+    `python -m tools.altium_native_import_receipt --repository-root . --package-manifest hardware/system_carrier/altium/equivalence/import_package_manifest.json --altium-version "<ALTIUM_VERSION>" --importer-version "<IMPORTER_VERSION>" --output hardware/system_carrier/altium/equivalence/import_receipt.json`.
+11. Require the command to return `PASS`. Do not delete or overwrite the retained KiCad source.
 
 ## Native project checks
 
@@ -40,9 +44,12 @@ Before routing:
 6. Run:
    `python -m tools.altium_native_audit_validate --system-root hardware/system_carrier --audit-dir hardware/system_carrier/altium/equivalence --output hardware/system_carrier/altium/equivalence/native_audit_result.json`.
 7. Export the Altium compile report, BOM, netlist/pin evidence and footprint report required by the equivalence manifest.
-8. Fill `equivalence/manifest.json` from `manifest.template.json`, using SHA-256 hashes of the exact evidence files.
-9. Run:
-   `python -m tools.altium_equivalence_gate hardware/system_carrier/altium/equivalence/manifest.json --repository-root . --output altium_equivalence_result.json`.
+8. Build the manifest hashes deterministically:
+   `python -m tools.altium_equivalence_manifest --template hardware/system_carrier/altium/equivalence/manifest.template.json --repository-root . --output hardware/system_carrier/altium/equivalence/manifest.json`.
+   This automatically hashes every required artifact and marks `native_pcb_audit=PASS` only when the validated native audit result is PASS. It does not auto-approve the remaining semantic equivalence checks.
+9. Resolve the remaining semantic checks in `equivalence/manifest.json` from the native evidence.
+10. Run:
+    `python -m tools.altium_equivalence_gate hardware/system_carrier/altium/equivalence/manifest.json --repository-root . --output altium_equivalence_result.json`.
 
 Only `ALTIUM_EQUIVALENCE_GATE = PASS` changes layout authority to Altium.
 

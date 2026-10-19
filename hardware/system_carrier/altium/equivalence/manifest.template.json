@@ -24,6 +24,16 @@
       "sha256": "<SHA256>"
     },
     {
+      "id": "import_package_manifest",
+      "path": "hardware/system_carrier/altium/equivalence/import_package_manifest.json",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "import_receipt",
+      "path": "hardware/system_carrier/altium/equivalence/import_receipt.json",
+      "sha256": "<SHA256>"
+    },
+    {
       "id": "import_log",
       "path": "hardware/system_carrier/altium/equivalence/import_log.txt",
       "sha256": "<SHA256>"

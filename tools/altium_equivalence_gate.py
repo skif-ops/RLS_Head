@@ -13,6 +13,8 @@ REQUIRED_ARTIFACTS = {
     "project",
     "schematic",
     "pcb",
+    "import_package_manifest",
+    "import_receipt",
     "import_log",
     "compile_report",
     "bom_export",
@@ -166,6 +168,101 @@ def validate_manifest(
                 f"extension:{artifact_id}:{extension}"
             )
 
+    import_package = None
+    package_path = resolved.get("import_package_manifest")
+    if package_path is not None:
+        try:
+            import_package = json.loads(
+                package_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"import_package_parse:{exc}")
+        else:
+            if (
+                import_package.get("schema")
+                != "ALTIUM-IMPORT-PACKAGE-001"
+            ):
+                errors.append("import_package_schema")
+            if import_package.get("status") != "READY_FOR_ALTIUM_IMPORT":
+                errors.append("import_package_status")
+
+    import_receipt = None
+    receipt_path = resolved.get("import_receipt")
+    if receipt_path is not None:
+        try:
+            import_receipt = json.loads(
+                receipt_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"import_receipt_parse:{exc}")
+        else:
+            if (
+                import_receipt.get("schema")
+                != "ALTIUM-NATIVE-IMPORT-RECEIPT-001"
+            ):
+                errors.append("import_receipt_schema")
+            if import_receipt.get("status") != "PASS":
+                reasons.append("IMPORT_RECEIPT")
+            if not str(import_receipt.get("altium_version", "")).strip():
+                errors.append("import_receipt_altium_version")
+            if not str(import_receipt.get("importer_version", "")).strip():
+                errors.append("import_receipt_importer_version")
+
+            package_record = import_receipt.get(
+                "import_package_manifest"
+            )
+            if not isinstance(package_record, dict):
+                errors.append("import_receipt_package_record")
+            else:
+                claimed = str(
+                    package_record.get("sha256", "")
+                ).lower()
+                actual = str(
+                    integrity.get(
+                        "import_package_manifest", {}
+                    ).get("sha256_actual", "")
+                ).lower()
+                if not actual or claimed != actual:
+                    errors.append(
+                        "import_receipt_hash:import_package_manifest"
+                    )
+
+            native_records = import_receipt.get("native_artifacts")
+            if not isinstance(native_records, dict):
+                errors.append("import_receipt_native_artifacts")
+            else:
+                for artifact_id in (
+                    "schematic",
+                    "pcb",
+                    "import_log",
+                ):
+                    record = native_records.get(artifact_id)
+                    claimed = (
+                        str(record.get("sha256", "")).lower()
+                        if isinstance(record, dict)
+                        else ""
+                    )
+                    actual = str(
+                        integrity.get(artifact_id, {}).get(
+                            "sha256_actual",
+                            "",
+                        )
+                    ).lower()
+                    if not actual or claimed != actual:
+                        errors.append(
+                            f"import_receipt_hash:{artifact_id}"
+                        )
+
+            if import_package is not None:
+                receipt_source = str(
+                    import_receipt.get("source_commit", "")
+                ).strip().lower()
+                package_source = str(
+                    import_package.get("source_commit", "")
+                ).strip().lower()
+                if not receipt_source or receipt_source != package_source:
+                    errors.append("import_receipt_source_commit")
+
     compile_result = None
     compile_path = resolved.get("compile_report")
     if compile_path is not None:
@@ -296,6 +393,8 @@ def validate_manifest(
         "errors": sorted(set(errors)),
         "reason_codes": sorted(set(reasons)),
         "integrity": integrity,
+        "import_package": import_package,
+        "import_receipt": import_receipt,
         "compile": compile_result,
         "native_audit": native_audit,
         "checks": checks,

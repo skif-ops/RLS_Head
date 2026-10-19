@@ -32,7 +32,7 @@ All future Gerber/ODB++/IPC-2581, NC drill, pick-and-place, assembly drawings, f
 
 ## Native equivalence gate
 
-After Altium Designer creates `native/EVT_SYS_CARRIER.SchDoc` and `native/EVT_SYS_CARRIER.PcbDoc`, save/export the KiCad Import Wizard log as `equivalence/import_log.txt`, populate `equivalence/manifest.json` from `equivalence/manifest.template.json`, and run `python -m tools.altium_equivalence_gate`. Routing/layout authority remains blocked until this gate returns `PASS`.
+After Altium Designer creates `native/EVT_SYS_CARRIER.SchDoc` and `native/EVT_SYS_CARRIER.PcbDoc`, copy the exact CI import-package `manifest.json` to `equivalence/import_package_manifest.json`, save/export the KiCad Import Wizard log as `equivalence/import_log.txt`, generate `equivalence/import_receipt.json` with `tools.altium_native_import_receipt`, then build `equivalence/manifest.json` with `tools.altium_equivalence_manifest`. The remaining semantic equivalence checks must still be resolved from native evidence before running `tools.altium_equivalence_gate`. Routing/layout authority remains blocked until that gate returns `PASS`.
 
 ## EVT pre-layout baseline
 
