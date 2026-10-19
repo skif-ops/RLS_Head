@@ -128,6 +128,7 @@ def test_routing_readiness_detects_stale_production_release(
         lambda **kwargs: dict(pass_result),
     )
 
+    schematic_hash = _write_schematic(altium)
     pcb = altium / "native" / "EVT_SYS_CARRIER.PcbDoc"
     pcb.parent.mkdir(parents=True, exist_ok=True)
     pcb.write_bytes(b"CHANGED_AFTER_PRODUCTION_RELEASE")
