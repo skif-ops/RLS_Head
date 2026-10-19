@@ -716,6 +716,45 @@ def populate_mcu(
         "100nF",
         pos(34, 12),
     )
+
+    # One 100nF capacitor per STM32 VDD pin, plus USB supply and NRST filter.
+    vdd_pins = (
+        "15", "23", "36", "49", "62", "72", "82",
+        "91", "103", "127", "136", "149", "159", "172",
+    )
+    for index, pin_number in enumerate(vdd_pins):
+        ref = f"C{100 + index}"
+        x = 92 if index < 7 else 100
+        y = 16 + 4 * (index % 7)
+        sch.components.add(
+            "Device:C",
+            ref,
+            "100nF VDD",
+            pos(x, y),
+            Decouples_U1_Pin=pin_number,
+        )
+        add_pin_label(sch, "3V3", ref, "1")
+        add_pin_label(sch, "GND", ref, "2")
+
+    sch.components.add(
+        "Device:C",
+        "C114",
+        "100nF VDD33_USB",
+        pos(92, 48),
+        Decouples_U1_Pin="114",
+    )
+    add_pin_label(sch, "3V3", "C114", "1")
+    add_pin_label(sch, "GND", "C114", "2")
+
+    sch.components.add(
+        "Device:C",
+        "C115",
+        "100nF NRST",
+        pos(100, 48),
+        Filters_U1_Pin="31",
+    )
+    add_pin_label(sch, "NRST", "C115", "1")
+    add_pin_label(sch, "GND", "C115", "2")
     tp1 = sch.components.add(
         "Connector:TestPoint",
         "TP1",
@@ -1177,8 +1216,10 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
 
     sch.components.add("Device:C", "C60", "1uF", pos(50, 45))
     sch.components.add("Device:C", "C61", "470pF C0G", pos(56, 45))
-    sch.components.add("Device:C", "C62", "100nF", pos(36, 45))
+    sch.components.add("Device:C", "C62", "100nF", pos(36, 45), Decouples_U3_Pin="1")
     sch.components.add("Device:C", "C63", "22nF C0G", pos(82, 54))
+    sch.components.add("Device:C", "C64", "100nF", pos(38, 48), Decouples_U3_Pin="9")
+    sch.components.add("Device:C", "C65", "100nF", pos(40, 51), Decouples_U3_Pin="19")
     sch.components.add("Device:R", "R605", "10k 1% NRST_PD", pos(58, 51))
     sch.components.add(
         "power:PWR_FLAG",
@@ -1209,6 +1250,10 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
     # Local 3V3 decoupling / analog filter caps.
     add_pin_label_stub(sch, "3V3", "C62", "1")
     # C62.2 receives the authoritative hierarchical GND label later.
+    add_pin_label_stub(sch, "3V3", "C64", "1")
+    add_pin_label_stub(sch, "GND", "C64", "2")
+    add_pin_label_stub(sch, "3V3", "C65", "1")
+    add_pin_label_stub(sch, "GND", "C65", "2")
     add_pin_label_stub(sch, "3V3", "C61", "1")
     add_pin_label_stub(sch, "GND", "C61", "2")
 
