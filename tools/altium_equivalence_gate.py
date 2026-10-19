@@ -17,6 +17,9 @@ REQUIRED_ARTIFACTS = {
     "bom_export",
     "netlist_export",
     "footprint_report",
+    "component_inventory",
+    "net_inventory",
+    "rule_inventory",
     "native_audit_result",
 }
 
@@ -209,6 +212,29 @@ def validate_manifest(
                 errors.append("native_audit_schema")
             if native_audit.get("status") != "PASS":
                 reasons.append("NATIVE_AUDIT")
+
+            input_sha256 = native_audit.get("input_sha256")
+            if not isinstance(input_sha256, dict):
+                errors.append("native_audit_input_sha256")
+            else:
+                for artifact_id in (
+                    "component_inventory",
+                    "net_inventory",
+                    "rule_inventory",
+                ):
+                    actual = str(
+                        integrity.get(artifact_id, {}).get(
+                            "sha256_actual",
+                            "",
+                        )
+                    ).lower()
+                    claimed = str(
+                        input_sha256.get(artifact_id, "")
+                    ).lower()
+                    if not actual or claimed != actual:
+                        errors.append(
+                            f"native_audit_input_hash:{artifact_id}"
+                        )
 
     checks_raw = manifest.get("checks")
     checks: dict[str, str] = {}
