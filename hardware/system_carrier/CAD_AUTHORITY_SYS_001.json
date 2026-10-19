@@ -39,7 +39,8 @@
     "hardware/system_carrier/altium/ALTIUM_IMPEDANCE_START_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_POWER_WIDTH_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_DIFF_PAIRS_SYS_001.csv",
-    "hardware/system_carrier/altium/ALTIUM_RULE_QUERY_SYS_001.csv"
+    "hardware/system_carrier/altium/ALTIUM_RULE_QUERY_SYS_001.csv",
+    "hardware/system_carrier/altium/ALTIUM_ROOMS_SYS_001.csv"
   ],
   "altium_equivalence_gate": {
     "validator": "tools/altium_equivalence_gate.py",
@@ -88,5 +89,11 @@
     "differential_pair_count": 3,
     "query_language": "Altium PCB Query Language",
     "production_drc_required": true
+  },
+  "routing_readiness_gate": {
+    "validator": "tools/altium_routing_readiness.py",
+    "current_expected_status": "READY_FOR_NATIVE_IMPORT",
+    "routing_authority_requires": "ALTIUM_EQUIVALENCE_GATE PASS",
+    "production_authority_separate": true
   }
 }
