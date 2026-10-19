@@ -11,6 +11,7 @@ from tools.altium_native_audit_validate import validate as validate_audit
 from tools.altium_native_bom_validate import validate as validate_bom
 from tools.altium_native_connector_validate import validate as validate_connector
 from tools.altium_native_footprint_validate import validate as validate_footprint
+from tools.altium_native_file_preflight import validate as validate_native_files
 from tools.altium_native_handoff_status import evaluate as evaluate_handoff
 from tools.altium_native_hierarchy_validate import validate as validate_hierarchy
 from tools.altium_native_import_receipt import build_receipt
@@ -29,6 +30,7 @@ PATHS = {
     "project": ALTIUM_REL / "EVT_SYS_CARRIER.PrjPcb",
     "schematic": NATIVE_REL / "EVT_SYS_CARRIER.SchDoc",
     "pcb": NATIVE_REL / "EVT_SYS_CARRIER.PcbDoc",
+    "native_file_preflight": EQUIV_REL / "native_file_preflight.json",
     "package_manifest": EQUIV_REL / "import_package_manifest.json",
     "import_log": EQUIV_REL / "import_log.txt",
     "import_receipt": EQUIV_REL / "import_receipt.json",
@@ -264,6 +266,25 @@ def run_transition(
             generated=generated,
             stage_results=stage_results,
             missing=missing_native,
+        )
+
+    native_file_preflight = validate_native_files(
+        schematic=_absolute(root, "schematic"),
+        pcb=_absolute(root, "pcb"),
+    )
+    _write_json(
+        _absolute(root, "native_file_preflight"),
+        native_file_preflight,
+    )
+    generated.append(PATHS["native_file_preflight"].as_posix())
+    stage_results["native_file_preflight"] = native_file_preflight
+    if native_file_preflight.get("status") != "PASS":
+        return _result(
+            status="BLOCKED_NATIVE_FILE_PREFLIGHT",
+            next_action="RECREATE_NATIVE_ALTIUM_DOCUMENTS",
+            generated=generated,
+            stage_results=stage_results,
+            errors=native_file_preflight.get("errors", []),
         )
 
     missing_provenance = _missing(
