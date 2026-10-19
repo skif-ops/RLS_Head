@@ -15,6 +15,7 @@
     "native/EVT_SYS_CARRIER.SchDoc",
     "native/EVT_SYS_CARRIER.PcbDoc",
     "equivalence/native_file_preflight.json",
+    "equivalence/import_native_file_preflight.json",
     "equivalence/import_package_manifest.json",
     "equivalence/import_receipt.json",
     "equivalence/import_log.txt",
