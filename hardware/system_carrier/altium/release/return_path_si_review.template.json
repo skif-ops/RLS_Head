@@ -6,7 +6,12 @@
   "timing_return_paths_verified": false,
   "ethernet_mdi_return_path_verified": false,
   "reviewer": "<REVIEWER>",
-  "evidence_refs": [],
+  "evidence_refs": [
+    {
+      "path": "<REPO_RELATIVE_EVIDENCE_PATH>",
+      "sha256": "<SHA256>"
+    }
+  ],
   "notes": [
     "PASS requires routed-board return-path/SI review."
   ]
