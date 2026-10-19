@@ -15,8 +15,9 @@ The gate consumes:
 - `hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc`;
 - SHA-bound `equivalence/native_file_preflight.json`, proving both native documents have valid Microsoft Compound File Binary container headers;
 - exact CI import-package manifest copied to `equivalence/import_package_manifest.json`;
-- generated native import provenance receipt `equivalence/import_receipt.json`;
+- immutable import-time provenance receipt `equivalence/import_receipt.json` (`POST_IMPORT_NATIVE_SNAPSHOT`); its SchDoc/PcbDoc hashes describe the immediate Import Wizard outputs and may differ from the later prepared pre-routing snapshot;
 - saved/exported KiCad Import Wizard log `equivalence/import_log.txt`;
+- final `equivalence/native_file_preflight.json` whose SchDoc/PcbDoc hashes must match the actual prepared pre-routing files consumed by this gate;
 - raw Altium compile/ERC report plus `compile_report.json` with zero errors/warnings, SHA-256-bound to that raw report, the exact `.PrjPcb` and native `.SchDoc`;
 - BOM export plus `equivalence/bom_validation_result.json`;
 - connector validation result derived from native pad/net inventory;
