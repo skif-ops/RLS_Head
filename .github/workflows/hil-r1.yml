@@ -334,6 +334,7 @@ jobs:
           assert data["diff_pair_count"] == 3
           assert data["rule_query_count"] == 10
           assert data["room_count"] == 7
+          assert data["equivalence_check_count"] == 11
           assert data["altium_phase"] == "IMPORT_PREPARED"
           print("Altium primary CAD policy PASS")
           PY
