@@ -76,5 +76,5 @@ Equivalence PASS authorizes native placement/routing work only. Production remai
 
 After `ALTIUM_EQUIVALENCE_GATE = PASS`, native placement/routing may begin. Production remains separately blocked. The post-routing manufacturing path is defined under `hardware/system_carrier/altium/release/` and enforced by `tools.altium_production_release_gate`.
 
-The production gate requires final native Altium DRC/unrouted-net closure, mechanical freeze, selected-fabricator stack/impedance/process binding, return-path/SI review, DFM closure and complete required OutJob outputs. A routing-authority PASS alone can never authorize production.
+The production gate requires final native Altium DRC/unrouted-net closure, mechanical freeze, selected-fabricator stack/impedance/process binding, return-path/SI review, DFM closure and complete required OutJob outputs. All post-routing release evidence is SHA-256-bound to the same final `hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc`; evidence from different PCB revisions cannot be combined. A routing-authority PASS alone can never authorize production.
 
