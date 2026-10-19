@@ -30,7 +30,7 @@ def _manifest(tmp_path: Path) -> Path:
         ),
         "pad_net_inventory": (
             "equivalence/pad_net_inventory.csv",
-            b"designator,pad_name,net_name\nU1,40,GNSS_PPS\n",
+            b"designator,pad_name,net_name\nU1,40,GNSS_PPS\nJ1,1,VIN_RAW\n",
         ),
         "layer_stack_inventory": (
             "equivalence/layer_stack_inventory.csv",
@@ -71,6 +71,32 @@ def _manifest(tmp_path: Path) -> Path:
     _write(footprint_contract_path, footprint_contract_content)
     footprint_contract_hash = hashlib.sha256(
         footprint_contract_content
+    ).hexdigest()
+
+    connector_contract_content = (
+        b"connector,pin,signal,direction,voltage_or_standard,criticality,notes\n"
+        b"J1_POWER,1,12V_IN,IN,12V nominal,P0,\n"
+    )
+    connector_contract_path = (
+        tmp_path / "hardware/system_carrier/CONNECTOR_PINOUT_SYS_001.csv"
+    )
+    _write(connector_contract_path, connector_contract_content)
+    connector_contract_hash = hashlib.sha256(
+        connector_contract_content
+    ).hexdigest()
+
+    connector_map_content = (
+        b"connector,logical_pin,logical_signal,physical_ref,physical_pad,"
+        b"native_net,policy,criticality,notes\n"
+        b"J1_POWER,1,12V_IN,J1,1,VIN_RAW,CONNECT,P0,\n"
+    )
+    connector_map_path = (
+        tmp_path
+        / "hardware/system_carrier/CONNECTOR_NATIVE_PINMAP_SYS_001.csv"
+    )
+    _write(connector_map_path, connector_map_content)
+    connector_map_hash = hashlib.sha256(
+        connector_map_content
     ).hexdigest()
 
     native_content = {
@@ -166,6 +192,24 @@ def _manifest(tmp_path: Path) -> Path:
         sort_keys=True,
     ).encode()
 
+    connector_validation_content = json.dumps(
+        {
+            "schema": "ALTIUM-NATIVE-CONNECTOR-RESULT-001",
+            "status": "PASS",
+            "errors": [],
+            "warnings": [],
+            "input_sha256": {
+                "pad_net_inventory": raw_hashes["pad_net_inventory"],
+                "connector_pinout_contract": connector_contract_hash,
+                "connector_native_map": connector_map_hash,
+            },
+            "verified_checks": {
+                "connector_pinout_equivalence": "PASS",
+            },
+        },
+        sort_keys=True,
+    ).encode()
+
     entries = {
         "project": ("EVT_SYS_CARRIER.PrjPcb", b"[Design]\nVersion=1.0\n"),
         "schematic": (
@@ -206,6 +250,10 @@ def _manifest(tmp_path: Path) -> Path:
         "bom_validation_result": (
             "equivalence/bom_validation_result.json",
             bom_validation_content,
+        ),
+        "connector_validation_result": (
+            "equivalence/connector_validation_result.json",
+            connector_validation_content,
         ),
         "netlist_export": (
             "equivalence/netlist_export.csv",
@@ -447,5 +495,32 @@ def test_footprint_validation_input_hash_mismatch_invalidates_gate(tmp_path):
     assert checked["status"] == "INVALID"
     assert (
         "footprint_report_hash:component_inventory"
+        in checked["errors"]
+    )
+
+
+
+def test_connector_validation_input_hash_mismatch_invalidates_gate(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    item = next(
+        artifact
+        for artifact in data["artifacts"]
+        if artifact["id"] == "connector_validation_result"
+    )
+    path = tmp_path / item["path"]
+    result = json.loads(path.read_text())
+    result["input_sha256"]["pad_net_inventory"] = "0" * 64
+    content = json.dumps(result, sort_keys=True).encode()
+    path.write_bytes(content)
+    item["sha256"] = hashlib.sha256(content).hexdigest()
+    manifest.write_text(json.dumps(data, indent=2) + "\n")
+
+    checked = validate_manifest(manifest, tmp_path)
+
+    assert checked["status"] == "INVALID"
+    assert (
+        "connector_validation_hash:pad_net_inventory"
         in checked["errors"]
     )

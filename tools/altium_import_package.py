@@ -115,6 +115,7 @@ def build(
         "FOOTPRINT_ASSIGNMENT_SYS_002.csv",
         "PINMAP_SYS_001.csv",
         "CONNECTOR_PINOUT_SYS_001.csv",
+        "CONNECTOR_NATIVE_PINMAP_SYS_001.csv",
         "NETLIST_SYS_001.csv",
         "HIERARCHY_INTERFACE_SYS_001.csv",
         "FOOTPRINT_PLAN_SYS_001.csv",
