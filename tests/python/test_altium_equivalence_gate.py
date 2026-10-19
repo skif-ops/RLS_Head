@@ -3,12 +3,24 @@ import json
 from pathlib import Path
 
 from tools.altium_equivalence_gate import validate_manifest
+from tools.altium_native_file_preflight import CFB_MAGIC
 
 
 def _write(path: Path, content: bytes) -> str:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(content)
     return hashlib.sha256(content).hexdigest()
+
+
+def _cfb_stub() -> bytes:
+    data = bytearray(512)
+    data[:8] = CFB_MAGIC
+    data[24:26] = (0x003E).to_bytes(2, "little")
+    data[26:28] = (3).to_bytes(2, "little")
+    data[28:30] = (0xFFFE).to_bytes(2, "little")
+    data[30:32] = (9).to_bytes(2, "little")
+    data[32:34] = (6).to_bytes(2, "little")
+    return bytes(data)
 
 
 def _manifest(tmp_path: Path) -> Path:
@@ -112,8 +124,8 @@ def _manifest(tmp_path: Path) -> Path:
     ).hexdigest()
 
     native_content = {
-        "schematic": b"SYNTHETIC_TEST_SCHDOC",
-        "pcb": b"SYNTHETIC_TEST_PCBDOC",
+        "schematic": _cfb_stub(),
+        "pcb": _cfb_stub(),
         "import_log": b"SYNTHETIC_IMPORT_LOG\n",
     }
     native_paths = {
@@ -125,6 +137,37 @@ def _manifest(tmp_path: Path) -> Path:
         key: hashlib.sha256(content).hexdigest()
         for key, content in native_content.items()
     }
+
+    native_file_preflight_content = json.dumps(
+        {
+            "schema": "ALTIUM-NATIVE-FILE-PREFLIGHT-001",
+            "status": "PASS",
+            "errors": [],
+            "artifacts": {
+                "schematic": {
+                    "path": native_paths["schematic"],
+                    "status": "PASS",
+                    "errors": [],
+                    "size": len(native_content["schematic"]),
+                    "sha256": native_hashes["schematic"],
+                    "cfb_major_version": 3,
+                    "sector_shift": 9,
+                    "sector_size": 512,
+                },
+                "pcb": {
+                    "path": native_paths["pcb"],
+                    "status": "PASS",
+                    "errors": [],
+                    "size": len(native_content["pcb"]),
+                    "sha256": native_hashes["pcb"],
+                    "cfb_major_version": 3,
+                    "sector_shift": 9,
+                    "sector_size": 512,
+                },
+            },
+        },
+        sort_keys=True,
+    ).encode()
 
     baseline_content = (
         b"designator,pin,net_name\n"
@@ -324,6 +367,10 @@ def _manifest(tmp_path: Path) -> Path:
         "pcb": (
             native_paths["pcb"],
             native_content["pcb"],
+        ),
+        "native_file_preflight": (
+            "equivalence/native_file_preflight.json",
+            native_file_preflight_content,
         ),
         "import_package_manifest": (
             "equivalence/import_package_manifest.json",
