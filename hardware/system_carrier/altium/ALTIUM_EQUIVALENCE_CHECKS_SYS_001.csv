@@ -4,9 +4,9 @@ EQ-002,PINMAP_SYS_001.csv,equivalence/native_audit_result.json,All MCU physical-
 EQ-003,"CONNECTOR_PINOUT_SYS_001.csv;CONNECTOR_NATIVE_PINMAP_SYS_001.csv",equivalence/connector_validation_result.json,All logical connector pins map to the required native physical pad/net assignments,P0
 EQ-004,Retained KiCad schematic CI baseline,equivalence/netlist_validation_result.json,Native PcbDoc physical endpoint connectivity partitions exactly match the retained KiCad baseline,P0
 EQ-005,FOOTPRINT_ASSIGNMENT_SYS_002.csv,equivalence/footprint_report.json,Every locked reference uses the approved native PCB footprint pattern,P0
-EQ-006,HIERARCHY_INTERFACE_SYS_001.csv,equivalence/netlist_export.csv,Sheet ports resolve to the same nets and directions,P0
+EQ-006,HIERARCHY_INTERFACE_SYS_001.csv,equivalence/hierarchy_validation_result.json,Compiled native hierarchy export exactly matches sheet net anchor and port-direction contract,P0
 EQ-007,altium/ALTIUM_RULE_QUERY_SYS_001.csv,equivalence/native_audit_result.json,All 10 named native PCB rules have the required family scope and enabled state; the 24-row ALTIUM_RULES_SYS_001.csv remains the broader layout-design constraint contract,P0
 EQ-008,altium/ALTIUM_LAYER_STACK_SYS_001.csv,equivalence/native_audit_result.json,Native copper layer order matches Top Layer / Mid-Layer 1 / Mid-Layer 2 / Bottom Layer contract,P0
-EQ-009,PCB_LAYOUT_CONSTRAINTS_SYS_001.csv,equivalence/compile_report.json,No 76-81GHz RF routing or antenna is present on System Carrier,P0
+EQ-009,PCB_LAYOUT_CONSTRAINTS_SYS_001.csv,equivalence/no_mmwave_review_result.json,Human routed-board review bound to exact PcbDoc confirms no 76-81GHz components nets routing or antenna on System Carrier,P0
 EQ-010,Review A evidence,equivalence/compile_report.json,Altium compile reports zero errors and zero warnings,P0
 EQ-011,"BOM_SYS_CARRIER_LAYOUT_004.csv;NETLIST_SYS_001.csv;altium/ALTIUM_RULE_QUERY_SYS_001.csv",equivalence/native_audit_result.json,Native component net and rule inventory audit returns PASS,P0
