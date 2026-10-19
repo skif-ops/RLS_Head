@@ -103,3 +103,42 @@ def test_phase_coherence_rejects_native_pair_with_pre_import_status(
     assert "authority_native_document_status" in errors
     assert "authority_layout_authority" in errors
     assert "authority_routing_status" in errors
+
+
+
+def test_phase_coherence_accepts_production_released_state(tmp_path: Path):
+    native = tmp_path / "altium/native"
+    native.mkdir(parents=True)
+    (native / "EVT_SYS_CARRIER.SchDoc").write_bytes(b"SCH")
+    (native / "EVT_SYS_CARRIER.PcbDoc").write_bytes(b"PCB")
+
+    authority = {
+        "native_document_status": "NATIVE_EQUIVALENCE_PASS",
+        "pcb_layout_authority": "ALTIUM_AUTHORIZED",
+        "pcb_design_phase": "PRODUCTION_RELEASED",
+        "production_release_authorized": True,
+        "routing_readiness_gate": {
+            "current_expected_status": "READY_FOR_ROUTING",
+        },
+    }
+    status = {
+        "current_phase": "PRODUCTION_RELEASED",
+        "altium": {
+            "native_schdoc": True,
+            "native_pcbdoc": True,
+            "equivalence_gate": True,
+            "placement_started": True,
+            "routing_started": True,
+            "production_release_authorized": True,
+        },
+    }
+
+    errors, native_schdoc, native_pcbdoc = _phase_coherence(
+        tmp_path,
+        authority,
+        status,
+    )
+
+    assert errors == []
+    assert native_schdoc is True
+    assert native_pcbdoc is True
