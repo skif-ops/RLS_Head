@@ -1,3 +1,4 @@
+import hashlib
 import json
 from pathlib import Path
 
@@ -99,11 +100,15 @@ def test_production_transition_pass_syncs_authority(
             "manifest_errors": [],
         },
     )
+    pcb_hash = hashlib.sha256(
+        _path(tmp_path, "native_pcb").read_bytes()
+    ).hexdigest()
     gate = {
         "schema": "ALTIUM-PRODUCTION-RELEASE-RESULT-001",
         "status": "PASS",
         "layout_authority": "AUTHORIZED",
         "production_authority": "AUTHORIZED",
+        "native_pcb_sha256": pcb_hash,
         "errors": [],
         "reason_codes": [],
     }
@@ -123,6 +128,8 @@ def test_production_transition_pass_syncs_authority(
     )
     assert native_status["production_authority"] == "AUTHORIZED"
     assert len(native_status["production_release_result_sha256"]) == 64
+    assert native_status["native_pcb_sha256"] == pcb_hash
+    assert native_status["production_release_source_pcb_sha256"] == pcb_hash
 
     implementation = json.loads(
         _path(tmp_path, "implementation_status").read_text(
@@ -200,3 +207,94 @@ def test_production_transition_builds_missing_manifest(
         result["generated_artifacts"]
     )
     assert result["status"] == "WAITING_EQUIVALENCE_PASS"
+
+
+
+def test_production_transition_blocks_if_pcb_changes_after_gate(
+    tmp_path,
+    monkeypatch,
+):
+    _write(_path(tmp_path, "native_pcb"), b"FINAL_NATIVE_PCB")
+    _write_json(
+        _path(tmp_path, "manifest"),
+        {
+            "schema": "ALTIUM-PRODUCTION-RELEASE-MANIFEST-001",
+            "artifacts": [],
+        },
+    )
+    for key, payload in (
+        (
+            "native_status",
+            {
+                "schema": "ALTIUM-NATIVE-STATUS-SYS-001",
+                "production_authority": "NOT_AUTHORIZED",
+            },
+        ),
+        (
+            "implementation_status",
+            {
+                "schema": "ALTIUM-PCB-IMPLEMENTATION-STATUS-001",
+                "current_phase": "READY_FOR_ROUTING",
+                "altium": {},
+                "routing_readiness": {},
+            },
+        ),
+        (
+            "cad_authority",
+            {
+                "schema": "SYSTEM-CARRIER-CAD-AUTHORITY-001",
+                "production_release_authorized": False,
+                "routing_readiness_gate": {},
+            },
+        ),
+    ):
+        _write_json(_path(tmp_path, key), payload)
+
+    monkeypatch.setattr(
+        transition,
+        "evaluate_release_status",
+        lambda root: {
+            "status": "READY_TO_RUN_PRODUCTION_RELEASE_GATE",
+            "next_action": "RUN_ALTIUM_PRODUCTION_RELEASE_GATE",
+            "missing_artifacts": [],
+            "invalid_artifacts": [],
+            "non_pass_artifacts": [],
+            "manifest_errors": [],
+        },
+    )
+
+    approved_hash = hashlib.sha256(
+        _path(tmp_path, "native_pcb").read_bytes()
+    ).hexdigest()
+
+    def gate_then_change(*args, **kwargs):
+        _path(tmp_path, "native_pcb").write_bytes(b"CHANGED_AFTER_GATE")
+        return {
+            "schema": "ALTIUM-PRODUCTION-RELEASE-RESULT-001",
+            "status": "PASS",
+            "layout_authority": "AUTHORIZED",
+            "production_authority": "AUTHORIZED",
+            "native_pcb_sha256": approved_hash,
+            "errors": [],
+            "reason_codes": [],
+        }
+
+    monkeypatch.setattr(
+        transition,
+        "validate_release_gate",
+        gate_then_change,
+    )
+
+    result = transition.run_transition(repository_root=tmp_path)
+
+    assert result["status"] == "PASS_STATUS_SYNC_FAILED"
+    assert result["production_authorized"] is False
+    assert any(
+        "changed after production gate PASS" in item
+        for item in result["errors"]
+    )
+
+    native_status = json.loads(
+        _path(tmp_path, "native_status").read_text(encoding="utf-8")
+    )
+    assert native_status["production_authority"] == "NOT_AUTHORIZED"
