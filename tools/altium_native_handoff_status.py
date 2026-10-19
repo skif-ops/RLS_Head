@@ -13,6 +13,13 @@ SCHEMA = "ALTIUM-NATIVE-HANDOFF-STATUS-001"
 REQUIRED = {
     "project": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
     "schematic": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
+    "schematic_power_input": "hardware/system_carrier/altium/native/10_POWER_INPUT.SchDoc",
+    "schematic_mcu_core": "hardware/system_carrier/altium/native/20_MCU_CORE.SchDoc",
+    "schematic_time_gnss": "hardware/system_carrier/altium/native/30_TIME_GNSS.SchDoc",
+    "schematic_imu": "hardware/system_carrier/altium/native/40_IMU.SchDoc",
+    "schematic_radar_io_can": "hardware/system_carrier/altium/native/50_RADAR_IO_CAN.SchDoc",
+    "schematic_ethernet": "hardware/system_carrier/altium/native/60_ETHERNET.SchDoc",
+    "schematic_debug_boot": "hardware/system_carrier/altium/native/70_DEBUG_BOOT.SchDoc",
     "pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
     "import_package_manifest": "hardware/system_carrier/altium/equivalence/import_package_manifest.json",
     "import_receipt": "hardware/system_carrier/altium/equivalence/import_receipt.json",
@@ -64,6 +71,18 @@ def evaluate(repository_root: str | Path = ".") -> dict:
 
     native_ready = (
         evidence["schematic"]["present"]
+        and all(
+            evidence[artifact_id]["present"]
+            for artifact_id in (
+                "schematic_power_input",
+                "schematic_mcu_core",
+                "schematic_time_gnss",
+                "schematic_imu",
+                "schematic_radar_io_can",
+                "schematic_ethernet",
+                "schematic_debug_boot",
+            )
+        )
         and evidence["pcb"]["present"]
     )
     provenance_ready = (
