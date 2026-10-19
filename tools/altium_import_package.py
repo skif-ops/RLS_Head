@@ -150,6 +150,8 @@ def build(
         "ALTIUM_EVT_STACKUP_SYS_002.csv",
         "ALTIUM_IMPEDANCE_START_SYS_001.csv",
         "ALTIUM_POWER_WIDTH_SYS_001.csv",
+        "ALTIUM_DIFF_PAIRS_SYS_001.csv",
+        "ALTIUM_RULE_QUERY_SYS_001.csv",
         "ALTIUM_IMPLEMENTATION_SEQUENCE_SYS_001.csv",
         "ALTIUM_STATUS_SYS_001.json",
         "README.md",
@@ -166,6 +168,7 @@ def build(
         "altium_placement_gate.json",
         "altium_impedance_gate.json",
         "altium_power_width_gate.json",
+        "altium_rule_scope_gate.json",
         "erc.json",
         "erc_triage.json",
         "cad_ci_summary.json",
@@ -224,6 +227,12 @@ def build(
         "power_width_gate_included": any(
             item["path"].endswith(
                 "evidence/altium_power_width_gate.json"
+            )
+            for item in records
+        ),
+        "rule_scope_gate_included": any(
+            item["path"].endswith(
+                "evidence/altium_rule_scope_gate.json"
             )
             for item in records
         ),
