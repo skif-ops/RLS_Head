@@ -277,6 +277,16 @@ def validate_manifest(
             reasons.append("TIMING_RETURN_PATHS")
         if si_review.get("ethernet_mdi_return_path_verified") is not True:
             reasons.append("ETH_MDI_RETURN_PATH")
+        if si_review.get("power_hot_loop_verified") is not True:
+            reasons.append("POWER_HOT_LOOP")
+        if si_review.get("power_branch_widths_verified") is not True:
+            reasons.append("POWER_BRANCH_WIDTHS")
+        if si_review.get("ethernet_mdi_impedance_rule_verified") is not True:
+            reasons.append("ETH_MDI_IMPEDANCE_RULE")
+        if si_review.get("gnss_rf_route_verified") is not True:
+            reasons.append("GNSS_RF_ROUTE")
+        if si_review.get("no_mmwave_post_route_verified") is not True:
+            reasons.append("NO_MMWAVE_POST_ROUTE")
         if not _valid_text(si_review.get("reviewer")):
             errors.append("si_reviewer")
         _validate_evidence_refs(
