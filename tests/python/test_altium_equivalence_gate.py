@@ -144,6 +144,40 @@ def _manifest(tmp_path: Path) -> Path:
         for key, content in native_content.items()
     }
 
+    import_native_file_preflight_content = json.dumps(
+        {
+            "schema": "ALTIUM-NATIVE-FILE-PREFLIGHT-001",
+            "status": "PASS",
+            "errors": [],
+            "artifacts": {
+                "schematic": {
+                    "path": native_paths["schematic"],
+                    "status": "PASS",
+                    "errors": [],
+                    "size": len(native_content["schematic"]),
+                    "sha256": native_hashes["schematic"],
+                    "cfb_major_version": 3,
+                    "sector_shift": 9,
+                    "sector_size": 512,
+                },
+                "pcb": {
+                    "path": native_paths["pcb"],
+                    "status": "PASS",
+                    "errors": [],
+                    "size": len(native_content["pcb"]),
+                    "sha256": native_hashes["pcb"],
+                    "cfb_major_version": 3,
+                    "sector_shift": 9,
+                    "sector_size": 512,
+                },
+            },
+        },
+        sort_keys=True,
+    ).encode()
+    import_native_file_preflight_hash = hashlib.sha256(
+        import_native_file_preflight_content
+    ).hexdigest()
+
     native_file_preflight_content = json.dumps(
         {
             "schema": "ALTIUM-NATIVE-FILE-PREFLIGHT-001",
@@ -222,6 +256,13 @@ def _manifest(tmp_path: Path) -> Path:
             "import_package_manifest": {
                 "path": "equivalence/import_package_manifest.json",
                 "sha256": package_hash,
+            },
+            "import_native_file_preflight": {
+                "path": (
+                    "hardware/system_carrier/altium/equivalence/"
+                    "import_native_file_preflight.json"
+                ),
+                "sha256": import_native_file_preflight_hash,
             },
             "native_artifacts": {
                 key: {
@@ -410,6 +451,13 @@ def _manifest(tmp_path: Path) -> Path:
         "native_file_preflight": (
             "equivalence/native_file_preflight.json",
             native_file_preflight_content,
+        ),
+        "import_native_file_preflight": (
+            (
+                "hardware/system_carrier/altium/equivalence/"
+                "import_native_file_preflight.json"
+            ),
+            import_native_file_preflight_content,
         ),
         "import_package_manifest": (
             "equivalence/import_package_manifest.json",
