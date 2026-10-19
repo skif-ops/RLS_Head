@@ -18,6 +18,7 @@ The gate consumes:
 - saved/exported KiCad Import Wizard log `equivalence/import_log.txt`;
 - Altium compile report with zero errors and zero warnings;
 - BOM export plus `equivalence/bom_validation_result.json`;
+- connector validation result derived from native pad/net inventory;
 - netlist/pin export;
 - footprint assignment result generated from the native component inventory;
 - read-only native PCB audit inventories (components, nets, rules, pad-to-net connectivity and copper layer stack), each SHA-256-bound in the equivalence manifest;
@@ -32,7 +33,7 @@ All must be PASS:
 
 1. BOM designator/MPN equivalence, machine-validated against `BOM_SYS_CARRIER_LAYOUT_004.csv`.
 2. STM32 pinmap equivalence.
-3. Connector pinout equivalence.
+3. Connector pinout equivalence, machine-validated through the logical-to-native connector map and native pad/net inventory.
 4. Netlist equivalence.
 5. Footprint equivalence, machine-validated from native `IPCB_Component.Pattern` inventory against `FOOTPRINT_ASSIGNMENT_SYS_002.csv`.
 6. Hierarchy/port equivalence.
