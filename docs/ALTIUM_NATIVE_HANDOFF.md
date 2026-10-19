@@ -24,6 +24,8 @@ The repository must report:
    `hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc`.
 8. Copy the exact CI Altium import-package `manifest.json` used for this import to:
    `hardware/system_carrier/altium/equivalence/import_package_manifest.json`.
+   From that same package, copy `evidence/kicad_netlist_baseline.csv` to:
+   `hardware/system_carrier/altium/equivalence/kicad_netlist_baseline.csv`.
 9. Save/export the KiCad Import Wizard log as:
    `hardware/system_carrier/altium/equivalence/import_log.txt`.
 10. Generate the provenance receipt, recording the actual Altium Designer and KiCad Importer versions:
@@ -50,13 +52,15 @@ Before routing:
    `python -m tools.altium_native_footprint_validate --system-root hardware/system_carrier --component-inventory hardware/system_carrier/altium/equivalence/component_inventory.csv --output hardware/system_carrier/altium/equivalence/footprint_report.json`.
 10. Validate connector pinout equivalence from the native pad/net inventory:
     `python -m tools.altium_native_connector_validate --system-root hardware/system_carrier --pad-net-inventory hardware/system_carrier/altium/equivalence/pad_net_inventory.csv --output hardware/system_carrier/altium/equivalence/connector_validation_result.json`.
-11. Export the remaining Altium netlist/hierarchy evidence required by the equivalence manifest.
-12. Build the manifest hashes deterministically:
+11. Validate full native PCB connectivity against the retained KiCad baseline:
+    `python -m tools.altium_native_netlist_validate --baseline-csv hardware/system_carrier/altium/equivalence/kicad_netlist_baseline.csv --pad-net-inventory hardware/system_carrier/altium/equivalence/pad_net_inventory.csv --output hardware/system_carrier/altium/equivalence/netlist_validation_result.json`.
+12. Export the remaining Altium schematic hierarchy/port evidence required by the equivalence manifest.
+13. Build the manifest hashes deterministically:
    `python -m tools.altium_equivalence_manifest --template hardware/system_carrier/altium/equivalence/manifest.template.json --repository-root . --output hardware/system_carrier/altium/equivalence/manifest.json`.
-   This automatically hashes every required artifact. It promotes `native_pcb_audit`, `pinmap_equivalence`, `rules_equivalence` and `stackup_equivalence` from a PASS native audit, `bom_designator_mpn_equivalence` from a PASS BOM validator, `footprint_equivalence` from a PASS footprint validator, and `connector_pinout_equivalence` from a PASS connector validator. It does not auto-approve the remaining semantic equivalence checks.
-13. Run `tools.altium_native_handoff_status` if needed: with all artifacts present but any semantic check still not `PASS`, the state must remain `WAITING_EQUIVALENCE_CHECKS`; `READY_TO_RUN_EQUIVALENCE_GATE` is reserved for a complete manifest whose mandatory checks are all `PASS`.
-14. Resolve the remaining semantic checks in `equivalence/manifest.json` from the native evidence.
-15. Run:
+   This automatically hashes every required artifact. It promotes `native_pcb_audit`, `pinmap_equivalence`, `rules_equivalence` and `stackup_equivalence` from a PASS native audit, `bom_designator_mpn_equivalence` from a PASS BOM validator, `footprint_equivalence` from a PASS footprint validator, `connector_pinout_equivalence` from a PASS connector validator, and `netlist_equivalence` from a PASS connectivity validator. It does not auto-approve the remaining semantic equivalence checks.
+14. Run `tools.altium_native_handoff_status` if needed: with all artifacts present but any semantic check still not `PASS`, the state must remain `WAITING_EQUIVALENCE_CHECKS`; `READY_TO_RUN_EQUIVALENCE_GATE` is reserved for a complete manifest whose mandatory checks are all `PASS`.
+15. Resolve the remaining semantic checks in `equivalence/manifest.json` from the native evidence.
+16. Run:
     `python -m tools.altium_equivalence_gate hardware/system_carrier/altium/equivalence/manifest.json --repository-root . --output altium_equivalence_result.json`.
 
 Only `ALTIUM_EQUIVALENCE_GATE = PASS` changes layout authority to Altium.
