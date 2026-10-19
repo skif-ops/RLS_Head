@@ -38,5 +38,18 @@
     "hierarchy_equivalence",
     "rules_equivalence",
     "stackup_equivalence"
+  ],
+  "contracts": [
+    "BOM_SYS_CARRIER_LAYOUT_004.csv",
+    "FOOTPRINT_ASSIGNMENT_SYS_002.csv",
+    "PINMAP_SYS_001.csv",
+    "CONNECTOR_PINOUT_SYS_001.csv",
+    "NETLIST_SYS_001.csv",
+    "HIERARCHY_INTERFACE_SYS_001.csv",
+    "PCB_LAYOUT_CONSTRAINTS_SYS_001.csv",
+    "altium/ALTIUM_BOARD_MECHANICAL_SYS_001.csv",
+    "altium/ALTIUM_PLACEMENT_COORD_SYS_002.csv",
+    "altium/ALTIUM_ROUTING_SEQUENCE_SYS_001.csv",
+    "altium/ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv"
   ]
 }
