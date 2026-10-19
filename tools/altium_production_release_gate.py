@@ -300,6 +300,46 @@ def validate_manifest(
     if isinstance(dfm, dict):
         if _int_or_default(dfm.get("p0_open_items")) != 0:
             reasons.append("DFM_P0_OPEN_ITEMS")
+
+        dfm_profile_path = (
+            root
+            / "hardware/system_carrier/altium/ALTIUM_DFM_PROFILE_SYS_001.csv"
+        )
+        if not dfm_profile_path.is_file():
+            errors.append("dfm_profile_missing")
+        else:
+            profile_hash = sha256_file(dfm_profile_path)
+            if (
+                str(dfm.get("profile_sha256", "")).strip().lower()
+                != profile_hash
+            ):
+                errors.append("dfm_profile_hash")
+
+            with dfm_profile_path.open(
+                "r",
+                encoding="utf-8-sig",
+                newline="",
+            ) as handle:
+                profile_rows = list(csv.DictReader(handle))
+            expected_p0_ids = {
+                str(row.get("dfm_id", "")).strip()
+                for row in profile_rows
+                if str(row.get("criticality", "")).strip() == "P0"
+                and str(row.get("dfm_id", "")).strip()
+            }
+            closed_raw = dfm.get("closed_p0_ids")
+            closed_p0_ids = (
+                {
+                    str(item).strip()
+                    for item in closed_raw
+                    if str(item).strip()
+                }
+                if isinstance(closed_raw, list)
+                else set()
+            )
+            if closed_p0_ids != expected_p0_ids:
+                reasons.append("DFM_P0_SET_INCOMPLETE")
+
         _validate_evidence_refs(
             root,
             dfm.get("evidence_refs"),
