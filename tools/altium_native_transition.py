@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -56,6 +57,14 @@ PATHS = {
     "native_status": ALTIUM_REL / "ALTIUM_NATIVE_STATUS_SYS_001.json",
     "implementation_status": ALTIUM_REL / "ALTIUM_STATUS_SYS_001.json",
 }
+
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def _absolute(root: Path, key: str) -> Path:
@@ -166,6 +175,15 @@ def _sync_layout_authority_status(
     native_status["equivalence_result"] = (
         PATHS["gate_result"].as_posix()
     )
+    native_status["equivalence_result_sha256"] = _sha256_file(
+        _absolute(root, "gate_result")
+    )
+    native_status["native_schematic_sha256"] = _sha256_file(
+        _absolute(root, "schematic")
+    )
+    native_status["native_pcb_sha256"] = _sha256_file(
+        _absolute(root, "pcb")
+    )
 
     altium = implementation_status.setdefault("altium", {})
     altium["native_schdoc"] = True
@@ -174,6 +192,7 @@ def _sync_layout_authority_status(
     altium["placement_started"] = False
     altium["routing_started"] = False
     altium["production_release_authorized"] = False
+    altium["native_pcb_sha256"] = native_status["native_pcb_sha256"]
 
     implementation_status["current_phase"] = "READY_FOR_ROUTING"
     implementation_status["next_required_phase"] = (
