@@ -679,9 +679,11 @@ jobs:
               for sheet in erc.get("sheets", [])
           )
 
+          assert violations == 0, f"System Carrier ERC violations: {violations}"
+
           summary = {
               "schema": "SYSTEM-CARRIER-CAD-CI-001",
-              "status": "CAPTURE_IN_PROGRESS",
+              "status": "ERC_CLEAN",
               "kicad_version": erc.get("kicad_version"),
               "sheet_count": manifest["sheet_count"],
               "placeholder_count": validation["placeholder_count"],
@@ -694,6 +696,38 @@ jobs:
           )
           print(json.dumps(summary, indent=2))
           PY
+
+      - name: Build Altium import package
+        run: |
+          python -m tools.altium_import_package \
+            --generated-dir build-cad/system_carrier \
+            --system-root hardware/system_carrier \
+            --output-dir build-cad/altium_import \
+            --source-commit "${{ github.sha }}"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path("build-cad/altium_import/manifest.json").read_text()
+          )
+          assert data["schema"] == "ALTIUM-IMPORT-PACKAGE-001"
+          assert data["status"] == "READY_FOR_ALTIUM_IMPORT"
+          assert data["target_cad"] == "Altium Designer"
+          assert data["preserve_kicad"] is True
+          assert data["file_count"] >= 20
+          print(
+              "Altium import package READY:",
+              data["file_count"],
+              "files",
+          )
+          PY
+
+      - name: Upload Altium import package
+        uses: actions/upload-artifact@v4
+        with:
+          name: system-carrier-altium-import
+          path: build-cad/altium_import/**
 
       - name: Upload generated System Carrier CAD
         if: always()
