@@ -101,11 +101,25 @@ def _manifest(tmp_path: Path) -> Path:
 
     native_content = {
         "schematic": b"SYNTHETIC_TEST_SCHDOC",
+        "schematic_power_input": b"SYNTHETIC_POWER_SCHDOC",
+        "schematic_mcu_core": b"SYNTHETIC_MCU_SCHDOC",
+        "schematic_time_gnss": b"SYNTHETIC_GNSS_SCHDOC",
+        "schematic_imu": b"SYNTHETIC_IMU_SCHDOC",
+        "schematic_radar_io_can": b"SYNTHETIC_RADAR_IO_SCHDOC",
+        "schematic_ethernet": b"SYNTHETIC_ETH_SCHDOC",
+        "schematic_debug_boot": b"SYNTHETIC_DEBUG_SCHDOC",
         "pcb": b"SYNTHETIC_TEST_PCBDOC",
         "import_log": b"SYNTHETIC_IMPORT_LOG\n",
     }
     native_paths = {
         "schematic": "native/EVT_SYS_CARRIER.SchDoc",
+        "schematic_power_input": "native/10_POWER_INPUT.SchDoc",
+        "schematic_mcu_core": "native/20_MCU_CORE.SchDoc",
+        "schematic_time_gnss": "native/30_TIME_GNSS.SchDoc",
+        "schematic_imu": "native/40_IMU.SchDoc",
+        "schematic_radar_io_can": "native/50_RADAR_IO_CAN.SchDoc",
+        "schematic_ethernet": "native/60_ETHERNET.SchDoc",
+        "schematic_debug_boot": "native/70_DEBUG_BOOT.SchDoc",
         "pcb": "native/EVT_SYS_CARRIER.PcbDoc",
         "import_log": "equivalence/import_log.txt",
     }
@@ -113,6 +127,34 @@ def _manifest(tmp_path: Path) -> Path:
         key: hashlib.sha256(content).hexdigest()
         for key, content in native_content.items()
     }
+
+    hierarchy_contract_content = (
+        b"sheet,net_name,pin_type,anchor_ref,anchor_pin,criticality,notes\n"
+        b"POWER_INPUT,3V3,output,L1,2,P0,\n"
+    )
+    hierarchy_contract_path = (
+        tmp_path / "hardware/system_carrier/HIERARCHY_INTERFACE_SYS_001.csv"
+    )
+    _write(hierarchy_contract_path, hierarchy_contract_content)
+    hierarchy_contract_hash = hashlib.sha256(
+        hierarchy_contract_content
+    ).hexdigest()
+
+    hierarchy_port_content = (
+        b"document_file,port_name,io_type\n"
+        b"10_POWER_INPUT.SchDoc,3V3,output\n"
+    )
+    hierarchy_port_hash = hashlib.sha256(
+        hierarchy_port_content
+    ).hexdigest()
+
+    hierarchy_entry_content = (
+        b"parent_document_file,child_document_file,entry_name,io_type\n"
+        b"EVT_SYS_CARRIER.SchDoc,10_POWER_INPUT.SchDoc,3V3,output\n"
+    )
+    hierarchy_entry_hash = hashlib.sha256(
+        hierarchy_entry_content
+    ).hexdigest()
 
     baseline_content = (
         b"designator,pin,net_name\n"
@@ -243,11 +285,57 @@ def _manifest(tmp_path: Path) -> Path:
         sort_keys=True,
     ).encode()
 
+    hierarchy_validation_content = json.dumps(
+        {
+            "schema": "ALTIUM-NATIVE-HIERARCHY-RESULT-001",
+            "status": "PASS",
+            "errors": [],
+            "warnings": [],
+            "input_sha256": {
+                "hierarchy_contract": hierarchy_contract_hash,
+                "hierarchy_port_inventory": hierarchy_port_hash,
+                "hierarchy_sheet_entry_inventory": hierarchy_entry_hash,
+            },
+            "verified_checks": {
+                "hierarchy_equivalence": "PASS",
+            },
+        },
+        sort_keys=True,
+    ).encode()
+
     entries = {
         "project": ("EVT_SYS_CARRIER.PrjPcb", b"[Design]\nVersion=1.0\n"),
         "schematic": (
             native_paths["schematic"],
             native_content["schematic"],
+        ),
+        "schematic_power_input": (
+            native_paths["schematic_power_input"],
+            native_content["schematic_power_input"],
+        ),
+        "schematic_mcu_core": (
+            native_paths["schematic_mcu_core"],
+            native_content["schematic_mcu_core"],
+        ),
+        "schematic_time_gnss": (
+            native_paths["schematic_time_gnss"],
+            native_content["schematic_time_gnss"],
+        ),
+        "schematic_imu": (
+            native_paths["schematic_imu"],
+            native_content["schematic_imu"],
+        ),
+        "schematic_radar_io_can": (
+            native_paths["schematic_radar_io_can"],
+            native_content["schematic_radar_io_can"],
+        ),
+        "schematic_ethernet": (
+            native_paths["schematic_ethernet"],
+            native_content["schematic_ethernet"],
+        ),
+        "schematic_debug_boot": (
+            native_paths["schematic_debug_boot"],
+            native_content["schematic_debug_boot"],
         ),
         "pcb": (
             native_paths["pcb"],
@@ -303,6 +391,18 @@ def _manifest(tmp_path: Path) -> Path:
         "footprint_report": (
             "equivalence/footprint_report.json",
             footprint_validation_content,
+        ),
+        "hierarchy_port_inventory": (
+            "equivalence/hierarchy_port_inventory.csv",
+            hierarchy_port_content,
+        ),
+        "hierarchy_sheet_entry_inventory": (
+            "equivalence/hierarchy_sheet_entry_inventory.csv",
+            hierarchy_entry_content,
+        ),
+        "hierarchy_validation_result": (
+            "equivalence/hierarchy_validation_result.json",
+            hierarchy_validation_content,
         ),
         "native_audit_result": (
             "equivalence/native_audit_result.json",
@@ -603,5 +703,32 @@ def test_netlist_baseline_must_be_bound_to_import_package(tmp_path):
     assert checked["status"] == "INVALID"
     assert (
         "netlist_baseline_not_bound_to_import_package"
+        in checked["errors"]
+    )
+
+
+
+def test_hierarchy_validation_input_hash_mismatch_invalidates_gate(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    item = next(
+        artifact
+        for artifact in data["artifacts"]
+        if artifact["id"] == "hierarchy_validation_result"
+    )
+    path = tmp_path / item["path"]
+    result = json.loads(path.read_text())
+    result["input_sha256"]["hierarchy_port_inventory"] = "0" * 64
+    content = json.dumps(result, sort_keys=True).encode()
+    path.write_bytes(content)
+    item["sha256"] = hashlib.sha256(content).hexdigest()
+    manifest.write_text(json.dumps(data, indent=2) + "\n")
+
+    checked = validate_manifest(manifest, tmp_path)
+
+    assert checked["status"] == "INVALID"
+    assert (
+        "hierarchy_validation_hash:hierarchy_port_inventory"
         in checked["errors"]
     )
