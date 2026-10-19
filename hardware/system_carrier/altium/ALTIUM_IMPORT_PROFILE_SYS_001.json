@@ -37,7 +37,8 @@
     "no_76_81GHz_rf_on_system_carrier",
     "hierarchy_equivalence",
     "rules_equivalence",
-    "stackup_equivalence"
+    "stackup_equivalence",
+    "native_pcb_audit"
   ],
   "contracts": [
     "BOM_SYS_CARRIER_LAYOUT_004.csv",
