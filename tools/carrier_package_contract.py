@@ -6,7 +6,7 @@ from pathlib import Path
 
 REQUIRED_REFS = {
     "U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8",
-    "D_GNSS", "D_ETH", "D_CAN", "J_ETH",
+    "D8", "D3", "D4", "J6",
 }
 
 
@@ -78,7 +78,7 @@ def validate_package_contract(directory: str | Path) -> dict:
         ):
             errors.append(f"missing_locked_footprint:{ref}")
 
-    if bom.get("D_CAN") != "ESD2CANFD24DBZRQ1":
+    if bom.get("D4") != "ESD2CANFD24DBZRQ1":
         errors.append("can_esd_not_orderable_mpn")
 
     return {
