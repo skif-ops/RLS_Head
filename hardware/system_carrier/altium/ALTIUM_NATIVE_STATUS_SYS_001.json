@@ -13,6 +13,13 @@
   "production_authority": "NOT_AUTHORIZED",
   "next_required_outputs": [
     "native/EVT_SYS_CARRIER.SchDoc",
+    "native/10_POWER_INPUT.SchDoc",
+    "native/20_MCU_CORE.SchDoc",
+    "native/30_TIME_GNSS.SchDoc",
+    "native/40_IMU.SchDoc",
+    "native/50_RADAR_IO_CAN.SchDoc",
+    "native/60_ETHERNET.SchDoc",
+    "native/70_DEBUG_BOOT.SchDoc",
     "native/EVT_SYS_CARRIER.PcbDoc",
     "equivalence/import_package_manifest.json",
     "equivalence/import_receipt.json",
