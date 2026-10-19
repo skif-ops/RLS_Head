@@ -914,3 +914,30 @@ def test_noncanonical_native_pcb_path_invalidates_equivalence_gate(tmp_path):
 
     assert result["status"] == "INVALID"
     assert "canonical_path:pcb" in result["errors"]
+
+
+
+def test_final_native_preflight_must_match_prerouting_pcb(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    pcb_item = next(
+        item
+        for item in data["artifacts"]
+        if item["id"] == "pcb"
+    )
+    pcb_path = tmp_path / pcb_item["path"]
+    pcb_path.write_bytes(_cfb_stub() + b"PRE_ROUTING_CHANGED")
+    pcb_item["sha256"] = hashlib.sha256(
+        pcb_path.read_bytes()
+    ).hexdigest()
+
+    manifest.write_text(
+        json.dumps(data, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert "native_file_preflight_hash:pcb" in result["errors"]
