@@ -36,6 +36,9 @@ REQUIRED_ARTIFACTS = {
     "rule_inventory",
     "pad_net_inventory",
     "layer_stack_inventory",
+    "hierarchy_port_inventory",
+    "hierarchy_sheet_entry_inventory",
+    "hierarchy_validation_result",
     "native_audit_result",
 }
 
@@ -484,6 +487,60 @@ def validate_manifest(
                         "netlist_baseline_not_bound_to_import_package"
                     )
 
+    hierarchy_validation = None
+    hierarchy_validation_path = resolved.get(
+        "hierarchy_validation_result"
+    )
+    if hierarchy_validation_path is not None:
+        try:
+            hierarchy_validation = json.loads(
+                hierarchy_validation_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"hierarchy_validation_parse:{exc}")
+        else:
+            if (
+                hierarchy_validation.get("schema")
+                != "ALTIUM-NATIVE-HIERARCHY-RESULT-001"
+            ):
+                errors.append("hierarchy_validation_schema")
+            if hierarchy_validation.get("status") != "PASS":
+                reasons.append("HIERARCHY_VALIDATION")
+            hashes = hierarchy_validation.get("input_sha256", {})
+            if not isinstance(hashes, dict):
+                errors.append("hierarchy_validation_input_sha256")
+            else:
+                for artifact_id in (
+                    "hierarchy_port_inventory",
+                    "hierarchy_sheet_entry_inventory",
+                ):
+                    actual = str(
+                        integrity.get(artifact_id, {}).get(
+                            "sha256_actual", ""
+                        )
+                    ).lower()
+                    if (
+                        str(hashes.get(artifact_id, "")).lower()
+                        != actual
+                    ):
+                        errors.append(
+                            f"hierarchy_validation_hash:{artifact_id}"
+                        )
+
+                contract_path = (
+                    root
+                    / "hardware/system_carrier/HIERARCHY_INTERFACE_SYS_001.csv"
+                )
+                if not contract_path.is_file():
+                    errors.append("hierarchy_contract_missing")
+                elif (
+                    str(hashes.get("hierarchy_contract", "")).lower()
+                    != sha256_file(contract_path)
+                ):
+                    errors.append(
+                        "hierarchy_validation_hash:hierarchy_contract"
+                    )
+
     footprint_validation = None
     footprint_path = resolved.get("footprint_report")
     if footprint_path is not None:
@@ -557,6 +614,8 @@ def validate_manifest(
                     "component_inventory",
                     "net_inventory",
                     "rule_inventory",
+                    "pad_net_inventory",
+                    "layer_stack_inventory",
                 ):
                     actual = str(
                         integrity.get(artifact_id, {}).get(
@@ -636,6 +695,7 @@ def validate_manifest(
         "bom_validation": bom_validation,
         "connector_validation": connector_validation,
         "netlist_validation": netlist_validation,
+        "hierarchy_validation": hierarchy_validation,
         "footprint_validation": footprint_validation,
         "compile": compile_result,
         "native_audit": native_audit,
