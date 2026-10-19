@@ -5,6 +5,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from tools.altium_equivalence_gate import REQUIRED_CHECKS
+
 
 SCHEMA = "ALTIUM-NATIVE-HANDOFF-STATUS-001"
 
@@ -77,6 +79,37 @@ def evaluate(repository_root: str | Path = ".") -> dict:
         not missing
     )
 
+    manifest_errors: list[str] = []
+    manifest_checks: dict[str, str] = {}
+    pending_checks: list[str] = sorted(REQUIRED_CHECKS)
+    semantic_checks_ready = False
+
+    manifest_path = root / REQUIRED["manifest"]
+    if manifest_path.is_file():
+        try:
+            manifest = json.loads(
+                manifest_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            manifest_errors.append(f"manifest_parse:{exc}")
+        else:
+            checks_raw = manifest.get("checks")
+            if not isinstance(checks_raw, dict):
+                manifest_errors.append("manifest_checks")
+            else:
+                manifest_checks = {
+                    name: str(
+                        checks_raw.get(name, "MISSING")
+                    ).strip()
+                    for name in sorted(REQUIRED_CHECKS)
+                }
+                pending_checks = [
+                    name
+                    for name, value in manifest_checks.items()
+                    if value != "PASS"
+                ]
+                semantic_checks_ready = not pending_checks
+
     if not native_ready:
         status = "WAITING_NATIVE_IMPORT"
         next_action = "CREATE_AND_SAVE_NATIVE_SCHDOC_PCBDOC_IN_ALTIUM"
@@ -89,6 +122,12 @@ def evaluate(repository_root: str | Path = ".") -> dict:
     elif not equivalence_ready:
         status = "WAITING_EQUIVALENCE_EVIDENCE"
         next_action = "COMPLETE_COMPILE_BOM_NETLIST_FOOTPRINT_AND_MANIFEST_EVIDENCE"
+    elif manifest_errors:
+        status = "INVALID_EQUIVALENCE_MANIFEST"
+        next_action = "FIX_EQUIVALENCE_MANIFEST"
+    elif not semantic_checks_ready:
+        status = "WAITING_EQUIVALENCE_CHECKS"
+        next_action = "COMPLETE_REMAINING_EQUIVALENCE_CHECKS"
     else:
         status = "READY_TO_RUN_EQUIVALENCE_GATE"
         next_action = "RUN_ALTIUM_EQUIVALENCE_GATE"
@@ -101,6 +140,10 @@ def evaluate(repository_root: str | Path = ".") -> dict:
         "import_provenance_ready": provenance_ready,
         "native_audit_ready": audit_ready,
         "equivalence_evidence_complete": equivalence_ready,
+        "semantic_checks_ready": semantic_checks_ready,
+        "pending_equivalence_checks": pending_checks,
+        "manifest_checks": manifest_checks,
+        "manifest_errors": sorted(manifest_errors),
         "missing_artifacts": sorted(missing),
         "evidence": evidence,
         "routing_authorized": False,
