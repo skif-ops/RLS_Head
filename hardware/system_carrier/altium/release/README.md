@@ -20,6 +20,14 @@ Start from `manifest.template.json`, populate SHA-256 hashes from the exact rele
 
 `python -m tools.altium_production_release_gate hardware/system_carrier/altium/release/manifest.json --repository-root . --output hardware/system_carrier/altium/release/production_release_result.json`
 
+## Recommended release transition
+
+After all post-routing evidence files are complete and PASS, use:
+
+`python -m tools.altium_production_release_transition --repository-root . --output hardware/system_carrier/altium/release/production_transition_result.json`
+
+The driver is fail-closed. It builds the release manifest when that is the only missing stage, evaluates release readiness, runs `ALTIUM_PRODUCTION_RELEASE_GATE`, writes the authoritative result and synchronizes `ALTIUM_NATIVE_STATUS_SYS_001.json`, `ALTIUM_STATUS_SYS_001.json` and `CAD_AUTHORITY_SYS_001.json` to `PRODUCTION_RELEASED` only after a real PASS.
+
 ## Release state machine
 
 Use `python -m tools.altium_production_release_status --repository-root . --output hardware/system_carrier/altium/release/production_release_status.json` to identify the next unresolved release stage.
