@@ -272,6 +272,12 @@ def run_transition(
         schematic=_absolute(root, "schematic"),
         pcb=_absolute(root, "pcb"),
     )
+    artifacts = native_file_preflight.get("artifacts")
+    if isinstance(artifacts, dict):
+        if isinstance(artifacts.get("schematic"), dict):
+            artifacts["schematic"]["path"] = PATHS["schematic"].as_posix()
+        if isinstance(artifacts.get("pcb"), dict):
+            artifacts["pcb"]["path"] = PATHS["pcb"].as_posix()
     _write_json(
         _absolute(root, "native_file_preflight"),
         native_file_preflight,
