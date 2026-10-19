@@ -129,9 +129,15 @@ def _manifest(tmp_path: Path) -> Path:
         "import_log": b"SYNTHETIC_IMPORT_LOG\n",
     }
     native_paths = {
-        "schematic": "native/EVT_SYS_CARRIER.SchDoc",
-        "pcb": "native/EVT_SYS_CARRIER.PcbDoc",
-        "import_log": "equivalence/import_log.txt",
+        "schematic": (
+            "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc"
+        ),
+        "pcb": (
+            "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+        ),
+        "import_log": (
+            "hardware/system_carrier/altium/equivalence/import_log.txt"
+        ),
     }
     native_hashes = {
         key: hashlib.sha256(content).hexdigest()
@@ -338,6 +344,35 @@ def _manifest(tmp_path: Path) -> Path:
     no_mmwave_review_hash = hashlib.sha256(
         no_mmwave_review_content
     ).hexdigest()
+    project_content = b"[Design]\nVersion=1.0\n"
+    project_hash = hashlib.sha256(project_content).hexdigest()
+    compile_raw_content = b"Altium compile: 0 errors, 0 warnings\n"
+    compile_raw_hash = hashlib.sha256(
+        compile_raw_content
+    ).hexdigest()
+    compile_report_content = json.dumps(
+        {
+            "schema": "ALTIUM-COMPILE-REPORT-001",
+            "status": "PASS",
+            "errors": 0,
+            "warnings": 0,
+            "source_report": (
+                "hardware/system_carrier/altium/equivalence/"
+                "compile_report_raw.txt"
+            ),
+            "source_report_sha256": compile_raw_hash,
+            "source_project": (
+                "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb"
+            ),
+            "source_project_sha256": project_hash,
+            "source_schematic": native_paths["schematic"],
+            "source_schematic_sha256": native_hashes["schematic"],
+            "layout_authority": "NOT_AUTHORIZED",
+            "production_authority": "NOT_AUTHORIZED",
+        },
+        sort_keys=True,
+    ).encode()
+
     no_mmwave_result_content = json.dumps(
         {
             "schema": "ALTIUM-NO-MMWAVE-REVIEW-RESULT-001",
@@ -359,7 +394,10 @@ def _manifest(tmp_path: Path) -> Path:
     ).encode()
 
     entries = {
-        "project": ("EVT_SYS_CARRIER.PrjPcb", b"[Design]\nVersion=1.0\n"),
+        "project": (
+            "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
+            project_content,
+        ),
         "schematic": (
             native_paths["schematic"],
             native_content["schematic"],
@@ -384,16 +422,13 @@ def _manifest(tmp_path: Path) -> Path:
             native_paths["import_log"],
             native_content["import_log"],
         ),
+        "compile_report_raw": (
+            "hardware/system_carrier/altium/equivalence/compile_report_raw.txt",
+            compile_raw_content,
+        ),
         "compile_report": (
-            "equivalence/compile_report.json",
-            json.dumps(
-                {
-                    "schema": "ALTIUM-COMPILE-REPORT-001",
-                    "errors": 0,
-                    "warnings": 0,
-                },
-                sort_keys=True,
-            ).encode(),
+            "hardware/system_carrier/altium/equivalence/compile_report.json",
+            compile_report_content,
         ),
         "bom_export": (
             "equivalence/bom_export.csv",
