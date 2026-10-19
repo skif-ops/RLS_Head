@@ -624,6 +624,8 @@ def validate_manifest(
                     "component_inventory",
                     "net_inventory",
                     "rule_inventory",
+                    "pad_net_inventory",
+                    "layer_stack_inventory",
                 ):
                     actual = str(
                         integrity.get(artifact_id, {}).get(
