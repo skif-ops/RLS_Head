@@ -46,6 +46,9 @@ def validate(root: str | Path) -> dict:
     release_checklist_path = root / "altium" / "ALTIUM_RELEASE_CHECKLIST_SYS_001.csv"
     board_planning_path = root / "altium" / "ALTIUM_BOARD_PLANNING_SYS_001.csv"
     dfm_profile_path = root / "altium" / "ALTIUM_DFM_PROFILE_SYS_001.csv"
+    evt_stack_path = root / "altium" / "ALTIUM_EVT_STACKUP_SYS_002.csv"
+    impedance_start_path = root / "altium" / "ALTIUM_IMPEDANCE_START_SYS_001.csv"
+    power_width_path = root / "altium" / "ALTIUM_POWER_WIDTH_SYS_001.csv"
     implementation_path = root / "altium" / "ALTIUM_IMPLEMENTATION_SEQUENCE_SYS_001.csv"
     status_path = root / "altium" / "ALTIUM_STATUS_SYS_001.json"
     source_rules_path = root / "PCB_LAYOUT_CONSTRAINTS_SYS_001.csv"
@@ -200,6 +203,8 @@ def validate(root: str | Path) -> dict:
     planning_ids = _csv_ids(board_planning_path, "plan_id")
     dfm_ids = _csv_ids(dfm_profile_path, "dfm_id")
     implementation_ids = _csv_ids(implementation_path, "step_id")
+    impedance_ids = _csv_ids(impedance_start_path, "model_id")
+    power_width_ids = _csv_ids(power_width_path, "model_id")
 
     if len(outjob_ids) < 14:
         errors.append("outjob_contract_count")
@@ -211,6 +216,10 @@ def validate(root: str | Path) -> dict:
         errors.append("dfm_profile_count")
     if len(implementation_ids) < 14:
         errors.append("implementation_step_count")
+    if impedance_ids != {"IMP-001", "IMP-002"}:
+        errors.append("impedance_model_set")
+    if power_width_ids != {"PWR-001", "PWR-002", "PWR-003", "PWR-004"}:
+        errors.append("power_width_model_set")
 
     status_data = json.loads(status_path.read_text(encoding="utf-8"))
     if status_data.get("schema") != "ALTIUM-PCB-IMPLEMENTATION-STATUS-001":
@@ -261,6 +270,8 @@ def validate(root: str | Path) -> dict:
         "board_planning_count": len(planning_ids),
         "dfm_profile_count": len(dfm_ids),
         "implementation_step_count": len(implementation_ids),
+        "impedance_model_count": len(impedance_ids),
+        "power_width_model_count": len(power_width_ids),
         "altium_phase": status_data.get("current_phase"),
         "equivalence_check_count": len(equivalence_ids),
         "layout_bom_ref_count": len(layout_bom_refs),

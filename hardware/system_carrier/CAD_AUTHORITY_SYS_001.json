@@ -34,7 +34,10 @@
     "hardware/system_carrier/altium/ALTIUM_BOARD_MECHANICAL_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_PLACEMENT_COORD_SYS_002.csv",
     "hardware/system_carrier/altium/ALTIUM_ROUTING_SEQUENCE_SYS_001.csv",
-    "hardware/system_carrier/altium/ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv"
+    "hardware/system_carrier/altium/ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv",
+    "hardware/system_carrier/altium/ALTIUM_EVT_STACKUP_SYS_002.csv",
+    "hardware/system_carrier/altium/ALTIUM_IMPEDANCE_START_SYS_001.csv",
+    "hardware/system_carrier/altium/ALTIUM_POWER_WIDTH_SYS_001.csv"
   ],
   "altium_equivalence_gate": {
     "validator": "tools/altium_equivalence_gate.py",
@@ -63,5 +66,18 @@
   "altium_implementation_files": [
     "hardware/system_carrier/altium/ALTIUM_IMPLEMENTATION_SEQUENCE_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_STATUS_SYS_001.json"
-  ]
+  ],
+  "evt_impedance_model": {
+    "status": "EVT_CALCULATED",
+    "production_binding_required": true,
+    "gnss_rf_50r": "0.36 mm top microstrip over provisional 0.18 mm L1-L2 dielectric",
+    "eth_mdi_100r": "0.26 mm width / 0.20 mm gap top differential microstrip over provisional 0.18 mm L1-L2 dielectric"
+  },
+  "evt_power_width_model": {
+    "status": "EVT_CALCULATED",
+    "method": "IPC-2221 external trace screening",
+    "copper_um": 35,
+    "allowed_temp_rise_c": 10,
+    "production_review_required": true
+  }
 }

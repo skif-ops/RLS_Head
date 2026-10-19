@@ -48,3 +48,11 @@ Authoritative pre-layout inputs:
 - `ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv` — numerical EVT defaults.
 
 The pre-layout validator requires the generated schematic, layout BOM and footprint reference sets to match exactly and rejects duplicate designators.
+
+## EVT provisional impedance start
+
+For routing preparation, `ALTIUM_EVT_STACKUP_SYS_002.csv` defines a provisional 1.60 mm four-layer stack with a nominal 0.18 mm L1-to-L2 FR-4 dielectric. `ALTIUM_IMPEDANCE_START_SYS_001.csv` provides initial analytical geometries: GNSS RF 50 Ω at 0.36 mm top-layer width and Ethernet MDI 100 Ω at 0.26 mm width / 0.20 mm pair gap. These are routing-start values only; the selected fabricator must rebind them with its field solver before production release.
+
+## EVT provisional power widths
+
+`ALTIUM_POWER_WIDTH_SYS_001.csv` screens the high-current external-layer routes using a 35 µm copper / 10 °C rise IPC-2221 calculation. Routing-start minimum necks are 3.0 mm for VIN_RAW and VIN_PROTECTED, 1.5 mm for RADAR_12V, and 1.5 mm for the 3V3 trunk. Use pours/polygons where practical; final production widths remain subject to the selected fabricator copper stack and thermal review.

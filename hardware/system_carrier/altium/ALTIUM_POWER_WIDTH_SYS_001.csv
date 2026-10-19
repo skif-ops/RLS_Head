@@ -1,0 +1,5 @@
+model_id,net_or_class,current_a,copper_um,allowed_temp_rise_c,calculated_min_width_mm,selected_width_mm,status,notes
+PWR-001,VIN_RAW,5.00,35,10,2.77,3.00,EVT_CALCULATED,IPC-2221 external-trace screening; prefer pour/polygon where practical
+PWR-002,VIN_PROTECTED,5.00,35,10,2.77,3.00,EVT_CALCULATED,Upstream of 3V3/radar split; prefer pour/polygon where practical
+PWR-003,RADAR_12V,3.18,35,10,1.48,1.50,EVT_CALCULATED,Protected radar branch; short path to J5
+PWR-004,3V3_TRUNK,3.00,35,10,1.37,1.50,EVT_CALCULATED,Use polygon/pour for trunk and neck down only at device pins

@@ -147,6 +147,9 @@ def build(
         "ALTIUM_RELEASE_CHECKLIST_SYS_001.csv",
         "ALTIUM_BOARD_PLANNING_SYS_001.csv",
         "ALTIUM_DFM_PROFILE_SYS_001.csv",
+        "ALTIUM_EVT_STACKUP_SYS_002.csv",
+        "ALTIUM_IMPEDANCE_START_SYS_001.csv",
+        "ALTIUM_POWER_WIDTH_SYS_001.csv",
         "ALTIUM_IMPLEMENTATION_SEQUENCE_SYS_001.csv",
         "ALTIUM_STATUS_SYS_001.json",
         "README.md",
@@ -161,6 +164,8 @@ def build(
     evidence_files = [
         "prelayout_validation.json",
         "altium_placement_gate.json",
+        "altium_impedance_gate.json",
+        "altium_power_width_gate.json",
         "erc.json",
         "erc_triage.json",
         "cad_ci_summary.json",
@@ -207,6 +212,18 @@ def build(
         "placement_gate_included": any(
             item["path"].endswith(
                 "evidence/altium_placement_gate.json"
+            )
+            for item in records
+        ),
+        "impedance_gate_included": any(
+            item["path"].endswith(
+                "evidence/altium_impedance_gate.json"
+            )
+            for item in records
+        ),
+        "power_width_gate_included": any(
+            item["path"].endswith(
+                "evidence/altium_power_width_gate.json"
             )
             for item in records
         ),
