@@ -1,3 +1,4 @@
+import hashlib
 import json
 from pathlib import Path
 
@@ -124,11 +125,25 @@ def test_release_status_ready_only_after_manifest(tmp_path):
 
     manifest = tmp_path / REQUIRED["manifest"]
     manifest.parent.mkdir(parents=True, exist_ok=True)
+    artifacts = []
+    for artifact_id, relative in REQUIRED.items():
+        if artifact_id == "manifest":
+            continue
+        artifact_path = tmp_path / relative
+        artifacts.append(
+            {
+                "id": artifact_id,
+                "path": relative,
+                "sha256": hashlib.sha256(
+                    artifact_path.read_bytes()
+                ).hexdigest(),
+            }
+        )
     manifest.write_text(
         json.dumps(
             {
                 "schema": "ALTIUM-PRODUCTION-RELEASE-MANIFEST-001",
-                "artifacts": [],
+                "artifacts": artifacts,
             }
         )
         + "\n",
@@ -137,6 +152,8 @@ def test_release_status_ready_only_after_manifest(tmp_path):
 
     result = evaluate(tmp_path)
     assert result["status"] == "READY_TO_RUN_PRODUCTION_RELEASE_GATE"
+    assert result["manifest_ready"] is True
+    assert result["manifest_errors"] == []
 
 
 
@@ -184,3 +201,70 @@ def test_release_status_rejects_invalid_manifest(tmp_path):
 
     assert result["status"] == "INVALID_RELEASE_MANIFEST"
     assert "manifest" in result["invalid_artifacts"]
+
+
+
+def test_release_status_rejects_manifest_hash_mismatch(tmp_path):
+    payloads = {
+        "equivalence_result": {
+            "schema": "ALTIUM-EQUIVALENCE-RESULT-001",
+            "status": "PASS",
+            "layout_authority": "AUTHORIZED",
+            "production_authority": "NOT_AUTHORIZED",
+        },
+        "native_drc_result": {
+            "schema": "ALTIUM-NATIVE-DRC-RESULT-001",
+            "status": "PASS",
+        },
+        "mechanical_review": {
+            "schema": "ALTIUM-MECHANICAL-REVIEW-001",
+            "status": "PASS",
+        },
+        "fabricator_binding": {
+            "schema": "ALTIUM-FABRICATOR-BINDING-001",
+            "status": "PASS",
+        },
+        "return_path_si_review": {
+            "schema": "ALTIUM-RETURN-PATH-SI-REVIEW-001",
+            "status": "PASS",
+        },
+        "dfm_result": {
+            "schema": "ALTIUM-DFM-RESULT-001",
+            "status": "PASS",
+        },
+        "outjob_release_manifest": {
+            "schema": "ALTIUM-OUTJOB-RELEASE-MANIFEST-001",
+            "status": "PASS",
+        },
+    }
+    for artifact_id, payload in payloads.items():
+        _write_json(tmp_path / REQUIRED[artifact_id], payload)
+
+    artifacts = []
+    for artifact_id, relative in REQUIRED.items():
+        if artifact_id == "manifest":
+            continue
+        artifacts.append(
+            {
+                "id": artifact_id,
+                "path": relative,
+                "sha256": "0" * 64,
+            }
+        )
+
+    _write_json(
+        tmp_path / REQUIRED["manifest"],
+        {
+            "schema": "ALTIUM-PRODUCTION-RELEASE-MANIFEST-001",
+            "artifacts": artifacts,
+        },
+    )
+
+    result = evaluate(tmp_path)
+
+    assert result["status"] == "INVALID_RELEASE_MANIFEST"
+    assert result["manifest_ready"] is False
+    assert any(
+        item.startswith("artifact_hash:")
+        for item in result["manifest_errors"]
+    )
