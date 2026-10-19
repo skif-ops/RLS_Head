@@ -31,6 +31,8 @@ def validate(root: str | Path) -> dict:
     project_path = root / "altium" / "EVT_SYS_CARRIER.PrjPcb"
     stack_path = root / "altium" / "ALTIUM_LAYER_STACK_SYS_001.csv"
     rules_path = root / "altium" / "ALTIUM_RULES_SYS_001.csv"
+    net_classes_path = root / "altium" / "ALTIUM_NET_CLASSES_SYS_001.csv"
+    placement_path = root / "altium" / "ALTIUM_PLACEMENT_PLAN_SYS_001.csv"
     source_rules_path = root / "PCB_LAYOUT_CONSTRAINTS_SYS_001.csv"
 
     for path in (
@@ -39,6 +41,8 @@ def validate(root: str | Path) -> dict:
         project_path,
         stack_path,
         rules_path,
+        net_classes_path,
+        placement_path,
         source_rules_path,
     ):
         if not path.is_file():
@@ -100,6 +104,13 @@ def validate(root: str | Path) -> dict:
             f"extra={sorted(mapped_ids - source_ids)}"
         )
 
+    net_class_ids = _csv_ids(net_classes_path, "class_id")
+    placement_ids = _csv_ids(placement_path, "zone_id")
+    if len(net_class_ids) < 8:
+        errors.append("net_class_count")
+    if len(placement_ids) < 7:
+        errors.append("placement_zone_count")
+
     with stack_path.open("r", encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
     if len(rows) != 4:
@@ -123,6 +134,8 @@ def validate(root: str | Path) -> dict:
         "source_rule_count": len(source_ids),
         "mapped_rule_count": len(mapped_ids),
         "layer_count": len(rows),
+        "net_class_count": len(net_class_ids),
+        "placement_zone_count": len(placement_ids),
         "primary_cad": authority.get("primary_cad"),
         "preserve_kicad": authority.get("preserve_kicad"),
         "native_document_status": native_status,
