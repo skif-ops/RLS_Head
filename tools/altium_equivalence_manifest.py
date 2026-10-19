@@ -123,6 +123,16 @@ def build_manifest(
                 "ALTIUM-NATIVE-NETLIST-RESULT-001",
                 "netlist_equivalence",
             ),
+            (
+                "hierarchy_validation_result",
+                "ALTIUM-NATIVE-HIERARCHY-RESULT-001",
+                "hierarchy_equivalence",
+            ),
+            (
+                "no_mmwave_review_result",
+                "ALTIUM-NO-MMWAVE-REVIEW-RESULT-001",
+                "no_76_81GHz_rf_on_system_carrier",
+            ),
         ):
             item = next(
                 (
