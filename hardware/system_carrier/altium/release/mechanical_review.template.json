@@ -6,7 +6,12 @@
   "connector_access_verified": false,
   "step_enclosure_verified": false,
   "reviewer": "<REVIEWER>",
-  "evidence_refs": [],
+  "evidence_refs": [
+    {
+      "path": "<REPO_RELATIVE_EVIDENCE_PATH>",
+      "sha256": "<SHA256>"
+    }
+  ],
   "notes": [
     "PASS requires final mechanical geometry and enclosure/harness access review."
   ]
