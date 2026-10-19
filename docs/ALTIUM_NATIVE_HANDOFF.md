@@ -32,18 +32,20 @@ The repository must report:
 10. Save/export the KiCad Import Wizard log as:
    `hardware/system_carrier/altium/equivalence/import_log.txt`.
 11. Generate the provenance receipt immediately after import, recording the actual Altium Designer and KiCad Importer versions:
-    `python -m tools.altium_native_import_receipt --repository-root . --package-manifest hardware/system_carrier/altium/equivalence/import_package_manifest.json --altium-version "<ALTIUM_VERSION>" --importer-version "<IMPORTER_VERSION>" --output hardware/system_carrier/altium/equivalence/import_receipt.json`.
+    `python -m tools.altium_native_import_receipt --repository-root . --package-manifest hardware/system_carrier/altium/equivalence/import_package_manifest.json --import-preflight hardware/system_carrier/altium/equivalence/import_native_file_preflight.json --altium-version "<ALTIUM_VERSION>" --importer-version "<IMPORTER_VERSION>" --output hardware/system_carrier/altium/equivalence/import_receipt.json`.
 12. Require the command to return `PASS`. The receipt is the immutable `POST_IMPORT_NATIVE_SNAPSHOT`: its SchDoc/PcbDoc hashes describe the immediate import outputs and are not regenerated merely because approved pre-routing stack/rule preparation later changes the native files. Do not delete or overwrite the retained KiCad source.
 
 ## Recommended orchestrated transition
 
-After the native `SchDoc` / `PcbDoc`, import-package manifest and Import Wizard log are available, use the repository driver:
+After the native `SchDoc` / `PcbDoc`, immutable import-time `import_native_file_preflight.json`, import-package manifest and Import Wizard log are available, use the repository driver:
 
 `python -m tools.altium_native_transition --repository-root . --altium-version "<ALTIUM_VERSION>" --importer-version "<IMPORTER_VERSION>" --output hardware/system_carrier/altium/equivalence/native_transition_result.json`
 
 The command is intentionally re-runnable and fail-closed. It first performs a read-only CFB/OLE check of the current native pair and then inspects the tracked native lifecycle. If a valid `POST_EQUIVALENCE` or `POST_PRODUCTION` state already exists, the normal rerun is idempotent: it returns the existing authority state without rewriting equivalence evidence or moving the pre-routing baseline. Only when a genuine equivalence/re-equivalence is needed does it begin regenerating transition-owned evidence, run the repository validators, build the manifest, execute the equivalence gate and synchronize tracked status.
 
 For a deliberate full re-equivalence of an already valid lifecycle, pass `--force-recheck`. This explicitly permits regeneration of transition-owned equivalence evidence and should be used only when the electrical baseline or equivalence evidence is intentionally being replaced.
+
+If `import_receipt.json` does not yet exist, the driver refuses to invent import provenance from a possibly modified native file. Without the immutable import-time preflight it stops at `WAITING_IMPORT_SNAPSHOT_CAPTURE`.
 
 When an external Altium action is still required, it stops with an explicit state such as `WAITING_COMPILE_REPORT`, `WAITING_NATIVE_AUDIT_EXPORT`, `WAITING_BOM_EXPORT`, `WAITING_NETLIST_EXPORT`, `WAITING_HIERARCHY_EXPORT` or `WAITING_NO_MMWAVE_REVIEW`. It never creates native Altium documents and never auto-approves the human no-mmWave review.
 
