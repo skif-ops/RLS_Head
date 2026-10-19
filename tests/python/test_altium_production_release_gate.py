@@ -417,3 +417,33 @@ def test_mismatched_review_pcb_hash_blocks_release(tmp_path):
 
     assert result["status"] == "INVALID"
     assert "return_path_si_review_source_pcb_hash" in result["errors"]
+
+
+
+def test_noncanonical_native_pcb_artifact_path_is_rejected(tmp_path):
+    manifest = _fixture(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    pcb_item = next(
+        item
+        for item in data["artifacts"]
+        if item["id"] == "native_pcb"
+    )
+    canonical = tmp_path / pcb_item["path"]
+    alternate = tmp_path / "release/alternate_final.PcbDoc"
+    alternate.parent.mkdir(parents=True, exist_ok=True)
+    alternate.write_bytes(canonical.read_bytes())
+
+    pcb_item["path"] = "release/alternate_final.PcbDoc"
+    pcb_item["sha256"] = hashlib.sha256(
+        alternate.read_bytes()
+    ).hexdigest()
+    manifest.write_text(
+        json.dumps(data, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert "native_pcb_canonical_path" in result["errors"]
