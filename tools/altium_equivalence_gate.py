@@ -19,6 +19,7 @@ REQUIRED_ARTIFACTS = {
     "compile_report",
     "bom_export",
     "bom_validation_result",
+    "connector_validation_result",
     "netlist_export",
     "footprint_report",
     "component_inventory",
@@ -336,6 +337,63 @@ def validate_manifest(
                 ):
                     errors.append("bom_validation_hash:bom_contract")
 
+    connector_validation = None
+    connector_validation_path = resolved.get(
+        "connector_validation_result"
+    )
+    if connector_validation_path is not None:
+        try:
+            connector_validation = json.loads(
+                connector_validation_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"connector_validation_parse:{exc}")
+        else:
+            if (
+                connector_validation.get("schema")
+                != "ALTIUM-NATIVE-CONNECTOR-RESULT-001"
+            ):
+                errors.append("connector_validation_schema")
+            if connector_validation.get("status") != "PASS":
+                reasons.append("CONNECTOR_VALIDATION")
+            hashes = connector_validation.get("input_sha256", {})
+            if not isinstance(hashes, dict):
+                errors.append("connector_validation_input_sha256")
+            else:
+                actual_inventory = str(
+                    integrity.get("pad_net_inventory", {}).get(
+                        "sha256_actual", ""
+                    )
+                ).lower()
+                if (
+                    str(hashes.get("pad_net_inventory", "")).lower()
+                    != actual_inventory
+                ):
+                    errors.append(
+                        "connector_validation_hash:pad_net_inventory"
+                    )
+
+                for key, relative in (
+                    (
+                        "connector_pinout_contract",
+                        "hardware/system_carrier/CONNECTOR_PINOUT_SYS_001.csv",
+                    ),
+                    (
+                        "connector_native_map",
+                        "hardware/system_carrier/CONNECTOR_NATIVE_PINMAP_SYS_001.csv",
+                    ),
+                ):
+                    contract_path = root / relative
+                    if not contract_path.is_file():
+                        errors.append(f"{key}_missing")
+                    elif (
+                        str(hashes.get(key, "")).lower()
+                        != sha256_file(contract_path)
+                    ):
+                        errors.append(
+                            f"connector_validation_hash:{key}"
+                        )
+
     footprint_validation = None
     footprint_path = resolved.get("footprint_report")
     if footprint_path is not None:
@@ -486,6 +544,7 @@ def validate_manifest(
         "import_package": import_package,
         "import_receipt": import_receipt,
         "bom_validation": bom_validation,
+        "connector_validation": connector_validation,
         "footprint_validation": footprint_validation,
         "compile": compile_result,
         "native_audit": native_audit,
