@@ -17,6 +17,12 @@ def test_manifest_builder_hashes_artifacts_and_marks_native_audit(tmp_path):
             {
                 "schema": "ALTIUM-NATIVE-AUDIT-RESULT-001",
                 "status": "PASS",
+                "verified_checks": {
+                    "native_pcb_audit": "PASS",
+                    "pinmap_equivalence": "PASS",
+                    "rules_equivalence": "PASS",
+                    "stackup_equivalence": "PASS",
+                },
             }
         )
         + "\n",
@@ -42,6 +48,9 @@ def test_manifest_builder_hashes_artifacts_and_marks_native_audit(tmp_path):
                 ],
                 "checks": {
                     "native_pcb_audit": "PENDING",
+                    "pinmap_equivalence": "PENDING",
+                    "rules_equivalence": "PENDING",
+                    "stackup_equivalence": "PENDING",
                     "netlist_equivalence": "PENDING",
                 },
             }
@@ -62,6 +71,9 @@ def test_manifest_builder_hashes_artifacts_and_marks_native_audit(tmp_path):
     assert by_id["data"]["sha256"] == hashlib.sha256(b"DATA").hexdigest()
     assert len(by_id["native_audit_result"]["sha256"]) == 64
     assert manifest["checks"]["native_pcb_audit"] == "PASS"
+    assert manifest["checks"]["pinmap_equivalence"] == "PASS"
+    assert manifest["checks"]["rules_equivalence"] == "PASS"
+    assert manifest["checks"]["stackup_equivalence"] == "PASS"
     assert manifest["checks"]["netlist_equivalence"] == "PENDING"
 
 
