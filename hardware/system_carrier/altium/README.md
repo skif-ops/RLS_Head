@@ -56,3 +56,7 @@ For routing preparation, `ALTIUM_EVT_STACKUP_SYS_002.csv` defines a provisional 
 ## EVT provisional power widths
 
 `ALTIUM_POWER_WIDTH_SYS_001.csv` screens the high-current external-layer routes using a 35 µm copper / 10 °C rise IPC-2221 calculation. Routing-start minimum necks are 3.0 mm for VIN_RAW and VIN_PROTECTED, 1.5 mm for RADAR_12V, and 1.5 mm for the 3V3 trunk. Use pours/polygons where practical; final production widths remain subject to the selected fabricator copper stack and thermal review.
+
+## Native rule scopes
+
+`ALTIUM_DIFF_PAIRS_SYS_001.csv` defines the Ethernet MDI and CAN differential-pair objects/classes. `ALTIUM_RULE_QUERY_SYS_001.csv` contains the concrete Altium PCB query scopes to instantiate after native import, including `InNet(...)`, `InNetClass(...)`, and `InDifferentialPairClass(...)` expressions. These rules inherit the provisional impedance and power-width values and remain subject to native Altium DRC and final fabricator binding.
