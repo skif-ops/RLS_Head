@@ -99,6 +99,18 @@ def _manifest(tmp_path: Path) -> Path:
         connector_map_content
     ).hexdigest()
 
+    hierarchy_contract_content = (
+        b"sheet,net_name,pin_type,anchor_ref,anchor_pin,criticality,notes\n"
+        b"MCU_CORE,GNSS_PPS,input,U1,40,P0,\n"
+    )
+    hierarchy_contract_path = (
+        tmp_path / "hardware/system_carrier/HIERARCHY_INTERFACE_SYS_001.csv"
+    )
+    _write(hierarchy_contract_path, hierarchy_contract_content)
+    hierarchy_contract_hash = hashlib.sha256(
+        hierarchy_contract_content
+    ).hexdigest()
+
     native_content = {
         "schematic": b"SYNTHETIC_TEST_SCHDOC",
         "pcb": b"SYNTHETIC_TEST_PCBDOC",
@@ -243,6 +255,65 @@ def _manifest(tmp_path: Path) -> Path:
         sort_keys=True,
     ).encode()
 
+    hierarchy_export_content = (
+        b"sheet,net_name,pin_type,anchor_ref,anchor_pin\n"
+        b"MCU_CORE,GNSS_PPS,input,U1,40\n"
+    )
+    hierarchy_export_hash = hashlib.sha256(
+        hierarchy_export_content
+    ).hexdigest()
+    hierarchy_validation_content = json.dumps(
+        {
+            "schema": "ALTIUM-NATIVE-HIERARCHY-RESULT-001",
+            "status": "PASS",
+            "errors": [],
+            "warnings": [],
+            "input_sha256": {
+                "hierarchy_contract": hierarchy_contract_hash,
+                "hierarchy_export": hierarchy_export_hash,
+            },
+            "verified_checks": {
+                "hierarchy_equivalence": "PASS",
+            },
+        },
+        sort_keys=True,
+    ).encode()
+
+    no_mmwave_review_content = json.dumps(
+        {
+            "schema": "ALTIUM-NO-MMWAVE-REVIEW-001",
+            "status": "PASS",
+            "reviewer": "Synthetic CI",
+            "no_76_81ghz_components": True,
+            "no_76_81ghz_nets": True,
+            "no_76_81ghz_routing": True,
+            "no_76_81ghz_antenna": True,
+        },
+        sort_keys=True,
+    ).encode()
+    no_mmwave_review_hash = hashlib.sha256(
+        no_mmwave_review_content
+    ).hexdigest()
+    no_mmwave_result_content = json.dumps(
+        {
+            "schema": "ALTIUM-NO-MMWAVE-REVIEW-RESULT-001",
+            "status": "PASS",
+            "errors": [],
+            "reason_codes": [],
+            "reviewer": "Synthetic CI",
+            "input_sha256": {
+                "review": no_mmwave_review_hash,
+                "pcb": native_hashes["pcb"],
+                "component_inventory": raw_hashes["component_inventory"],
+                "net_inventory": raw_hashes["net_inventory"],
+            },
+            "verified_checks": {
+                "no_76_81GHz_rf_on_system_carrier": "PASS",
+            },
+        },
+        sort_keys=True,
+    ).encode()
+
     entries = {
         "project": ("EVT_SYS_CARRIER.PrjPcb", b"[Design]\nVersion=1.0\n"),
         "schematic": (
@@ -303,6 +374,22 @@ def _manifest(tmp_path: Path) -> Path:
         "footprint_report": (
             "equivalence/footprint_report.json",
             footprint_validation_content,
+        ),
+        "hierarchy_export": (
+            "equivalence/hierarchy_export.csv",
+            hierarchy_export_content,
+        ),
+        "hierarchy_validation_result": (
+            "equivalence/hierarchy_validation_result.json",
+            hierarchy_validation_content,
+        ),
+        "no_mmwave_review": (
+            "equivalence/no_mmwave_review.json",
+            no_mmwave_review_content,
+        ),
+        "no_mmwave_review_result": (
+            "equivalence/no_mmwave_review_result.json",
+            no_mmwave_result_content,
         ),
         "native_audit_result": (
             "equivalence/native_audit_result.json",
