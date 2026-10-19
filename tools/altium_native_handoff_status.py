@@ -13,8 +13,16 @@ SCHEMA = "ALTIUM-NATIVE-HANDOFF-STATUS-001"
 REQUIRED = {
     "project": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
     "schematic": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
+    "child_10_power_input": "hardware/system_carrier/altium/native/10_POWER_INPUT.SchDoc",
+    "child_20_mcu_core": "hardware/system_carrier/altium/native/20_MCU_CORE.SchDoc",
+    "child_30_time_gnss": "hardware/system_carrier/altium/native/30_TIME_GNSS.SchDoc",
+    "child_40_imu": "hardware/system_carrier/altium/native/40_IMU.SchDoc",
+    "child_50_radar_io_can": "hardware/system_carrier/altium/native/50_RADAR_IO_CAN.SchDoc",
+    "child_60_ethernet": "hardware/system_carrier/altium/native/60_ETHERNET.SchDoc",
+    "child_70_debug_boot": "hardware/system_carrier/altium/native/70_DEBUG_BOOT.SchDoc",
     "pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
     "native_file_preflight": "hardware/system_carrier/altium/equivalence/native_file_preflight.json",
+    "project_membership": "hardware/system_carrier/altium/equivalence/project_membership_result.json",
     "import_package_manifest": "hardware/system_carrier/altium/equivalence/import_package_manifest.json",
     "import_receipt": "hardware/system_carrier/altium/equivalence/import_receipt.json",
     "import_log": "hardware/system_carrier/altium/equivalence/import_log.txt",
@@ -74,6 +82,25 @@ def evaluate(repository_root: str | Path = ".") -> dict:
     native_file_preflight_ready = (
         evidence["native_file_preflight"]["present"]
     )
+    native_children_ready = all(
+        evidence[name]["present"]
+        for name in (
+            "child_10_power_input",
+            "child_20_mcu_core",
+            "child_30_time_gnss",
+            "child_40_imu",
+            "child_50_radar_io_can",
+            "child_60_ethernet",
+            "child_70_debug_boot",
+        )
+    )
+    project_membership_ready = (
+        evidence["project_membership"]["present"]
+    )
+    native_project_ready = (
+        native_children_ready
+        and project_membership_ready
+    )
     provenance_ready = (
         evidence["import_package_manifest"]["present"]
         and evidence["import_receipt"]["present"]
@@ -128,6 +155,9 @@ def evaluate(repository_root: str | Path = ".") -> dict:
     elif not native_file_preflight_ready:
         status = "WAITING_NATIVE_FILE_PREFLIGHT"
         next_action = "RUN_NATIVE_ALTIUM_FILE_PREFLIGHT"
+    elif not native_project_ready:
+        status = "WAITING_PROJECT_MEMBERSHIP"
+        next_action = "ADD_ALL_NATIVE_DOCUMENTS_TO_PRJPCB"
     elif not provenance_ready:
         status = "WAITING_IMPORT_PROVENANCE"
         next_action = "CAPTURE_IMPORT_PACKAGE_LOG_AND_RECEIPT"
@@ -153,6 +183,9 @@ def evaluate(repository_root: str | Path = ".") -> dict:
         "next_action": next_action,
         "native_files_ready": native_ready,
         "native_file_preflight_ready": native_file_preflight_ready,
+        "native_children_ready": native_children_ready,
+        "project_membership_ready": project_membership_ready,
+        "native_project_ready": native_project_ready,
         "import_provenance_ready": provenance_ready,
         "native_audit_ready": audit_ready,
         "equivalence_evidence_complete": equivalence_ready,
