@@ -9,6 +9,7 @@ from pathlib import Path
 SCHEMA = "ALTIUM-PRODUCTION-RELEASE-STATUS-001"
 
 REQUIRED = {
+    "native_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
     "equivalence_result": "hardware/system_carrier/altium/equivalence/altium_equivalence_result.json",
     "native_drc_result": "hardware/system_carrier/altium/release/native_drc_result.json",
     "mechanical_review": "hardware/system_carrier/altium/release/mechanical_review.json",
@@ -54,6 +55,9 @@ def evaluate(repository_root: str | Path = ".") -> dict:
             continue
         if artifact_id == "manifest":
             continue
+        if artifact_id == "native_pcb":
+            item["sha256"] = sha256_file(path)
+            continue
         try:
             payload = json.loads(path.read_text(encoding="utf-8"))
         except (UnicodeDecodeError, json.JSONDecodeError):
@@ -87,6 +91,7 @@ def evaluate(repository_root: str | Path = ".") -> dict:
             )
 
     release_evidence_ids = [
+        "native_pcb",
         "native_drc_result",
         "mechanical_review",
         "fabricator_binding",
@@ -215,6 +220,7 @@ def evaluate(repository_root: str | Path = ".") -> dict:
         "notes": [
             "This status tool never grants production authority.",
             "Production authority is granted only by ALTIUM_PRODUCTION_RELEASE_GATE PASS.",
+            "All post-routing evidence must be SHA-256-bound to the same final native PcbDoc.",
         ],
     }
 

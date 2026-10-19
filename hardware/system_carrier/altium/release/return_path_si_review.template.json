@@ -20,5 +20,7 @@
   "power_branch_widths_verified": false,
   "ethernet_mdi_impedance_rule_verified": false,
   "gnss_rf_route_verified": false,
-  "no_mmwave_post_route_verified": false
+  "no_mmwave_post_route_verified": false,
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "<SHA256_OF_FINAL_NATIVE_PCBDOC>"
 }

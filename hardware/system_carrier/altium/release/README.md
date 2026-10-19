@@ -2,7 +2,9 @@
 
 This directory is the evidence boundary between native Altium routing completion and manufacturing release.
 
-`tools.altium_production_release_gate` is the only repository tool that may return production authority for EVT System Carrier Rev.A. The gate requires SHA-256-bound native evidence for:
+`tools.altium_production_release_gate` is the only repository tool that may return production authority for EVT System Carrier Rev.A. The final routed `native/EVT_SYS_CARRIER.PcbDoc` is itself a required release artifact. Every post-routing DRC/review/DFM/OutJob evidence file must carry `source_pcb` and `source_pcb_sha256` matching that exact file, so evidence from different board revisions cannot be mixed.
+
+The gate requires SHA-256-bound native evidence for:
 
 - Altium equivalence PASS with layout authority already authorized;
 - native PCB DRC with zero blocking errors and zero unrouted nets;
@@ -30,4 +32,4 @@ Build the final manifest hashes with:
 
 `python -m tools.altium_production_release_manifest --template hardware/system_carrier/altium/release/manifest.template.json --repository-root . --output hardware/system_carrier/altium/release/manifest.json`
 
-The six `*.template.json` files in this directory are intentionally PENDING/false by default. Copy them to their non-template release filenames only when the corresponding native or review evidence is available.
+The six evidence `*.template.json` files plus `manifest.template.json` are intentionally PENDING/false or unhashed by default. Copy them to their non-template release filenames only when the corresponding native or review evidence is available.

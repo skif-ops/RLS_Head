@@ -7,6 +7,11 @@
   "evidence_level": "NATIVE_ALTIUM_RELEASE",
   "artifacts": [
     {
+      "id": "native_pcb",
+      "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+      "sha256": "<SHA256>"
+    },
+    {
       "id": "equivalence_result",
       "path": "hardware/system_carrier/altium/equivalence/altium_equivalence_result.json",
       "sha256": "<SHA256>"
