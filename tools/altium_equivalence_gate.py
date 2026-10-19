@@ -18,6 +18,7 @@ REQUIRED_ARTIFACTS = {
     "import_log",
     "compile_report",
     "bom_export",
+    "bom_validation_result",
     "netlist_export",
     "footprint_report",
     "component_inventory",
@@ -295,6 +296,93 @@ def validate_manifest(
                     f"COMPILE_WARNINGS:{compile_warnings}"
                 )
 
+    bom_validation = None
+    bom_validation_path = resolved.get("bom_validation_result")
+    if bom_validation_path is not None:
+        try:
+            bom_validation = json.loads(
+                bom_validation_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"bom_validation_parse:{exc}")
+        else:
+            if (
+                bom_validation.get("schema")
+                != "ALTIUM-NATIVE-BOM-RESULT-001"
+            ):
+                errors.append("bom_validation_schema")
+            if bom_validation.get("status") != "PASS":
+                reasons.append("BOM_VALIDATION")
+            hashes = bom_validation.get("input_sha256", {})
+            if not isinstance(hashes, dict):
+                errors.append("bom_validation_input_sha256")
+            else:
+                actual_export = str(
+                    integrity.get("bom_export", {}).get(
+                        "sha256_actual", ""
+                    )
+                ).lower()
+                if str(hashes.get("bom_export", "")).lower() != actual_export:
+                    errors.append("bom_validation_hash:bom_export")
+                contract_path = (
+                    root
+                    / "hardware/system_carrier/BOM_SYS_CARRIER_LAYOUT_004.csv"
+                )
+                if not contract_path.is_file():
+                    errors.append("bom_contract_missing")
+                elif (
+                    str(hashes.get("bom_contract", "")).lower()
+                    != sha256_file(contract_path)
+                ):
+                    errors.append("bom_validation_hash:bom_contract")
+
+    footprint_validation = None
+    footprint_path = resolved.get("footprint_report")
+    if footprint_path is not None:
+        try:
+            footprint_validation = json.loads(
+                footprint_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"footprint_report_parse:{exc}")
+        else:
+            if (
+                footprint_validation.get("schema")
+                != "ALTIUM-NATIVE-FOOTPRINT-RESULT-001"
+            ):
+                errors.append("footprint_report_schema")
+            if footprint_validation.get("status") != "PASS":
+                reasons.append("FOOTPRINT_VALIDATION")
+            hashes = footprint_validation.get("input_sha256", {})
+            if not isinstance(hashes, dict):
+                errors.append("footprint_report_input_sha256")
+            else:
+                actual_inventory = str(
+                    integrity.get("component_inventory", {}).get(
+                        "sha256_actual", ""
+                    )
+                ).lower()
+                if (
+                    str(hashes.get("component_inventory", "")).lower()
+                    != actual_inventory
+                ):
+                    errors.append(
+                        "footprint_report_hash:component_inventory"
+                    )
+                contract_path = (
+                    root
+                    / "hardware/system_carrier/FOOTPRINT_ASSIGNMENT_SYS_002.csv"
+                )
+                if not contract_path.is_file():
+                    errors.append("footprint_contract_missing")
+                elif (
+                    str(hashes.get("footprint_contract", "")).lower()
+                    != sha256_file(contract_path)
+                ):
+                    errors.append(
+                        "footprint_report_hash:footprint_contract"
+                    )
+
     native_audit = None
     native_audit_path = resolved.get("native_audit_result")
     if native_audit_path is not None:
@@ -397,6 +485,8 @@ def validate_manifest(
         "integrity": integrity,
         "import_package": import_package,
         "import_receipt": import_receipt,
+        "bom_validation": bom_validation,
+        "footprint_validation": footprint_validation,
         "compile": compile_result,
         "native_audit": native_audit,
         "checks": checks,

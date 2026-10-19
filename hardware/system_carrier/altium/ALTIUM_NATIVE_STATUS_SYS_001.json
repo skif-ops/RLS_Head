@@ -19,6 +19,7 @@
     "equivalence/import_log.txt",
     "equivalence/compile_report.json",
     "equivalence/bom_export.csv",
+    "equivalence/bom_validation_result.json",
     "equivalence/netlist_export.csv",
     "equivalence/footprint_report.json",
     "equivalence/manifest.json",

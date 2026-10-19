@@ -11,6 +11,36 @@ def test_manifest_builder_hashes_artifacts_and_marks_native_audit(tmp_path):
     data_path = evidence / "data.bin"
     data_path.write_bytes(b"DATA")
 
+    bom_result_path = evidence / "bom_validation_result.json"
+    bom_result_path.write_text(
+        json.dumps(
+            {
+                "schema": "ALTIUM-NATIVE-BOM-RESULT-001",
+                "status": "PASS",
+                "verified_checks": {
+                    "bom_designator_mpn_equivalence": "PASS",
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    footprint_result_path = evidence / "footprint_report.json"
+    footprint_result_path.write_text(
+        json.dumps(
+            {
+                "schema": "ALTIUM-NATIVE-FOOTPRINT-RESULT-001",
+                "status": "PASS",
+                "verified_checks": {
+                    "footprint_equivalence": "PASS",
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
     audit_path = evidence / "native_audit_result.json"
     audit_path.write_text(
         json.dumps(
@@ -45,8 +75,20 @@ def test_manifest_builder_hashes_artifacts_and_marks_native_audit(tmp_path):
                         "path": "evidence/native_audit_result.json",
                         "sha256": "<SHA256>",
                     },
+                    {
+                        "id": "bom_validation_result",
+                        "path": "evidence/bom_validation_result.json",
+                        "sha256": "<SHA256>",
+                    },
+                    {
+                        "id": "footprint_report",
+                        "path": "evidence/footprint_report.json",
+                        "sha256": "<SHA256>",
+                    },
                 ],
                 "checks": {
+                    "bom_designator_mpn_equivalence": "PENDING",
+                    "footprint_equivalence": "PENDING",
                     "native_pcb_audit": "PENDING",
                     "pinmap_equivalence": "PENDING",
                     "rules_equivalence": "PENDING",
@@ -70,6 +112,8 @@ def test_manifest_builder_hashes_artifacts_and_marks_native_audit(tmp_path):
     by_id = {item["id"]: item for item in manifest["artifacts"]}
     assert by_id["data"]["sha256"] == hashlib.sha256(b"DATA").hexdigest()
     assert len(by_id["native_audit_result"]["sha256"]) == 64
+    assert manifest["checks"]["bom_designator_mpn_equivalence"] == "PASS"
+    assert manifest["checks"]["footprint_equivalence"] == "PASS"
     assert manifest["checks"]["native_pcb_audit"] == "PASS"
     assert manifest["checks"]["pinmap_equivalence"] == "PASS"
     assert manifest["checks"]["rules_equivalence"] == "PASS"
