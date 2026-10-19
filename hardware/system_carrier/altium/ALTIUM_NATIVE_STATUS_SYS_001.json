@@ -38,6 +38,9 @@
     "equivalence/rule_inventory.csv",
     "equivalence/layer_stack_inventory.csv",
     "equivalence/pad_net_inventory.csv",
+    "equivalence/hierarchy_validation_result.json",
+    "equivalence/hierarchy_sheet_entry_inventory.csv",
+    "equivalence/hierarchy_port_inventory.csv",
     "equivalence/native_audit_result.json"
   ],
   "notes": [
