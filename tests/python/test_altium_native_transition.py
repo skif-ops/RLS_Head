@@ -98,6 +98,7 @@ def test_native_transition_full_pass_syncs_routing_authority(
 ):
     for key in (
         "project",
+        "import_native_file_preflight",
         "package_manifest",
         "import_log",
         "bom_export",
