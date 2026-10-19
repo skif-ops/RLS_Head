@@ -1,0 +1,13 @@
+{
+  "schema": "ALTIUM-MECHANICAL-REVIEW-001",
+  "status": "PENDING",
+  "board_outline_frozen": false,
+  "mounting_geometry_frozen": false,
+  "connector_access_verified": false,
+  "step_enclosure_verified": false,
+  "reviewer": "<REVIEWER>",
+  "evidence_refs": [],
+  "notes": [
+    "PASS requires final mechanical geometry and enclosure/harness access review."
+  ]
+}
