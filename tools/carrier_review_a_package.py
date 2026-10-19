@@ -333,7 +333,6 @@ def main() -> int:
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--source-run-id", required=True)
-    parser.add_argument("--source-artifact-digest", required=True)
     args = parser.parse_args()
 
     result = build(
