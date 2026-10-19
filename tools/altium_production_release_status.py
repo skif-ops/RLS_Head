@@ -10,6 +10,7 @@ SCHEMA = "ALTIUM-PRODUCTION-RELEASE-STATUS-001"
 NATIVE_PCB_PATH = "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
 
 REQUIRED = {
+    "native_schematic": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
     "native_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
     "equivalence_result": "hardware/system_carrier/altium/equivalence/altium_equivalence_result.json",
     "native_drc_result": "hardware/system_carrier/altium/release/native_drc_result.json",
@@ -56,7 +57,7 @@ def evaluate(repository_root: str | Path = ".") -> dict:
             continue
         if artifact_id == "manifest":
             continue
-        if artifact_id == "native_pcb":
+        if artifact_id in {"native_schematic", "native_pcb"}:
             item["sha256"] = sha256_file(path)
             continue
         try:
@@ -72,6 +73,11 @@ def evaluate(repository_root: str | Path = ".") -> dict:
             non_pass.append(artifact_id)
 
     equivalence_ready = False
+    equivalence_schematic_stale = False
+    approved_schematic_sha256 = ""
+    current_schematic_sha256 = str(
+        evidence.get("native_schematic", {}).get("sha256", "")
+    ).lower()
     equivalence_path = root / REQUIRED["equivalence_result"]
     if (
         evidence["equivalence_result"]["present"]
@@ -91,7 +97,26 @@ def evaluate(repository_root: str | Path = ".") -> dict:
                 == "NOT_AUTHORIZED"
             )
 
+            integrity = equivalence_payload.get("integrity")
+            if isinstance(integrity, dict):
+                schematic_integrity = integrity.get("schematic")
+                if isinstance(schematic_integrity, dict):
+                    approved_schematic_sha256 = str(
+                        schematic_integrity.get("sha256_actual", "")
+                    ).strip().lower()
+
+            if equivalence_ready:
+                if (
+                    len(current_schematic_sha256) != 64
+                    or len(approved_schematic_sha256) != 64
+                    or current_schematic_sha256
+                    != approved_schematic_sha256
+                ):
+                    equivalence_schematic_stale = True
+                    equivalence_ready = False
+
     release_evidence_ids = [
+        "native_schematic",
         "native_pcb",
         "native_drc_result",
         "mechanical_review",
@@ -221,6 +246,9 @@ def evaluate(repository_root: str | Path = ".") -> dict:
     if "equivalence_result" in invalid:
         status = "INVALID_EQUIVALENCE_EVIDENCE"
         next_action = "FIX_EQUIVALENCE_RESULT"
+    elif equivalence_schematic_stale:
+        status = "STALE_EQUIVALENCE"
+        next_action = "RERUN_NATIVE_ALTIUM_EQUIVALENCE_GATE"
     elif not equivalence_ready:
         status = "WAITING_EQUIVALENCE_PASS"
         next_action = "COMPLETE_NATIVE_EQUIVALENCE"
@@ -251,6 +279,9 @@ def evaluate(repository_root: str | Path = ".") -> dict:
         "status": status,
         "next_action": next_action,
         "equivalence_ready": equivalence_ready,
+        "equivalence_schematic_stale": equivalence_schematic_stale,
+        "approved_schematic_sha256": approved_schematic_sha256,
+        "current_schematic_sha256": current_schematic_sha256,
         "release_evidence_complete": release_evidence_complete,
         "release_reviews_pass": release_reviews_pass,
         "source_binding_errors": sorted(set(source_binding_errors)),
