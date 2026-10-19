@@ -1,0 +1,31 @@
+{
+  "schema": "ALTIUM-PCB-IMPLEMENTATION-STATUS-001",
+  "board_id": "EVT-SYS-CARRIER",
+  "hardware_revision": "A",
+  "current_phase": "IMPORT_PREPARED",
+  "electrical_baseline": {
+    "source": "KiCad 9 retained verification baseline",
+    "erc_errors": 0,
+    "erc_warnings": 0,
+    "source_commit": "f23476e94428295f080b526143dc114f68883635"
+  },
+  "altium": {
+    "primary_cad": true,
+    "project_shell_ready": true,
+    "import_package_ready": true,
+    "native_schdoc": false,
+    "native_pcbdoc": false,
+    "equivalence_gate": false,
+    "board_outline_frozen": false,
+    "fabricator_stack_bound": false,
+    "placement_started": false,
+    "routing_started": false,
+    "production_release_authorized": false
+  },
+  "blockers": [
+    "Native Altium import/save of SchDoc/PcbDoc has not yet been executed in Altium Designer.",
+    "Board outline, mounting-hole geometry and connector mechanical datums are not yet frozen.",
+    "Fabricator dielectric/copper stack data is not yet bound for 100R/50R impedance calculation."
+  ],
+  "next_required_phase": "NATIVE_ALTIUM_IMPORT_AND_EQUIVALENCE"
+}
