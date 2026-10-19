@@ -20,7 +20,7 @@ The gate consumes:
 - BOM export;
 - netlist/pin export;
 - footprint assignment report;
-- read-only native PCB audit inventories (components, nets and rules), each SHA-256-bound in the equivalence manifest;
+- read-only native PCB audit inventories (components, nets, rules, pad-to-net connectivity and copper layer stack), each SHA-256-bound in the equivalence manifest;
 - validated native audit result `equivalence/native_audit_result.json`, containing SHA-256 hashes of the exact three inventory CSV inputs;
 - completed equivalence manifest.
 
@@ -40,7 +40,7 @@ All must be PASS:
 8. Four-layer stack equivalence.
 9. No 76–81 GHz RF routing or antenna on the System Carrier.
 10. Native Altium compile: zero errors and zero warnings.
-11. Native PCB audit: component, P0/P1 net and required rule inventory PASS.
+11. Native PCB audit: component, P0/P1 net, required rule family, MCU/direct-symbol pin-to-net and four-layer copper-stack inventory PASS.
 
 ## Gate command
 
