@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -14,6 +15,14 @@ from tools.carrier_prelayout_validate import validate as validate_prelayout
 
 
 SCHEMA = "ALTIUM-ROUTING-READINESS-001"
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def validate(
@@ -108,6 +117,32 @@ def validate(
         production_authority == "AUTHORIZED"
     )
 
+    production_release_stale = False
+    expected_release_pcb_hash = str(
+        native_status.get(
+            "production_release_source_pcb_sha256",
+            "",
+        )
+    ).strip().lower()
+    current_pcb_hash = ""
+    pcb_path = altium / "native" / "EVT_SYS_CARRIER.PcbDoc"
+
+    if production_authorized:
+        if not pcb_path.is_file():
+            production_release_stale = True
+            warnings.append("production_release_native_pcb_missing")
+        else:
+            current_pcb_hash = sha256_file(pcb_path)
+            if (
+                len(expected_release_pcb_hash) != 64
+                or current_pcb_hash != expected_release_pcb_hash
+            ):
+                production_release_stale = True
+                warnings.append("production_release_pcb_hash_mismatch")
+
+        if production_release_stale:
+            production_authorized = False
+
     prep_ok = not errors
 
     native_ready = (
@@ -128,9 +163,13 @@ def validate(
         status = "READY_FOR_ROUTING"
         routing_authorized = True
         next_action = (
-            "PRODUCTION_RELEASED"
-            if production_authorized
-            else "BEGIN_NATIVE_ALTIUM_PLACEMENT_AND_ROUTING"
+            "RERUN_PRODUCTION_RELEASE_GATE"
+            if production_release_stale
+            else (
+                "PRODUCTION_RELEASED"
+                if production_authorized
+                else "BEGIN_NATIVE_ALTIUM_PLACEMENT_AND_ROUTING"
+            )
         )
     else:
         status = "READY_FOR_NATIVE_IMPORT"
@@ -154,6 +193,9 @@ def validate(
         "status": status,
         "routing_authorized": routing_authorized,
         "production_authorized": production_authorized,
+        "production_release_stale": production_release_stale,
+        "expected_release_pcb_sha256": expected_release_pcb_hash,
+        "current_pcb_sha256": current_pcb_hash,
         "errors": sorted(set(errors)),
         "warnings": sorted(set(warnings)),
         "failed_checks": failed,
@@ -186,9 +228,10 @@ def validate(
                 "SchDoc/PcbDoc import and ALTIUM_EQUIVALENCE_GATE PASS."
             ),
             (
-                "Production authority remains separate from routing authority; "
-                "when already AUTHORIZED by the production-release gate it does "
-                "not invalidate READY_FOR_ROUTING."
+                "Production authority remains separate from routing authority. "
+                "If the final native PcbDoc changes after production release, "
+                "routing authority remains valid but effective production "
+                "authorization is withdrawn until the release gate is rerun."
             ),
         ],
     }
