@@ -282,7 +282,12 @@ def test_native_ci_gate_passes_post_production_state(
         "reason_codes": [],
     }
 
-    _post_equivalence_fixture(tmp_path, monkeypatch)
+    gate_result, _, pcbdoc = _post_equivalence_fixture(
+        tmp_path,
+        monkeypatch,
+    )
+    approved_pcb_hash = gate_result["integrity"]["pcb"]["sha256_actual"]
+    pcbdoc.write_bytes(b"FINAL_ROUTED_PCBDOC")
 
     release_manifest = tmp_path / ci_gate.RELEASE_MANIFEST_REL
     production_path = tmp_path / ci_gate.PRODUCTION_RESULT_REL
@@ -300,6 +305,7 @@ def test_native_ci_gate_passes_post_production_state(
         native_status_path.read_text(encoding="utf-8")
     )
     native_status["production_authority"] = "AUTHORIZED"
+    native_status["native_pcb_sha256"] = _sha(pcbdoc)
     native_status["production_release_result_sha256"] = _sha(
         production_path
     )
@@ -311,6 +317,7 @@ def test_native_ci_gate_passes_post_production_state(
     )
     authority["production_release_authorized"] = True
     authority["pcb_design_phase"] = "PRODUCTION_RELEASED"
+    authority["native_pcb_sha256"] = _sha(pcbdoc)
     authority["production_release_result_sha256"] = _sha(
         production_path
     )
@@ -322,6 +329,7 @@ def test_native_ci_gate_passes_post_production_state(
     )
     implementation["current_phase"] = "PRODUCTION_RELEASED"
     implementation["altium"]["production_release_authorized"] = True
+    implementation["altium"]["native_pcb_sha256"] = _sha(pcbdoc)
     implementation["altium"]["placement_started"] = True
     implementation["altium"]["routing_started"] = True
     _write_json(implementation_path, implementation)
@@ -336,6 +344,10 @@ def test_native_ci_gate_passes_post_production_state(
 
     assert result["status"] == "PASS"
     assert result["phase"] == "POST_PRODUCTION"
+    assert result["production_result_present"] is True
+    assert result["layout_evolved_since_equivalence"] is True
+    assert result["approved_prerouting_pcb_sha256"] == approved_pcb_hash
+    assert result["current_pcb_sha256"] != approved_pcb_hash
     assert result["production_release_status"] == "PASS"
     assert result["routing_authorized"] is True
     assert result["production_authorized"] is True
@@ -405,3 +417,33 @@ def test_native_ci_gate_rejects_stale_production_result_hash(
         "native_status_hash:production_release_result_sha256"
         in result["errors"]
     )
+
+
+
+def test_native_ci_gate_does_not_treat_failed_release_result_as_production(
+    tmp_path,
+    monkeypatch,
+):
+    _post_equivalence_fixture(tmp_path, monkeypatch)
+
+    production_path = tmp_path / ci_gate.PRODUCTION_RESULT_REL
+    _write_json(
+        production_path,
+        {
+            "schema": "ALTIUM-PRODUCTION-RELEASE-RESULT-001",
+            "status": "FAIL",
+            "layout_authority": "AUTHORIZED",
+            "production_authority": "NOT_AUTHORIZED",
+            "errors": [],
+            "reason_codes": ["DFM_P0_OPEN_ITEMS"],
+        },
+    )
+
+    result = ci_gate.evaluate(repository_root=tmp_path)
+
+    assert result["status"] == "FAIL"
+    assert result["phase"] == "POST_EQUIVALENCE"
+    assert result["production_result_present"] is True
+    assert result["production_authorized"] is False
+    assert "committed_production_not_pass" in result["errors"]
+    assert "committed_production_authority" in result["errors"]
