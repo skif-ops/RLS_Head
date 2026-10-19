@@ -1,0 +1,19 @@
+check_id,domain,check,criticality,status_required,evidence
+REL-001,CAD,Native SchDoc exists and opens in Altium,P0,PASS,Altium compile log
+REL-002,CAD,Native PcbDoc exists and opens in Altium,P0,PASS,Altium DRC log
+REL-003,EQUIVALENCE,Designators and MPNs match BOM_SYS_CARRIER_003.csv,P0,PASS,Equivalence report
+REL-004,EQUIVALENCE,Pinmap matches PINMAP_SYS_001.csv,P0,PASS,Equivalence report
+REL-005,EQUIVALENCE,Connector pinout matches CONNECTOR_PINOUT_SYS_001.csv,P0,PASS,Equivalence report
+REL-006,EQUIVALENCE,Netlist matches NETLIST_SYS_001.csv and hierarchy contract,P0,PASS,Netlist comparison
+REL-007,FOOTPRINTS,Footprints match FOOTPRINT_PLAN_SYS_001.csv,P0,PASS,Footprint audit
+REL-008,STACKUP,4-layer stack follows ALTIUM_LAYER_STACK_SYS_001.csv,P0,PASS,Layer Stack Manager export
+REL-009,GROUND,L2 continuous solid GND with no forbidden splits,P0,PASS,Plane review
+REL-010,POWER,U5 hot loop compact and protected branch widths verified,P0,PASS,Power layout review
+REL-011,ETHERNET,ETH MDI 100 ohm differential rule applied,P0,PASS,Impedance/rule report
+REL-012,GNSS,GNSS_RF 50 ohm controlled impedance and shortest path,P0,PASS,Impedance/rule report
+REL-013,TIMING,GNSS_PPS RADAR_REF IMU_DRDY routed away from SW/MDI,P0,PASS,Timing route review
+REL-014,NO_RF,No 76-81 GHz RF routing or antenna on System Carrier,P0,PASS,Design review
+REL-015,DRC,Altium DRC has zero blocking errors,P0,PASS,DRC report
+REL-016,OUTPUTS,All required outputs in ALTIUM_OUTJOB_CONTRACT_SYS_001.csv generated,P0,PASS,Release manifest
+REL-017,PRESERVATION,KiCad source baseline still present and buildable,P0,PASS,CI
+REL-018,MECHANICAL,STEP and connector access checked against enclosure/harness,P1,PASS,Mechanical review

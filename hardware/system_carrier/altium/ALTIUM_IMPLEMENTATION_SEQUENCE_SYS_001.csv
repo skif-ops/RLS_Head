@@ -1,0 +1,15 @@
+step_id,phase,action,entry_condition,exit_condition,criticality
+PCB-A01,IMPORT,Import ERC-clean KiCad capture into native Altium project,Altium Importer installed,Native SchDoc compiles and equivalence checks pass,P0
+PCB-A02,MECHANICS,Freeze board outline mounting holes connector edge datums and keepouts,Enclosure/harness mechanical inputs available,Mechanical datum review PASS,P0
+PCB-A03,STACKUP,Bind 4-layer stack to selected fabricator dielectric/copper data,Mechanical outline frozen,Impedance-capable stack defined,P0
+PCB-A04,RULES,Instantiate Altium rules/net classes from SYS-001 contracts,Stackup defined,All P0/P1 rule scopes present,P0
+PCB-A05,PLACEMENT,Place connectors and functional zones from placement plan,Mechanical datums frozen,Placement Review A PASS,P0
+PCB-A06,POWER,Route VIN_RAW VIN_PROTECTED 3V3 RADAR_12V and compact U5/U6/U7 loops,Placement Review A PASS,Power routing review PASS,P0
+PCB-A07,GNSS,Route 50 ohm GNSS_RF J8-D8-U8 corridor,Impedance rule calculated,GNSS RF routing review PASS,P0
+PCB-A08,ETHERNET,Route PHY-ESD-MagJack MDI 100 ohm differential pairs,Impedance rule calculated,Ethernet SI review PASS,P0
+PCB-A09,TIMING,Route GNSS_PPS RADAR_REF IMU_DRDY with quiet return paths,Power and MDI routing stable,Timing routing review PASS,P0
+PCB-A10,BUSES,Route RMII CAN IMU SPI SWD and control nets,Critical routes locked,Signal routing review PASS,P1
+PCB-A11,PLANES,Finalize L2 solid GND L3 power/slow and stitching/return vias,Signal routes stable,Return-path review PASS,P0
+PCB-A12,THERMAL,Add thermal copper/vias around U5 U6 U7 using package and power data,Power planes stable,Thermal review PASS,P1
+PCB-A13,DRC,Run full Altium DRC and fix all blocking findings,Routing complete,Zero blocking DRC errors,P0
+PCB-A14,RELEASE,Generate outputs from OutJob contract and release manifest,DRC/equivalence/DFM PASS,Manufacturing release package complete,P0
