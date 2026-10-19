@@ -14,6 +14,27 @@ def _write(path: Path, data: dict) -> str:
 
 
 def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
+    contract = (
+        tmp_path
+        / "hardware/system_carrier/altium/ALTIUM_OUTJOB_CONTRACT_SYS_001.csv"
+    )
+    contract.parent.mkdir(parents=True, exist_ok=True)
+    contract.write_text(
+        "output_id,altium_output,type,required,scope,notes\n"
+        "OUT-001,Gerber X2,FAB,YES,All,Required\n"
+        "OUT-002,ODB++,FAB,OPTIONAL,All,Optional\n",
+        encoding="utf-8",
+    )
+
+    drc_report = tmp_path / "release/native_drc_report.txt"
+    drc_report.parent.mkdir(parents=True, exist_ok=True)
+    drc_report.write_text("DRC PASS\n", encoding="utf-8")
+    drc_report_hash = hashlib.sha256(drc_report.read_bytes()).hexdigest()
+
+    gerber = tmp_path / "release/gerber_x2.zip"
+    gerber.write_bytes(b"GERBER_X2")
+    gerber_hash = hashlib.sha256(gerber.read_bytes()).hexdigest()
+
     entries = {
         "equivalence_result": (
             "equivalence/altium_equivalence_result.json",
@@ -32,6 +53,8 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
                 "status": "PASS",
                 "blocking_errors": 0,
                 "unrouted_nets": 0,
+                "source_report": "release/native_drc_report.txt",
+                "source_report_sha256": drc_report_hash,
             },
         ),
         "mechanical_review": (
@@ -43,6 +66,8 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
                 "mounting_geometry_frozen": True,
                 "connector_access_verified": True,
                 "step_enclosure_verified": True,
+                "reviewer": "Synthetic CI",
+                "evidence_refs": ["mechanical/step-review"],
             },
         ),
         "fabricator_binding": (
@@ -56,6 +81,8 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
                 "impedance_100r_bound": True,
                 "min_trace_clearance_bound": True,
                 "via_rules_bound": True,
+                "fabricator": "Synthetic Fab",
+                "evidence_refs": ["fab/process-profile"],
             },
         ),
         "return_path_si_review": (
@@ -67,6 +94,8 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
                 "l2_ground_continuity_verified": True,
                 "timing_return_paths_verified": True,
                 "ethernet_mdi_return_path_verified": True,
+                "reviewer": "Synthetic CI",
+                "evidence_refs": ["si/return-path-review"],
             },
         ),
         "dfm_result": (
@@ -75,6 +104,7 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
                 "schema": "ALTIUM-DFM-RESULT-001",
                 "status": "PASS",
                 "p0_open_items": 0,
+                "evidence_refs": ["dfm/final-report"],
             },
         ),
         "outjob_release_manifest": (
@@ -84,6 +114,13 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
                 "status": "PASS",
                 "required_outputs_complete": True,
                 "source_is_native_altium": True,
+                "outputs": [
+                    {
+                        "output_id": "OUT-001",
+                        "path": "release/gerber_x2.zip",
+                        "sha256": gerber_hash,
+                    }
+                ],
             },
         ),
     }
