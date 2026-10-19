@@ -19,6 +19,22 @@ def _write_native_pcb(root: Path) -> None:
     path.write_bytes(b"FINAL_NATIVE_PCB")
 
 
+def _bind_release_payloads(root: Path, payloads: dict[str, dict]) -> None:
+    pcb = root / REQUIRED["native_pcb"]
+    pcb_hash = hashlib.sha256(pcb.read_bytes()).hexdigest()
+    for artifact_id, payload in payloads.items():
+        if artifact_id in {
+            "native_drc_result",
+            "mechanical_review",
+            "fabricator_binding",
+            "return_path_si_review",
+            "dfm_result",
+            "outjob_release_manifest",
+        }:
+            payload["source_pcb"] = REQUIRED["native_pcb"]
+            payload["source_pcb_sha256"] = pcb_hash
+
+
 def test_release_status_initially_waits_for_equivalence(tmp_path):
     result = evaluate(tmp_path)
 
@@ -81,6 +97,7 @@ def test_release_status_waits_for_non_pass_review(tmp_path):
         },
     }
 
+    _bind_release_payloads(tmp_path, payloads)
     for artifact_id, payload in payloads.items():
         _write_json(tmp_path / REQUIRED[artifact_id], payload)
 
@@ -125,6 +142,7 @@ def test_release_status_ready_only_after_manifest(tmp_path):
         },
     }
 
+    _bind_release_payloads(tmp_path, payloads)
     for artifact_id, payload in payloads.items():
         _write_json(tmp_path / REQUIRED[artifact_id], payload)
 
@@ -199,6 +217,7 @@ def test_release_status_rejects_invalid_manifest(tmp_path):
             "status": "PASS",
         },
     }
+    _bind_release_payloads(tmp_path, payloads)
     for artifact_id, payload in payloads.items():
         _write_json(tmp_path / REQUIRED[artifact_id], payload)
 
@@ -247,6 +266,7 @@ def test_release_status_rejects_manifest_hash_mismatch(tmp_path):
             "status": "PASS",
         },
     }
+    _bind_release_payloads(tmp_path, payloads)
     for artifact_id, payload in payloads.items():
         _write_json(tmp_path / REQUIRED[artifact_id], payload)
 
@@ -278,3 +298,59 @@ def test_release_status_rejects_manifest_hash_mismatch(tmp_path):
         item.startswith("artifact_hash:")
         for item in result["manifest_errors"]
     )
+
+
+
+def test_release_status_rejects_stale_source_binding(tmp_path):
+    _write_native_pcb(tmp_path)
+    pcb_hash = hashlib.sha256(
+        (tmp_path / REQUIRED["native_pcb"]).read_bytes()
+    ).hexdigest()
+
+    payloads = {
+        "equivalence_result": {
+            "schema": "ALTIUM-EQUIVALENCE-RESULT-001",
+            "status": "PASS",
+            "layout_authority": "AUTHORIZED",
+            "production_authority": "NOT_AUTHORIZED",
+        },
+        "native_drc_result": {
+            "schema": "ALTIUM-NATIVE-DRC-RESULT-001",
+            "status": "PASS",
+        },
+        "mechanical_review": {
+            "schema": "ALTIUM-MECHANICAL-REVIEW-001",
+            "status": "PASS",
+        },
+        "fabricator_binding": {
+            "schema": "ALTIUM-FABRICATOR-BINDING-001",
+            "status": "PASS",
+        },
+        "return_path_si_review": {
+            "schema": "ALTIUM-RETURN-PATH-SI-REVIEW-001",
+            "status": "PASS",
+        },
+        "dfm_result": {
+            "schema": "ALTIUM-DFM-RESULT-001",
+            "status": "PASS",
+        },
+        "outjob_release_manifest": {
+            "schema": "ALTIUM-OUTJOB-RELEASE-MANIFEST-001",
+            "status": "PASS",
+        },
+    }
+    _bind_release_payloads(tmp_path, payloads)
+    payloads["return_path_si_review"]["source_pcb_sha256"] = "0" * 64
+
+    for artifact_id, payload in payloads.items():
+        _write_json(tmp_path / REQUIRED[artifact_id], payload)
+
+    result = evaluate(tmp_path)
+
+    assert result["status"] == "INVALID_RELEASE_SOURCE_BINDING"
+    assert result["release_reviews_pass"] is False
+    assert (
+        "return_path_si_review:source_pcb_sha256"
+        in result["source_binding_errors"]
+    )
+    assert result["final_native_pcb_sha256"] == pcb_hash
