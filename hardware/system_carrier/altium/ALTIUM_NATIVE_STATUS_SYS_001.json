@@ -1,0 +1,28 @@
+{
+  "schema": "ALTIUM-NATIVE-STATUS-SYS-001",
+  "board_id": "EVT-SYS-CARRIER",
+  "hardware_revision": "A",
+  "primary_cad": "Altium Designer",
+  "review_a_status": "PASS",
+  "review_a_merge_commit": "39d8400299f0eac5f7f15ebdd42928001dd103f4",
+  "electrical_baseline_erc_errors": 0,
+  "electrical_baseline_erc_warnings": 0,
+  "native_import_status": "WAITING_NATIVE_ALTIUM_IMPORT",
+  "equivalence_gate_status": "NOT_RUN",
+  "layout_authority": "NOT_AUTHORIZED",
+  "production_authority": "NOT_AUTHORIZED",
+  "next_required_outputs": [
+    "native/EVT_SYS_CARRIER.SchDoc",
+    "native/EVT_SYS_CARRIER.PcbDoc",
+    "equivalence/compile_report.json",
+    "equivalence/bom_export.csv",
+    "equivalence/netlist_export.csv",
+    "equivalence/footprint_report.json",
+    "equivalence/manifest.json"
+  ],
+  "notes": [
+    "PCB implementation is Altium-first.",
+    "KiCad sources remain preserved as the electrical verification baseline.",
+    "Routing authority begins only after ALTIUM_EQUIVALENCE_GATE PASS."
+  ]
+}

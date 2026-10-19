@@ -34,6 +34,9 @@
     "connector_pinout_equivalence",
     "netlist_equivalence",
     "footprint_equivalence",
-    "no_76_81GHz_rf_on_system_carrier"
+    "no_76_81GHz_rf_on_system_carrier",
+    "hierarchy_equivalence",
+    "rules_equivalence",
+    "stackup_equivalence"
   ]
 }

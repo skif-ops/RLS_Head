@@ -27,6 +27,13 @@
     "hardware/system_carrier/altium/ALTIUM_LAYER_STACK_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_RULES_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_NET_CLASSES_SYS_001.csv",
-    "hardware/system_carrier/altium/ALTIUM_PLACEMENT_PLAN_SYS_001.csv"
-  ]
+    "hardware/system_carrier/altium/ALTIUM_PLACEMENT_PLAN_SYS_001.csv",
+    "hardware/system_carrier/altium/ALTIUM_EQUIVALENCE_CHECKS_SYS_001.csv"
+  ],
+  "altium_equivalence_gate": {
+    "validator": "tools/altium_equivalence_gate.py",
+    "template": "hardware/system_carrier/altium/equivalence/manifest.template.json",
+    "status_file": "hardware/system_carrier/altium/ALTIUM_NATIVE_STATUS_SYS_001.json",
+    "required_before_layout_authority": true
+  }
 }

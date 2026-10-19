@@ -29,3 +29,7 @@ Do not delete any KiCad source, generated KiCad library or footprint used to est
 ## Manufacturing
 
 All future Gerber/ODB++/IPC-2581, NC drill, pick-and-place, assembly drawings, fabrication drawings and STEP outputs for this board are to be released from the native Altium project after the equivalence gate passes.
+
+## Native equivalence gate
+
+After Altium Designer creates `native/EVT_SYS_CARRIER.SchDoc` and `native/EVT_SYS_CARRIER.PcbDoc`, populate `equivalence/manifest.json` from `equivalence/manifest.template.json` and run `python -m tools.altium_equivalence_gate`. Routing/layout authority remains blocked until this gate returns `PASS`.

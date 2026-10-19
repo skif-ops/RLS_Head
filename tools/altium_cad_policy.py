@@ -33,6 +33,9 @@ def validate(root: str | Path) -> dict:
     rules_path = root / "altium" / "ALTIUM_RULES_SYS_001.csv"
     net_classes_path = root / "altium" / "ALTIUM_NET_CLASSES_SYS_001.csv"
     placement_path = root / "altium" / "ALTIUM_PLACEMENT_PLAN_SYS_001.csv"
+    equivalence_checks_path = root / "altium" / "ALTIUM_EQUIVALENCE_CHECKS_SYS_001.csv"
+    native_status_path = root / "altium" / "ALTIUM_NATIVE_STATUS_SYS_001.json"
+    equivalence_template_path = root / "altium" / "equivalence" / "manifest.template.json"
     source_rules_path = root / "PCB_LAYOUT_CONSTRAINTS_SYS_001.csv"
 
     for path in (
@@ -43,6 +46,9 @@ def validate(root: str | Path) -> dict:
         rules_path,
         net_classes_path,
         placement_path,
+        equivalence_checks_path,
+        native_status_path,
+        equivalence_template_path,
         source_rules_path,
     ):
         if not path.is_file():
@@ -89,6 +95,9 @@ def validate(root: str | Path) -> dict:
         "connector_pinout_equivalence",
         "netlist_equivalence",
         "footprint_equivalence",
+        "hierarchy_equivalence",
+        "rules_equivalence",
+        "stackup_equivalence",
         "no_76_81GHz_rf_on_system_carrier",
     }
     actual = set(profile.get("post_import_checks", []))
@@ -106,10 +115,40 @@ def validate(root: str | Path) -> dict:
 
     net_class_ids = _csv_ids(net_classes_path, "class_id")
     placement_ids = _csv_ids(placement_path, "zone_id")
+    equivalence_ids = _csv_ids(equivalence_checks_path, "check_id")
     if len(net_class_ids) < 8:
         errors.append("net_class_count")
     if len(placement_ids) < 7:
         errors.append("placement_zone_count")
+    if len(equivalence_ids) != 10:
+        errors.append("equivalence_check_count")
+
+    native_status_doc = json.loads(
+        native_status_path.read_text(encoding="utf-8")
+    )
+    if native_status_doc.get("primary_cad") != "Altium Designer":
+        errors.append("native_status_primary_cad")
+    if native_status_doc.get("review_a_status") != "PASS":
+        errors.append("native_status_review_a")
+    if (
+        native_status_doc.get("native_import_status")
+        != "WAITING_NATIVE_ALTIUM_IMPORT"
+    ):
+        warnings.append("native_import_status_changed")
+    if (
+        native_status_doc.get("layout_authority")
+        != "NOT_AUTHORIZED"
+    ):
+        errors.append("layout_authority_before_equivalence")
+
+    equivalence_template = json.loads(
+        equivalence_template_path.read_text(encoding="utf-8")
+    )
+    if (
+        equivalence_template.get("schema")
+        != "ALTIUM-EQUIVALENCE-MANIFEST-001"
+    ):
+        errors.append("equivalence_template_schema")
 
     with stack_path.open("r", encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
@@ -136,6 +175,7 @@ def validate(root: str | Path) -> dict:
         "layer_count": len(rows),
         "net_class_count": len(net_class_ids),
         "placement_zone_count": len(placement_ids),
+        "equivalence_check_count": len(equivalence_ids),
         "primary_cad": authority.get("primary_cad"),
         "preserve_kicad": authority.get("preserve_kicad"),
         "native_document_status": native_status,
