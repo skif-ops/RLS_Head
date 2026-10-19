@@ -46,6 +46,8 @@ def validate(root: str | Path) -> dict:
     release_checklist_path = root / "altium" / "ALTIUM_RELEASE_CHECKLIST_SYS_001.csv"
     board_planning_path = root / "altium" / "ALTIUM_BOARD_PLANNING_SYS_001.csv"
     dfm_profile_path = root / "altium" / "ALTIUM_DFM_PROFILE_SYS_001.csv"
+    implementation_path = root / "altium" / "ALTIUM_IMPLEMENTATION_SEQUENCE_SYS_001.csv"
+    status_path = root / "altium" / "ALTIUM_STATUS_SYS_001.json"
     source_rules_path = root / "PCB_LAYOUT_CONSTRAINTS_SYS_001.csv"
 
     for path in (
@@ -197,6 +199,7 @@ def validate(root: str | Path) -> dict:
     release_ids = _csv_ids(release_checklist_path, "check_id")
     planning_ids = _csv_ids(board_planning_path, "plan_id")
     dfm_ids = _csv_ids(dfm_profile_path, "dfm_id")
+    implementation_ids = _csv_ids(implementation_path, "step_id")
 
     if len(outjob_ids) < 14:
         errors.append("outjob_contract_count")
@@ -206,6 +209,16 @@ def validate(root: str | Path) -> dict:
         errors.append("board_planning_count")
     if len(dfm_ids) < 10:
         errors.append("dfm_profile_count")
+    if len(implementation_ids) < 14:
+        errors.append("implementation_step_count")
+
+    status_data = json.loads(status_path.read_text(encoding="utf-8"))
+    if status_data.get("schema") != "ALTIUM-PCB-IMPLEMENTATION-STATUS-001":
+        errors.append("altium_status_schema")
+    if status_data.get("current_phase") != "IMPORT_PREPARED":
+        errors.append("altium_status_phase")
+    if status_data.get("altium", {}).get("production_release_authorized") is not False:
+        errors.append("premature_production_release")
 
     with outjob_contract_path.open("r", encoding="utf-8", newline="") as handle:
         out_rows = list(csv.DictReader(handle))
@@ -247,6 +260,8 @@ def validate(root: str | Path) -> dict:
         "release_checklist_count": len(release_ids),
         "board_planning_count": len(planning_ids),
         "dfm_profile_count": len(dfm_ids),
+        "implementation_step_count": len(implementation_ids),
+        "altium_phase": status_data.get("current_phase"),
         "equivalence_check_count": len(equivalence_ids),
         "layout_bom_ref_count": len(layout_bom_refs),
         "full_footprint_ref_count": len(full_footprint_refs),
