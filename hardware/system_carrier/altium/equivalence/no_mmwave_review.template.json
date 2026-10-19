@@ -1,0 +1,18 @@
+{
+  "schema": "ALTIUM-NO-MMWAVE-REVIEW-001",
+  "status": "PENDING",
+  "reviewer": "<REVIEWER>",
+  "no_76_81ghz_components": false,
+  "no_76_81ghz_nets": false,
+  "no_76_81ghz_routing": false,
+  "no_76_81ghz_antenna": false,
+  "input_sha256": {
+    "pcb": "<SHA256>",
+    "component_inventory": "<SHA256>",
+    "net_inventory": "<SHA256>"
+  },
+  "evidence_refs": [],
+  "notes": [
+    "Set PASS only after reviewing the exact native System Carrier PcbDoc; 76-81 GHz RF routing/antenna belongs outside this board."
+  ]
+}
