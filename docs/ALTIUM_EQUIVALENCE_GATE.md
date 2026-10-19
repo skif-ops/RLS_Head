@@ -29,6 +29,8 @@ The gate consumes:
 
 Use `hardware/system_carrier/altium/equivalence/manifest.template.json` as the starting manifest. The gate independently re-runs the CFB/OLE preflight against the exact committed `SchDoc/PcbDoc`; a forged PASS JSON cannot substitute for valid native containers.
 
+The authority gate also requires the core project, schematic and PCB artifacts at their canonical repository paths. Alternate `.PrjPcb`, `.SchDoc` or `.PcbDoc` paths are rejected even when their hashes and extensions are otherwise valid.
+
 ## Mandatory checks
 
 All must be PASS:
