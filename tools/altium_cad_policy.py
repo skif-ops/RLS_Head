@@ -95,6 +95,9 @@ def validate(root: str | Path) -> dict:
         "connector_pinout_equivalence",
         "netlist_equivalence",
         "footprint_equivalence",
+        "hierarchy_equivalence",
+        "rules_equivalence",
+        "stackup_equivalence",
         "no_76_81GHz_rf_on_system_carrier",
     }
     actual = set(profile.get("post_import_checks", []))
