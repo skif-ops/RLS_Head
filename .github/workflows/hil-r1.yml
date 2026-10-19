@@ -333,6 +333,27 @@ jobs:
           print("Altium primary CAD policy PASS")
           PY
 
+      - name: Validate Altium placement geometry
+        run: |
+          python -m tools.altium_placement_gate \
+            hardware/system_carrier \
+            --output altium_placement_gate.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("altium_placement_gate.json").read_text())
+          assert data["schema"] == "ALTIUM-PLACEMENT-GATE-001"
+          assert data["status"] == "PASS"
+          assert data["errors"] == []
+          assert data["edge_ref_count"] >= 6
+          assert data["hard_position_count"] >= 20
+          assert data["imu_to_buck_mm"] >= 20.0
+          assert data["eth_50m_to_mcu_mm"] <= 20.0
+          assert data["eth_50m_to_phy_mm"] <= 20.0
+          print("Altium placement geometry PASS")
+          PY
+
       - name: Validate System Carrier schematic contract
         run: |
           python -m tools.carrier_schematic_contract \
