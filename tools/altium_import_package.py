@@ -130,6 +130,19 @@ def build(
             )
         )
 
+    audit_script_dir = system / "altium" / "scripts"
+    if audit_script_dir.is_dir():
+        for script_path in sorted(audit_script_dir.rglob("*")):
+            if not script_path.is_file():
+                continue
+            rel = script_path.relative_to(system / "altium")
+            records.append(
+                copy_file(
+                    script_path,
+                    output / "altium_target" / rel,
+                )
+            )
+
     for name in [
         "EVT_SYS_CARRIER.PrjPcb",
         "ALTIUM_IMPORT_PROFILE_SYS_001.json",
@@ -248,6 +261,12 @@ def build(
         "routing_readiness_included": any(
             item["path"].endswith(
                 "evidence/altium_routing_readiness.json"
+            )
+            for item in records
+        ),
+        "native_audit_script_included": any(
+            item["path"].endswith(
+                "altium_target/scripts/EVT_SYS_CARRIER_Audit.pas"
             )
             for item in records
         ),
