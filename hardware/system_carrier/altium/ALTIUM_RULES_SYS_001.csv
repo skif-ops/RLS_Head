@@ -1,0 +1,25 @@
+source_rule_id,altium_rule_family,scope_or_object,implementation,criticality
+PCB-001,LayerStack,Board,4-layer L1 signal / L2 solid GND / L3 power-slow / L4 signal,P0
+PCB-002,Plane/Polygon,Mid-Layer 1,Continuous GND with no splits under high-speed nets,P0
+PCB-003,ComponentPlacement,U5 TPS62132,Compact CIN-SW-L1-COUT hot loop,P0
+PCB-004,ComponentPlacement,U6/U7 TPS259470,Programming networks adjacent to device,P0
+PCB-005,Width/Routing,RADAR_12V,Width or polygon sized for 3 A with short path,P0
+PCB-006,ComponentPlacement,U1 STM32H753,100 nF per VDD at pin with shortest GND return,P0
+PCB-007,ComponentPlacement,U1 VCAP1/VCAP2,Each 2.2 uF direct short loop,P0
+PCB-008,RoutingTopology,Y1 25MHz,Short direct route no stubs and away from switch node,P0
+PCB-009,Matched/Topology,Y2 50MHz,Short controlled star branches to MCU and PHY,P0
+PCB-010,RoutingLayers,ETH_RMII,Route over solid GND and add return via for layer change,P1
+PCB-011,DifferentialPair,ETH_MDI,100 ohm differential PHY to ESD to MagJack,P0
+PCB-012,ComponentPlacement,D_ETH,Immediately before MagJack on MDI path,P0
+PCB-013,ControlledImpedance,GNSS_RF,50 ohm shortest UFL to ESD to U8,P0
+PCB-014,ComponentPlacement,D_GNSS,Immediately behind UFL with shortest GND shunt,P0
+PCB-015,DifferentialPair,RADAR_CANH/RADAR_CANL,Route as pair over solid GND with ESD at connector,P1
+PCB-016,RoutingClearance,GNSS_PPS/RADAR_REF/IMU_DRDY,Avoid parallel run with SW node and ETH MDI,P0
+PCB-017,ComponentPlacement,VDDA_FILTERED,FB1 and caps adjacent to MCU analog pins,P0
+PCB-018,ComponentPlacement,U2 ICM42688,Rigid region away from buck inductor and connectors,P1
+PCB-019,RoutingTopology,IMU SPI/DRDY,Short over solid GND; DRDY priority and no stub,P1
+PCB-020,ComponentPlacement/Return,J_RADAR_IO/J_ETH/J_GNSS,Short low-inductance ESD return to GND,P0
+PCB-021,ComponentPlacement,J_SWD,Board-edge accessible and enclosure-clear,P1
+PCB-022,Polygon/ViaStyle,U5/U6/U7,Thermal copper and vias per package and measured dissipation,P1
+PCB-023,RoutingClearance,GNSS_RF,Keep away from SW node 50MHz clock and digital buses,P0
+PCB-024,Keepout/DesignPolicy,Board,No 76-81 GHz RF routing or antenna on System Carrier,P0
