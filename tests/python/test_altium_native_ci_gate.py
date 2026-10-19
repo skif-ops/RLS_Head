@@ -74,6 +74,18 @@ def _post_equivalence_fixture(
         "production_authority": "NOT_AUTHORIZED",
         "errors": [],
         "reason_codes": [],
+        "integrity": {
+            "schematic": {
+                "path": ci_gate.SCHDOC_REL.as_posix(),
+                "sha256_actual": _sha(schdoc),
+                "hash_ok": True,
+            },
+            "pcb": {
+                "path": ci_gate.PCBDOC_REL.as_posix(),
+                "sha256_actual": _sha(pcbdoc),
+                "hash_ok": True,
+            },
+        },
     }
     _write_json(gate_path, gate_result)
 
@@ -151,9 +163,70 @@ def test_native_ci_gate_passes_post_equivalence_state(
     assert result["status"] == "PASS"
     assert result["phase"] == "POST_EQUIVALENCE"
     assert result["equivalence_status"] == "PASS"
+    assert result["layout_evolved_since_equivalence"] is False
     assert result["routing_authorized"] is True
     assert result["production_authorized"] is False
 
+
+
+
+def test_native_ci_gate_allows_pcb_layout_evolution_after_equivalence(
+    tmp_path,
+    monkeypatch,
+):
+    gate_result, _, pcbdoc = _post_equivalence_fixture(
+        tmp_path,
+        monkeypatch,
+    )
+    approved_pcb_hash = gate_result["integrity"]["pcb"]["sha256_actual"]
+    pcbdoc.write_bytes(b"ROUTED_PCBDOC_AFTER_EQUIVALENCE")
+
+    def should_not_replay_prerouting_equivalence(*args, **kwargs):
+        raise AssertionError(
+            "full pre-routing equivalence gate must not replay after PCB routing"
+        )
+
+    monkeypatch.setattr(
+        ci_gate,
+        "validate_equivalence",
+        should_not_replay_prerouting_equivalence,
+    )
+
+    result = ci_gate.evaluate(repository_root=tmp_path)
+
+    assert result["status"] == "PASS"
+    assert result["phase"] == "POST_EQUIVALENCE"
+    assert result["equivalence_status"] == "PASS"
+    assert result["layout_evolved_since_equivalence"] is True
+    assert result["approved_prerouting_pcb_sha256"] == approved_pcb_hash
+    assert result["current_pcb_sha256"] != approved_pcb_hash
+    assert "pcb_layout_evolved_since_equivalence" in result["warnings"]
+    assert result["routing_authorized"] is True
+    assert result["production_authorized"] is False
+
+
+def test_native_ci_gate_rejects_schematic_change_after_equivalence(
+    tmp_path,
+    monkeypatch,
+):
+    gate_result, _, _ = _post_equivalence_fixture(
+        tmp_path,
+        monkeypatch,
+    )
+    approved_schematic_hash = gate_result["integrity"]["schematic"][
+        "sha256_actual"
+    ]
+    schdoc = tmp_path / ci_gate.SCHDOC_REL
+    schdoc.write_bytes(b"CHANGED_SCHDOC_AFTER_EQUIVALENCE")
+
+    result = ci_gate.evaluate(repository_root=tmp_path)
+
+    assert result["status"] == "FAIL"
+    assert result["phase"] == "POST_EQUIVALENCE"
+    assert result["approved_schematic_sha256"] == approved_schematic_hash
+    assert result["current_schematic_sha256"] != approved_schematic_hash
+    assert "equivalence_schematic_hash_mismatch" in result["errors"]
+    assert result["routing_authorized"] is False
 
 def test_native_ci_gate_rejects_stale_authority_hash(
     tmp_path,
