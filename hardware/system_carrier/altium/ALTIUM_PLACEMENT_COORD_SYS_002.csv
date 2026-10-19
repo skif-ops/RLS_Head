@@ -42,3 +42,21 @@ R602,,,,TOP,ZONE_ETH,LOCAL,EVT_PROVISIONAL,MDI termination adjacent U3
 R603,,,,TOP,ZONE_ETH,LOCAL,EVT_PROVISIONAL,MDI termination adjacent U3
 R604,,,,TOP,ZONE_ETH,LOCAL,EVT_PROVISIONAL,MDI termination adjacent U3
 R605,,,,TOP,ZONE_ETH,LOCAL,EVT_PROVISIONAL,PHY reset pulldown
+C100,,,,TOP,ZONE_MCU,LOCAL,EVT_PROVISIONAL,Place directly at U1 VDD pin 15 with shortest GND return
+C101,,,,TOP,ZONE_MCU,LOCAL,EVT_PROVISIONAL,Place directly at U1 VDD pin 23 with shortest GND return
+C102,,,,TOP,ZONE_MCU,LOCAL,EVT_PROVISIONAL,Place directly at U1 VDD pin 36 with shortest GND return
+C103,,,,TOP,ZONE_MCU,LOCAL,EVT_PROVISIONAL,Place directly at U1 VDD pin 49 with shortest GND return
+C104,,,,TOP,ZONE_MCU,LOCAL,EVT_PROVISIONAL,Place directly at U1 VDD pin 62 with shortest GND return
+C105,,,,TOP,ZONE_MCU,LOCAL,EVT_PROVISIONAL,Place directly at U1 VDD pin 72 with shortest GND return
+C106,,,,TOP,ZONE_MCU,LOCAL,EVT_PROVISIONAL,Place directly at U1 VDD pin 82 with shortest GND return
+C107,,,,TOP,ZONE_MCU,LOCAL,EVT_PROVISIONAL,Place directly at U1 VDD pin 91 with shortest GND return
+C108,,,,TOP,ZONE_MCU,LOCAL,EVT_PROVISIONAL,Place directly at U1 VDD pin 103 with shortest GND return
+C109,,,,TOP,ZONE_MCU,LOCAL,EVT_PROVISIONAL,Place directly at U1 VDD pin 127 with shortest GND return
+C110,,,,TOP,ZONE_MCU,LOCAL,EVT_PROVISIONAL,Place directly at U1 VDD pin 136 with shortest GND return
+C111,,,,TOP,ZONE_MCU,LOCAL,EVT_PROVISIONAL,Place directly at U1 VDD pin 149 with shortest GND return
+C112,,,,TOP,ZONE_MCU,LOCAL,EVT_PROVISIONAL,Place directly at U1 VDD pin 159 with shortest GND return
+C113,,,,TOP,ZONE_MCU,LOCAL,EVT_PROVISIONAL,Place directly at U1 VDD pin 172 with shortest GND return
+C114,,,,TOP,ZONE_MCU,LOCAL,EVT_PROVISIONAL,Place directly at U1 VDD33_USB pin114
+C115,,,,TOP,ZONE_MCU,LOCAL,EVT_PROVISIONAL,Place adjacent U1 NRST pin31
+C64,,,,TOP,ZONE_ETH,LOCAL,EVT_PROVISIONAL,Place directly at U3 supply pin9
+C65,,,,TOP,ZONE_ETH,LOCAL,EVT_PROVISIONAL,Place directly at U3 supply pin19
