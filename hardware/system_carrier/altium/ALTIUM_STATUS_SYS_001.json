@@ -22,7 +22,8 @@
     "routing_started": false,
     "production_release_authorized": false,
     "evt_stackup_provisional": true,
-    "impedance_start_values_ready": true
+    "impedance_start_values_ready": true,
+    "power_width_start_values_ready": true
   },
   "blockers": [
     "Native Altium import/save of SchDoc/PcbDoc has not yet been executed in Altium Designer.",
@@ -43,5 +44,17 @@
       "reference": "L2 GND"
     },
     "production_binding_required": true
+  },
+  "power_width_start": {
+    "method": "IPC-2221 external-trace screening",
+    "copper_um": 35,
+    "allowed_temp_rise_c": 10,
+    "values_mm": {
+      "VIN_RAW": 3,
+      "VIN_PROTECTED": 3,
+      "RADAR_12V": 1.5,
+      "3V3_TRUNK": 1.5
+    },
+    "production_review_required": true
   }
 }
