@@ -17,11 +17,11 @@ The gate consumes:
 - generated native import provenance receipt `equivalence/import_receipt.json`;
 - saved/exported KiCad Import Wizard log `equivalence/import_log.txt`;
 - Altium compile report with zero errors and zero warnings;
-- BOM export;
+- BOM export plus `equivalence/bom_validation_result.json`;
 - netlist/pin export;
-- footprint assignment report;
+- footprint assignment result generated from the native component inventory;
 - read-only native PCB audit inventories (components, nets, rules, pad-to-net connectivity and copper layer stack), each SHA-256-bound in the equivalence manifest;
-- validated native audit result `equivalence/native_audit_result.json`, containing SHA-256 hashes of the exact three inventory CSV inputs;
+- validated native audit result `equivalence/native_audit_result.json`, containing SHA-256 hashes of all five raw inventory CSV inputs;
 - completed equivalence manifest.
 
 Use `hardware/system_carrier/altium/equivalence/manifest.template.json` as the starting manifest.
@@ -30,11 +30,11 @@ Use `hardware/system_carrier/altium/equivalence/manifest.template.json` as the s
 
 All must be PASS:
 
-1. BOM designator/MPN equivalence.
+1. BOM designator/MPN equivalence, machine-validated against `BOM_SYS_CARRIER_LAYOUT_004.csv`.
 2. STM32 pinmap equivalence.
 3. Connector pinout equivalence.
 4. Netlist equivalence.
-5. Footprint equivalence.
+5. Footprint equivalence, machine-validated from native `IPCB_Component.Pattern` inventory against `FOOTPRINT_ASSIGNMENT_SYS_002.csv`.
 6. Hierarchy/port equivalence.
 7. Altium PCB-rule equivalence: all 10 instantiated rule-query rules must have the required family, scope and enabled state; the 24-row layout constraint contract remains the broader design-policy source.
 8. Four-layer stack equivalence.
