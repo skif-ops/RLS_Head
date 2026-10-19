@@ -137,7 +137,37 @@ def evaluate(
         }
 
     production_result_path = root / PRODUCTION_RESULT_REL
-    production_released = production_result_path.is_file()
+    production_result_present = production_result_path.is_file()
+    production_released = False
+    if production_result_present:
+        try:
+            production_probe = read_json(production_result_path)
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"production_result_parse:{exc}")
+        else:
+            if (
+                production_probe.get("schema")
+                != "ALTIUM-PRODUCTION-RELEASE-RESULT-001"
+            ):
+                errors.append("production_result_schema")
+            if production_probe.get("status") != "PASS":
+                errors.append("committed_production_not_pass")
+            if production_probe.get("layout_authority") != "AUTHORIZED":
+                errors.append("committed_production_layout_authority")
+            if (
+                production_probe.get("production_authority")
+                != "AUTHORIZED"
+            ):
+                errors.append("committed_production_authority")
+            production_released = (
+                production_probe.get("schema")
+                == "ALTIUM-PRODUCTION-RELEASE-RESULT-001"
+                and production_probe.get("status") == "PASS"
+                and production_probe.get("layout_authority") == "AUTHORIZED"
+                and production_probe.get("production_authority")
+                == "AUTHORIZED"
+            )
+
     phase = (
         "POST_PRODUCTION"
         if production_released
@@ -172,33 +202,16 @@ def evaluate(
 
     rerun_gate = None
     committed_gate = None
+    approved_schematic_hash = ""
+    approved_pcb_hash = ""
+    current_schematic_hash = sha256_file(schdoc)
+    current_pcb_hash = sha256_file(pcbdoc)
+    layout_evolved_since_equivalence = False
     native_status = None
     implementation_status = None
     authority = None
     rerun_production = None
     committed_production = None
-
-    if manifest_path.is_file():
-        try:
-            rerun_gate = validate_equivalence(
-                manifest_path,
-                repository_root=root,
-            )
-        except (
-            OSError,
-            UnicodeDecodeError,
-            json.JSONDecodeError,
-            ValueError,
-        ) as exc:
-            errors.append(f"equivalence_rerun:{exc}")
-        else:
-            if rerun_gate.get("status") != "PASS":
-                errors.append(
-                    "equivalence_rerun_status:"
-                    + str(rerun_gate.get("status"))
-                )
-            if rerun_gate.get("layout_authority") != "AUTHORIZED":
-                errors.append("equivalence_rerun_layout_authority")
 
     if committed_gate_path.is_file():
         try:
@@ -212,11 +225,77 @@ def evaluate(
                 errors.append("committed_layout_authority")
             if committed_gate.get("production_authority") != "NOT_AUTHORIZED":
                 errors.append("committed_production_authority")
+
+            integrity = committed_gate.get("integrity")
+            if not isinstance(integrity, dict):
+                errors.append("committed_equivalence_integrity")
+            else:
+                schematic_integrity = integrity.get("schematic")
+                pcb_integrity = integrity.get("pcb")
+                if not isinstance(schematic_integrity, dict):
+                    errors.append("committed_equivalence_schematic_integrity")
+                else:
+                    approved_schematic_hash = str(
+                        schematic_integrity.get("sha256_actual", "")
+                    ).strip().lower()
+                if not isinstance(pcb_integrity, dict):
+                    errors.append("committed_equivalence_pcb_integrity")
+                else:
+                    approved_pcb_hash = str(
+                        pcb_integrity.get("sha256_actual", "")
+                    ).strip().lower()
+
             if (
-                rerun_gate is not None
-                and committed_gate != rerun_gate
+                len(approved_schematic_hash) != 64
+                or approved_schematic_hash != current_schematic_hash
             ):
-                errors.append("equivalence_result_not_reproducible")
+                errors.append("equivalence_schematic_hash_mismatch")
+
+            if len(approved_pcb_hash) != 64:
+                errors.append("equivalence_pcb_baseline_hash")
+            else:
+                layout_evolved_since_equivalence = (
+                    current_pcb_hash != approved_pcb_hash
+                )
+                if layout_evolved_since_equivalence:
+                    warnings.append(
+                        "pcb_layout_evolved_since_equivalence"
+                    )
+
+    if manifest_path.is_file():
+        if layout_evolved_since_equivalence:
+            # The equivalence gate intentionally binds the pre-routing PcbDoc.
+            # Once layout authority is granted, routing changes PcbDoc by design.
+            # Keep the committed electrical baseline and validate SchDoc continuity
+            # instead of trying to replay the pre-routing PCB hash gate.
+            rerun_gate = committed_gate
+        else:
+            try:
+                rerun_gate = validate_equivalence(
+                    manifest_path,
+                    repository_root=root,
+                )
+            except (
+                OSError,
+                UnicodeDecodeError,
+                json.JSONDecodeError,
+                ValueError,
+            ) as exc:
+                errors.append(f"equivalence_rerun:{exc}")
+            else:
+                if rerun_gate.get("status") != "PASS":
+                    errors.append(
+                        "equivalence_rerun_status:"
+                        + str(rerun_gate.get("status"))
+                    )
+                if rerun_gate.get("layout_authority") != "AUTHORIZED":
+                    errors.append("equivalence_rerun_layout_authority")
+
+                if (
+                    committed_gate is not None
+                    and committed_gate != rerun_gate
+                ):
+                    errors.append("equivalence_result_not_reproducible")
 
     if native_status_path.is_file():
         try:
@@ -242,9 +321,14 @@ def evaluate(
             if native_status.get("production_authority") != expected_production:
                 errors.append("native_production_authority")
 
+            expected_pcb_tracking_hash = (
+                current_pcb_hash
+                if production_released
+                else approved_pcb_hash
+            )
             expected_hashes = {
-                "native_schematic_sha256": sha256_file(schdoc),
-                "native_pcb_sha256": sha256_file(pcbdoc),
+                "native_schematic_sha256": current_schematic_hash,
+                "native_pcb_sha256": expected_pcb_tracking_hash,
             }
             if committed_gate_path.is_file():
                 expected_hashes["equivalence_result_sha256"] = (
@@ -276,9 +360,14 @@ def evaluate(
             elif authority.get("pcb_design_phase") == "PRODUCTION_RELEASED":
                 errors.append("cad_authority_design_phase")
 
+            expected_pcb_tracking_hash = (
+                current_pcb_hash
+                if production_released
+                else approved_pcb_hash
+            )
             expected_hashes = {
-                "native_schematic_sha256": sha256_file(schdoc),
-                "native_pcb_sha256": sha256_file(pcbdoc),
+                "native_schematic_sha256": current_schematic_hash,
+                "native_pcb_sha256": expected_pcb_tracking_hash,
             }
             if committed_gate_path.is_file():
                 expected_hashes["equivalence_result_sha256"] = (
@@ -333,9 +422,14 @@ def evaluate(
                     for field in ("placement_started", "routing_started"):
                         if altium.get(field) is not True:
                             errors.append(f"implementation_{field}")
+                expected_implementation_pcb_hash = (
+                    current_pcb_hash
+                    if production_released
+                    else approved_pcb_hash
+                )
                 if (
                     str(altium.get("native_pcb_sha256", "")).lower()
-                    != sha256_file(pcbdoc)
+                    != expected_implementation_pcb_hash
                 ):
                     errors.append("implementation_native_pcb_sha256")
 
@@ -440,6 +534,14 @@ def evaluate(
         "warnings": sorted(set(warnings)),
         "native_schdoc_present": True,
         "native_pcbdoc_present": True,
+        "production_result_present": production_result_present,
+        "approved_schematic_sha256": approved_schematic_hash,
+        "approved_prerouting_pcb_sha256": approved_pcb_hash,
+        "current_schematic_sha256": current_schematic_hash,
+        "current_pcb_sha256": current_pcb_hash,
+        "layout_evolved_since_equivalence": (
+            layout_evolved_since_equivalence
+        ),
         "handoff_status": handoff.get("status"),
         "routing_status": (
             routing.get("status")
@@ -468,8 +570,10 @@ def evaluate(
         ),
         "notes": [
             (
-                "POST_EQUIVALENCE PASS requires reproducible equivalence PASS, "
-                "synchronized tracked status and READY_FOR_ROUTING."
+                "POST_EQUIVALENCE keeps the equivalence-approved SchDoc fixed. "
+                "The PcbDoc may evolve after layout authority; the full pre-routing "
+                "equivalence gate is replayed only while PcbDoc still matches its "
+                "approved pre-routing hash."
             ),
             (
                 "POST_PRODUCTION additionally requires a reproducible "
