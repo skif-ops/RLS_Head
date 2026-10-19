@@ -697,6 +697,57 @@ jobs:
           print(json.dumps(summary, indent=2))
           PY
 
+      - name: Build real System Carrier Review A package
+        run: |
+          python -m tools.carrier_review_a_package \
+            --generated-dir build-cad/system_carrier \
+            --system-root hardware/system_carrier \
+            --output-dir build-cad/system_carrier/review_a \
+            --source-commit "${{ github.sha }}" \
+            --source-run-id "${{ github.run_id }}"
+          python -m tools.carrier_review_a \
+            build-cad/system_carrier/review_a/manifest.json \
+            --repository-root build-cad/system_carrier/review_a \
+            --output build-cad/system_carrier/review_a/result.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("build-cad/system_carrier")
+          result = json.loads(
+              (root / "review_a" / "result.json").read_text()
+          )
+          assert result["schema"] == "CARRIER-REVIEW-A-RESULT-001"
+          assert result["status"] == "PASS"
+          assert result["synthetic_fixture"] is False
+          assert result["evidence_level"] == "CAD_REVIEW"
+          assert result["erc"]["errors"] == 0
+          assert result["erc"]["warnings"] == 0
+          assert result["pinmap"]["status"] == "PASS"
+          assert result["bom"]["status"] == "PASS"
+          assert all(
+              value == "PASS"
+              for value in result["audits"].values()
+          )
+
+          summary_path = root / "cad_ci_summary.json"
+          summary = json.loads(summary_path.read_text())
+          summary["status"] = "REVIEW_A_PASS"
+          summary["review_a_closed"] = True
+          summary["review_a_result"] = "PASS"
+          summary_path.write_text(
+              json.dumps(summary, indent=2, sort_keys=True) + "\n"
+          )
+
+          print("CARRIER_REVIEW_A PASS")
+          PY
+
+      - name: Upload System Carrier Review A package
+        uses: actions/upload-artifact@v4
+        with:
+          name: system-carrier-review-a
+          path: build-cad/system_carrier/review_a/**
+
       - name: Build Altium import package
         run: |
           python -m tools.altium_import_package \
