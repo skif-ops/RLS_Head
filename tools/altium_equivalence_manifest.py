@@ -113,6 +113,11 @@ def build_manifest(
                 "ALTIUM-NATIVE-FOOTPRINT-RESULT-001",
                 "footprint_equivalence",
             ),
+            (
+                "connector_validation_result",
+                "ALTIUM-NATIVE-CONNECTOR-RESULT-001",
+                "connector_pinout_equivalence",
+            ),
         ):
             item = next(
                 (
