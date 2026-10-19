@@ -71,6 +71,21 @@ def test_manifest_builder_hashes_artifacts_and_marks_native_audit(tmp_path):
         encoding="utf-8",
     )
 
+    hierarchy_result_path = evidence / "hierarchy_validation_result.json"
+    hierarchy_result_path.write_text(
+        json.dumps(
+            {
+                "schema": "ALTIUM-NATIVE-HIERARCHY-RESULT-001",
+                "status": "PASS",
+                "verified_checks": {
+                    "hierarchy_equivalence": "PASS",
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
     audit_path = evidence / "native_audit_result.json"
     audit_path.write_text(
         json.dumps(
@@ -125,6 +140,11 @@ def test_manifest_builder_hashes_artifacts_and_marks_native_audit(tmp_path):
                         "path": "evidence/netlist_validation_result.json",
                         "sha256": "<SHA256>",
                     },
+                    {
+                        "id": "hierarchy_validation_result",
+                        "path": "evidence/hierarchy_validation_result.json",
+                        "sha256": "<SHA256>",
+                    },
                 ],
                 "checks": {
                     "bom_designator_mpn_equivalence": "PENDING",
@@ -135,6 +155,7 @@ def test_manifest_builder_hashes_artifacts_and_marks_native_audit(tmp_path):
                     "rules_equivalence": "PENDING",
                     "stackup_equivalence": "PENDING",
                     "netlist_equivalence": "PENDING",
+                    "hierarchy_equivalence": "PENDING",
                 },
             }
         )
@@ -161,6 +182,7 @@ def test_manifest_builder_hashes_artifacts_and_marks_native_audit(tmp_path):
     assert manifest["checks"]["rules_equivalence"] == "PASS"
     assert manifest["checks"]["stackup_equivalence"] == "PASS"
     assert manifest["checks"]["netlist_equivalence"] == "PASS"
+    assert manifest["checks"]["hierarchy_equivalence"] == "PASS"
 
 
 def test_manifest_builder_refuses_missing_artifact(tmp_path):
