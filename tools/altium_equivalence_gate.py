@@ -348,17 +348,24 @@ def validate_manifest(
                 reasons.append(item)
 
         if isinstance(compile_result, dict):
-            expected_raw_path = str(
-                integrity.get("compile_report_raw", {}).get(
-                    "path",
-                    "",
-                )
-            )
-            if (
-                str(compile_result.get("source_report", "")).strip()
-                != expected_raw_path
+            for artifact_id, path_key in (
+                ("compile_report_raw", "source_report"),
+                ("project", "source_project"),
+                ("schematic", "source_schematic"),
             ):
-                errors.append("compile_evidence:source_report_manifest_path")
+                expected_path = str(
+                    integrity.get(artifact_id, {}).get(
+                        "path",
+                        "",
+                    )
+                )
+                if (
+                    str(compile_result.get(path_key, "")).strip()
+                    != expected_path
+                ):
+                    errors.append(
+                        f"compile_evidence:{path_key}_manifest_path"
+                    )
 
 
     bom_validation = None
