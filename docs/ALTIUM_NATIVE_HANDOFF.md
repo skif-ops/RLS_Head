@@ -32,6 +32,18 @@ The repository must report:
     `python -m tools.altium_native_import_receipt --repository-root . --package-manifest hardware/system_carrier/altium/equivalence/import_package_manifest.json --altium-version "<ALTIUM_VERSION>" --importer-version "<IMPORTER_VERSION>" --output hardware/system_carrier/altium/equivalence/import_receipt.json`.
 11. Require the command to return `PASS`. Do not delete or overwrite the retained KiCad source.
 
+## Recommended orchestrated transition
+
+After the native `SchDoc` / `PcbDoc`, import-package manifest and Import Wizard log are available, use the repository driver:
+
+`python -m tools.altium_native_transition --repository-root . --altium-version "<ALTIUM_VERSION>" --importer-version "<IMPORTER_VERSION>" --output hardware/system_carrier/altium/equivalence/native_transition_result.json`
+
+The command is intentionally re-runnable and fail-closed. It executes every repository-controlled validator that has enough input evidence, writes the corresponding result files, builds the equivalence manifest, runs the equivalence gate when all ten checks are PASS, and synchronizes the tracked Altium status JSON to `READY_FOR_ROUTING` only after a real gate PASS.
+
+When an external Altium action is still required, it stops with an explicit state such as `WAITING_COMPILE_REPORT`, `WAITING_NATIVE_AUDIT_EXPORT`, `WAITING_BOM_EXPORT`, `WAITING_NETLIST_EXPORT`, `WAITING_HIERARCHY_EXPORT` or `WAITING_NO_MMWAVE_REVIEW`. It never creates native Altium documents and never auto-approves the human no-mmWave review.
+
+The detailed manual sequence below remains the authoritative fallback and audit trail.
+
 ## Native project checks
 
 Before routing:
@@ -45,7 +57,7 @@ Before routing:
    `hardware/system_carrier/altium/equivalence/`.
 6. Run:
    `python -m tools.altium_native_audit_validate --system-root hardware/system_carrier --audit-dir hardware/system_carrier/altium/equivalence --output hardware/system_carrier/altium/equivalence/native_audit_result.json`.
-7. Export the Altium compile report and native BOM as `equivalence/bom_export.csv`. The BOM export must contain Designator(s) and MPN/Manufacturer Part Number columns.
+7. Export the Altium compile report, native BOM as `equivalence/bom_export.csv`, and an archival native netlist as `equivalence/netlist_export.csv`. The BOM export must contain Designator(s) and MPN/Manufacturer Part Number columns. Semantic connectivity equivalence is checked from the pad/net inventory against the retained KiCad baseline; `netlist_export.csv` is retained as native archival evidence.
 8. Validate BOM equivalence:
    `python -m tools.altium_native_bom_validate --system-root hardware/system_carrier --bom-export hardware/system_carrier/altium/equivalence/bom_export.csv --output hardware/system_carrier/altium/equivalence/bom_validation_result.json`.
 9. Validate native footprint patterns from the audit inventory:
