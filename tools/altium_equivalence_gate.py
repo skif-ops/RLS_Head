@@ -13,6 +13,7 @@ REQUIRED_ARTIFACTS = {
     "project",
     "schematic",
     "pcb",
+    "import_log",
     "compile_report",
     "bom_export",
     "netlist_export",
