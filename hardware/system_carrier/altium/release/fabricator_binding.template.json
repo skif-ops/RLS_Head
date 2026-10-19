@@ -16,5 +16,7 @@
   ],
   "notes": [
     "PASS binds provisional EVT values to the selected fabricator process."
-  ]
+  ],
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "<SHA256_OF_FINAL_NATIVE_PCBDOC>"
 }
