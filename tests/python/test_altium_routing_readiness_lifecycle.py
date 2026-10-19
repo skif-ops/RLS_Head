@@ -70,4 +70,5 @@ def test_routing_readiness_remains_valid_after_production_release(
     assert result["status"] == "READY_FOR_ROUTING"
     assert result["routing_authorized"] is True
     assert result["production_authorized"] is True
+    assert result["next_action"] == "PRODUCTION_RELEASED"
     assert result["errors"] == []
