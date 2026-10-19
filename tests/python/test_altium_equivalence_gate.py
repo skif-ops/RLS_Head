@@ -13,6 +13,7 @@ def _write(path: Path, content: bytes) -> str:
 
 def _manifest(tmp_path: Path) -> Path:
     artifacts = []
+    source_commit = "1" * 40
 
     raw_audit_entries = {
         "component_inventory": (
@@ -40,11 +41,85 @@ def _manifest(tmp_path: Path) -> Path:
             }
         )
 
+    native_content = {
+        "schematic": b"SYNTHETIC_TEST_SCHDOC",
+        "pcb": b"SYNTHETIC_TEST_PCBDOC",
+        "import_log": b"SYNTHETIC_IMPORT_LOG\n",
+    }
+    native_paths = {
+        "schematic": "native/EVT_SYS_CARRIER.SchDoc",
+        "pcb": "native/EVT_SYS_CARRIER.PcbDoc",
+        "import_log": "equivalence/import_log.txt",
+    }
+    native_hashes = {
+        key: hashlib.sha256(content).hexdigest()
+        for key, content in native_content.items()
+    }
+
+    package_content = json.dumps(
+        {
+            "schema": "ALTIUM-IMPORT-PACKAGE-001",
+            "status": "READY_FOR_ALTIUM_IMPORT",
+            "board_id": "EVT-SYS-CARRIER",
+            "hardware_revision": "A",
+            "source_commit": source_commit,
+            "source_cad": "KiCad 9 retained verification baseline",
+            "target_cad": "Altium Designer",
+            "preserve_kicad": True,
+        },
+        sort_keys=True,
+    ).encode()
+    package_hash = hashlib.sha256(package_content).hexdigest()
+
+    receipt_content = json.dumps(
+        {
+            "schema": "ALTIUM-NATIVE-IMPORT-RECEIPT-001",
+            "status": "PASS",
+            "board_id": "EVT-SYS-CARRIER",
+            "hardware_revision": "A",
+            "source_commit": source_commit,
+            "source_cad": "KiCad 9 retained verification baseline",
+            "target_cad": "Altium Designer",
+            "import_mechanism": "KiCad Importer / Import Wizard",
+            "altium_version": "26.0.1",
+            "importer_version": "KiCad Importer 26.0.1",
+            "import_package_manifest": {
+                "path": "equivalence/import_package_manifest.json",
+                "sha256": package_hash,
+            },
+            "native_artifacts": {
+                key: {
+                    "path": native_paths[key],
+                    "sha256": native_hashes[key],
+                }
+                for key in native_content
+            },
+        },
+        sort_keys=True,
+    ).encode()
+
     entries = {
         "project": ("EVT_SYS_CARRIER.PrjPcb", b"[Design]\nVersion=1.0\n"),
-        "schematic": ("native/EVT_SYS_CARRIER.SchDoc", b"SYNTHETIC_TEST_SCHDOC"),
-        "pcb": ("native/EVT_SYS_CARRIER.PcbDoc", b"SYNTHETIC_TEST_PCBDOC"),
-        "import_log": ("equivalence/import_log.txt", b"SYNTHETIC_IMPORT_LOG\n"),
+        "schematic": (
+            native_paths["schematic"],
+            native_content["schematic"],
+        ),
+        "pcb": (
+            native_paths["pcb"],
+            native_content["pcb"],
+        ),
+        "import_package_manifest": (
+            "equivalence/import_package_manifest.json",
+            package_content,
+        ),
+        "import_receipt": (
+            "equivalence/import_receipt.json",
+            receipt_content,
+        ),
+        "import_log": (
+            native_paths["import_log"],
+            native_content["import_log"],
+        ),
         "compile_report": (
             "equivalence/compile_report.json",
             json.dumps(
@@ -56,8 +131,14 @@ def _manifest(tmp_path: Path) -> Path:
                 sort_keys=True,
             ).encode(),
         ),
-        "bom_export": ("equivalence/bom_export.csv", b"ref,mpn\nU1,STM32H753IIT6\n"),
-        "netlist_export": ("equivalence/netlist_export.csv", b"net,ref,pin\n3V3,U1,23\n"),
+        "bom_export": (
+            "equivalence/bom_export.csv",
+            b"ref,mpn\nU1,STM32H753IIT6\n",
+        ),
+        "netlist_export": (
+            "equivalence/netlist_export.csv",
+            b"net,ref,pin\n3V3,U1,23\n",
+        ),
         "footprint_report": (
             "equivalence/footprint_report.json",
             b'{"status":"PASS"}',
@@ -222,3 +303,27 @@ def test_native_audit_input_hash_mismatch_invalidates_gate(tmp_path):
 
     assert result["status"] == "INVALID"
     assert "native_audit_input_hash:rule_inventory" in result["errors"]
+
+
+
+def test_import_receipt_native_hash_mismatch_invalidates_gate(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    receipt_item = next(
+        item
+        for item in data["artifacts"]
+        if item["id"] == "import_receipt"
+    )
+    receipt_path = tmp_path / receipt_item["path"]
+    receipt = json.loads(receipt_path.read_text())
+    receipt["native_artifacts"]["pcb"]["sha256"] = "0" * 64
+    receipt_content = json.dumps(receipt, sort_keys=True).encode()
+    receipt_path.write_bytes(receipt_content)
+    receipt_item["sha256"] = hashlib.sha256(receipt_content).hexdigest()
+    manifest.write_text(json.dumps(data, indent=2) + "\n")
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert "import_receipt_hash:pcb" in result["errors"]
