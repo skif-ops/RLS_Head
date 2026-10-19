@@ -22,7 +22,9 @@ The repository must report:
    `hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc`.
 7. Create/update the PCB and save as:
    `hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc`.
-8. Do not delete or overwrite the retained KiCad source.
+8. Save/export the KiCad Import Wizard log as:
+   `hardware/system_carrier/altium/equivalence/import_log.txt`.
+9. Do not delete or overwrite the retained KiCad source.
 
 ## Native project checks
 

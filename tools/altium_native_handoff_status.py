@@ -12,6 +12,7 @@ REQUIRED = {
     "project": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
     "schematic": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
     "pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+    "import_log": "hardware/system_carrier/altium/equivalence/import_log.txt",
     "compile_report": "hardware/system_carrier/altium/equivalence/compile_report.json",
     "bom_export": "hardware/system_carrier/altium/equivalence/bom_export.csv",
     "netlist_export": "hardware/system_carrier/altium/equivalence/netlist_export.csv",

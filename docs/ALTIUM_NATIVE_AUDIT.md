@@ -19,4 +19,4 @@ The exporter does not create, delete or modify PCB objects.
 
 ## Purpose
 
-The audit is an independent machine-readable cross-check of the imported native PcbDoc. It supplements, but does not replace, the full Altium equivalence manifest and native compile/DRC evidence.
+The audit is an independent machine-readable cross-check of the imported native PcbDoc. `altium_native_audit_validate` records SHA-256 hashes of `component_inventory.csv`, `net_inventory.csv` and `rule_inventory.csv`; the equivalence gate requires those same raw files in the manifest and verifies that their current hashes match the hashes embedded in `native_audit_result.json`. It supplements, but does not replace, the full Altium equivalence manifest and native compile/DRC evidence.

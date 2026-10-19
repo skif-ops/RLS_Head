@@ -24,6 +24,11 @@
       "sha256": "<SHA256>"
     },
     {
+      "id": "import_log",
+      "path": "hardware/system_carrier/altium/equivalence/import_log.txt",
+      "sha256": "<SHA256>"
+    },
+    {
       "id": "compile_report",
       "path": "hardware/system_carrier/altium/equivalence/compile_report.json",
       "sha256": "<SHA256>"
@@ -41,6 +46,21 @@
     {
       "id": "footprint_report",
       "path": "hardware/system_carrier/altium/equivalence/footprint_report.json",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "component_inventory",
+      "path": "hardware/system_carrier/altium/equivalence/component_inventory.csv",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "net_inventory",
+      "path": "hardware/system_carrier/altium/equivalence/net_inventory.csv",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "rule_inventory",
+      "path": "hardware/system_carrier/altium/equivalence/rule_inventory.csv",
       "sha256": "<SHA256>"
     },
     {

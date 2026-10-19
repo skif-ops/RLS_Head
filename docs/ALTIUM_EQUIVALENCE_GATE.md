@@ -13,12 +13,13 @@ The gate consumes:
 - `hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb`;
 - `hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc`;
 - `hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc`;
+- saved/exported KiCad Import Wizard log `equivalence/import_log.txt`;
 - Altium compile report with zero errors and zero warnings;
 - BOM export;
 - netlist/pin export;
 - footprint assignment report;
-- read-only native PCB audit inventories (components, nets and rules);
-- validated native audit result `equivalence/native_audit_result.json`;
+- read-only native PCB audit inventories (components, nets and rules), each SHA-256-bound in the equivalence manifest;
+- validated native audit result `equivalence/native_audit_result.json`, containing SHA-256 hashes of the exact three inventory CSV inputs;
 - completed equivalence manifest.
 
 Use `hardware/system_carrier/altium/equivalence/manifest.template.json` as the starting manifest.
@@ -33,7 +34,7 @@ All must be PASS:
 4. Netlist equivalence.
 5. Footprint equivalence.
 6. Hierarchy/port equivalence.
-7. Altium PCB-rule equivalence.
+7. Altium PCB-rule equivalence: all 10 instantiated rule-query rules must be present; the 24-row layout constraint contract remains the broader design-policy source.
 8. Four-layer stack equivalence.
 9. No 76–81 GHz RF routing or antenna on the System Carrier.
 10. Native Altium compile: zero errors and zero warnings.
