@@ -805,6 +805,36 @@ jobs:
           print(json.dumps(summary, indent=2))
           PY
 
+      - name: Build retained KiCad netlist baseline
+        run: |
+          kicad-cli sch export netlist \
+            --format kicadxml \
+            --output build-cad/system_carrier/kicad_netlist.xml \
+            build-cad/system_carrier/EVT_SYS_CARRIER.kicad_sch
+          python -m tools.kicad_netlist_baseline \
+            --system-root hardware/system_carrier \
+            --xml-netlist build-cad/system_carrier/kicad_netlist.xml \
+            --output-csv build-cad/system_carrier/kicad_netlist_baseline.csv \
+            --output-result build-cad/system_carrier/kicad_netlist_baseline_result.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/kicad_netlist_baseline_result.json"
+              ).read_text()
+          )
+          assert data["schema"] == "KICAD-NETLIST-BASELINE-001"
+          assert data["status"] == "PASS"
+          assert data["connected_endpoint_count"] > 0
+          print(
+              "KiCad netlist baseline PASS:",
+              data["connected_endpoint_count"],
+              "connected physical endpoints",
+          )
+          PY
+
       - name: Build real System Carrier Review A package
         run: |
           python -m tools.carrier_review_a_package \
@@ -1059,7 +1089,8 @@ jobs:
           assert data["native_audit_script_included"] is True
           assert data["native_handoff_runbook_included"] is True
           assert data["equivalence_manifest_template_included"] is True
-          assert data["file_count"] >= 43
+          assert data["kicad_netlist_baseline_included"] is True
+          assert data["file_count"] >= 45
           print(
               "Altium import package READY:",
               data["file_count"],
