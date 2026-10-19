@@ -20,6 +20,8 @@ REQUIRED_ARTIFACTS = {
     "bom_export",
     "bom_validation_result",
     "connector_validation_result",
+    "kicad_netlist_baseline",
+    "netlist_validation_result",
     "netlist_export",
     "footprint_report",
     "component_inventory",
@@ -394,6 +396,73 @@ def validate_manifest(
                             f"connector_validation_hash:{key}"
                         )
 
+    netlist_validation = None
+    netlist_validation_path = resolved.get("netlist_validation_result")
+    if netlist_validation_path is not None:
+        try:
+            netlist_validation = json.loads(
+                netlist_validation_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"netlist_validation_parse:{exc}")
+        else:
+            if (
+                netlist_validation.get("schema")
+                != "ALTIUM-NATIVE-NETLIST-RESULT-001"
+            ):
+                errors.append("netlist_validation_schema")
+            if netlist_validation.get("status") != "PASS":
+                reasons.append("NETLIST_VALIDATION")
+            hashes = netlist_validation.get("input_sha256", {})
+            if not isinstance(hashes, dict):
+                errors.append("netlist_validation_input_sha256")
+            else:
+                actual_baseline = str(
+                    integrity.get("kicad_netlist_baseline", {}).get(
+                        "sha256_actual", ""
+                    )
+                ).lower()
+                actual_inventory = str(
+                    integrity.get("pad_net_inventory", {}).get(
+                        "sha256_actual", ""
+                    )
+                ).lower()
+                if (
+                    str(hashes.get("kicad_netlist_baseline", "")).lower()
+                    != actual_baseline
+                ):
+                    errors.append(
+                        "netlist_validation_hash:kicad_netlist_baseline"
+                    )
+                if (
+                    str(hashes.get("pad_net_inventory", "")).lower()
+                    != actual_inventory
+                ):
+                    errors.append(
+                        "netlist_validation_hash:pad_net_inventory"
+                    )
+
+                package_files = (
+                    import_package.get("files", [])
+                    if isinstance(import_package, dict)
+                    else []
+                )
+                package_hashes = {
+                    str(item.get("sha256", "")).lower()
+                    for item in package_files
+                    if isinstance(item, dict)
+                    and str(item.get("path", "")).replace("\\", "/").endswith(
+                        "/evidence/kicad_netlist_baseline.csv"
+                    )
+                }
+                if (
+                    not actual_baseline
+                    or actual_baseline not in package_hashes
+                ):
+                    errors.append(
+                        "netlist_baseline_not_bound_to_import_package"
+                    )
+
     footprint_validation = None
     footprint_path = resolved.get("footprint_report")
     if footprint_path is not None:
@@ -545,6 +614,7 @@ def validate_manifest(
         "import_receipt": import_receipt,
         "bom_validation": bom_validation,
         "connector_validation": connector_validation,
+        "netlist_validation": netlist_validation,
         "footprint_validation": footprint_validation,
         "compile": compile_result,
         "native_audit": native_audit,
