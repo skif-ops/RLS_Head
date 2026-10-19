@@ -323,6 +323,11 @@ jobs:
           assert data["preserve_kicad"] is True
           assert data["source_rule_count"] == data["mapped_rule_count"] == 24
           assert data["layer_count"] == 4
+          assert data["outjob_contract_count"] == 14
+          assert data["required_output_count"] == 13
+          assert data["release_checklist_count"] == 18
+          assert data["board_planning_count"] == 8
+          assert data["dfm_profile_count"] == 10
           print("Altium primary CAD policy PASS")
           PY
 
