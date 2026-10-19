@@ -14,5 +14,7 @@
   ],
   "notes": [
     "PASS requires final mechanical geometry and enclosure/harness access review."
-  ]
+  ],
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "<SHA256_OF_FINAL_NATIVE_PCBDOC>"
 }
