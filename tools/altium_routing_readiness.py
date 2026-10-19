@@ -117,6 +117,36 @@ def validate(
         production_authority == "AUTHORIZED"
     )
 
+    equivalence_stale = False
+    expected_schematic_hash = str(
+        native_status.get(
+            "native_schematic_sha256",
+            "",
+        )
+    ).strip().lower()
+    current_schematic_hash = ""
+    schematic_path = altium / "native" / "EVT_SYS_CARRIER.SchDoc"
+
+    equivalence_authorized = (
+        equivalence == "PASS"
+        and layout_authority == "AUTHORIZED"
+    )
+    if equivalence_authorized:
+        if not schematic_path.is_file():
+            equivalence_stale = True
+            warnings.append("equivalence_native_schematic_missing")
+        else:
+            current_schematic_hash = sha256_file(schematic_path)
+            if (
+                len(expected_schematic_hash) != 64
+                or current_schematic_hash != expected_schematic_hash
+            ):
+                equivalence_stale = True
+                warnings.append("equivalence_schematic_hash_mismatch")
+
+        if equivalence_stale:
+            production_authorized = False
+
     production_release_stale = False
     expected_release_pcb_hash = str(
         native_status.get(
@@ -153,12 +183,17 @@ def validate(
         }
         and equivalence == "PASS"
         and layout_authority == "AUTHORIZED"
+        and not equivalence_stale
     )
 
     if not prep_ok:
         status = "BLOCKED"
         routing_authorized = False
         next_action = "FIX_PREPARATORY_GATES"
+    elif equivalence_stale:
+        status = "STALE_EQUIVALENCE"
+        routing_authorized = False
+        next_action = "RERUN_NATIVE_ALTIUM_EQUIVALENCE_GATE"
     elif native_ready:
         status = "READY_FOR_ROUTING"
         routing_authorized = True
@@ -193,6 +228,9 @@ def validate(
         "status": status,
         "routing_authorized": routing_authorized,
         "production_authorized": production_authorized,
+        "equivalence_stale": equivalence_stale,
+        "expected_schematic_sha256": expected_schematic_hash,
+        "current_schematic_sha256": current_schematic_hash,
         "production_release_stale": production_release_stale,
         "expected_release_pcb_sha256": expected_release_pcb_hash,
         "current_pcb_sha256": current_pcb_hash,
@@ -228,8 +266,13 @@ def validate(
                 "SchDoc/PcbDoc import and ALTIUM_EQUIVALENCE_GATE PASS."
             ),
             (
+                "Native SchDoc is the electrical equivalence baseline. If it "
+                "changes after equivalence PASS, effective routing and production "
+                "authority are withdrawn until equivalence is rerun."
+            ),
+            (
                 "Production authority remains separate from routing authority. "
-                "If the final native PcbDoc changes after production release, "
+                "If only the final native PcbDoc changes after production release, "
                 "routing authority remains valid but effective production "
                 "authorization is withdrawn until the release gate is rerun."
             ),
