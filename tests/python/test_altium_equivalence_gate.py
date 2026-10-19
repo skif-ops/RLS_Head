@@ -399,3 +399,53 @@ def test_import_receipt_native_hash_mismatch_invalidates_gate(tmp_path):
 
     assert result["status"] == "INVALID"
     assert "import_receipt_hash:pcb" in result["errors"]
+
+
+
+def test_bom_validation_input_hash_mismatch_invalidates_gate(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    item = next(
+        artifact
+        for artifact in data["artifacts"]
+        if artifact["id"] == "bom_validation_result"
+    )
+    path = tmp_path / item["path"]
+    result = json.loads(path.read_text())
+    result["input_sha256"]["bom_export"] = "0" * 64
+    content = json.dumps(result, sort_keys=True).encode()
+    path.write_bytes(content)
+    item["sha256"] = hashlib.sha256(content).hexdigest()
+    manifest.write_text(json.dumps(data, indent=2) + "\n")
+
+    checked = validate_manifest(manifest, tmp_path)
+
+    assert checked["status"] == "INVALID"
+    assert "bom_validation_hash:bom_export" in checked["errors"]
+
+
+def test_footprint_validation_input_hash_mismatch_invalidates_gate(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    item = next(
+        artifact
+        for artifact in data["artifacts"]
+        if artifact["id"] == "footprint_report"
+    )
+    path = tmp_path / item["path"]
+    result = json.loads(path.read_text())
+    result["input_sha256"]["component_inventory"] = "0" * 64
+    content = json.dumps(result, sort_keys=True).encode()
+    path.write_bytes(content)
+    item["sha256"] = hashlib.sha256(content).hexdigest()
+    manifest.write_text(json.dumps(data, indent=2) + "\n")
+
+    checked = validate_manifest(manifest, tmp_path)
+
+    assert checked["status"] == "INVALID"
+    assert (
+        "footprint_report_hash:component_inventory"
+        in checked["errors"]
+    )
