@@ -1,0 +1,22 @@
+# Native Altium audit script
+
+This read-only DelphiScript package is used after the KiCad-to-Altium import and before the Altium equivalence gate.
+
+Altium Designer's scripting system supports DelphiScript projects (`.PrjScr`) with `.pas` units, and the PCB API exposes the current board through `PCBServer.GetCurrentPCBBoard` plus board iterators for components, nets and rules. The script intentionally uses only read operations.
+
+## Run
+
+1. Open the native `EVT_SYS_CARRIER.PcbDoc` in Altium Designer.
+2. Open `EVT_SYS_CARRIER_Audit.PrjScr`.
+3. Run procedure `ExportNativeAudit`.
+4. The script creates an `equivalence` directory beside the PcbDoc and writes:
+   - `component_inventory.csv`;
+   - `net_inventory.csv`;
+   - `rule_inventory.csv`.
+5. Commit/copy those reports into the repository equivalence evidence directory and run `python -m tools.altium_native_audit_validate`.
+
+The exporter does not create, delete or modify PCB objects.
+
+## Purpose
+
+The audit is an independent machine-readable cross-check of the imported native PcbDoc. It supplements, but does not replace, the full Altium equivalence manifest and native compile/DRC evidence.
