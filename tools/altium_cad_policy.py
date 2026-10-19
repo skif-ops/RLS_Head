@@ -33,6 +33,12 @@ def validate(root: str | Path) -> dict:
     rules_path = root / "altium" / "ALTIUM_RULES_SYS_001.csv"
     net_classes_path = root / "altium" / "ALTIUM_NET_CLASSES_SYS_001.csv"
     placement_path = root / "altium" / "ALTIUM_PLACEMENT_PLAN_SYS_001.csv"
+    board_mechanical_path = root / "altium" / "ALTIUM_BOARD_MECHANICAL_SYS_001.csv"
+    placement_coord_path = root / "altium" / "ALTIUM_PLACEMENT_COORD_SYS_002.csv"
+    routing_sequence_path = root / "altium" / "ALTIUM_ROUTING_SEQUENCE_SYS_001.csv"
+    prelayout_values_path = root / "altium" / "ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv"
+    layout_bom_path = root / "BOM_SYS_CARRIER_LAYOUT_004.csv"
+    full_footprint_path = root / "FOOTPRINT_ASSIGNMENT_SYS_002.csv"
     equivalence_checks_path = root / "altium" / "ALTIUM_EQUIVALENCE_CHECKS_SYS_001.csv"
     native_status_path = root / "altium" / "ALTIUM_NATIVE_STATUS_SYS_001.json"
     equivalence_template_path = root / "altium" / "equivalence" / "manifest.template.json"
@@ -46,6 +52,12 @@ def validate(root: str | Path) -> dict:
         rules_path,
         net_classes_path,
         placement_path,
+        board_mechanical_path,
+        placement_coord_path,
+        routing_sequence_path,
+        prelayout_values_path,
+        layout_bom_path,
+        full_footprint_path,
         equivalence_checks_path,
         native_status_path,
         equivalence_template_path,
@@ -116,12 +128,39 @@ def validate(root: str | Path) -> dict:
     net_class_ids = _csv_ids(net_classes_path, "class_id")
     placement_ids = _csv_ids(placement_path, "zone_id")
     equivalence_ids = _csv_ids(equivalence_checks_path, "check_id")
+    layout_bom_refs = _csv_ids(layout_bom_path, "ref")
+    full_footprint_refs = _csv_ids(full_footprint_path, "ref")
+    prelayout_rule_ids = _csv_ids(prelayout_values_path, "rule_id")
     if len(net_class_ids) < 8:
         errors.append("net_class_count")
     if len(placement_ids) < 7:
         errors.append("placement_zone_count")
     if len(equivalence_ids) != 10:
         errors.append("equivalence_check_count")
+    if layout_bom_refs != full_footprint_refs:
+        errors.append(
+            "layout_bom_footprint_ref_set"
+        )
+    if len(prelayout_rule_ids) < 18:
+        errors.append("prelayout_rule_count")
+
+    with board_mechanical_path.open(
+        "r",
+        encoding="utf-8",
+        newline="",
+    ) as handle:
+        mechanical_rows = list(csv.DictReader(handle))
+    outline = [
+        row
+        for row in mechanical_rows
+        if str(row.get("kind", "")).strip() == "BOARD"
+        and str(row.get("id", "")).strip() == "OUTLINE"
+    ]
+    if len(outline) != 1:
+        errors.append("mechanical_outline")
+    else:
+        if str(outline[0].get("status", "")).strip() != "EVT_PROVISIONAL":
+            warnings.append("mechanical_outline_status")
 
     native_status_doc = json.loads(
         native_status_path.read_text(encoding="utf-8")
@@ -176,6 +215,9 @@ def validate(root: str | Path) -> dict:
         "net_class_count": len(net_class_ids),
         "placement_zone_count": len(placement_ids),
         "equivalence_check_count": len(equivalence_ids),
+        "layout_bom_ref_count": len(layout_bom_refs),
+        "full_footprint_ref_count": len(full_footprint_refs),
+        "prelayout_rule_count": len(prelayout_rule_ids),
         "primary_cad": authority.get("primary_cad"),
         "preserve_kicad": authority.get("preserve_kicad"),
         "native_document_status": native_status,
