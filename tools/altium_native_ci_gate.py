@@ -7,6 +7,9 @@ from pathlib import Path
 
 from tools.altium_equivalence_gate import validate_manifest as validate_equivalence
 from tools.altium_native_handoff_status import evaluate as evaluate_handoff
+from tools.altium_production_release_gate import (
+    validate_manifest as validate_production_release,
+)
 from tools.altium_routing_readiness import validate as validate_routing
 
 
@@ -24,6 +27,9 @@ GATE_RESULT_REL = EQUIV_REL / "altium_equivalence_result.json"
 NATIVE_STATUS_REL = ALTIUM_REL / "ALTIUM_NATIVE_STATUS_SYS_001.json"
 IMPLEMENTATION_STATUS_REL = ALTIUM_REL / "ALTIUM_STATUS_SYS_001.json"
 CAD_AUTHORITY_REL = SYSTEM_REL / "CAD_AUTHORITY_SYS_001.json"
+RELEASE_REL = ALTIUM_REL / "release"
+RELEASE_MANIFEST_REL = RELEASE_REL / "manifest.json"
+PRODUCTION_RESULT_REL = RELEASE_REL / "production_release_result.json"
 
 
 def sha256_file(path: Path) -> str:
@@ -130,7 +136,13 @@ def evaluate(
             ],
         }
 
-    phase = "POST_EQUIVALENCE"
+    production_result_path = root / PRODUCTION_RESULT_REL
+    production_released = production_result_path.is_file()
+    phase = (
+        "POST_PRODUCTION"
+        if production_released
+        else "POST_EQUIVALENCE"
+    )
 
     if handoff.get("status") != "READY_TO_RUN_EQUIVALENCE_GATE":
         errors.append(
@@ -143,6 +155,7 @@ def evaluate(
     native_status_path = root / NATIVE_STATUS_REL
     implementation_status_path = root / IMPLEMENTATION_STATUS_REL
     authority_path = root / CAD_AUTHORITY_REL
+    release_manifest_path = root / RELEASE_MANIFEST_REL
 
     for label, path in (
         ("manifest", manifest_path),
@@ -154,11 +167,16 @@ def evaluate(
         if not path.is_file():
             errors.append(f"missing:{label}")
 
+    if production_released and not release_manifest_path.is_file():
+        errors.append("missing:production_release_manifest")
+
     rerun_gate = None
     committed_gate = None
     native_status = None
     implementation_status = None
     authority = None
+    rerun_production = None
+    committed_production = None
 
     if manifest_path.is_file():
         try:
@@ -216,7 +234,12 @@ def evaluate(
                 errors.append("native_equivalence_status")
             if native_status.get("layout_authority") != "AUTHORIZED":
                 errors.append("native_layout_authority")
-            if native_status.get("production_authority") != "NOT_AUTHORIZED":
+            expected_production = (
+                "AUTHORIZED"
+                if production_released
+                else "NOT_AUTHORIZED"
+            )
+            if native_status.get("production_authority") != expected_production:
                 errors.append("native_production_authority")
 
             expected_hashes = {
@@ -242,8 +265,16 @@ def evaluate(
                 errors.append("cad_authority_native_status")
             if authority.get("pcb_layout_authority") != "ALTIUM_AUTHORIZED":
                 errors.append("cad_authority_layout_authority")
-            if authority.get("production_release_authorized") is not False:
+            if (
+                authority.get("production_release_authorized")
+                is not production_released
+            ):
                 errors.append("cad_authority_production_authority")
+            if production_released:
+                if authority.get("pcb_design_phase") != "PRODUCTION_RELEASED":
+                    errors.append("cad_authority_design_phase")
+            elif authority.get("pcb_design_phase") == "PRODUCTION_RELEASED":
+                errors.append("cad_authority_design_phase")
 
             expected_hashes = {
                 "native_schematic_sha256": sha256_file(schdoc),
@@ -273,7 +304,12 @@ def evaluate(
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:
             errors.append(f"implementation_status_parse:{exc}")
         else:
-            if implementation_status.get("current_phase") != "READY_FOR_ROUTING":
+            expected_phase = (
+                "PRODUCTION_RELEASED"
+                if production_released
+                else "READY_FOR_ROUTING"
+            )
+            if implementation_status.get("current_phase") != expected_phase:
                 errors.append("implementation_phase")
             altium = implementation_status.get("altium")
             if not isinstance(altium, dict):
@@ -286,10 +322,17 @@ def evaluate(
                 ):
                     if altium.get(field) is not True:
                         errors.append(f"implementation_{field}")
-                if altium.get("production_release_authorized") is not False:
+                if (
+                    altium.get("production_release_authorized")
+                    is not production_released
+                ):
                     errors.append(
                         "implementation_production_release_authorized"
                     )
+                if production_released:
+                    for field in ("placement_started", "routing_started"):
+                        if altium.get(field) is not True:
+                            errors.append(f"implementation_{field}")
                 if (
                     str(altium.get("native_pcb_sha256", "")).lower()
                     != sha256_file(pcbdoc)
@@ -313,6 +356,80 @@ def evaluate(
             )
         if routing.get("routing_authorized") is not True:
             errors.append("post_import_routing_authorized")
+        if routing.get("production_authorized") is not production_released:
+            errors.append("post_import_production_authorized")
+
+    if production_released:
+        if release_manifest_path.is_file():
+            try:
+                rerun_production = validate_production_release(
+                    release_manifest_path,
+                    repository_root=root,
+                )
+            except (
+                OSError,
+                UnicodeDecodeError,
+                json.JSONDecodeError,
+                ValueError,
+            ) as exc:
+                errors.append(f"production_rerun:{exc}")
+            else:
+                if rerun_production.get("status") != "PASS":
+                    errors.append(
+                        "production_rerun_status:"
+                        + str(rerun_production.get("status"))
+                    )
+                if (
+                    rerun_production.get("production_authority")
+                    != "AUTHORIZED"
+                ):
+                    errors.append("production_rerun_authority")
+
+        try:
+            committed_production = read_json(production_result_path)
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"production_result_parse:{exc}")
+        else:
+            if committed_production.get("status") != "PASS":
+                errors.append("committed_production_not_pass")
+            if (
+                committed_production.get("production_authority")
+                != "AUTHORIZED"
+            ):
+                errors.append("committed_production_authority")
+            if (
+                rerun_production is not None
+                and committed_production != rerun_production
+            ):
+                errors.append("production_result_not_reproducible")
+
+            result_hash = sha256_file(production_result_path)
+            if isinstance(native_status, dict):
+                if (
+                    str(
+                        native_status.get(
+                            "production_release_result_sha256",
+                            "",
+                        )
+                    ).lower()
+                    != result_hash
+                ):
+                    errors.append(
+                        "native_status_hash:production_release_result_sha256"
+                    )
+            if isinstance(authority, dict):
+                if (
+                    str(
+                        authority.get(
+                            "production_release_result_sha256",
+                            "",
+                        )
+                    ).lower()
+                    != result_hash
+                ):
+                    errors.append(
+                        "cad_authority_hash:production_release_result_sha256"
+                    )
 
     status = "PASS" if not errors else "FAIL"
     return {
@@ -334,6 +451,11 @@ def evaluate(
             if isinstance(rerun_gate, dict)
             else None
         ),
+        "production_release_status": (
+            rerun_production.get("status")
+            if isinstance(rerun_production, dict)
+            else None
+        ),
         "routing_authorized": (
             status == "PASS"
             and (
@@ -341,14 +463,17 @@ def evaluate(
                 or routing.get("routing_authorized") is True
             )
         ),
-        "production_authorized": False,
+        "production_authorized": (
+            status == "PASS" and production_released
+        ),
         "notes": [
             (
                 "POST_EQUIVALENCE PASS requires reproducible equivalence PASS, "
                 "synchronized tracked status and READY_FOR_ROUTING."
             ),
             (
-                "This CI gate never grants production authority."
+                "POST_PRODUCTION additionally requires a reproducible "
+                "production-release PASS and synchronized production authority."
             ),
         ],
     }
