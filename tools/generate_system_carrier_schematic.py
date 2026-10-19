@@ -537,7 +537,7 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     )
 
     sch.components.add("Connector_Generic:Conn_01x02", "J1", "12V_IN", pos(18, 24))
-    sch.components.add("Device:D_TVS", "D1", "SMAJ15CA", pos(30, 18))
+    sch.components.add("Device:D_TVS", "D1", "SMAJ15CA", pos(26, 18))
     add_local_symbol(sch, "U6", "TPS259470ARPWR", "TPS259470ARPWR_SYS", pos(43, 24), placeholders)
     add_local_symbol(sch, "U5", "TPS62132RGTR", "TPS62132RGTR_3V3", pos(60, 24), placeholders)
     add_local_symbol(sch, "U7", "TPS259470ARPWR", "TPS259470ARPWR_RADAR", pos(43, 42), placeholders)
