@@ -114,6 +114,13 @@ def _manifest(tmp_path: Path) -> Path:
         for key, content in native_content.items()
     }
 
+    baseline_content = (
+        b"designator,pin,net_name\n"
+        b"U1,40,GNSS_PPS\n"
+        b"J1,1,VIN_RAW\n"
+    )
+    baseline_hash = hashlib.sha256(baseline_content).hexdigest()
+
     package_content = json.dumps(
         {
             "schema": "ALTIUM-IMPORT-PACKAGE-001",
@@ -124,6 +131,15 @@ def _manifest(tmp_path: Path) -> Path:
             "source_cad": "KiCad 9 retained verification baseline",
             "target_cad": "Altium Designer",
             "preserve_kicad": True,
+            "files": [
+                {
+                    "path": (
+                        "build-cad/altium_import/evidence/"
+                        "kicad_netlist_baseline.csv"
+                    ),
+                    "sha256": baseline_hash,
+                }
+            ],
         },
         sort_keys=True,
     ).encode()
@@ -210,6 +226,23 @@ def _manifest(tmp_path: Path) -> Path:
         sort_keys=True,
     ).encode()
 
+    netlist_validation_content = json.dumps(
+        {
+            "schema": "ALTIUM-NATIVE-NETLIST-RESULT-001",
+            "status": "PASS",
+            "errors": [],
+            "warnings": [],
+            "input_sha256": {
+                "kicad_netlist_baseline": baseline_hash,
+                "pad_net_inventory": raw_hashes["pad_net_inventory"],
+            },
+            "verified_checks": {
+                "netlist_equivalence": "PASS",
+            },
+        },
+        sort_keys=True,
+    ).encode()
+
     entries = {
         "project": ("EVT_SYS_CARRIER.PrjPcb", b"[Design]\nVersion=1.0\n"),
         "schematic": (
@@ -254,6 +287,14 @@ def _manifest(tmp_path: Path) -> Path:
         "connector_validation_result": (
             "equivalence/connector_validation_result.json",
             connector_validation_content,
+        ),
+        "kicad_netlist_baseline": (
+            "equivalence/kicad_netlist_baseline.csv",
+            baseline_content,
+        ),
+        "netlist_validation_result": (
+            "equivalence/netlist_validation_result.json",
+            netlist_validation_content,
         ),
         "netlist_export": (
             "equivalence/netlist_export.csv",
@@ -522,5 +563,45 @@ def test_connector_validation_input_hash_mismatch_invalidates_gate(tmp_path):
     assert checked["status"] == "INVALID"
     assert (
         "connector_validation_hash:pad_net_inventory"
+        in checked["errors"]
+    )
+
+
+
+def test_netlist_baseline_must_be_bound_to_import_package(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    package_item = next(
+        artifact
+        for artifact in data["artifacts"]
+        if artifact["id"] == "import_package_manifest"
+    )
+    package_path = tmp_path / package_item["path"]
+    package = json.loads(package_path.read_text())
+    package["files"][0]["sha256"] = "0" * 64
+    package_content = json.dumps(package, sort_keys=True).encode()
+    package_path.write_bytes(package_content)
+    package_item["sha256"] = hashlib.sha256(package_content).hexdigest()
+
+    receipt_item = next(
+        artifact
+        for artifact in data["artifacts"]
+        if artifact["id"] == "import_receipt"
+    )
+    receipt_path = tmp_path / receipt_item["path"]
+    receipt = json.loads(receipt_path.read_text())
+    receipt["import_package_manifest"]["sha256"] = package_item["sha256"]
+    receipt_content = json.dumps(receipt, sort_keys=True).encode()
+    receipt_path.write_bytes(receipt_content)
+    receipt_item["sha256"] = hashlib.sha256(receipt_content).hexdigest()
+
+    manifest.write_text(json.dumps(data, indent=2) + "\n")
+
+    checked = validate_manifest(manifest, tmp_path)
+
+    assert checked["status"] == "INVALID"
+    assert (
+        "netlist_baseline_not_bound_to_import_package"
         in checked["errors"]
     )
