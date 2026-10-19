@@ -4,6 +4,7 @@ import argparse
 import csv
 import hashlib
 import json
+import re
 from pathlib import Path
 
 
@@ -32,6 +33,10 @@ def read_csv(path: Path) -> list[dict[str, str]]:
 
 def _clean(value: object) -> str:
     return str(value or "").strip()
+
+
+def _norm_scope(value: object) -> str:
+    return re.sub(r"\\s+", "", _clean(value)).lower()
 
 
 def validate(
@@ -135,7 +140,12 @@ def validate(
         errors.append("missing_p0_p1_nets:" + ",".join(missing_nets))
 
     actual_rules = {
-        _clean(row.get("rule_name")): _clean(row.get("rule_kind"))
+        _clean(row.get("rule_name")): {
+            "kind": _clean(row.get("rule_kind")),
+            "scope_1": _clean(row.get("scope_1")),
+            "scope_2": _clean(row.get("scope_2")),
+            "enabled": _clean(row.get("drc_enabled")).lower(),
+        }
         for row in rules
         if _clean(row.get("rule_name"))
     }
@@ -157,10 +167,24 @@ def validate(
         )
         if name not in actual_rules:
             missing_rules.append(name)
-        elif actual_rules[name] != expected_kind:
+            continue
+
+        actual_rule = actual_rules[name]
+        if actual_rule["kind"] != expected_kind:
             wrong_rule_kinds.append(
-                f"{name}:{expected_kind}!={actual_rules[name]}"
+                f"{name}:{expected_kind}!={actual_rule['kind']}"
             )
+
+        if _norm_scope(actual_rule["scope_1"]) != _norm_scope(
+            row.get("scope_1")
+        ):
+            errors.append(f"rule_scope_1_mismatch:{name}")
+        if _norm_scope(actual_rule["scope_2"]) != _norm_scope(
+            row.get("scope_2")
+        ):
+            errors.append(f"rule_scope_2_mismatch:{name}")
+        if actual_rule["enabled"] not in {"true", "1", "yes"}:
+            errors.append(f"rule_disabled:{name}")
 
     if missing_rules:
         errors.append("missing_rules:" + ",".join(sorted(missing_rules)))
@@ -274,9 +298,31 @@ def validate(
             + "|".join(actual_layers)
         )
 
+    audit_status = "PASS" if not errors else "FAIL"
+    verified_checks = {
+        "native_pcb_audit": audit_status,
+        "pinmap_equivalence": (
+            "PASS" if not pinmap_mismatches else "FAIL"
+        ),
+        "stackup_equivalence": (
+            "PASS" if actual_layers == expected_layers else "FAIL"
+        ),
+        "rules_equivalence": (
+            "PASS"
+            if not missing_rules
+            and not wrong_rule_kinds
+            and not any(
+                item.startswith("rule_scope_")
+                or item.startswith("rule_disabled:")
+                for item in errors
+            )
+            else "FAIL"
+        ),
+    }
+
     return {
         "schema": SCHEMA,
-        "status": "PASS" if not errors else "FAIL",
+        "status": audit_status,
         "errors": sorted(set(errors)),
         "warnings": sorted(set(warnings)),
         "component_count": len(component_refs),
@@ -291,6 +337,7 @@ def validate(
         "layer_stack_count": len(actual_layers),
         "expected_layer_stack_count": len(expected_layers),
         "input_sha256": input_sha256,
+        "verified_checks": verified_checks,
         "notes": [
             (
                 "PASS cross-checks native components, P0/P1 net names, "
