@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 from pathlib import Path, PurePosixPath
@@ -12,7 +13,7 @@ SCHEMA = "ALTIUM-PROJECT-MEMBERSHIP-001"
 
 
 def sha256_file(path: Path) -> str:
-    digest = __import__("hashlib").sha256()
+    digest = hashlib.sha256()
     with path.open("rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
