@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -27,6 +28,14 @@ EXPECTED_SCHEMAS = {
     "dfm_result": "ALTIUM-DFM-RESULT-001",
     "outjob_release_manifest": "ALTIUM-OUTJOB-RELEASE-MANIFEST-001",
 }
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
 
 
 def evaluate(repository_root: str | Path = ".") -> dict:
@@ -95,6 +104,7 @@ def evaluate(repository_root: str | Path = ".") -> dict:
 
     manifest_ready = False
     manifest_path = root / REQUIRED["manifest"]
+    manifest_errors: list[str] = []
     if evidence["manifest"]["present"]:
         try:
             release_manifest = json.loads(
@@ -109,7 +119,59 @@ def evaluate(repository_root: str | Path = ".") -> dict:
             ):
                 invalid.append("manifest")
             else:
-                manifest_ready = True
+                artifacts_raw = release_manifest.get("artifacts")
+                if not isinstance(artifacts_raw, list):
+                    manifest_errors.append("artifacts")
+                else:
+                    artifacts: dict[str, dict] = {}
+                    for item in artifacts_raw:
+                        if not isinstance(item, dict):
+                            manifest_errors.append("artifact_entry")
+                            continue
+                        artifact_id = str(item.get("id", "")).strip()
+                        if not artifact_id:
+                            manifest_errors.append("artifact_without_id")
+                            continue
+                        if artifact_id in artifacts:
+                            manifest_errors.append(
+                                f"duplicate_artifact:{artifact_id}"
+                            )
+                            continue
+                        artifacts[artifact_id] = item
+
+                    expected_ids = set(REQUIRED) - {"manifest"}
+                    missing_ids = sorted(expected_ids - set(artifacts))
+                    if missing_ids:
+                        manifest_errors.append(
+                            "missing_artifacts:" + ",".join(missing_ids)
+                        )
+
+                    for artifact_id in sorted(expected_ids & set(artifacts)):
+                        item = artifacts[artifact_id]
+                        expected_path = REQUIRED[artifact_id]
+                        actual_path = str(item.get("path", "")).strip()
+                        if actual_path != expected_path:
+                            manifest_errors.append(
+                                f"artifact_path:{artifact_id}"
+                            )
+                            continue
+
+                        file_path = root / expected_path
+                        expected_hash = str(
+                            item.get("sha256", "")
+                        ).strip().lower()
+                        if (
+                            not file_path.is_file()
+                            or len(expected_hash) != 64
+                            or expected_hash != sha256_file(file_path)
+                        ):
+                            manifest_errors.append(
+                                f"artifact_hash:{artifact_id}"
+                            )
+
+                    manifest_ready = not manifest_errors
+                    if manifest_errors:
+                        invalid.append("manifest")
 
     if "equivalence_result" in invalid:
         status = "INVALID_EQUIVALENCE_EVIDENCE"
@@ -144,6 +206,7 @@ def evaluate(repository_root: str | Path = ".") -> dict:
         "release_evidence_complete": release_evidence_complete,
         "release_reviews_pass": release_reviews_pass,
         "manifest_ready": manifest_ready,
+        "manifest_errors": sorted(set(manifest_errors)),
         "missing_artifacts": sorted(missing),
         "invalid_artifacts": sorted(set(invalid)),
         "non_pass_artifacts": sorted(set(non_pass)),
