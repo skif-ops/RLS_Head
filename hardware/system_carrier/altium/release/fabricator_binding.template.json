@@ -1,0 +1,20 @@
+{
+  "schema": "ALTIUM-FABRICATOR-BINDING-001",
+  "status": "PENDING",
+  "fabricator": "<FABRICATOR>",
+  "stackup_bound": false,
+  "copper_weight_bound": false,
+  "impedance_50r_bound": false,
+  "impedance_100r_bound": false,
+  "min_trace_clearance_bound": false,
+  "via_rules_bound": false,
+  "evidence_refs": [
+    {
+      "path": "<REPO_RELATIVE_EVIDENCE_PATH>",
+      "sha256": "<SHA256>"
+    }
+  ],
+  "notes": [
+    "PASS binds provisional EVT values to the selected fabricator process."
+  ]
+}
