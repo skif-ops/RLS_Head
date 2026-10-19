@@ -13,5 +13,7 @@
     "profile_sha256 must match the exact authoritative DFM profile used for the review."
   ],
   "profile_sha256": "<SHA256_OF_ALTIUM_DFM_PROFILE_SYS_001.csv>",
-  "closed_p0_ids": []
+  "closed_p0_ids": [],
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "<SHA256_OF_FINAL_NATIVE_PCBDOC>"
 }
