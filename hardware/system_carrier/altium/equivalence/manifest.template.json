@@ -24,6 +24,11 @@
       "sha256": "<SHA256>"
     },
     {
+      "id": "native_file_preflight",
+      "path": "hardware/system_carrier/altium/equivalence/native_file_preflight.json",
+      "sha256": "<SHA256>"
+    },
+    {
       "id": "import_package_manifest",
       "path": "hardware/system_carrier/altium/equivalence/import_package_manifest.json",
       "sha256": "<SHA256>"
