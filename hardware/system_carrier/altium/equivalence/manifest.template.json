@@ -44,6 +44,11 @@
       "sha256": "<SHA256>"
     },
     {
+      "id": "compile_report_raw",
+      "path": "hardware/system_carrier/altium/equivalence/compile_report_raw.txt",
+      "sha256": "<SHA256>"
+    },
+    {
       "id": "compile_report",
       "path": "hardware/system_carrier/altium/equivalence/compile_report.json",
       "sha256": "<SHA256>"
