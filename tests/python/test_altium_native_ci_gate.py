@@ -55,6 +55,7 @@ def _post_equivalence_fixture(
     gate_path = tmp_path / ci_gate.GATE_RESULT_REL
     native_status_path = tmp_path / ci_gate.NATIVE_STATUS_REL
     implementation_path = tmp_path / ci_gate.IMPLEMENTATION_STATUS_REL
+    authority_path = tmp_path / ci_gate.CAD_AUTHORITY_REL
 
     _write(schdoc, b"NATIVE_SCHDOC")
     _write(pcbdoc, b"NATIVE_PCBDOC")
@@ -87,6 +88,21 @@ def _post_equivalence_fixture(
             "native_schematic_sha256": _sha(schdoc),
             "native_pcb_sha256": _sha(pcbdoc),
             "equivalence_result_sha256": _sha(gate_path),
+        },
+    )
+    _write_json(
+        authority_path,
+        {
+            "schema": "SYSTEM-CARRIER-CAD-AUTHORITY-001",
+            "native_document_status": "NATIVE_EQUIVALENCE_PASS",
+            "pcb_layout_authority": "ALTIUM_AUTHORIZED",
+            "production_release_authorized": False,
+            "native_schematic_sha256": _sha(schdoc),
+            "native_pcb_sha256": _sha(pcbdoc),
+            "equivalence_result_sha256": _sha(gate_path),
+            "routing_readiness_gate": {
+                "current_expected_status": "READY_FOR_ROUTING",
+            },
         },
     )
     _write_json(
@@ -158,3 +174,22 @@ def test_native_ci_gate_rejects_stale_authority_hash(
     assert result["status"] == "FAIL"
     assert result["phase"] == "POST_EQUIVALENCE"
     assert "native_status_hash:native_pcb_sha256" in result["errors"]
+
+
+
+def test_native_ci_gate_rejects_stale_cad_authority_hash(
+    tmp_path,
+    monkeypatch,
+):
+    _post_equivalence_fixture(tmp_path, monkeypatch)
+    authority_path = tmp_path / ci_gate.CAD_AUTHORITY_REL
+    authority = json.loads(
+        authority_path.read_text(encoding="utf-8")
+    )
+    authority["native_pcb_sha256"] = "0" * 64
+    _write_json(authority_path, authority)
+
+    result = ci_gate.evaluate(repository_root=tmp_path)
+
+    assert result["status"] == "FAIL"
+    assert "cad_authority_hash:native_pcb_sha256" in result["errors"]
