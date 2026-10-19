@@ -79,7 +79,12 @@ def validate(
         "component_inventory": sha256_file(components),
         "net_inventory": sha256_file(nets),
     }
-    for name, actual in actual_hashes.items():
+    for name in (
+        "pcb",
+        "component_inventory",
+        "net_inventory",
+    ):
+        actual = actual_hashes[name]
         if str(hashes.get(name, "")).lower() != actual:
             errors.append(f"hash_mismatch:{name}")
 
