@@ -27,6 +27,8 @@ def test_release_status_waits_for_release_evidence(tmp_path):
         {
             "schema": "ALTIUM-EQUIVALENCE-RESULT-001",
             "status": "PASS",
+            "layout_authority": "AUTHORIZED",
+            "production_authority": "NOT_AUTHORIZED",
         },
     )
 
@@ -42,6 +44,8 @@ def test_release_status_waits_for_non_pass_review(tmp_path):
         "equivalence_result": {
             "schema": "ALTIUM-EQUIVALENCE-RESULT-001",
             "status": "PASS",
+            "layout_authority": "AUTHORIZED",
+            "production_authority": "NOT_AUTHORIZED",
         },
         "native_drc_result": {
             "schema": "ALTIUM-NATIVE-DRC-RESULT-001",
@@ -83,6 +87,8 @@ def test_release_status_ready_only_after_manifest(tmp_path):
         "equivalence_result": {
             "schema": "ALTIUM-EQUIVALENCE-RESULT-001",
             "status": "PASS",
+            "layout_authority": "AUTHORIZED",
+            "production_authority": "NOT_AUTHORIZED",
         },
         "native_drc_result": {
             "schema": "ALTIUM-NATIVE-DRC-RESULT-001",
@@ -118,7 +124,63 @@ def test_release_status_ready_only_after_manifest(tmp_path):
 
     manifest = tmp_path / REQUIRED["manifest"]
     manifest.parent.mkdir(parents=True, exist_ok=True)
-    manifest.write_text("{}\n", encoding="utf-8")
+    manifest.write_text(
+        json.dumps(
+            {
+                "schema": "ALTIUM-PRODUCTION-RELEASE-MANIFEST-001",
+                "artifacts": [],
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
 
     result = evaluate(tmp_path)
     assert result["status"] == "READY_TO_RUN_PRODUCTION_RELEASE_GATE"
+
+
+
+def test_release_status_rejects_invalid_manifest(tmp_path):
+    payloads = {
+        "equivalence_result": {
+            "schema": "ALTIUM-EQUIVALENCE-RESULT-001",
+            "status": "PASS",
+            "layout_authority": "AUTHORIZED",
+            "production_authority": "NOT_AUTHORIZED",
+        },
+        "native_drc_result": {
+            "schema": "ALTIUM-NATIVE-DRC-RESULT-001",
+            "status": "PASS",
+        },
+        "mechanical_review": {
+            "schema": "ALTIUM-MECHANICAL-REVIEW-001",
+            "status": "PASS",
+        },
+        "fabricator_binding": {
+            "schema": "ALTIUM-FABRICATOR-BINDING-001",
+            "status": "PASS",
+        },
+        "return_path_si_review": {
+            "schema": "ALTIUM-RETURN-PATH-SI-REVIEW-001",
+            "status": "PASS",
+        },
+        "dfm_result": {
+            "schema": "ALTIUM-DFM-RESULT-001",
+            "status": "PASS",
+        },
+        "outjob_release_manifest": {
+            "schema": "ALTIUM-OUTJOB-RELEASE-MANIFEST-001",
+            "status": "PASS",
+        },
+    }
+    for artifact_id, payload in payloads.items():
+        _write_json(tmp_path / REQUIRED[artifact_id], payload)
+
+    manifest = tmp_path / REQUIRED["manifest"]
+    manifest.parent.mkdir(parents=True, exist_ok=True)
+    manifest.write_text("{bad-json", encoding="utf-8")
+
+    result = evaluate(tmp_path)
+
+    assert result["status"] == "INVALID_RELEASE_MANIFEST"
+    assert "manifest" in result["invalid_artifacts"]
