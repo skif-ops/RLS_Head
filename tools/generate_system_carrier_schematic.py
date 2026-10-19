@@ -573,12 +573,9 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         "power:PWR_FLAG",
         "#FLG0202",
         "PWR_FLAG",
-        pos(20, 32),
+        pos(15, 70),
     )
-    sch.add_label(
-        "GND",
-        position=pos(20, 32),
-    )
+    add_pin_label(sch, "GND", "#FLG0202", "1")
 
     add_pin_label(sch, "VIN_RAW", "J1", "1")
     # J1.2 receives the authoritative hierarchical GND label later.
@@ -959,11 +956,30 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
     add_pin_label_stub(sch, "GND", "C81", "2")
 
     # Backup-domain and unused USB supply requirements.
-    sch.add_wire_between_pins("U8", "22", "R82", "1")
-    sch.add_wire_between_pins("U8", "22", "#FLG0301", "1")
+    for ref, pin in (
+        ("U8", "22"),
+        ("R82", "1"),
+        ("#FLG0301", "1"),
+    ):
+        add_pin_label(
+            sch,
+            "GNSS_BCKP_LOCAL",
+            ref,
+            pin,
+        )
     add_pin_label_stub(sch, "3V3", "R82", "2")
-    sch.add_wire_between_pins("U8", "7", "R81", "1")
-    sch.add_wire_between_pins("U8", "7", "#FLG0302", "1")
+
+    for ref, pin in (
+        ("U8", "7"),
+        ("R81", "1"),
+        ("#FLG0302", "1"),
+    ):
+        add_pin_label(
+            sch,
+            "GNSS_VUSB_LOCAL",
+            ref,
+            pin,
+        )
     add_pin_label_stub(sch, "GND", "R81", "2")
 
     # Internal straps intentionally left open by contract.
