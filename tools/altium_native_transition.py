@@ -33,6 +33,9 @@ PATHS = {
     "schematic": NATIVE_REL / "EVT_SYS_CARRIER.SchDoc",
     "pcb": NATIVE_REL / "EVT_SYS_CARRIER.PcbDoc",
     "native_file_preflight": EQUIV_REL / "native_file_preflight.json",
+    "import_native_file_preflight": (
+        EQUIV_REL / "import_native_file_preflight.json"
+    ),
     "package_manifest": EQUIV_REL / "import_package_manifest.json",
     "import_log": EQUIV_REL / "import_log.txt",
     "import_receipt": EQUIV_REL / "import_receipt.json",
@@ -324,6 +327,17 @@ def run_transition(
 
     receipt_path = _absolute(root, "import_receipt")
     if not receipt_path.is_file():
+        if not _absolute(root, "import_native_file_preflight").is_file():
+            return _result(
+                status="WAITING_IMPORT_SNAPSHOT_CAPTURE",
+                next_action=(
+                    "CREATE_IMPORT_NATIVE_FILE_PREFLIGHT_BEFORE_RECEIPT"
+                ),
+                generated=generated,
+                stage_results=stage_results,
+                missing=["import_native_file_preflight"],
+            )
+
         if not altium_version.strip() or not importer_version.strip():
             return _result(
                 status="WAITING_IMPORT_RECEIPT_METADATA",
@@ -343,6 +357,10 @@ def run_transition(
         receipt = build_receipt(
             repository_root=root,
             package_manifest=_absolute(root, "package_manifest"),
+            import_preflight=_absolute(
+                root,
+                "import_native_file_preflight",
+            ),
             altium_version=altium_version,
             importer_version=importer_version,
         )
