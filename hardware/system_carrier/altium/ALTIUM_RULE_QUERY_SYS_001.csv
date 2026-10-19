@@ -1,12 +1,11 @@
-order,rule_name,rule_family,scope_1,scope_2,min_value,preferred_value,max_value,unit,priority,status,notes
-1,R_GNSS_RF_WIDTH,Width,"InNet('GNSS_RF')",All,0.36,0.36,0.36,mm,100,EVT_CALCULATED,Top-layer 50R start geometry; bind to final impedance profile before production
-2,R_ETH_MDI_DIFF,DifferentialPairRouting,"InDifferentialPairClass('DP_ETH_MDI')",All,0.26,0.26,0.26,mm,99,EVT_CALCULATED,Preferred pair gap 0.20mm from ALTIUM_IMPEDANCE_START_SYS_001.csv
-3,R_ETH_MDI_GAP,DifferentialPairGap,"InDifferentialPairClass('DP_ETH_MDI')",All,0.20,0.20,0.20,mm,98,EVT_CALCULATED,Initial 100R edge-coupled pair gap
-4,R_VIN_HIGH_CURRENT,Width,"InNet('VIN_RAW','VIN_PROTECTED')",All,3.00,3.00,5.00,mm,97,EVT_CALCULATED,Minimum neck from power-width screening; pours preferred
-5,R_RADAR_12V_WIDTH,Width,"InNet('RADAR_12V')",All,1.50,1.50,3.00,mm,96,EVT_CALCULATED,Minimum neck from 3.18A screening
-6,R_3V3_TRUNK_WIDTH,Width,"InNet('3V3')",All,1.50,1.50,3.00,mm,95,EVT_CALCULATED,Use polygons for trunk; local neck-down allowed only at pins
-7,R_TIMING_TO_SW_CLEARANCE,Clearance,"InNetClass('NC_TIMING')","InNet('BUCK_SW')",1.00,1.00,1.00,mm,94,EVT_BASELINE,P0 timing nets separated from buck switch node
-8,R_ETH_MDI_CLEARANCE,Clearance,"InDifferentialPairClass('DP_ETH_MDI')","Not InDifferentialPairClass('DP_ETH_MDI')",0.20,0.20,0.20,mm,93,EVT_BASELINE,Clearance from MDI pair members to unrelated copper
-9,R_CAN_DIFF,DifferentialPairRouting,"InDifferentialPairClass('DP_CAN')",All,0.20,0.20,0.30,mm,92,EVT_BASELINE,CAN pair routing geometry; no controlled-impedance production claim
-10,R_GENERAL_CLEARANCE,Clearance,All,All,0.20,0.20,0.20,mm,10,EVT_BASELINE,General baseline clearance
-11,R_GENERAL_WIDTH,Width,All,All,0.15,0.20,0.50,mm,5,EVT_BASELINE,Default low-current signal width rule
+order,rule_name,rule_family,scope_1,scope_2,min_value,preferred_value,max_value,unit,gap_min_mm,gap_preferred_mm,gap_max_mm,priority,status,notes
+1,R_GNSS_RF_WIDTH,Width,"InNet('GNSS_RF')",All,0.36,0.36,0.36,mm,,,,100,EVT_CALCULATED,Top-layer 50R start geometry; bind to final impedance profile before production
+2,R_ETH_MDI_DIFF,DifferentialPairRouting,"InDifferentialPairClass('DP_ETH_MDI')",All,0.26,0.26,0.26,mm,0.20,0.20,0.20,99,EVT_CALCULATED,Initial 100R edge-coupled pair geometry
+3,R_VIN_HIGH_CURRENT,Width,"InNet('VIN_RAW','VIN_PROTECTED')",All,3.00,3.00,5.00,mm,,,,97,EVT_CALCULATED,Minimum neck from power-width screening; pours preferred
+4,R_RADAR_12V_WIDTH,Width,"InNet('RADAR_12V')",All,1.50,1.50,3.00,mm,,,,96,EVT_CALCULATED,Minimum neck from 3.18A screening
+5,R_3V3_TRUNK_WIDTH,Width,"InNet('3V3')",All,1.50,1.50,3.00,mm,,,,95,EVT_CALCULATED,Use polygons for trunk; local neck-down allowed only at pins
+6,R_TIMING_TO_SW_CLEARANCE,Clearance,"InNetClass('NC_TIMING')","InNet('BUCK_SW')",1.00,1.00,1.00,mm,,,,94,EVT_BASELINE,P0 timing nets separated from buck switch node
+7,R_ETH_MDI_CLEARANCE,Clearance,"InDifferentialPairClass('DP_ETH_MDI')","Not InDifferentialPairClass('DP_ETH_MDI')",0.20,0.20,0.20,mm,,,,93,EVT_BASELINE,Clearance from MDI pair members to unrelated copper
+8,R_CAN_DIFF,DifferentialPairRouting,"InDifferentialPairClass('DP_CAN')",All,0.20,0.20,0.30,mm,0.20,0.20,0.30,92,EVT_BASELINE,CAN pair routing geometry; no controlled-impedance production claim
+9,R_GENERAL_CLEARANCE,Clearance,All,All,0.20,0.20,0.20,mm,,,,10,EVT_BASELINE,General baseline clearance
+10,R_GENERAL_WIDTH,Width,All,All,0.15,0.20,0.50,mm,,,,5,EVT_BASELINE,Default low-current signal width rule
