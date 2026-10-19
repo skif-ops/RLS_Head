@@ -2,7 +2,12 @@
   "schema": "ALTIUM-DFM-RESULT-001",
   "status": "PENDING",
   "p0_open_items": null,
-  "evidence_refs": [],
+  "evidence_refs": [
+    {
+      "path": "<REPO_RELATIVE_EVIDENCE_PATH>",
+      "sha256": "<SHA256>"
+    }
+  ],
   "notes": [
     "PASS requires all P0 DFM items closed against the selected fabrication/assembly process."
   ]
