@@ -31,6 +31,10 @@ REQUIRED = {
     "pad_net_inventory": "hardware/system_carrier/altium/equivalence/pad_net_inventory.csv",
     "layer_stack_inventory": "hardware/system_carrier/altium/equivalence/layer_stack_inventory.csv",
     "native_audit_result": "hardware/system_carrier/altium/equivalence/native_audit_result.json",
+    "hierarchy_export": "hardware/system_carrier/altium/equivalence/hierarchy_export.csv",
+    "hierarchy_validation_result": "hardware/system_carrier/altium/equivalence/hierarchy_validation_result.json",
+    "no_mmwave_review": "hardware/system_carrier/altium/equivalence/no_mmwave_review.json",
+    "no_mmwave_review_result": "hardware/system_carrier/altium/equivalence/no_mmwave_review_result.json",
     "manifest": "hardware/system_carrier/altium/equivalence/manifest.json",
 }
 
