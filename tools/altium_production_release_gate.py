@@ -182,6 +182,13 @@ def validate_manifest(
         if item is None:
             continue
         relative = str(item.get("path", "")).strip()
+        if (
+            artifact_id == "native_pcb"
+            and relative != NATIVE_PCB_PATH
+        ):
+            errors.append("native_pcb_canonical_path")
+            continue
+
         expected_hash = str(item.get("sha256", "")).strip().lower()
         try:
             path = safe_repo_path(root, relative)
