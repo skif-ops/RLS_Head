@@ -127,7 +127,11 @@ def validate(
     elif native_ready:
         status = "READY_FOR_ROUTING"
         routing_authorized = True
-        next_action = "BEGIN_NATIVE_ALTIUM_PLACEMENT_AND_ROUTING"
+        next_action = (
+            "PRODUCTION_RELEASED"
+            if production_authorized
+            else "BEGIN_NATIVE_ALTIUM_PLACEMENT_AND_ROUTING"
+        )
     else:
         status = "READY_FOR_NATIVE_IMPORT"
         routing_authorized = False
