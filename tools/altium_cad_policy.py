@@ -21,6 +21,73 @@ def _csv_ids(path: Path, field: str) -> set[str]:
         }
 
 
+def _phase_coherence(
+    root: Path,
+    authority: dict,
+    status_data: dict,
+) -> tuple[list[str], bool, bool]:
+    errors: list[str] = []
+
+    native_schdoc_path = (
+        root / "altium" / "native" / "EVT_SYS_CARRIER.SchDoc"
+    )
+    native_pcbdoc_path = (
+        root / "altium" / "native" / "EVT_SYS_CARRIER.PcbDoc"
+    )
+    native_schdoc = native_schdoc_path.is_file()
+    native_pcbdoc = native_pcbdoc_path.is_file()
+
+    if native_schdoc != native_pcbdoc:
+        errors.append("native_document_pair")
+
+    current_phase = str(status_data.get("current_phase", ""))
+    altium_status = status_data.get("altium", {})
+    if not isinstance(altium_status, dict):
+        errors.append("altium_status_payload")
+        altium_status = {}
+
+    if not native_schdoc and not native_pcbdoc:
+        if current_phase != "IMPORT_PREPARED":
+            errors.append("altium_status_phase")
+        if authority.get("native_document_status") != "PENDING_ALTIUM_IMPORT":
+            errors.append("authority_native_document_status")
+        routing_authority = authority.get("routing_readiness_gate", {})
+        if (
+            not isinstance(routing_authority, dict)
+            or routing_authority.get("current_expected_status")
+            != "READY_FOR_NATIVE_IMPORT"
+        ):
+            errors.append("authority_routing_status")
+    elif native_schdoc and native_pcbdoc:
+        if current_phase != "READY_FOR_ROUTING":
+            errors.append("altium_status_phase")
+        for field in (
+            "native_schdoc",
+            "native_pcbdoc",
+            "equivalence_gate",
+        ):
+            if altium_status.get(field) is not True:
+                errors.append(f"altium_status_{field}")
+        if authority.get("native_document_status") != "NATIVE_EQUIVALENCE_PASS":
+            errors.append("authority_native_document_status")
+        if authority.get("pcb_layout_authority") != "ALTIUM_AUTHORIZED":
+            errors.append("authority_layout_authority")
+        routing_authority = authority.get("routing_readiness_gate", {})
+        if (
+            not isinstance(routing_authority, dict)
+            or routing_authority.get("current_expected_status")
+            != "READY_FOR_ROUTING"
+        ):
+            errors.append("authority_routing_status")
+
+    if altium_status.get("production_release_authorized") is not False:
+        errors.append("premature_production_release")
+    if authority.get("production_release_authorized") is not False:
+        errors.append("authority_premature_production_release")
+
+    return errors, native_schdoc, native_pcbdoc
+
+
 def validate(root: str | Path) -> dict:
     root = Path(root)
     errors: list[str] = []
@@ -237,10 +304,13 @@ def validate(root: str | Path) -> dict:
     status_data = json.loads(status_path.read_text(encoding="utf-8"))
     if status_data.get("schema") != "ALTIUM-PCB-IMPLEMENTATION-STATUS-001":
         errors.append("altium_status_schema")
-    if status_data.get("current_phase") != "IMPORT_PREPARED":
-        errors.append("altium_status_phase")
-    if status_data.get("altium", {}).get("production_release_authorized") is not False:
-        errors.append("premature_production_release")
+
+    phase_errors, native_schdoc, native_pcbdoc = _phase_coherence(
+        root,
+        authority,
+        status_data,
+    )
+    errors.extend(phase_errors)
 
     with outjob_contract_path.open("r", encoding="utf-8", newline="") as handle:
         out_rows = list(csv.DictReader(handle))
@@ -264,7 +334,12 @@ def validate(root: str | Path) -> dict:
             errors.append("l2_ground_role")
 
     native_status = str(authority.get("native_document_status", ""))
-    if native_status != "PENDING_ALTIUM_IMPORT":
+    expected_native_status = (
+        "NATIVE_EQUIVALENCE_PASS"
+        if native_schdoc and native_pcbdoc
+        else "PENDING_ALTIUM_IMPORT"
+    )
+    if native_status != expected_native_status:
         warnings.append(f"native_document_status:{native_status}")
 
     return {

@@ -56,6 +56,7 @@ PATHS = {
     "gate_result": EQUIV_REL / "altium_equivalence_result.json",
     "native_status": ALTIUM_REL / "ALTIUM_NATIVE_STATUS_SYS_001.json",
     "implementation_status": ALTIUM_REL / "ALTIUM_STATUS_SYS_001.json",
+    "cad_authority": SYSTEM_REL / "CAD_AUTHORITY_SYS_001.json",
 }
 
 
@@ -164,8 +165,11 @@ def _sync_layout_authority_status(
     native_status_path = _absolute(root, "native_status")
     implementation_status_path = _absolute(root, "implementation_status")
 
+    authority_path = _absolute(root, "cad_authority")
+
     native_status = _read_json(native_status_path)
     implementation_status = _read_json(implementation_status_path)
+    authority = _read_json(authority_path)
 
     native_status["native_import_status"] = "NATIVE_FILES_READY"
     native_status["equivalence_gate_status"] = "PASS"
@@ -215,8 +219,25 @@ def _sync_layout_authority_status(
     routing["routing_authorized"] = True
     routing["required_to_authorize"] = []
 
+    authority["native_document_status"] = "NATIVE_EQUIVALENCE_PASS"
+    authority["pcb_layout_authority"] = "ALTIUM_AUTHORIZED"
+    authority["pcb_design_phase"] = "ALTIUM_NATIVE_ROUTING"
+    authority["production_release_authorized"] = False
+    authority["native_schematic_sha256"] = (
+        native_status["native_schematic_sha256"]
+    )
+    authority["native_pcb_sha256"] = native_status["native_pcb_sha256"]
+    authority["equivalence_result_sha256"] = (
+        native_status["equivalence_result_sha256"]
+    )
+    routing_gate = authority.setdefault("routing_readiness_gate", {})
+    routing_gate["current_expected_status"] = "READY_FOR_ROUTING"
+    rule_contract = authority.setdefault("altium_rule_query_contract", {})
+    rule_contract["status"] = "NATIVE_EQUIVALENCE_PASS"
+
     _write_json(native_status_path, native_status)
     _write_json(implementation_status_path, implementation_status)
+    _write_json(authority_path, authority)
 
 
 def run_transition(
@@ -602,6 +623,7 @@ def run_transition(
             [
                 PATHS["native_status"].as_posix(),
                 PATHS["implementation_status"].as_posix(),
+                PATHS["cad_authority"].as_posix(),
             ]
         )
 

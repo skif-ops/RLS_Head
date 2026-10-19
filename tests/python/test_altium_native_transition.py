@@ -103,6 +103,22 @@ def test_native_transition_full_pass_syncs_routing_authority(
         },
     )
     _write_json(
+        _path(tmp_path, "cad_authority"),
+        {
+            "schema": "SYSTEM-CARRIER-CAD-AUTHORITY-001",
+            "native_document_status": "PENDING_ALTIUM_IMPORT",
+            "pcb_layout_authority": "ALTIUM_AFTER_EQUIVALENCE_GATE",
+            "pcb_design_phase": "ALTIUM_BOARD_PLANNING",
+            "production_release_authorized": False,
+            "routing_readiness_gate": {
+                "current_expected_status": "READY_FOR_NATIVE_IMPORT",
+            },
+            "altium_rule_query_contract": {
+                "status": "READY_TO_INSTANTIATE_AFTER_NATIVE_IMPORT",
+            },
+        },
+    )
+    _write_json(
         _path(tmp_path, "implementation_status"),
         {
             "schema": "ALTIUM-PCB-IMPLEMENTATION-STATUS-001",
@@ -280,3 +296,18 @@ def test_native_transition_full_pass_syncs_routing_authority(
         "Native Altium import/save" not in item
         for item in implementation["blockers"]
     )
+
+    authority = json.loads(
+        _path(tmp_path, "cad_authority").read_text(encoding="utf-8")
+    )
+    assert authority["native_document_status"] == "NATIVE_EQUIVALENCE_PASS"
+    assert authority["pcb_layout_authority"] == "ALTIUM_AUTHORIZED"
+    assert authority["pcb_design_phase"] == "ALTIUM_NATIVE_ROUTING"
+    assert (
+        authority["routing_readiness_gate"]["current_expected_status"]
+        == "READY_FOR_ROUTING"
+    )
+    assert authority["altium_rule_query_contract"]["status"] == (
+        "NATIVE_EQUIVALENCE_PASS"
+    )
+    assert authority["native_pcb_sha256"] == native_status["native_pcb_sha256"]
