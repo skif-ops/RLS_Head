@@ -347,3 +347,130 @@ def test_native_transition_full_pass_syncs_routing_authority(
         "NATIVE_EQUIVALENCE_PASS"
     )
     assert authority["native_pcb_sha256"] == native_status["native_pcb_sha256"]
+
+
+
+def test_native_transition_short_circuits_valid_post_equivalence(
+    tmp_path,
+    monkeypatch,
+):
+    for key in ("project", "schematic", "pcb"):
+        _write(_path(tmp_path, key), b"NATIVE")
+
+    monkeypatch.setattr(
+        transition,
+        "validate_native_files",
+        lambda **kwargs: {
+            "schema": "ALTIUM-NATIVE-FILE-PREFLIGHT-001",
+            "status": "PASS",
+            "errors": [],
+            "artifacts": {
+                "schematic": {"path": "x", "sha256": "1" * 64},
+                "pcb": {"path": "y", "sha256": "2" * 64},
+            },
+        },
+    )
+    monkeypatch.setattr(
+        transition,
+        "evaluate_native_ci",
+        lambda **kwargs: {
+            "schema": "ALTIUM-NATIVE-CI-GATE-001",
+            "status": "PASS",
+            "phase": "POST_EQUIVALENCE",
+            "routing_authorized": True,
+            "production_authorized": False,
+        },
+    )
+
+    result = transition.run_transition(repository_root=tmp_path)
+
+    assert result["status"] == "READY_FOR_ROUTING"
+    assert result["next_action"] == (
+        "CONTINUE_NATIVE_ALTIUM_PLACEMENT_AND_ROUTING"
+    )
+    assert result["routing_authorized"] is True
+    assert result["production_authorized"] is False
+    assert result["generated_artifacts"] == []
+    assert "existing_lifecycle" in result["stage_results"]
+    assert not _path(tmp_path, "native_file_preflight").exists()
+
+
+def test_native_transition_short_circuits_valid_post_production(
+    tmp_path,
+    monkeypatch,
+):
+    for key in ("project", "schematic", "pcb"):
+        _write(_path(tmp_path, key), b"NATIVE")
+
+    monkeypatch.setattr(
+        transition,
+        "validate_native_files",
+        lambda **kwargs: {
+            "schema": "ALTIUM-NATIVE-FILE-PREFLIGHT-001",
+            "status": "PASS",
+            "errors": [],
+            "artifacts": {},
+        },
+    )
+    monkeypatch.setattr(
+        transition,
+        "evaluate_native_ci",
+        lambda **kwargs: {
+            "schema": "ALTIUM-NATIVE-CI-GATE-001",
+            "status": "PASS",
+            "phase": "POST_PRODUCTION",
+            "routing_authorized": True,
+            "production_authorized": True,
+        },
+    )
+
+    result = transition.run_transition(repository_root=tmp_path)
+
+    assert result["status"] == "PRODUCTION_RELEASED"
+    assert result["next_action"] == "PRODUCTION_ALREADY_RELEASED"
+    assert result["routing_authorized"] is True
+    assert result["production_authorized"] is True
+    assert result["generated_artifacts"] == []
+    assert not _path(tmp_path, "native_file_preflight").exists()
+
+
+def test_native_transition_force_recheck_bypasses_valid_lifecycle_guard(
+    tmp_path,
+    monkeypatch,
+):
+    for key in ("project", "schematic", "pcb"):
+        _write(_path(tmp_path, key), b"NATIVE")
+
+    monkeypatch.setattr(
+        transition,
+        "validate_native_files",
+        lambda **kwargs: {
+            "schema": "ALTIUM-NATIVE-FILE-PREFLIGHT-001",
+            "status": "PASS",
+            "errors": [],
+            "artifacts": {},
+        },
+    )
+    monkeypatch.setattr(
+        transition,
+        "evaluate_native_ci",
+        lambda **kwargs: {
+            "schema": "ALTIUM-NATIVE-CI-GATE-001",
+            "status": "PASS",
+            "phase": "POST_EQUIVALENCE",
+            "routing_authorized": True,
+            "production_authorized": False,
+        },
+    )
+
+    result = transition.run_transition(
+        repository_root=tmp_path,
+        force_recheck=True,
+    )
+
+    assert result["status"] == "WAITING_IMPORT_PROVENANCE"
+    assert result["routing_authorized"] is False
+    assert "package_manifest" in result["missing_inputs"]
+    assert "import_log" in result["missing_inputs"]
+    assert _path(tmp_path, "native_file_preflight").is_file()
+    assert "existing_lifecycle" not in result["stage_results"]

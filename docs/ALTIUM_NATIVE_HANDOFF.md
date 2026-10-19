@@ -41,7 +41,9 @@ After the native `SchDoc` / `PcbDoc`, import-package manifest and Import Wizard 
 
 `python -m tools.altium_native_transition --repository-root . --altium-version "<ALTIUM_VERSION>" --importer-version "<IMPORTER_VERSION>" --output hardware/system_carrier/altium/equivalence/native_transition_result.json`
 
-The command is intentionally re-runnable and fail-closed. Its first native-document action is the CFB/OLE file preflight; it then executes every repository-controlled validator that has enough input evidence, writes the corresponding result files, builds the equivalence manifest, runs the equivalence gate when all ten checks are PASS, and synchronizes the tracked Altium status JSON to `READY_FOR_ROUTING` only after a real gate PASS.
+The command is intentionally re-runnable and fail-closed. It first performs a read-only CFB/OLE check of the current native pair and then inspects the tracked native lifecycle. If a valid `POST_EQUIVALENCE` or `POST_PRODUCTION` state already exists, the normal rerun is idempotent: it returns the existing authority state without rewriting equivalence evidence or moving the pre-routing baseline. Only when a genuine equivalence/re-equivalence is needed does it begin regenerating transition-owned evidence, run the repository validators, build the manifest, execute the equivalence gate and synchronize tracked status.
+
+For a deliberate full re-equivalence of an already valid lifecycle, pass `--force-recheck`. This explicitly permits regeneration of transition-owned equivalence evidence and should be used only when the electrical baseline or equivalence evidence is intentionally being replaced.
 
 When an external Altium action is still required, it stops with an explicit state such as `WAITING_COMPILE_REPORT`, `WAITING_NATIVE_AUDIT_EXPORT`, `WAITING_BOM_EXPORT`, `WAITING_NETLIST_EXPORT`, `WAITING_HIERARCHY_EXPORT` or `WAITING_NO_MMWAVE_REVIEW`. It never creates native Altium documents and never auto-approves the human no-mmWave review.
 

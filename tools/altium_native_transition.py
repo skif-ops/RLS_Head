@@ -14,6 +14,7 @@ from tools.altium_native_connector_validate import validate as validate_connecto
 from tools.altium_native_footprint_validate import validate as validate_footprint
 from tools.altium_native_file_preflight import validate as validate_native_files
 from tools.altium_native_handoff_status import evaluate as evaluate_handoff
+from tools.altium_native_ci_gate import evaluate as evaluate_native_ci
 from tools.altium_native_hierarchy_validate import validate as validate_hierarchy
 from tools.altium_native_import_receipt import build_receipt
 from tools.altium_native_netlist_validate import validate as validate_netlist
@@ -105,13 +106,14 @@ def _result(
     missing: list[str] | None = None,
     errors: list[str] | None = None,
     routing_authorized: bool = False,
+    production_authorized: bool = False,
 ) -> dict:
     return {
         "schema": SCHEMA,
         "status": status,
         "next_action": next_action,
         "routing_authorized": routing_authorized,
-        "production_authorized": False,
+        "production_authorized": production_authorized,
         "generated_artifacts": generated,
         "stage_results": stage_results,
         "missing_inputs": sorted(missing or []),
@@ -227,6 +229,7 @@ def run_transition(
     altium_version: str = "",
     importer_version: str = "",
     synchronize_status: bool = True,
+    force_recheck: bool = False,
 ) -> dict:
     root = Path(repository_root)
     system = root / SYSTEM_REL
@@ -257,12 +260,8 @@ def run_transition(
             artifacts["schematic"]["path"] = PATHS["schematic"].as_posix()
         if isinstance(artifacts.get("pcb"), dict):
             artifacts["pcb"]["path"] = PATHS["pcb"].as_posix()
-    _write_json(
-        _absolute(root, "native_file_preflight"),
-        native_file_preflight,
-    )
-    generated.append(PATHS["native_file_preflight"].as_posix())
-    stage_results["native_file_preflight"] = native_file_preflight
+
+    stage_results["current_native_file_preflight"] = native_file_preflight
     if native_file_preflight.get("status") != "PASS":
         return _result(
             status="BLOCKED_NATIVE_FILE_PREFLIGHT",
@@ -271,6 +270,44 @@ def run_transition(
             stage_results=stage_results,
             errors=native_file_preflight.get("errors", []),
         )
+
+    if not force_recheck:
+        existing_lifecycle = evaluate_native_ci(
+            repository_root=root,
+        )
+        stage_results["existing_lifecycle"] = existing_lifecycle
+        if (
+            existing_lifecycle.get("status") == "PASS"
+            and existing_lifecycle.get("phase") == "POST_EQUIVALENCE"
+        ):
+            return _result(
+                status="READY_FOR_ROUTING",
+                next_action="CONTINUE_NATIVE_ALTIUM_PLACEMENT_AND_ROUTING",
+                generated=generated,
+                stage_results=stage_results,
+                routing_authorized=True,
+            )
+        if (
+            existing_lifecycle.get("status") == "PASS"
+            and existing_lifecycle.get("phase") == "POST_PRODUCTION"
+        ):
+            return _result(
+                status="PRODUCTION_RELEASED",
+                next_action="PRODUCTION_ALREADY_RELEASED",
+                generated=generated,
+                stage_results=stage_results,
+                routing_authorized=True,
+                production_authorized=True,
+            )
+
+    # From this point onward a real equivalence/re-equivalence is intended.
+    # Only now may transition-owned equivalence evidence be regenerated.
+    _write_json(
+        _absolute(root, "native_file_preflight"),
+        native_file_preflight,
+    )
+    generated.append(PATHS["native_file_preflight"].as_posix())
+    stage_results["native_file_preflight"] = native_file_preflight
 
     missing_provenance = _missing(
         root,
@@ -662,6 +699,14 @@ def main() -> int:
         help="Do not update tracked Altium status JSON after equivalence PASS.",
     )
     parser.add_argument(
+        "--force-recheck",
+        action="store_true",
+        help=(
+            "Force a full equivalence/re-equivalence pass even when the "
+            "current tracked native lifecycle is already valid."
+        ),
+    )
+    parser.add_argument(
         "--output",
         default=(
             "hardware/system_carrier/altium/equivalence/"
@@ -675,6 +720,7 @@ def main() -> int:
         altium_version=args.altium_version,
         importer_version=args.importer_version,
         synchronize_status=not args.no_status_sync,
+        force_recheck=args.force_recheck,
     )
 
     output = Path(args.output)
@@ -683,7 +729,11 @@ def main() -> int:
     _write_json(output, result)
 
     print(result["status"])
-    return 0 if result["status"] == "READY_FOR_ROUTING" else 2
+    return (
+        0
+        if result["status"] in {"READY_FOR_ROUTING", "PRODUCTION_RELEASED"}
+        else 2
+    )
 
 
 if __name__ == "__main__":
