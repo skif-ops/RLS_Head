@@ -210,6 +210,28 @@ def validate(
                 f"footprint_blank:{ref}"
             )
 
+    if "J2" in physical_refs:
+        errors.append("obsolete_duplicate_radar_power_connector:J2")
+
+    required_mcu_decoupling = {
+        f"C{number}"
+        for number in range(100, 114)
+    }
+    missing_vdd_caps = sorted(
+        required_mcu_decoupling
+        - physical_refs
+    )
+    for ref in missing_vdd_caps:
+        errors.append(
+            f"missing_mcu_vdd_decoupling:{ref}"
+        )
+
+    for ref in {"C114", "C115", "C64", "C65"}:
+        if ref not in physical_refs:
+            errors.append(
+                f"missing_required_decoupling:{ref}"
+            )
+
     if "FB2" in bom_refs:
         errors.append("obsolete_ref:FB2")
 
@@ -366,6 +388,11 @@ def validate(
             len(footprint_refs),
         "hard_placement_count":
             len(hard_refs),
+        "mcu_vdd_decoupling_count":
+            len(
+                required_mcu_decoupling
+                & physical_refs
+            ),
         "board_width_mm": board_width,
         "board_height_mm": board_height,
         "designator_locations": locations,
