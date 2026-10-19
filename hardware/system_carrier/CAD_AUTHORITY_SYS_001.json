@@ -1,0 +1,26 @@
+{
+  "schema": "SYSTEM-CARRIER-CAD-AUTHORITY-001",
+  "status": "ALTIUM_PRIMARY",
+  "board_id": "EVT-SYS-CARRIER",
+  "hardware_revision": "A",
+  "primary_cad": "Altium Designer",
+  "primary_project": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
+  "expected_native_documents": [
+    "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
+    "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+  ],
+  "native_document_status": "PENDING_ALTIUM_IMPORT",
+  "verification_cad": "KiCad 9",
+  "verification_baseline_commit": "f23476e94428295f080b526143dc114f68883635",
+  "verification_erc_errors": 0,
+  "verification_erc_warnings": 0,
+  "preserve_kicad": true,
+  "delete_kicad_sources": false,
+  "equivalence_gate_required": true,
+  "pcb_layout_authority": "ALTIUM_AFTER_EQUIVALENCE_GATE",
+  "notes": [
+    "KiCad electrical sources remain permanently retained.",
+    "Native SchDoc/PcbDoc must be produced by Altium Designer, not fabricated by extension-only placeholder files.",
+    "All new PCB implementation work targets Altium Designer."
+  ]
+}
