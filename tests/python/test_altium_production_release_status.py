@@ -13,6 +13,12 @@ def _write_json(path: Path, payload: dict) -> None:
     )
 
 
+def _write_native_pcb(root: Path) -> None:
+    path = root / REQUIRED["native_pcb"]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(b"FINAL_NATIVE_PCB")
+
+
 def test_release_status_initially_waits_for_equivalence(tmp_path):
     result = evaluate(tmp_path)
 
@@ -41,6 +47,7 @@ def test_release_status_waits_for_release_evidence(tmp_path):
 
 
 def test_release_status_waits_for_non_pass_review(tmp_path):
+    _write_native_pcb(tmp_path)
     payloads = {
         "equivalence_result": {
             "schema": "ALTIUM-EQUIVALENCE-RESULT-001",
@@ -84,6 +91,7 @@ def test_release_status_waits_for_non_pass_review(tmp_path):
 
 
 def test_release_status_ready_only_after_manifest(tmp_path):
+    _write_native_pcb(tmp_path)
     payloads = {
         "equivalence_result": {
             "schema": "ALTIUM-EQUIVALENCE-RESULT-001",
@@ -158,6 +166,7 @@ def test_release_status_ready_only_after_manifest(tmp_path):
 
 
 def test_release_status_rejects_invalid_manifest(tmp_path):
+    _write_native_pcb(tmp_path)
     payloads = {
         "equivalence_result": {
             "schema": "ALTIUM-EQUIVALENCE-RESULT-001",
@@ -205,6 +214,7 @@ def test_release_status_rejects_invalid_manifest(tmp_path):
 
 
 def test_release_status_rejects_manifest_hash_mismatch(tmp_path):
+    _write_native_pcb(tmp_path)
     payloads = {
         "equivalence_result": {
             "schema": "ALTIUM-EQUIVALENCE-RESULT-001",
