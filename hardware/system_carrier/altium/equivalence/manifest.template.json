@@ -139,6 +139,21 @@
       "sha256": "<SHA256>"
     },
     {
+      "id": "hierarchy_port_inventory",
+      "path": "hardware/system_carrier/altium/equivalence/hierarchy_port_inventory.csv",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "hierarchy_sheet_entry_inventory",
+      "path": "hardware/system_carrier/altium/equivalence/hierarchy_sheet_entry_inventory.csv",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "hierarchy_validation_result",
+      "path": "hardware/system_carrier/altium/equivalence/hierarchy_validation_result.json",
+      "sha256": "<SHA256>"
+    },
+    {
       "id": "native_audit_result",
       "path": "hardware/system_carrier/altium/equivalence/native_audit_result.json",
       "sha256": "<SHA256>"
