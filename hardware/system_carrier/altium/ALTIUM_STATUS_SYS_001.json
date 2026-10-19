@@ -20,12 +20,28 @@
     "fabricator_stack_bound": false,
     "placement_started": false,
     "routing_started": false,
-    "production_release_authorized": false
+    "production_release_authorized": false,
+    "evt_stackup_provisional": true,
+    "impedance_start_values_ready": true
   },
   "blockers": [
     "Native Altium import/save of SchDoc/PcbDoc has not yet been executed in Altium Designer.",
     "Board outline, mounting-hole geometry and connector mechanical datums are not yet frozen.",
-    "Fabricator dielectric/copper stack data is not yet bound for 100R/50R impedance calculation."
+    "Fabricator field-solver/dielectric stack binding is still required before production release; EVT routing start values are calculated."
   ],
-  "next_required_phase": "NATIVE_ALTIUM_IMPORT_AND_EQUIVALENCE"
+  "next_required_phase": "NATIVE_ALTIUM_IMPORT_AND_EQUIVALENCE",
+  "impedance_start": {
+    "gnss_rf": {
+      "target_ohm": 50,
+      "trace_width_mm": 0.36,
+      "reference": "L2 GND"
+    },
+    "eth_mdi": {
+      "target_ohm": 100,
+      "trace_width_mm": 0.26,
+      "pair_gap_mm": 0.2,
+      "reference": "L2 GND"
+    },
+    "production_binding_required": true
+  }
 }
