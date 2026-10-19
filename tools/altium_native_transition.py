@@ -133,29 +133,6 @@ def _result(
     }
 
 
-def _compile_report_ok(path: Path) -> tuple[bool, list[str]]:
-    try:
-        report = _read_json(path)
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-        return False, [f"compile_report_parse:{exc}"]
-
-    errors: list[str] = []
-    if report.get("schema") != "ALTIUM-COMPILE-REPORT-001":
-        errors.append("compile_report_schema")
-    try:
-        compile_errors = int(report.get("errors", -1))
-        compile_warnings = int(report.get("warnings", -1))
-    except (TypeError, ValueError):
-        errors.append("compile_report_counts")
-        return False, errors
-
-    if compile_errors != 0:
-        errors.append(f"compile_errors:{compile_errors}")
-    if compile_warnings != 0:
-        errors.append(f"compile_warnings:{compile_warnings}")
-    return not errors, errors
-
-
 def _sync_layout_authority_status(
     root: Path,
     gate_result: dict,
