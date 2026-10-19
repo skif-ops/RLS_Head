@@ -123,6 +123,11 @@ def build_manifest(
                 "ALTIUM-NATIVE-NETLIST-RESULT-001",
                 "netlist_equivalence",
             ),
+            (
+                "hierarchy_validation_result",
+                "ALTIUM-NATIVE-HIERARCHY-RESULT-001",
+                "hierarchy_equivalence",
+            ),
         ):
             item = next(
                 (
