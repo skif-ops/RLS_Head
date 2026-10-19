@@ -44,6 +44,7 @@ def _manifest(tmp_path: Path) -> Path:
         "project": ("EVT_SYS_CARRIER.PrjPcb", b"[Design]\nVersion=1.0\n"),
         "schematic": ("native/EVT_SYS_CARRIER.SchDoc", b"SYNTHETIC_TEST_SCHDOC"),
         "pcb": ("native/EVT_SYS_CARRIER.PcbDoc", b"SYNTHETIC_TEST_PCBDOC"),
+        "import_log": ("equivalence/import_log.txt", b"SYNTHETIC_IMPORT_LOG\n"),
         "compile_report": (
             "equivalence/compile_report.json",
             json.dumps(
