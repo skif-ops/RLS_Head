@@ -60,7 +60,19 @@ def test_native_handoff_detects_complete_evidence_and_checks(tmp_path):
 
 
 def test_native_handoff_waits_for_import_provenance_after_native_files(tmp_path):
-    for artifact_id in ("project", "schematic", "pcb"):
+    native_ids = [
+        "project",
+        "schematic",
+        "schematic_power_input",
+        "schematic_mcu_core",
+        "schematic_time_gnss",
+        "schematic_imu",
+        "schematic_radar_io_can",
+        "schematic_ethernet",
+        "schematic_debug_boot",
+        "pcb",
+    ]
+    for artifact_id in native_ids:
         path = tmp_path / REQUIRED[artifact_id]
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(b"TEST")
@@ -97,3 +109,28 @@ def test_native_handoff_rejects_invalid_manifest(tmp_path):
     assert result["semantic_checks_ready"] is False
     assert result["manifest_errors"]
     assert result["next_action"] == "FIX_EQUIVALENCE_MANIFEST"
+
+
+
+def test_native_handoff_rejects_partial_child_hierarchy(tmp_path):
+    native_ids = [
+        "project",
+        "schematic",
+        "schematic_power_input",
+        "schematic_mcu_core",
+        "schematic_time_gnss",
+        "schematic_imu",
+        "schematic_radar_io_can",
+        "schematic_debug_boot",
+        "pcb",
+    ]
+    for artifact_id in native_ids:
+        path = tmp_path / REQUIRED[artifact_id]
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b"TEST")
+
+    result = evaluate(tmp_path)
+
+    assert result["status"] == "WAITING_NATIVE_IMPORT"
+    assert result["native_files_ready"] is False
+    assert "schematic_ethernet" in result["missing_artifacts"]
