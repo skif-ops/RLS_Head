@@ -60,6 +60,14 @@ EXPECTED_EXTENSIONS = {
     "pcb": ".PcbDoc",
 }
 
+CANONICAL_ARTIFACT_PATHS = {
+    "project": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
+    "schematic": (
+        "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc"
+    ),
+    "pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+}
+
 
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
@@ -138,6 +146,14 @@ def validate_manifest(
             continue
 
         relative = str(item.get("path", "")).strip()
+
+        canonical = CANONICAL_ARTIFACT_PATHS.get(artifact_id)
+        if canonical is not None and relative != canonical:
+            errors.append(
+                f"canonical_path:{artifact_id}"
+            )
+            continue
+
         expected_hash = str(
             item.get("sha256", "")
         ).strip().lower()
