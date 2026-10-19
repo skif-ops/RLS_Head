@@ -13,6 +13,7 @@ The gate consumes:
 - `hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb`;
 - `hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc`;
 - `hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc`;
+- SHA-bound `equivalence/native_file_preflight.json`, proving both native documents have valid Microsoft Compound File Binary container headers;
 - exact CI import-package manifest copied to `equivalence/import_package_manifest.json`;
 - generated native import provenance receipt `equivalence/import_receipt.json`;
 - saved/exported KiCad Import Wizard log `equivalence/import_log.txt`;
@@ -26,7 +27,7 @@ The gate consumes:
 - validated native audit result `equivalence/native_audit_result.json`, containing SHA-256 hashes of all five raw inventory CSV inputs;
 - completed equivalence manifest.
 
-Use `hardware/system_carrier/altium/equivalence/manifest.template.json` as the starting manifest.
+Use `hardware/system_carrier/altium/equivalence/manifest.template.json` as the starting manifest. The gate independently re-runs the CFB/OLE preflight against the exact committed `SchDoc/PcbDoc`; a forged PASS JSON cannot substitute for valid native containers.
 
 ## Mandatory checks
 
