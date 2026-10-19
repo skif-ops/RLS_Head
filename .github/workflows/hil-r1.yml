@@ -1010,6 +1010,27 @@ jobs:
           print("Altium routing prerequisites READY_FOR_NATIVE_IMPORT")
           PY
 
+      - name: Evaluate native Altium handoff status
+        run: |
+          python -m tools.altium_native_handoff_status \
+            --repository-root . \
+            --output build-cad/system_carrier/altium_native_handoff_status.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/altium_native_handoff_status.json"
+              ).read_text()
+          )
+          assert data["schema"] == "ALTIUM-NATIVE-HANDOFF-STATUS-001"
+          assert data["status"] == "WAITING_NATIVE_IMPORT"
+          assert data["routing_authorized"] is False
+          assert data["production_authorized"] is False
+          print("Native Altium handoff status:", data["status"])
+          PY
+
       - name: Build Altium import package
         run: |
           python -m tools.altium_import_package \
@@ -1036,6 +1057,8 @@ jobs:
           assert data["room_gate_included"] is True
           assert data["routing_readiness_included"] is True
           assert data["native_audit_script_included"] is True
+          assert data["native_handoff_runbook_included"] is True
+          assert data["equivalence_manifest_template_included"] is True
           assert data["file_count"] >= 43
           print(
               "Altium import package READY:",
