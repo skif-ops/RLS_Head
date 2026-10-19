@@ -9,8 +9,10 @@ from pathlib import Path
 
 MANIFEST_SCHEMA = "ALTIUM-PRODUCTION-RELEASE-MANIFEST-001"
 RESULT_SCHEMA = "ALTIUM-PRODUCTION-RELEASE-RESULT-001"
+NATIVE_PCB_PATH = "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
 
 REQUIRED_ARTIFACTS = {
+    "native_pcb",
     "equivalence_result",
     "native_drc_result",
     "mechanical_review",
@@ -64,6 +66,27 @@ def _int_or_default(value: object, default: int = -1) -> int:
 def _valid_text(value: object) -> bool:
     text = str(value or "").strip()
     return bool(text) and not text.startswith("<")
+
+
+def _validate_source_pcb_binding(
+    payload: dict,
+    *,
+    artifact_id: str,
+    actual_pcb_hash: str,
+    errors: list[str],
+) -> None:
+    source_pcb = str(payload.get("source_pcb", "")).strip()
+    claimed_hash = str(
+        payload.get("source_pcb_sha256", "")
+    ).strip().lower()
+
+    if source_pcb != NATIVE_PCB_PATH:
+        errors.append(f"{artifact_id}_source_pcb")
+    if (
+        len(claimed_hash) != 64
+        or claimed_hash != actual_pcb_hash
+    ):
+        errors.append(f"{artifact_id}_source_pcb_hash")
 
 
 def _validate_evidence_refs(
@@ -180,7 +203,16 @@ def validate_manifest(
         if not hash_ok:
             errors.append(f"hash_mismatch:{artifact_id}")
 
+    native_pcb_hash = str(
+        integrity.get("native_pcb", {}).get(
+            "sha256_actual",
+            "",
+        )
+    ).lower()
+
     for artifact_id, path in resolved.items():
+        if artifact_id == "native_pcb":
+            continue
         result = _read_json(path, artifact_id, errors)
         evidence[artifact_id] = result
         if not isinstance(result, dict):
@@ -189,6 +221,26 @@ def validate_manifest(
             errors.append(f"{artifact_id}_schema")
         if result.get("status") != "PASS":
             reasons.append(f"{artifact_id.upper()}_NOT_PASS")
+
+    if not native_pcb_hash:
+        errors.append("native_pcb_hash")
+
+    for artifact_id in (
+        "native_drc_result",
+        "mechanical_review",
+        "fabricator_binding",
+        "return_path_si_review",
+        "dfm_result",
+        "outjob_release_manifest",
+    ):
+        payload = evidence.get(artifact_id)
+        if isinstance(payload, dict):
+            _validate_source_pcb_binding(
+                payload,
+                artifact_id=artifact_id,
+                actual_pcb_hash=native_pcb_hash,
+                errors=errors,
+            )
 
     equivalence = evidence.get("equivalence_result")
     if isinstance(equivalence, dict):
@@ -448,6 +500,7 @@ def validate_manifest(
         "errors": sorted(set(errors)),
         "reason_codes": sorted(set(reasons)),
         "integrity": integrity,
+        "native_pcb_sha256": native_pcb_hash,
         "evidence": evidence,
         "layout_authority": (
             "AUTHORIZED"
