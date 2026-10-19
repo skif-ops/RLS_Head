@@ -2,7 +2,7 @@
 
 This directory is the evidence boundary between native Altium routing completion and manufacturing release.
 
-`tools.altium_production_release_gate` is the only repository tool that may return production authority for EVT System Carrier Rev.A. The final routed `native/EVT_SYS_CARRIER.PcbDoc` is itself a required release artifact. Every post-routing DRC/review/DFM/OutJob evidence file must carry `source_pcb` and `source_pcb_sha256` matching that exact file, so evidence from different board revisions cannot be mixed.
+`tools.altium_production_release_gate` is the only repository tool that may return production authority for EVT System Carrier Rev.A. The current canonical `native/EVT_SYS_CARRIER.SchDoc` and final routed `native/EVT_SYS_CARRIER.PcbDoc` are both required release artifacts. The SchDoc hash must still match the schematic hash recorded by the equivalence PASS; any electrical schematic change requires a fresh equivalence run. Every post-routing DRC/review/DFM/OutJob evidence file must carry `source_pcb` and `source_pcb_sha256` matching the exact final PcbDoc, so evidence from different board revisions cannot be mixed.
 
 The gate requires SHA-256-bound native evidence for:
 

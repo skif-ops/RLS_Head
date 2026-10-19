@@ -10,8 +10,10 @@ from pathlib import Path
 MANIFEST_SCHEMA = "ALTIUM-PRODUCTION-RELEASE-MANIFEST-001"
 RESULT_SCHEMA = "ALTIUM-PRODUCTION-RELEASE-RESULT-001"
 NATIVE_PCB_PATH = "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+NATIVE_SCHEMATIC_PATH = "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc"
 
 REQUIRED_ARTIFACTS = {
+    "native_schematic",
     "native_pcb",
     "equivalence_result",
     "native_drc_result",
@@ -182,11 +184,12 @@ def validate_manifest(
         if item is None:
             continue
         relative = str(item.get("path", "")).strip()
-        if (
-            artifact_id == "native_pcb"
-            and relative != NATIVE_PCB_PATH
-        ):
-            errors.append("native_pcb_canonical_path")
+        canonical_path = {
+            "native_schematic": NATIVE_SCHEMATIC_PATH,
+            "native_pcb": NATIVE_PCB_PATH,
+        }.get(artifact_id)
+        if canonical_path is not None and relative != canonical_path:
+            errors.append(f"{artifact_id}_canonical_path")
             continue
 
         expected_hash = str(item.get("sha256", "")).strip().lower()
@@ -210,6 +213,12 @@ def validate_manifest(
         if not hash_ok:
             errors.append(f"hash_mismatch:{artifact_id}")
 
+    native_schematic_hash = str(
+        integrity.get("native_schematic", {}).get(
+            "sha256_actual",
+            "",
+        )
+    ).lower()
     native_pcb_hash = str(
         integrity.get("native_pcb", {}).get(
             "sha256_actual",
@@ -218,7 +227,7 @@ def validate_manifest(
     ).lower()
 
     for artifact_id, path in resolved.items():
-        if artifact_id == "native_pcb":
+        if artifact_id in {"native_schematic", "native_pcb"}:
             continue
         result = _read_json(path, artifact_id, errors)
         evidence[artifact_id] = result
@@ -229,6 +238,8 @@ def validate_manifest(
         if result.get("status") != "PASS":
             reasons.append(f"{artifact_id.upper()}_NOT_PASS")
 
+    if not native_schematic_hash:
+        errors.append("native_schematic_hash")
     if not native_pcb_hash:
         errors.append("native_pcb_hash")
 
@@ -253,6 +264,22 @@ def validate_manifest(
     if isinstance(equivalence, dict):
         if equivalence.get("layout_authority") != "AUTHORIZED":
             reasons.append("LAYOUT_AUTHORITY_NOT_AUTHORIZED")
+
+        eq_integrity = equivalence.get("integrity")
+        approved_schematic_hash = ""
+        if isinstance(eq_integrity, dict):
+            schematic_integrity = eq_integrity.get("schematic")
+            if isinstance(schematic_integrity, dict):
+                approved_schematic_hash = str(
+                    schematic_integrity.get("sha256_actual", "")
+                ).strip().lower()
+
+        if (
+            len(native_schematic_hash) != 64
+            or len(approved_schematic_hash) != 64
+            or native_schematic_hash != approved_schematic_hash
+        ):
+            errors.append("equivalence_schematic_hash_mismatch")
         if equivalence.get("production_authority") != "NOT_AUTHORIZED":
             errors.append("equivalence_premature_production_authority")
         if equivalence.get("preserve_kicad") is not True:
@@ -507,6 +534,7 @@ def validate_manifest(
         "errors": sorted(set(errors)),
         "reason_codes": sorted(set(reasons)),
         "integrity": integrity,
+        "native_schematic_sha256": native_schematic_hash,
         "native_pcb_sha256": native_pcb_hash,
         "evidence": evidence,
         "layout_authority": (
@@ -526,7 +554,8 @@ def validate_manifest(
                 "EVT System Carrier Rev.A."
             ),
             (
-                "A production PASS requires native Altium equivalence, zero "
+                "A production PASS requires the current native SchDoc to "
+                "match the equivalence-approved electrical baseline, plus zero "
                 "blocking DRC/unrouted nets, mechanical freeze, fabricator "
                 "binding, return-path/SI review, DFM closure and complete "
                 "native-Altium manufacturing outputs."
