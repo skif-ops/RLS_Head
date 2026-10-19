@@ -41,18 +41,18 @@ def validate(directory: str | Path) -> dict:
         for row in _rows(root / "EXTERNAL_DOCUMENT_BLOCKERS_SYS_001.csv")
     }
 
-    eth = bom.get("J_ETH")
+    eth = bom.get("J6")
     if eth is None:
-        errors.append("missing_bom:J_ETH")
+        errors.append("missing_bom:J6")
     else:
         if str(eth.get("mpn", "")).strip() != SELECTED_MPN:
             errors.append("bom_mpn")
         if str(eth.get("status", "")).strip() != "SELECTED":
             errors.append("bom_status")
 
-    pkg = package.get("J_ETH")
+    pkg = package.get("J6")
     if pkg is None:
-        errors.append("missing_package:J_ETH")
+        errors.append("missing_package:J6")
     else:
         if str(pkg.get("mpn", "")).strip() != SELECTED_MPN:
             errors.append("package_mpn")
@@ -61,9 +61,9 @@ def validate(directory: str | Path) -> dict:
         if str(pkg.get("footprint_candidate", "")).strip() != FOOTPRINT_ID:
             errors.append("package_footprint")
 
-    fp = footprint.get("J_ETH")
+    fp = footprint.get("J6")
     if fp is None:
-        errors.append("missing_footprint:J_ETH")
+        errors.append("missing_footprint:J6")
     else:
         if str(fp.get("mpn", "")).strip() != SELECTED_MPN:
             errors.append("footprint_mpn")
