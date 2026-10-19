@@ -1435,6 +1435,290 @@ def sheet_pin_root_position(
     )
 
 
+def _sexpr_blocks(
+    text: str,
+    token: str,
+) -> list[tuple[int, int, str]]:
+    blocks: list[tuple[int, int, str]] = []
+    needle = f"({token}"
+    start = 0
+
+    while True:
+        index = text.find(needle, start)
+        if index < 0:
+            break
+
+        depth = 0
+        in_string = False
+        escaped = False
+        end = index
+
+        for end in range(index, len(text)):
+            char = text[end]
+
+            if in_string:
+                if escaped:
+                    escaped = False
+                elif char == "\\":
+                    escaped = True
+                elif char == '"':
+                    in_string = False
+                continue
+
+            if char == '"':
+                in_string = True
+            elif char == "(":
+                depth += 1
+            elif char == ")":
+                depth -= 1
+                if depth == 0:
+                    end += 1
+                    blocks.append(
+                        (index, end, text[index:end])
+                    )
+                    break
+        else:
+            raise ValueError(
+                f"unterminated s-expression:{token}@{index}"
+            )
+
+        start = end
+
+    return blocks
+
+
+def _coord_key(
+    x: float,
+    y: float,
+) -> tuple[int, int]:
+    return (
+        round(x * 1_000_000),
+        round(y * 1_000_000),
+    )
+
+
+def normalize_local_label_junctions(
+    schematic_path: Path,
+    *,
+    extension: float = 1.27,
+) -> int:
+    """Move local labels off multi-wire junctions without adding wires.
+
+    KiCad warns when a local label is attached at a point where multiple
+    wire segments terminate.  For generated orthogonal wiring we can keep
+    the exact same connectivity by extending one incident segment past the
+    junction and moving the label to the new free endpoint.  The old
+    junction remains on the interior of that same segment, so no new branch
+    or electrical object is introduced.
+    """
+
+    text = schematic_path.read_text(
+        encoding="utf-8",
+    )
+
+    wire_blocks = _sexpr_blocks(
+        text,
+        "wire",
+    )
+    label_blocks = _sexpr_blocks(
+        text,
+        "label",
+    )
+
+    xy_re = re.compile(
+        r"\(xy\s+([-+]?\d+(?:\.\d+)?)\s+"
+        r"([-+]?\d+(?:\.\d+)?)\)"
+    )
+    at_re = re.compile(
+        r"\(at\s+([-+]?\d+(?:\.\d+)?)\s+"
+        r"([-+]?\d+(?:\.\d+)?)(?:\s+[-+]?\d+(?:\.\d+)?)?\)"
+    )
+
+    wires: list[dict] = []
+    incident: dict[
+        tuple[int, int],
+        list[int],
+    ] = {}
+
+    for block_index, (_, _, block) in enumerate(
+        wire_blocks
+    ):
+        points = [
+            (float(match.group(1)), float(match.group(2)))
+            for match in xy_re.finditer(block)
+        ]
+        if len(points) < 2:
+            continue
+
+        start_point = points[0]
+        end_point = points[-1]
+        wires.append(
+            {
+                "block_index": block_index,
+                "start": start_point,
+                "end": end_point,
+            }
+        )
+        wire_index = len(wires) - 1
+
+        for point in (start_point, end_point):
+            incident.setdefault(
+                _coord_key(*point),
+                [],
+            ).append(wire_index)
+
+    replacements: list[
+        tuple[int, int, str]
+    ] = []
+    used_wires: set[int] = set()
+    normalized = 0
+
+    for label_start, label_end, label_block in label_blocks:
+        match = at_re.search(label_block)
+        if match is None:
+            continue
+
+        point = (
+            float(match.group(1)),
+            float(match.group(2)),
+        )
+        key = _coord_key(*point)
+        candidates = incident.get(key, [])
+
+        if len(candidates) < 2:
+            continue
+
+        selected_index = None
+        selected_other = None
+
+        for wire_index in candidates:
+            if wire_index in used_wires:
+                continue
+
+            wire = wires[wire_index]
+            if _coord_key(*wire["start"]) == key:
+                other = wire["end"]
+            elif _coord_key(*wire["end"]) == key:
+                other = wire["start"]
+            else:
+                continue
+
+            dx = point[0] - other[0]
+            dy = point[1] - other[1]
+
+            if abs(dx) > 1e-9 and abs(dy) > 1e-9:
+                continue
+            if abs(dx) <= 1e-9 and abs(dy) <= 1e-9:
+                continue
+
+            selected_index = wire_index
+            selected_other = other
+            break
+
+        if (
+            selected_index is None
+            or selected_other is None
+        ):
+            continue
+
+        dx = point[0] - selected_other[0]
+        dy = point[1] - selected_other[1]
+
+        if abs(dx) > abs(dy):
+            new_point = (
+                point[0] + (
+                    extension if dx > 0 else -extension
+                ),
+                point[1],
+            )
+        else:
+            new_point = (
+                point[0],
+                point[1] + (
+                    extension if dy > 0 else -extension
+                ),
+            )
+
+        wire = wires[selected_index]
+        wire_block_index = wire["block_index"]
+        wire_start, wire_end, wire_block = wire_blocks[
+            wire_block_index
+        ]
+
+        old_xy = (
+            f"(xy {point[0]:g} {point[1]:g})"
+        )
+        new_xy = (
+            f"(xy {new_point[0]:g} {new_point[1]:g})"
+        )
+
+        if old_xy not in wire_block:
+            # Serializer may retain trailing zeros; replace the exact
+            # matched endpoint token instead.
+            endpoint_match = None
+            for xy_match in xy_re.finditer(wire_block):
+                xy_point = (
+                    float(xy_match.group(1)),
+                    float(xy_match.group(2)),
+                )
+                if _coord_key(*xy_point) == key:
+                    endpoint_match = xy_match
+                    break
+            if endpoint_match is None:
+                continue
+            new_wire_block = (
+                wire_block[:endpoint_match.start()]
+                + new_xy
+                + wire_block[endpoint_match.end():]
+            )
+        else:
+            new_wire_block = wire_block.replace(
+                old_xy,
+                new_xy,
+                1,
+            )
+
+        new_at = (
+            f"(at {new_point[0]:g} "
+            f"{new_point[1]:g}"
+        )
+        new_label_block = (
+            label_block[:match.start()]
+            + new_at
+            + label_block[match.end() - 1:]
+        )
+
+        replacements.append(
+            (
+                wire_start,
+                wire_end,
+                new_wire_block,
+            )
+        )
+        replacements.append(
+            (
+                label_start,
+                label_end,
+                new_label_block,
+            )
+        )
+        used_wires.add(selected_index)
+        normalized += 1
+
+    for start, end, replacement in sorted(
+        replacements,
+        key=lambda item: item[0],
+        reverse=True,
+    ):
+        text = text[:start] + replacement + text[end:]
+
+    schematic_path.write_text(
+        text,
+        encoding="utf-8",
+    )
+    return normalized
+
+
 def normalize_serialized_hierarchy_shapes(
     schematic_path: Path,
     rows: list[dict[str, str]],
@@ -1825,6 +2109,9 @@ def build(output_dir: Path) -> dict:
                 hierarchy_rows,
                 name,
             ),
+        )
+        normalize_local_label_junctions(
+            child_path,
         )
 
     (output_dir / f"{PROJECT_NAME}.kicad_pro").write_text(
