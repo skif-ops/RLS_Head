@@ -49,14 +49,19 @@ TPS62132 network, MCU decoupling, Ethernet bias/termination, GNSS RF protection,
 connector pinout and rail allocations. These values remain subject to ERC and
 bench verification before Review A.
 
+CAD status:
+
+- the retained KiCad System Carrier capture is ERC-clean at 0 errors / 0 warnings;
+- Altium Designer is now the primary PCB CAD target;
+- all KiCad sources are retained as the independent electrical verification baseline;
+- native Altium files live under `hardware/system_carrier/altium/` after the Altium import/equivalence gate.
+
 Still open:
 
-- `EVT_SYS_CARRIER.kicad_pro`
-- `EVT_SYS_CARRIER.kicad_sch`
-- exact AWR2944PEVM `RADAR_REF` GPIO/header assignment after bench verification
-- GNSS antenna connector and RF matching implementation
-- `review_a/erc.json`
-- `review_a/manifest.json`
+- formal `review_a/erc.json` and `review_a/manifest.json` evidence binding;
+- native Altium `SchDoc` / `PcbDoc` import and equivalence verification;
+- exact AWR2944PEVM `RADAR_REF` GPIO/header assignment after bench verification;
+- GNSS antenna connector and RF matching implementation.
 
 Run:
 
@@ -71,3 +76,7 @@ before schematic capture.
 The first real schematic gate remains `CARRIER_REVIEW_A`.
 Synthetic files under `tests/fixtures/carrier_review_a/` must never
 be used to close that gate.
+
+## CAD authority
+
+See `CAD_AUTHORITY_SYS_001.json` and `docs/CAD_POLICY_ALTIUM.md`. New PCB implementation work is done in Altium Designer; KiCad files are preserved and must not be deleted.
