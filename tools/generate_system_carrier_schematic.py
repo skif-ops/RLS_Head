@@ -1497,19 +1497,52 @@ def _coord_key(
     )
 
 
+def _point_on_segment(
+    point: tuple[float, float],
+    start: tuple[float, float],
+    end: tuple[float, float],
+    *,
+    tolerance: float = 1e-6,
+) -> bool:
+    px, py = point
+    x1, y1 = start
+    x2, y2 = end
+
+    dx = x2 - x1
+    dy = y2 - y1
+    cross = (
+        (px - x1) * dy
+        - (py - y1) * dx
+    )
+    scale = max(
+        1.0,
+        abs(dx),
+        abs(dy),
+    )
+    if abs(cross) > tolerance * scale:
+        return False
+
+    return (
+        min(x1, x2) - tolerance
+        <= px
+        <= max(x1, x2) + tolerance
+        and min(y1, y2) - tolerance
+        <= py
+        <= max(y1, y2) + tolerance
+    )
+
+
 def normalize_local_label_junctions(
     schematic_path: Path,
     *,
     extension: float = 1.27,
 ) -> int:
-    """Move local labels off multi-wire junctions without adding wires.
+    """Move local labels away from wire crossings without editing wires.
 
-    KiCad warns when a local label is attached at a point where multiple
-    wire segments terminate.  For generated orthogonal wiring we can keep
-    the exact same connectivity by extending one incident segment past the
-    junction and moving the label to the new free endpoint.  The old
-    junction remains on the interior of that same segment, so no new branch
-    or electrical object is introduced.
+    KiCad ERC warns when a local label sits exactly where two or more wire
+    segments cross.  The label can be moved a short distance along one of
+    those already-connected segments; this preserves the netlist and wire
+    geometry while removing the ambiguous graphical attachment.
     """
 
     text = schematic_path.read_text(
@@ -1534,43 +1567,34 @@ def normalize_local_label_junctions(
         r"([-+]?\d+(?:\.\d+)?)(?:\s+[-+]?\d+(?:\.\d+)?)?\)"
     )
 
-    wires: list[dict] = []
-    incident: dict[
-        tuple[int, int],
-        list[int],
-    ] = {}
+    segments: list[
+        tuple[
+            tuple[float, float],
+            tuple[float, float],
+        ]
+    ] = []
 
-    for block_index, (_, _, block) in enumerate(
-        wire_blocks
-    ):
+    for _, _, block in wire_blocks:
         points = [
-            (float(match.group(1)), float(match.group(2)))
+            (
+                float(match.group(1)),
+                float(match.group(2)),
+            )
             for match in xy_re.finditer(block)
         ]
-        if len(points) < 2:
-            continue
-
-        start_point = points[0]
-        end_point = points[-1]
-        wires.append(
-            {
-                "block_index": block_index,
-                "start": start_point,
-                "end": end_point,
-            }
-        )
-        wire_index = len(wires) - 1
-
-        for point in (start_point, end_point):
-            incident.setdefault(
-                _coord_key(*point),
-                [],
-            ).append(wire_index)
+        for first, second in zip(
+            points,
+            points[1:],
+        ):
+            if _coord_key(*first) == _coord_key(*second):
+                continue
+            segments.append(
+                (first, second)
+            )
 
     replacements: list[
         tuple[int, int, str]
     ] = []
-    used_wires: set[int] = set()
     normalized = 0
 
     for label_start, label_end, label_block in label_blocks:
@@ -1582,119 +1606,117 @@ def normalize_local_label_junctions(
             float(match.group(1)),
             float(match.group(2)),
         )
-        key = _coord_key(*point)
-        candidates = incident.get(key, [])
 
-        if len(candidates) < 2:
-            continue
-
-        selected_index = None
-        selected_other = None
-
-        for wire_index in candidates:
-            if wire_index in used_wires:
-                continue
-
-            wire = wires[wire_index]
-            if _coord_key(*wire["start"]) == key:
-                other = wire["end"]
-            elif _coord_key(*wire["end"]) == key:
-                other = wire["start"]
-            else:
-                continue
-
-            dx = point[0] - other[0]
-            dy = point[1] - other[1]
-
-            if abs(dx) > 1e-9 and abs(dy) > 1e-9:
-                continue
-            if abs(dx) <= 1e-9 and abs(dy) <= 1e-9:
-                continue
-
-            selected_index = wire_index
-            selected_other = other
-            break
-
-        if (
-            selected_index is None
-            or selected_other is None
-        ):
-            continue
-
-        dx = point[0] - selected_other[0]
-        dy = point[1] - selected_other[1]
-
-        if abs(dx) > abs(dy):
-            new_point = (
-                point[0] + (
-                    extension if dx > 0 else -extension
-                ),
-                point[1],
+        crossing = [
+            segment
+            for segment in segments
+            if _point_on_segment(
+                point,
+                segment[0],
+                segment[1],
             )
-        else:
-            new_point = (
-                point[0],
-                point[1] + (
-                    extension if dy > 0 else -extension
-                ),
-            )
-
-        wire = wires[selected_index]
-        wire_block_index = wire["block_index"]
-        wire_start, wire_end, wire_block = wire_blocks[
-            wire_block_index
         ]
 
-        old_xy = (
-            f"(xy {point[0]:g} {point[1]:g})"
-        )
-        new_xy = (
-            f"(xy {new_point[0]:g} {new_point[1]:g})"
+        if len(crossing) < 2:
+            continue
+
+        new_point = None
+
+        # Prefer moving toward the farther endpoint on the longest
+        # crossing segment.  Try progressively shorter moves when needed.
+        ordered = sorted(
+            crossing,
+            key=lambda segment: -(
+                (segment[1][0] - segment[0][0]) ** 2
+                + (segment[1][1] - segment[0][1]) ** 2
+            ),
         )
 
-        if old_xy not in wire_block:
-            # Serializer may retain trailing zeros; replace the exact
-            # matched endpoint token instead.
-            endpoint_match = None
-            for xy_match in xy_re.finditer(wire_block):
-                xy_point = (
-                    float(xy_match.group(1)),
-                    float(xy_match.group(2)),
+        for first, second in ordered:
+            distances = [
+                (
+                    (endpoint[0] - point[0]) ** 2
+                    + (endpoint[1] - point[1]) ** 2,
+                    endpoint,
                 )
-                if _coord_key(*xy_point) == key:
-                    endpoint_match = xy_match
-                    break
-            if endpoint_match is None:
-                continue
-            new_wire_block = (
-                wire_block[:endpoint_match.start()]
-                + new_xy
-                + wire_block[endpoint_match.end():]
-            )
-        else:
-            new_wire_block = wire_block.replace(
-                old_xy,
-                new_xy,
-                1,
+                for endpoint in (first, second)
+            ]
+            _, endpoint = max(
+                distances,
+                key=lambda item: item[0],
             )
 
-        new_at = (
-            f"(at {new_point[0]:g} "
-            f"{new_point[1]:g}"
+            vx = endpoint[0] - point[0]
+            vy = endpoint[1] - point[1]
+            length = (
+                vx * vx + vy * vy
+            ) ** 0.5
+            if length <= 1e-9:
+                continue
+
+            ux = vx / length
+            uy = vy / length
+
+            for distance in (
+                extension,
+                extension / 2.0,
+                extension / 4.0,
+            ):
+                if distance >= length:
+                    continue
+
+                candidate = (
+                    point[0] + ux * distance,
+                    point[1] + uy * distance,
+                )
+
+                attached = [
+                    segment
+                    for segment in segments
+                    if _point_on_segment(
+                        candidate,
+                        segment[0],
+                        segment[1],
+                    )
+                ]
+
+                if len(attached) == 1:
+                    new_point = candidate
+                    break
+
+            if new_point is not None:
+                break
+
+        if new_point is None:
+            continue
+
+        angle_match = re.search(
+            r"\(at\s+[-+]?\d+(?:\.\d+)?\s+"
+            r"[-+]?\d+(?:\.\d+)?"
+            r"(?:\s+([-+]?\d+(?:\.\d+)?))?\)",
+            label_block,
         )
+        angle = (
+            angle_match.group(1)
+            if angle_match is not None
+            and angle_match.group(1) is not None
+            else None
+        )
+
+        at_text = (
+            f"(at {new_point[0]:.6f} "
+            f"{new_point[1]:.6f}"
+        )
+        if angle is not None:
+            at_text += f" {angle}"
+        at_text += ")"
+
         new_label_block = (
             label_block[:match.start()]
-            + new_at
-            + label_block[match.end() - 1:]
+            + at_text
+            + label_block[match.end():]
         )
 
-        replacements.append(
-            (
-                wire_start,
-                wire_end,
-                new_wire_block,
-            )
-        )
         replacements.append(
             (
                 label_start,
@@ -1702,15 +1724,18 @@ def normalize_local_label_junctions(
                 new_label_block,
             )
         )
-        used_wires.add(selected_index)
         normalized += 1
 
-    for start, end, replacement in sorted(
+    for replace_start, replace_end, replacement in sorted(
         replacements,
         key=lambda item: item[0],
         reverse=True,
     ):
-        text = text[:start] + replacement + text[end:]
+        text = (
+            text[:replace_start]
+            + replacement
+            + text[replace_end:]
+        )
 
     schematic_path.write_text(
         text,
