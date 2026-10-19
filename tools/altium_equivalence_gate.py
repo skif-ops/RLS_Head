@@ -5,6 +5,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from tools.altium_native_file_preflight import validate as validate_native_files
+
 
 MANIFEST_SCHEMA = "ALTIUM-EQUIVALENCE-MANIFEST-001"
 RESULT_SCHEMA = "ALTIUM-EQUIVALENCE-RESULT-001"
@@ -13,6 +15,7 @@ REQUIRED_ARTIFACTS = {
     "project",
     "schematic",
     "pcb",
+    "native_file_preflight",
     "import_package_manifest",
     "import_receipt",
     "import_log",
@@ -272,6 +275,58 @@ def validate_manifest(
                 ).strip().lower()
                 if not receipt_source or receipt_source != package_source:
                     errors.append("import_receipt_source_commit")
+
+    native_file_preflight = None
+    preflight_path = resolved.get("native_file_preflight")
+    if preflight_path is not None:
+        try:
+            native_file_preflight = json.loads(
+                preflight_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"native_file_preflight_parse:{exc}")
+        else:
+            if (
+                native_file_preflight.get("schema")
+                != "ALTIUM-NATIVE-FILE-PREFLIGHT-001"
+            ):
+                errors.append("native_file_preflight_schema")
+            if native_file_preflight.get("status") != "PASS":
+                reasons.append("NATIVE_FILE_PREFLIGHT")
+
+            artifacts_result = native_file_preflight.get("artifacts")
+            if not isinstance(artifacts_result, dict):
+                errors.append("native_file_preflight_artifacts")
+            else:
+                for artifact_id in ("schematic", "pcb"):
+                    record = artifacts_result.get(artifact_id)
+                    claimed = (
+                        str(record.get("sha256", "")).lower()
+                        if isinstance(record, dict)
+                        else ""
+                    )
+                    actual = str(
+                        integrity.get(artifact_id, {}).get(
+                            "sha256_actual",
+                            "",
+                        )
+                    ).lower()
+                    if not actual or claimed != actual:
+                        errors.append(
+                            f"native_file_preflight_hash:{artifact_id}"
+                        )
+
+    native_file_preflight_rerun = None
+    schematic_path = resolved.get("schematic")
+    pcb_path = resolved.get("pcb")
+    if schematic_path is not None and pcb_path is not None:
+        native_file_preflight_rerun = validate_native_files(
+            schematic=schematic_path,
+            pcb=pcb_path,
+        )
+        if native_file_preflight_rerun.get("status") != "PASS":
+            for item in native_file_preflight_rerun.get("errors", []):
+                errors.append(f"native_file_rerun:{item}")
 
     compile_result = None
     compile_path = resolved.get("compile_report")
@@ -712,6 +767,8 @@ def validate_manifest(
         "errors": sorted(set(errors)),
         "reason_codes": sorted(set(reasons)),
         "integrity": integrity,
+        "native_file_preflight": native_file_preflight,
+        "native_file_preflight_rerun": native_file_preflight_rerun,
         "import_package": import_package,
         "import_receipt": import_receipt,
         "bom_validation": bom_validation,

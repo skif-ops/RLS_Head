@@ -1,0 +1,15 @@
+# Native Altium binary containers: never apply text conversion or textual merge/diff.
+*.SchDoc binary
+*.PcbDoc binary
+*.SchLib binary
+*.PcbLib binary
+*.IntLib binary
+*.schdoc binary
+*.pcbdoc binary
+*.schlib binary
+*.pcblib binary
+*.intlib binary
+
+# Altium project files are INI-style text.
+*.PrjPcb text
+*.prjpcb text
