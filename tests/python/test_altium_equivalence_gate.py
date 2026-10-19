@@ -703,8 +703,30 @@ def test_import_receipt_native_snapshot_may_differ_from_prerouting_files(
 
     # These are import-time snapshots. The later pre-routing SchDoc/PcbDoc
     # may legitimately differ after applying approved native preparation.
+    import_preflight_item = next(
+        item
+        for item in data["artifacts"]
+        if item["id"] == "import_native_file_preflight"
+    )
+    import_preflight_path = tmp_path / import_preflight_item["path"]
+    import_preflight = json.loads(import_preflight_path.read_text())
+
+    import_preflight["artifacts"]["schematic"]["sha256"] = "1" * 64
+    import_preflight["artifacts"]["pcb"]["sha256"] = "2" * 64
+    import_preflight_content = json.dumps(
+        import_preflight,
+        sort_keys=True,
+    ).encode()
+    import_preflight_path.write_bytes(import_preflight_content)
+    import_preflight_item["sha256"] = hashlib.sha256(
+        import_preflight_content
+    ).hexdigest()
+
     receipt["native_artifacts"]["schematic"]["sha256"] = "1" * 64
     receipt["native_artifacts"]["pcb"]["sha256"] = "2" * 64
+    receipt["import_native_file_preflight"]["sha256"] = (
+        import_preflight_item["sha256"]
+    )
 
     receipt_content = json.dumps(receipt, sort_keys=True).encode()
     receipt_path.write_bytes(receipt_content)
@@ -717,6 +739,35 @@ def test_import_receipt_native_snapshot_may_differ_from_prerouting_files(
     assert "import_receipt_hash:schematic" not in result["errors"]
     assert "import_receipt_hash:pcb" not in result["errors"]
 
+
+
+
+def test_import_receipt_preflight_file_hash_must_match(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    item = next(
+        artifact
+        for artifact in data["artifacts"]
+        if artifact["id"] == "import_native_file_preflight"
+    )
+    path = tmp_path / item["path"]
+    payload = json.loads(path.read_text())
+    payload["errors"] = ["TAMPERED"]
+    content = json.dumps(payload, sort_keys=True).encode()
+    path.write_bytes(content)
+    item["sha256"] = hashlib.sha256(content).hexdigest()
+
+    # Deliberately do not update the receipt's recorded preflight hash.
+    manifest.write_text(json.dumps(data, indent=2) + "\n")
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert (
+        "import_receipt_hash:import_native_file_preflight"
+        in result["errors"]
+    )
 
 def test_import_receipt_rejects_malformed_native_snapshot_hash(tmp_path):
     manifest = _manifest(tmp_path)
