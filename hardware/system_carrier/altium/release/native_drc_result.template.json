@@ -1,0 +1,11 @@
+{
+  "schema": "ALTIUM-NATIVE-DRC-RESULT-001",
+  "status": "PENDING",
+  "blocking_errors": null,
+  "unrouted_nets": null,
+  "source_report": "<PATH_TO_NATIVE_ALTIUM_DRC_REPORT>",
+  "source_report_sha256": "<SHA256>",
+  "notes": [
+    "Populate only from the final routed native Altium PcbDoc DRC evidence."
+  ]
+}
