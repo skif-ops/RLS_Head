@@ -49,6 +49,30 @@ def _manifest(tmp_path: Path) -> Path:
             }
         )
 
+    bom_contract_content = (
+        b"ref,qty,manufacturer,value_or_mpn,description,procurement_class,"
+        b"footprint_id,population,status\n"
+        b"U1,1,STMicroelectronics,STM32H753IIT6,System MCU,LOCKED_MPN,"
+        b"TEST,POPULATE,LOCKED\n"
+    )
+    bom_contract_path = (
+        tmp_path / "hardware/system_carrier/BOM_SYS_CARRIER_LAYOUT_004.csv"
+    )
+    _write(bom_contract_path, bom_contract_content)
+    bom_contract_hash = hashlib.sha256(bom_contract_content).hexdigest()
+
+    footprint_contract_content = (
+        b"ref,value_or_mpn,footprint_id,package,source,status,population,notes\n"
+        b"U1,STM32H753IIT6,TEST,LQFP176,TEST,LOCKED,POPULATE,\n"
+    )
+    footprint_contract_path = (
+        tmp_path / "hardware/system_carrier/FOOTPRINT_ASSIGNMENT_SYS_002.csv"
+    )
+    _write(footprint_contract_path, footprint_contract_content)
+    footprint_contract_hash = hashlib.sha256(
+        footprint_contract_content
+    ).hexdigest()
+
     native_content = {
         "schematic": b"SYNTHETIC_TEST_SCHDOC",
         "pcb": b"SYNTHETIC_TEST_PCBDOC",
@@ -106,6 +130,42 @@ def _manifest(tmp_path: Path) -> Path:
         sort_keys=True,
     ).encode()
 
+    bom_export_content = b"designator,mpn\nU1,STM32H753IIT6\n"
+    bom_export_hash = hashlib.sha256(bom_export_content).hexdigest()
+    bom_validation_content = json.dumps(
+        {
+            "schema": "ALTIUM-NATIVE-BOM-RESULT-001",
+            "status": "PASS",
+            "errors": [],
+            "warnings": [],
+            "input_sha256": {
+                "bom_export": bom_export_hash,
+                "bom_contract": bom_contract_hash,
+            },
+            "verified_checks": {
+                "bom_designator_mpn_equivalence": "PASS",
+            },
+        },
+        sort_keys=True,
+    ).encode()
+
+    footprint_validation_content = json.dumps(
+        {
+            "schema": "ALTIUM-NATIVE-FOOTPRINT-RESULT-001",
+            "status": "PASS",
+            "errors": [],
+            "warnings": [],
+            "input_sha256": {
+                "component_inventory": raw_hashes["component_inventory"],
+                "footprint_contract": footprint_contract_hash,
+            },
+            "verified_checks": {
+                "footprint_equivalence": "PASS",
+            },
+        },
+        sort_keys=True,
+    ).encode()
+
     entries = {
         "project": ("EVT_SYS_CARRIER.PrjPcb", b"[Design]\nVersion=1.0\n"),
         "schematic": (
@@ -141,7 +201,11 @@ def _manifest(tmp_path: Path) -> Path:
         ),
         "bom_export": (
             "equivalence/bom_export.csv",
-            b"ref,mpn\nU1,STM32H753IIT6\n",
+            bom_export_content,
+        ),
+        "bom_validation_result": (
+            "equivalence/bom_validation_result.json",
+            bom_validation_content,
         ),
         "netlist_export": (
             "equivalence/netlist_export.csv",
@@ -149,7 +213,7 @@ def _manifest(tmp_path: Path) -> Path:
         ),
         "footprint_report": (
             "equivalence/footprint_report.json",
-            b'{"status":"PASS"}',
+            footprint_validation_content,
         ),
         "native_audit_result": (
             "equivalence/native_audit_result.json",
