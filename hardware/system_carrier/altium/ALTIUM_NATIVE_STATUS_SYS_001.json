@@ -21,6 +21,8 @@
     "equivalence/bom_export.csv",
     "equivalence/bom_validation_result.json",
     "equivalence/connector_validation_result.json",
+    "equivalence/netlist_validation_result.json",
+    "equivalence/kicad_netlist_baseline.csv",
     "equivalence/netlist_export.csv",
     "equivalence/footprint_report.json",
     "equivalence/manifest.json",

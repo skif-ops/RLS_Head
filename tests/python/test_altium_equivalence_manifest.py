@@ -56,6 +56,21 @@ def test_manifest_builder_hashes_artifacts_and_marks_native_audit(tmp_path):
         encoding="utf-8",
     )
 
+    netlist_result_path = evidence / "netlist_validation_result.json"
+    netlist_result_path.write_text(
+        json.dumps(
+            {
+                "schema": "ALTIUM-NATIVE-NETLIST-RESULT-001",
+                "status": "PASS",
+                "verified_checks": {
+                    "netlist_equivalence": "PASS",
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
     audit_path = evidence / "native_audit_result.json"
     audit_path.write_text(
         json.dumps(
@@ -105,6 +120,11 @@ def test_manifest_builder_hashes_artifacts_and_marks_native_audit(tmp_path):
                         "path": "evidence/connector_validation_result.json",
                         "sha256": "<SHA256>",
                     },
+                    {
+                        "id": "netlist_validation_result",
+                        "path": "evidence/netlist_validation_result.json",
+                        "sha256": "<SHA256>",
+                    },
                 ],
                 "checks": {
                     "bom_designator_mpn_equivalence": "PENDING",
@@ -140,7 +160,7 @@ def test_manifest_builder_hashes_artifacts_and_marks_native_audit(tmp_path):
     assert manifest["checks"]["pinmap_equivalence"] == "PASS"
     assert manifest["checks"]["rules_equivalence"] == "PASS"
     assert manifest["checks"]["stackup_equivalence"] == "PASS"
-    assert manifest["checks"]["netlist_equivalence"] == "PENDING"
+    assert manifest["checks"]["netlist_equivalence"] == "PASS"
 
 
 def test_manifest_builder_refuses_missing_artifact(tmp_path):

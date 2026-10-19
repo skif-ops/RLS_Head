@@ -207,6 +207,9 @@ def build(
         "erc.json",
         "erc_triage.json",
         "cad_ci_summary.json",
+        "kicad_netlist.xml",
+        "kicad_netlist_baseline.csv",
+        "kicad_netlist_baseline_result.json",
     ]
     for evidence_name in evidence_files:
         evidence_path = generated / evidence_name
@@ -298,6 +301,12 @@ def build(
         "equivalence_manifest_template_included": any(
             item["path"].endswith(
                 "handoff/manifest.template.json"
+            )
+            for item in records
+        ),
+        "kicad_netlist_baseline_included": any(
+            item["path"].endswith(
+                "evidence/kicad_netlist_baseline.csv"
             )
             for item in records
         ),

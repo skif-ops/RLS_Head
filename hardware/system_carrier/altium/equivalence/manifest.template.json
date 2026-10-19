@@ -59,6 +59,16 @@
       "sha256": "<SHA256>"
     },
     {
+      "id": "kicad_netlist_baseline",
+      "path": "hardware/system_carrier/altium/equivalence/kicad_netlist_baseline.csv",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "netlist_validation_result",
+      "path": "hardware/system_carrier/altium/equivalence/netlist_validation_result.json",
+      "sha256": "<SHA256>"
+    },
+    {
       "id": "netlist_export",
       "path": "hardware/system_carrier/altium/equivalence/netlist_export.csv",
       "sha256": "<SHA256>"
