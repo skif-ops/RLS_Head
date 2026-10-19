@@ -14,6 +14,21 @@ def _write(path: Path, data: dict) -> str:
 
 
 def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
+    dfm_profile = (
+        tmp_path
+        / "hardware/system_carrier/altium/ALTIUM_DFM_PROFILE_SYS_001.csv"
+    )
+    dfm_profile.parent.mkdir(parents=True, exist_ok=True)
+    dfm_profile.write_text(
+        "dfm_id,category,parameter,value,status,criticality,notes\n"
+        "DFM-001,COPPER,min_trace_width,0.15,CLOSED,P0,Test\n"
+        "DFM-002,MASK,min_sliver,0.10,CLOSED,P1,Test\n",
+        encoding="utf-8",
+    )
+    dfm_profile_hash = hashlib.sha256(
+        dfm_profile.read_bytes()
+    ).hexdigest()
+
     contract = (
         tmp_path
         / "hardware/system_carrier/altium/ALTIUM_OUTJOB_CONTRACT_SYS_001.csv"
@@ -123,6 +138,8 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
                 "schema": "ALTIUM-DFM-RESULT-001",
                 "status": "PASS",
                 "p0_open_items": 0,
+                "profile_sha256": dfm_profile_hash,
+                "closed_p0_ids": ["DFM-001"],
                 "evidence_refs": [review_evidence["dfm"]],
             },
         ),
@@ -306,3 +323,28 @@ def test_pending_null_numeric_evidence_fails_closed(tmp_path):
     assert "NATIVE_DRC_RESULT_NOT_PASS" in result["reason_codes"]
     assert "DRC_BLOCKING_ERRORS" in result["reason_codes"]
     assert "UNROUTED_NETS" in result["reason_codes"]
+
+
+
+def test_incomplete_dfm_p0_set_blocks_release(tmp_path):
+    manifest = _fixture(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    item = next(
+        artifact
+        for artifact in data["artifacts"]
+        if artifact["id"] == "dfm_result"
+    )
+    path = tmp_path / item["path"]
+    payload = json.loads(path.read_text())
+    payload["closed_p0_ids"] = []
+    item["sha256"] = _write(path, payload)
+    manifest.write_text(
+        json.dumps(data, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "FAIL"
+    assert "DFM_P0_SET_INCOMPLETE" in result["reason_codes"]
