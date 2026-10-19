@@ -12,6 +12,13 @@ RESULT_SCHEMA = "ALTIUM-EQUIVALENCE-RESULT-001"
 REQUIRED_ARTIFACTS = {
     "project",
     "schematic",
+    "schematic_power_input",
+    "schematic_mcu_core",
+    "schematic_time_gnss",
+    "schematic_imu",
+    "schematic_radar_io_can",
+    "schematic_ethernet",
+    "schematic_debug_boot",
     "pcb",
     "import_package_manifest",
     "import_receipt",
@@ -48,6 +55,13 @@ REQUIRED_CHECKS = {
 EXPECTED_EXTENSIONS = {
     "project": ".PrjPcb",
     "schematic": ".SchDoc",
+    "schematic_power_input": ".SchDoc",
+    "schematic_mcu_core": ".SchDoc",
+    "schematic_time_gnss": ".SchDoc",
+    "schematic_imu": ".SchDoc",
+    "schematic_radar_io_can": ".SchDoc",
+    "schematic_ethernet": ".SchDoc",
+    "schematic_debug_boot": ".SchDoc",
     "pcb": ".PcbDoc",
 }
 
@@ -239,6 +253,13 @@ def validate_manifest(
             else:
                 for artifact_id in (
                     "schematic",
+                    "schematic_power_input",
+                    "schematic_mcu_core",
+                    "schematic_time_gnss",
+                    "schematic_imu",
+                    "schematic_radar_io_can",
+                    "schematic_ethernet",
+                    "schematic_debug_boot",
                     "pcb",
                     "import_log",
                 ):
