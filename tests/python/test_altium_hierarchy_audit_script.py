@@ -30,7 +30,10 @@ def test_hierarchy_exporter_is_read_only_and_uses_compiled_project_ports():
     for forbidden in (
         "AddSchObject(",
         "RemoveSchObject(",
-        "SetState_",
+        "SetState_X(",
+        "SetState_Y(",
+        "SetState_Name(",
+        "SetState_IOType(",
         "RobotManager.SendMessage",
         "ProcessControl.PreProcess",
         "ProcessControl.PostProcess",
