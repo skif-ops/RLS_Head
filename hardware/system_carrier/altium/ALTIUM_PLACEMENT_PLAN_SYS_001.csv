@@ -1,0 +1,8 @@
+zone_id,domain,primary_refs,placement_intent,criticality
+ZONE_PWR,POWER,U5;U6;U7;L1;C1;C2;C3;C4;C6D;C7D,Group near 12V entry with compact buck/eFuse loops and short high-current paths,P0
+ZONE_MCU,MCU,U1;FB1;C10;C11;C12;C13;C14;Y1,Central digital control zone with decoupling at pins and analog filter adjacent,P0
+ZONE_GNSS,GNSS,U8;J8;D8;L80;R80;C82,Board-edge RF zone isolated from buck clock and Ethernet with shortest UFL-ESD-U8 path,P0
+ZONE_ETH,ETHERNET,U3;Y2;D3;J6;R60;R61;R62;R63;R64,Board-edge Ethernet zone with PHY-ESD-MagJack ordering and short MDI path,P0
+ZONE_CAN,RADAR_IO_CAN,U4;D4;J4;J5;R40;R41;R42,Board-edge radar interface zone with ESD next to connector and short protected 12V path,P0
+ZONE_IMU,IMU,U2;C20;C21;C22,Rigid mechanical region away from buck inductor connectors and board flex,P1
+ZONE_DEBUG,DEBUG,J10;SW1;R70,Accessible board-edge service zone without enclosure conflict,P1
