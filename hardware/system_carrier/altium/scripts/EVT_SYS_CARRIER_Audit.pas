@@ -12,6 +12,14 @@ Begin
     Result := '"' + S + '"';
 End;
 
+Function BoolText(B : Boolean) : String;
+Begin
+    If B Then
+        Result := 'true'
+    Else
+        Result := 'false';
+End;
+
 Function RuleKindToString(ARuleKind : TRuleKind) : String;
 Begin
     Result := IntToStr(Ord(ARuleKind));
@@ -109,7 +117,7 @@ Var
     Rpt      : TStringList;
 Begin
     Rpt := TStringList.Create;
-    Rpt.Add('rule_name,rule_kind,unique_id');
+    Rpt.Add('rule_name,rule_kind,unique_id,scope_1,scope_2,drc_enabled');
 
     Iterator := Board.BoardIterator_Create;
     Iterator.AddFilter_ObjectSet(MkSet(eRuleObject));
@@ -122,7 +130,10 @@ Begin
         Rpt.Add(
             CsvQuote(Rule.Name) + ',' +
             CsvQuote(RuleKindToString(Rule.RuleKind)) + ',' +
-            CsvQuote(Rule.UniqueId)
+            CsvQuote(Rule.UniqueId) + ',' +
+            CsvQuote(Rule.Scope1Expression) + ',' +
+            CsvQuote(Rule.Scope2Expression) + ',' +
+            CsvQuote(BoolText(Rule.DRCEnabled))
         );
         Rule := Iterator.NextPCBObject;
     End;
