@@ -23,6 +23,7 @@ MANIFEST_REL = EQUIV_REL / "manifest.json"
 GATE_RESULT_REL = EQUIV_REL / "altium_equivalence_result.json"
 NATIVE_STATUS_REL = ALTIUM_REL / "ALTIUM_NATIVE_STATUS_SYS_001.json"
 IMPLEMENTATION_STATUS_REL = ALTIUM_REL / "ALTIUM_STATUS_SYS_001.json"
+CAD_AUTHORITY_REL = SYSTEM_REL / "CAD_AUTHORITY_SYS_001.json"
 
 
 def sha256_file(path: Path) -> str:
@@ -141,12 +142,14 @@ def evaluate(
     committed_gate_path = root / GATE_RESULT_REL
     native_status_path = root / NATIVE_STATUS_REL
     implementation_status_path = root / IMPLEMENTATION_STATUS_REL
+    authority_path = root / CAD_AUTHORITY_REL
 
     for label, path in (
         ("manifest", manifest_path),
         ("equivalence_result", committed_gate_path),
         ("native_status", native_status_path),
         ("implementation_status", implementation_status_path),
+        ("cad_authority", authority_path),
     ):
         if not path.is_file():
             errors.append(f"missing:{label}")
@@ -155,6 +158,7 @@ def evaluate(
     committed_gate = None
     native_status = None
     implementation_status = None
+    authority = None
 
     if manifest_path.is_file():
         try:
@@ -227,6 +231,39 @@ def evaluate(
             for field, expected in expected_hashes.items():
                 if str(native_status.get(field, "")).lower() != expected:
                     errors.append(f"native_status_hash:{field}")
+
+    if authority_path.is_file():
+        try:
+            authority = read_json(authority_path)
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"cad_authority_parse:{exc}")
+        else:
+            if authority.get("native_document_status") != "NATIVE_EQUIVALENCE_PASS":
+                errors.append("cad_authority_native_status")
+            if authority.get("pcb_layout_authority") != "ALTIUM_AUTHORIZED":
+                errors.append("cad_authority_layout_authority")
+            if authority.get("production_release_authorized") is not False:
+                errors.append("cad_authority_production_authority")
+
+            expected_hashes = {
+                "native_schematic_sha256": sha256_file(schdoc),
+                "native_pcb_sha256": sha256_file(pcbdoc),
+            }
+            if committed_gate_path.is_file():
+                expected_hashes["equivalence_result_sha256"] = (
+                    sha256_file(committed_gate_path)
+                )
+            for field, expected in expected_hashes.items():
+                if str(authority.get(field, "")).lower() != expected:
+                    errors.append(f"cad_authority_hash:{field}")
+
+            routing_authority = authority.get("routing_readiness_gate")
+            if (
+                not isinstance(routing_authority, dict)
+                or routing_authority.get("current_expected_status")
+                != "READY_FOR_ROUTING"
+            ):
+                errors.append("cad_authority_routing_status")
 
     if implementation_status_path.is_file():
         try:
