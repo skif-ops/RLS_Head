@@ -234,7 +234,7 @@ def run_transition(
                 "generated_artifacts": generated,
                 "stage_results": stage_results,
                 "errors": [f"status_sync:{exc}"],
-                "production_authorized": True,
+                "production_authorized": False,
             }
         generated.extend(
             [
