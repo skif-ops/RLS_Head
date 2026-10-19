@@ -39,7 +39,7 @@ All future Gerber/ODB++/IPC-2581, NC drill, pick-and-place, assembly drawings, f
 
 `tools/altium_native_transition.py` is the preferred repository-side driver after Altium Designer has created the real native documents. It is safe to rerun: it advances only through evidence that is actually present, stops at the first missing external Altium/human step, and writes `READY_FOR_ROUTING` into the tracked status files only after `ALTIUM_EQUIVALENCE_GATE = PASS`.
 
-The driver does not synthesize `.SchDoc` / `.PcbDoc`, does not replace native Altium compile/audit exports and does not auto-sign the no-mmWave human review.
+The driver does not synthesize `.SchDoc` / `.PcbDoc`, does not replace native Altium compile/audit exports and does not auto-sign the no-mmWave human review. Native compile evidence is accepted only as `compile_report.json` generated/validated against the archived raw compile/ERC report and SHA-256-bound to the exact project and native schematic; a bare zero-count JSON is not sufficient.
 
 ## Native equivalence gate
 
