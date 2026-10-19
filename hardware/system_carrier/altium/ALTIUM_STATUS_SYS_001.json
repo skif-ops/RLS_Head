@@ -23,7 +23,9 @@
     "production_release_authorized": false,
     "evt_stackup_provisional": true,
     "impedance_start_values_ready": true,
-    "power_width_start_values_ready": true
+    "power_width_start_values_ready": true,
+    "rule_query_contract_ready": true,
+    "differential_pairs_defined": true
   },
   "blockers": [
     "Native Altium import/save of SchDoc/PcbDoc has not yet been executed in Altium Designer.",
@@ -56,5 +58,12 @@
       "3V3_TRUNK": 1.5
     },
     "production_review_required": true
+  },
+  "rule_query_status": {
+    "rules": 10,
+    "differential_pairs": 3,
+    "differential_pair_classes": 2,
+    "native_instantiation_required": true,
+    "native_drc_required": true
   }
 }

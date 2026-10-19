@@ -37,7 +37,9 @@
     "hardware/system_carrier/altium/ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_EVT_STACKUP_SYS_002.csv",
     "hardware/system_carrier/altium/ALTIUM_IMPEDANCE_START_SYS_001.csv",
-    "hardware/system_carrier/altium/ALTIUM_POWER_WIDTH_SYS_001.csv"
+    "hardware/system_carrier/altium/ALTIUM_POWER_WIDTH_SYS_001.csv",
+    "hardware/system_carrier/altium/ALTIUM_DIFF_PAIRS_SYS_001.csv",
+    "hardware/system_carrier/altium/ALTIUM_RULE_QUERY_SYS_001.csv"
   ],
   "altium_equivalence_gate": {
     "validator": "tools/altium_equivalence_gate.py",
@@ -79,5 +81,12 @@
     "copper_um": 35,
     "allowed_temp_rise_c": 10,
     "production_review_required": true
+  },
+  "altium_rule_query_contract": {
+    "status": "READY_TO_INSTANTIATE_AFTER_NATIVE_IMPORT",
+    "rule_count": 10,
+    "differential_pair_count": 3,
+    "query_language": "Altium PCB Query Language",
+    "production_drc_required": true
   }
 }

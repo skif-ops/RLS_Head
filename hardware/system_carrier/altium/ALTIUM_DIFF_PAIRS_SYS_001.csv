@@ -1,0 +1,4 @@
+pair_name,positive_net,negative_net,pair_class,status,notes
+DP_ETH_TX,ETH_TXP,ETH_TXN,DP_ETH_MDI,LOCKED,100BASE-TX transmit MDI pair
+DP_ETH_RX,ETH_RXP,ETH_RXN,DP_ETH_MDI,LOCKED,100BASE-TX receive MDI pair
+DP_CAN,RADAR_CANH,RADAR_CANL,DP_CAN,LOCKED,CAN-FD harness pair; route coupled over solid GND
