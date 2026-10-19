@@ -160,7 +160,7 @@ def test_manifest_builder_hashes_artifacts_and_marks_native_audit(tmp_path):
     assert manifest["checks"]["pinmap_equivalence"] == "PASS"
     assert manifest["checks"]["rules_equivalence"] == "PASS"
     assert manifest["checks"]["stackup_equivalence"] == "PASS"
-    assert manifest["checks"]["netlist_equivalence"] == "PENDING"
+    assert manifest["checks"]["netlist_equivalence"] == "PASS"
 
 
 def test_manifest_builder_refuses_missing_artifact(tmp_path):
