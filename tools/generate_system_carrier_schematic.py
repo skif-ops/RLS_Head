@@ -1662,9 +1662,9 @@ def normalize_local_label_junctions(
     schematic_path: Path,
     *,
     stub_lengths: tuple[float, ...] = (
-        0.635,
         1.27,
         2.54,
+        3.81,
     ),
 ) -> int:
     """Put local labels on true one-wire endpoints.
