@@ -137,7 +137,37 @@ def evaluate(
         }
 
     production_result_path = root / PRODUCTION_RESULT_REL
-    production_released = production_result_path.is_file()
+    production_result_present = production_result_path.is_file()
+    production_released = False
+    if production_result_present:
+        try:
+            production_probe = read_json(production_result_path)
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"production_result_parse:{exc}")
+        else:
+            if (
+                production_probe.get("schema")
+                != "ALTIUM-PRODUCTION-RELEASE-RESULT-001"
+            ):
+                errors.append("production_result_schema")
+            if production_probe.get("status") != "PASS":
+                errors.append("committed_production_not_pass")
+            if production_probe.get("layout_authority") != "AUTHORIZED":
+                errors.append("committed_production_layout_authority")
+            if (
+                production_probe.get("production_authority")
+                != "AUTHORIZED"
+            ):
+                errors.append("committed_production_authority")
+            production_released = (
+                production_probe.get("schema")
+                == "ALTIUM-PRODUCTION-RELEASE-RESULT-001"
+                and production_probe.get("status") == "PASS"
+                and production_probe.get("layout_authority") == "AUTHORIZED"
+                and production_probe.get("production_authority")
+                == "AUTHORIZED"
+            )
+
     phase = (
         "POST_PRODUCTION"
         if production_released
@@ -504,6 +534,7 @@ def evaluate(
         "warnings": sorted(set(warnings)),
         "native_schdoc_present": True,
         "native_pcbdoc_present": True,
+        "production_result_present": production_result_present,
         "approved_schematic_sha256": approved_schematic_hash,
         "approved_prerouting_pcb_sha256": approved_pcb_hash,
         "current_schematic_sha256": current_schematic_hash,
