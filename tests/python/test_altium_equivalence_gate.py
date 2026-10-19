@@ -216,6 +216,7 @@ def _manifest(tmp_path: Path) -> Path:
             "source_cad": "KiCad 9 retained verification baseline",
             "target_cad": "Altium Designer",
             "import_mechanism": "KiCad Importer / Import Wizard",
+            "snapshot_role": "POST_IMPORT_NATIVE_SNAPSHOT",
             "altium_version": "26.0.1",
             "importer_version": "KiCad Importer 26.0.1",
             "import_package_manifest": {
@@ -638,7 +639,9 @@ def test_native_audit_input_hash_mismatch_invalidates_gate(tmp_path):
 
 
 
-def test_import_receipt_native_hash_mismatch_invalidates_gate(tmp_path):
+def test_import_receipt_native_snapshot_may_differ_from_prerouting_files(
+    tmp_path,
+):
     manifest = _manifest(tmp_path)
     data = json.loads(manifest.read_text())
 
@@ -649,7 +652,37 @@ def test_import_receipt_native_hash_mismatch_invalidates_gate(tmp_path):
     )
     receipt_path = tmp_path / receipt_item["path"]
     receipt = json.loads(receipt_path.read_text())
-    receipt["native_artifacts"]["pcb"]["sha256"] = "0" * 64
+
+    # These are import-time snapshots. The later pre-routing SchDoc/PcbDoc
+    # may legitimately differ after applying approved native preparation.
+    receipt["native_artifacts"]["schematic"]["sha256"] = "1" * 64
+    receipt["native_artifacts"]["pcb"]["sha256"] = "2" * 64
+
+    receipt_content = json.dumps(receipt, sort_keys=True).encode()
+    receipt_path.write_bytes(receipt_content)
+    receipt_item["sha256"] = hashlib.sha256(receipt_content).hexdigest()
+    manifest.write_text(json.dumps(data, indent=2) + "\n")
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "TEST_READY"
+    assert "import_receipt_hash:schematic" not in result["errors"]
+    assert "import_receipt_hash:pcb" not in result["errors"]
+
+
+def test_import_receipt_rejects_malformed_native_snapshot_hash(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    receipt_item = next(
+        item
+        for item in data["artifacts"]
+        if item["id"] == "import_receipt"
+    )
+    receipt_path = tmp_path / receipt_item["path"]
+    receipt = json.loads(receipt_path.read_text())
+    receipt["native_artifacts"]["pcb"]["sha256"] = "not-a-sha256"
+
     receipt_content = json.dumps(receipt, sort_keys=True).encode()
     receipt_path.write_bytes(receipt_content)
     receipt_item["sha256"] = hashlib.sha256(receipt_content).hexdigest()
@@ -658,8 +691,55 @@ def test_import_receipt_native_hash_mismatch_invalidates_gate(tmp_path):
     result = validate_manifest(manifest, tmp_path)
 
     assert result["status"] == "INVALID"
-    assert "import_receipt_hash:pcb" in result["errors"]
+    assert "import_receipt_snapshot_hash:pcb" in result["errors"]
 
+
+def test_import_receipt_import_log_must_remain_exact(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    receipt_item = next(
+        item
+        for item in data["artifacts"]
+        if item["id"] == "import_receipt"
+    )
+    receipt_path = tmp_path / receipt_item["path"]
+    receipt = json.loads(receipt_path.read_text())
+    receipt["native_artifacts"]["import_log"]["sha256"] = "0" * 64
+
+    receipt_content = json.dumps(receipt, sort_keys=True).encode()
+    receipt_path.write_bytes(receipt_content)
+    receipt_item["sha256"] = hashlib.sha256(receipt_content).hexdigest()
+    manifest.write_text(json.dumps(data, indent=2) + "\n")
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert "import_receipt_hash:import_log" in result["errors"]
+
+
+def test_import_receipt_requires_snapshot_role(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    receipt_item = next(
+        item
+        for item in data["artifacts"]
+        if item["id"] == "import_receipt"
+    )
+    receipt_path = tmp_path / receipt_item["path"]
+    receipt = json.loads(receipt_path.read_text())
+    receipt.pop("snapshot_role")
+
+    receipt_content = json.dumps(receipt, sort_keys=True).encode()
+    receipt_path.write_bytes(receipt_content)
+    receipt_item["sha256"] = hashlib.sha256(receipt_content).hexdigest()
+    manifest.write_text(json.dumps(data, indent=2) + "\n")
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert "import_receipt_snapshot_role" in result["errors"]
 
 
 def test_bom_validation_input_hash_mismatch_invalidates_gate(tmp_path):
