@@ -1,0 +1,19 @@
+{
+  "schema": "ALTIUM-NO-MMWAVE-REVIEW-001",
+  "status": "PENDING",
+  "reviewer": "<REVIEWER>",
+  "no_76_81ghz_components": false,
+  "no_76_81ghz_nets": false,
+  "no_76_81ghz_routing": false,
+  "no_76_81ghz_antenna": false,
+  "input_sha256": {
+    "pcb": "<SHA256>",
+    "component_inventory": "<SHA256>",
+    "net_inventory": "<SHA256>"
+  },
+  "evidence_refs": [],
+  "notes": [
+    "Set PASS only after reviewing the exact native pre-routing System Carrier PcbDoc used for equivalence.",
+    "The board must contain no intentional 76-81 GHz components, nets, antenna geometry or mmWave implementation; later ordinary System Carrier routing is reviewed separately by DRC/SI gates."
+  ]
+}

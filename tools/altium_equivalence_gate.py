@@ -29,6 +29,10 @@ REQUIRED_ARTIFACTS = {
     "rule_inventory",
     "pad_net_inventory",
     "layer_stack_inventory",
+    "hierarchy_export",
+    "hierarchy_validation_result",
+    "no_mmwave_review",
+    "no_mmwave_review_result",
     "native_audit_result",
 }
 
@@ -510,6 +514,102 @@ def validate_manifest(
                         "footprint_report_hash:footprint_contract"
                     )
 
+    hierarchy_validation = None
+    hierarchy_path = resolved.get("hierarchy_validation_result")
+    if hierarchy_path is not None:
+        try:
+            hierarchy_validation = json.loads(
+                hierarchy_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"hierarchy_validation_parse:{exc}")
+        else:
+            if (
+                hierarchy_validation.get("schema")
+                != "ALTIUM-NATIVE-HIERARCHY-RESULT-001"
+            ):
+                errors.append("hierarchy_validation_schema")
+            if hierarchy_validation.get("status") != "PASS":
+                reasons.append("HIERARCHY_VALIDATION")
+            hashes = hierarchy_validation.get("input_sha256", {})
+            if not isinstance(hashes, dict):
+                errors.append("hierarchy_validation_input_sha256")
+            else:
+                actual_export = str(
+                    integrity.get("hierarchy_export", {}).get(
+                        "sha256_actual", ""
+                    )
+                ).lower()
+                if (
+                    str(hashes.get("hierarchy_export", "")).lower()
+                    != actual_export
+                ):
+                    errors.append(
+                        "hierarchy_validation_hash:hierarchy_export"
+                    )
+                actual_pad_inventory = str(
+                    integrity.get("pad_net_inventory", {}).get(
+                        "sha256_actual", ""
+                    )
+                ).lower()
+                if (
+                    str(hashes.get("pad_net_inventory", "")).lower()
+                    != actual_pad_inventory
+                ):
+                    errors.append(
+                        "hierarchy_validation_hash:pad_net_inventory"
+                    )
+                contract_path = (
+                    root
+                    / "hardware/system_carrier/HIERARCHY_INTERFACE_SYS_001.csv"
+                )
+                if not contract_path.is_file():
+                    errors.append("hierarchy_contract_missing")
+                elif (
+                    str(hashes.get("hierarchy_contract", "")).lower()
+                    != sha256_file(contract_path)
+                ):
+                    errors.append(
+                        "hierarchy_validation_hash:hierarchy_contract"
+                    )
+
+    no_mmwave_validation = None
+    no_mmwave_path = resolved.get("no_mmwave_review_result")
+    if no_mmwave_path is not None:
+        try:
+            no_mmwave_validation = json.loads(
+                no_mmwave_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"no_mmwave_review_parse:{exc}")
+        else:
+            if (
+                no_mmwave_validation.get("schema")
+                != "ALTIUM-NO-MMWAVE-REVIEW-RESULT-001"
+            ):
+                errors.append("no_mmwave_review_schema")
+            if no_mmwave_validation.get("status") != "PASS":
+                reasons.append("NO_MMWAVE_REVIEW")
+            hashes = no_mmwave_validation.get("input_sha256", {})
+            if not isinstance(hashes, dict):
+                errors.append("no_mmwave_review_input_sha256")
+            else:
+                for artifact_id, hash_key in (
+                    ("no_mmwave_review", "review"),
+                    ("pcb", "pcb"),
+                    ("component_inventory", "component_inventory"),
+                    ("net_inventory", "net_inventory"),
+                ):
+                    actual = str(
+                        integrity.get(artifact_id, {}).get(
+                            "sha256_actual", ""
+                        )
+                    ).lower()
+                    if str(hashes.get(hash_key, "")).lower() != actual:
+                        errors.append(
+                            f"no_mmwave_review_hash:{artifact_id}"
+                        )
+
     native_audit = None
     native_audit_path = resolved.get("native_audit_result")
     if native_audit_path is not None:
@@ -536,6 +636,8 @@ def validate_manifest(
                     "component_inventory",
                     "net_inventory",
                     "rule_inventory",
+                    "pad_net_inventory",
+                    "layer_stack_inventory",
                 ):
                     actual = str(
                         integrity.get(artifact_id, {}).get(
@@ -616,6 +718,8 @@ def validate_manifest(
         "connector_validation": connector_validation,
         "netlist_validation": netlist_validation,
         "footprint_validation": footprint_validation,
+        "hierarchy_validation": hierarchy_validation,
+        "no_mmwave_validation": no_mmwave_validation,
         "compile": compile_result,
         "native_audit": native_audit,
         "checks": checks,

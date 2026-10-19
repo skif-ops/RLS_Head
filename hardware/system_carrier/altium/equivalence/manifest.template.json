@@ -104,6 +104,26 @@
       "sha256": "<SHA256>"
     },
     {
+      "id": "hierarchy_export",
+      "path": "hardware/system_carrier/altium/equivalence/hierarchy_export.csv",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "hierarchy_validation_result",
+      "path": "hardware/system_carrier/altium/equivalence/hierarchy_validation_result.json",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "no_mmwave_review",
+      "path": "hardware/system_carrier/altium/equivalence/no_mmwave_review.json",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "no_mmwave_review_result",
+      "path": "hardware/system_carrier/altium/equivalence/no_mmwave_review_result.json",
+      "sha256": "<SHA256>"
+    },
+    {
       "id": "native_audit_result",
       "path": "hardware/system_carrier/altium/equivalence/native_audit_result.json",
       "sha256": "<SHA256>"
