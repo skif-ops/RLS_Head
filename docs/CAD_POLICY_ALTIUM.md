@@ -49,3 +49,7 @@ Until this gate passes, the Altium project is the **target CAD**, while the ERC-
 ## Future boards
 
 The same policy applies to every new PCB added to this repository: start the PCB implementation in Altium Designer. KiCad may be retained for independent verification, conversion provenance or historical recovery, but it is not to replace the Altium primary source once the native Altium gate is passed.
+
+## Pre-layout mechanical status
+
+System Carrier Rev.A currently uses a 100 x 80 x 1.6 mm `EVT_PROVISIONAL` envelope for Altium placement/routing preparation. Native placement may begin only after the Altium equivalence gate passes. Production release additionally requires enclosure/mechanical freeze; the provisional envelope must not be interpreted as that freeze.
