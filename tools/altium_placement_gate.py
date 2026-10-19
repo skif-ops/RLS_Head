@@ -111,11 +111,22 @@ def validate(system_root: str | Path) -> dict:
         ),
         None,
     )
-    edge_limit = (
-        parse_float(edge_rule["diameter_mm"], field="edge limit")
-        if edge_rule is not None
-        else 10.16
-    )
+    if edge_rule is None:
+        edge_limit = 10.16
+    else:
+        edge_value = next(
+            (
+                str(edge_rule.get(field, "")).strip()
+                for field in ("width_mm", "height_mm", "diameter_mm")
+                if str(edge_rule.get(field, "")).strip()
+            ),
+            "",
+        )
+        edge_limit = (
+            parse_float(edge_value, field="edge limit")
+            if edge_value
+            else 10.16
+        )
 
     placement: dict[str, dict] = {}
     hard_positions: dict[tuple[float, float], str] = {}
