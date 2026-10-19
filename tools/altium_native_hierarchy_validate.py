@@ -39,17 +39,15 @@ def normalize_pin_type(value: object) -> str:
         "bi_directional": "bidirectional",
         "bidirectional": "bidirectional",
         "passive": "passive",
-        "unspecified": "unspecified",
+        "unspecified": "passive",
     }
     return aliases.get(text, text)
 
 
-def row_key(row: dict[str, str]) -> tuple[str, str, str, str]:
+def row_key(row: dict[str, str]) -> tuple[str, str]:
     return (
         clean(row.get("sheet")).upper(),
         clean(row.get("net_name")),
-        clean(row.get("anchor_ref")),
-        clean(row.get("anchor_pin")),
     )
 
 
@@ -57,9 +55,11 @@ def validate(
     *,
     system_root: str | Path,
     hierarchy_export: str | Path,
+    pad_net_inventory: str | Path,
 ) -> dict:
     system = Path(system_root)
     export_path = Path(hierarchy_export)
+    pad_path = Path(pad_net_inventory)
     contract_path = system / "HIERARCHY_INTERFACE_SYS_001.csv"
 
     errors: list[str] = []
@@ -68,6 +68,7 @@ def validate(
     for path, label in (
         (contract_path, "hierarchy_contract"),
         (export_path, "hierarchy_export"),
+        (pad_path, "pad_net_inventory"),
     ):
         if not path.is_file():
             errors.append(f"missing:{label}")
@@ -83,8 +84,8 @@ def validate(
     expected_rows = read_csv(contract_path)
     actual_rows = read_csv(export_path)
 
-    expected: dict[tuple[str, str, str, str], dict[str, str]] = {}
-    actual: dict[tuple[str, str, str, str], dict[str, str]] = {}
+    expected: dict[tuple[str, str], dict[str, str]] = {}
+    actual: dict[tuple[str, str], dict[str, str]] = {}
     duplicates: list[str] = []
 
     for row in expected_rows:
@@ -138,6 +139,33 @@ def validate(
             "pin_type_mismatch:" + ",".join(type_mismatches)
         )
 
+    pad_rows = read_csv(pad_path)
+    pad_map = {
+        (
+            clean(row.get("designator")),
+            clean(row.get("pad_name")),
+        ): clean(row.get("net_name"))
+        for row in pad_rows
+        if clean(row.get("designator")) and clean(row.get("pad_name"))
+    }
+
+    anchor_mismatches: list[str] = []
+    for key, row in expected.items():
+        ref = clean(row.get("anchor_ref"))
+        pin = clean(row.get("anchor_pin"))
+        expected_net = clean(row.get("net_name"))
+        actual_net = pad_map.get((ref, pin), "")
+        if actual_net != expected_net:
+            anchor_mismatches.append(
+                f"{ref}.{pin}:{expected_net}!={actual_net or 'MISSING'}"
+            )
+
+    if anchor_mismatches:
+        errors.append(
+            "anchor_net_mismatch:"
+            + ",".join(sorted(anchor_mismatches))
+        )
+
     status = "PASS" if not errors else "FAIL"
     return {
         "schema": SCHEMA,
@@ -149,6 +177,7 @@ def validate(
         "input_sha256": {
             "hierarchy_contract": sha256_file(contract_path),
             "hierarchy_export": sha256_file(export_path),
+            "pad_net_inventory": sha256_file(pad_path),
         },
         "verified_checks": {
             "hierarchy_equivalence": status,
@@ -170,12 +199,14 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--system-root", required=True)
     parser.add_argument("--hierarchy-export", required=True)
+    parser.add_argument("--pad-net-inventory", required=True)
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
 
     result = validate(
         system_root=args.system_root,
         hierarchy_export=args.hierarchy_export,
+        pad_net_inventory=args.pad_net_inventory,
     )
     Path(args.output).write_text(
         json.dumps(result, indent=2, sort_keys=True) + "\n",
