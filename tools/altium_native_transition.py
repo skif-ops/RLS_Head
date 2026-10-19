@@ -5,6 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 
+from tools.altium_compile_evidence import validate as validate_compile_evidence
 from tools.altium_equivalence_gate import validate_manifest as validate_gate
 from tools.altium_equivalence_manifest import build_manifest
 from tools.altium_native_audit_validate import validate as validate_audit
@@ -34,6 +35,7 @@ PATHS = {
     "package_manifest": EQUIV_REL / "import_package_manifest.json",
     "import_log": EQUIV_REL / "import_log.txt",
     "import_receipt": EQUIV_REL / "import_receipt.json",
+    "compile_report_raw": EQUIV_REL / "compile_report_raw.txt",
     "compile_report": EQUIV_REL / "compile_report.json",
     "bom_export": EQUIV_REL / "bom_export.csv",
     "bom_result": EQUIV_REL / "bom_validation_result.json",
@@ -362,25 +364,34 @@ def run_transition(
                 errors=receipt.get("errors", ["import_receipt_not_pass"]),
             )
 
-    if not _absolute(root, "compile_report").is_file():
+    missing_compile = _missing(
+        root,
+        ("compile_report_raw", "compile_report"),
+    )
+    if missing_compile:
         return _result(
             status="WAITING_COMPILE_REPORT",
-            next_action="EXPORT_ZERO_ERROR_ZERO_WARNING_ALTIUM_COMPILE_REPORT",
+            next_action="EXPORT_AND_BIND_ZERO_ERROR_ZERO_WARNING_ALTIUM_COMPILE_REPORT",
             generated=generated,
             stage_results=stage_results,
-            missing=["compile_report"],
+            missing=missing_compile,
         )
 
-    compile_ok, compile_errors = _compile_report_ok(
-        _absolute(root, "compile_report")
+    compile_validation = validate_compile_evidence(
+        compile_report=_absolute(root, "compile_report"),
+        repository_root=root,
     )
-    if not compile_ok:
+    stage_results["compile_evidence"] = compile_validation
+    if compile_validation.get("status") != "PASS":
         return _result(
             status="BLOCKED_COMPILE_REPORT",
-            next_action="FIX_NATIVE_ALTIUM_COMPILE",
+            next_action="FIX_NATIVE_ALTIUM_COMPILE_OR_EVIDENCE_BINDING",
             generated=generated,
             stage_results=stage_results,
-            errors=compile_errors,
+            errors=(
+                list(compile_validation.get("errors", []))
+                + list(compile_validation.get("reason_codes", []))
+            ),
         )
 
     raw_audit_keys = (
