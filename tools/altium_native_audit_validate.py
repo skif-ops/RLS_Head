@@ -9,6 +9,10 @@ from pathlib import Path
 
 SCHEMA = "ALTIUM-NATIVE-AUDIT-RESULT-001"
 
+RULE_KIND_ALIASES = {
+    "DifferentialPairRouting": "DiffPairsRouting",
+}
+
 
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
@@ -26,6 +30,10 @@ def read_csv(path: Path) -> list[dict[str, str]]:
         return list(reader)
 
 
+def _clean(value: object) -> str:
+    return str(value or "").strip()
+
+
 def validate(
     *,
     system_root: str | Path,
@@ -34,14 +42,18 @@ def validate(
     system = Path(system_root)
     audit = Path(audit_dir)
 
-    component_path = audit / "component_inventory.csv"
-    net_path = audit / "net_inventory.csv"
-    rule_path = audit / "rule_inventory.csv"
+    paths = {
+        "component_inventory": audit / "component_inventory.csv",
+        "net_inventory": audit / "net_inventory.csv",
+        "rule_inventory": audit / "rule_inventory.csv",
+        "pad_net_inventory": audit / "pad_net_inventory.csv",
+        "layer_stack_inventory": audit / "layer_stack_inventory.csv",
+    }
 
     errors: list[str] = []
     warnings: list[str] = []
 
-    for path in (component_path, net_path, rule_path):
+    for artifact_id, path in paths.items():
         if not path.is_file():
             errors.append(f"missing:{path.name}")
 
@@ -49,24 +61,25 @@ def validate(
         return {
             "schema": SCHEMA,
             "status": "FAIL",
-            "errors": errors,
+            "errors": sorted(errors),
             "warnings": warnings,
         }
 
-    components = read_csv(component_path)
-    nets = read_csv(net_path)
-    rules = read_csv(rule_path)
+    components = read_csv(paths["component_inventory"])
+    nets = read_csv(paths["net_inventory"])
+    rules = read_csv(paths["rule_inventory"])
+    pad_nets = read_csv(paths["pad_net_inventory"])
+    layer_stack = read_csv(paths["layer_stack_inventory"])
 
     input_sha256 = {
-        "component_inventory": sha256_file(component_path),
-        "net_inventory": sha256_file(net_path),
-        "rule_inventory": sha256_file(rule_path),
+        artifact_id: sha256_file(path)
+        for artifact_id, path in paths.items()
     }
 
     component_refs = {
-        str(row.get("designator", "")).strip()
+        _clean(row.get("designator"))
         for row in components
-        if str(row.get("designator", "")).strip()
+        if _clean(row.get("designator"))
     }
 
     with (
@@ -75,9 +88,9 @@ def validate(
         bom_rows = list(csv.DictReader(handle))
 
     expected_refs = {
-        str(row.get("ref", "")).strip()
+        _clean(row.get("ref"))
         for row in bom_rows
-        if str(row.get("ref", "")).strip()
+        if _clean(row.get("ref"))
     }
 
     missing_refs = sorted(expected_refs - component_refs)
@@ -89,10 +102,10 @@ def validate(
         warnings.append("extra_components:" + ",".join(extra_refs))
 
     blank_patterns = sorted(
-        str(row.get("designator", "")).strip()
+        _clean(row.get("designator"))
         for row in components
-        if str(row.get("designator", "")).strip()
-        and not str(row.get("pattern", "")).strip()
+        if _clean(row.get("designator"))
+        and not _clean(row.get("pattern"))
     )
     if blank_patterns:
         errors.append(
@@ -100,9 +113,9 @@ def validate(
         )
 
     actual_nets = {
-        str(row.get("net_name", "")).strip()
+        _clean(row.get("net_name"))
         for row in nets
-        if str(row.get("net_name", "")).strip()
+        if _clean(row.get("net_name"))
     }
 
     with (
@@ -111,20 +124,20 @@ def validate(
         net_rows = list(csv.DictReader(handle))
 
     required_nets = {
-        str(row.get("net_name", "")).strip()
+        _clean(row.get("net_name"))
         for row in net_rows
-        if str(row.get("net_name", "")).strip()
-        and str(row.get("criticality", "")).strip() in {"P0", "P1"}
+        if _clean(row.get("net_name"))
+        and _clean(row.get("criticality")) in {"P0", "P1"}
     }
 
     missing_nets = sorted(required_nets - actual_nets)
     if missing_nets:
         errors.append("missing_p0_p1_nets:" + ",".join(missing_nets))
 
-    actual_rule_names = {
-        str(row.get("rule_name", "")).strip()
+    actual_rules = {
+        _clean(row.get("rule_name")): _clean(row.get("rule_kind"))
         for row in rules
-        if str(row.get("rule_name", "")).strip()
+        if _clean(row.get("rule_name"))
     }
 
     with (
@@ -132,15 +145,134 @@ def validate(
     ).open("r", encoding="utf-8", newline="") as handle:
         rule_rows = list(csv.DictReader(handle))
 
-    required_rule_names = {
-        str(row.get("rule_name", "")).strip()
-        for row in rule_rows
-        if str(row.get("rule_name", "")).strip()
-    }
+    missing_rules: list[str] = []
+    wrong_rule_kinds: list[str] = []
+    for row in rule_rows:
+        name = _clean(row.get("rule_name"))
+        if not name:
+            continue
+        expected_kind = RULE_KIND_ALIASES.get(
+            _clean(row.get("rule_family")),
+            _clean(row.get("rule_family")),
+        )
+        if name not in actual_rules:
+            missing_rules.append(name)
+        elif actual_rules[name] != expected_kind:
+            wrong_rule_kinds.append(
+                f"{name}:{expected_kind}!={actual_rules[name]}"
+            )
 
-    missing_rules = sorted(required_rule_names - actual_rule_names)
     if missing_rules:
-        errors.append("missing_rules:" + ",".join(missing_rules))
+        errors.append("missing_rules:" + ",".join(sorted(missing_rules)))
+    if wrong_rule_kinds:
+        errors.append(
+            "rule_kind_mismatch:" + ",".join(sorted(wrong_rule_kinds))
+        )
+
+    pad_map: dict[tuple[str, str], str] = {}
+    duplicate_pads: list[str] = []
+    for row in pad_nets:
+        designator = _clean(row.get("designator"))
+        pad_name = _clean(row.get("pad_name"))
+        net_name = _clean(row.get("net_name"))
+        if not designator or not pad_name:
+            continue
+        key = (designator, pad_name)
+        previous = pad_map.get(key)
+        if previous is not None and previous != net_name:
+            duplicate_pads.append(
+                f"{designator}.{pad_name}:{previous}|{net_name}"
+            )
+        pad_map[key] = net_name
+
+    if duplicate_pads:
+        errors.append(
+            "conflicting_pad_records:"
+            + ",".join(sorted(duplicate_pads))
+        )
+
+    with (
+        system / "PINMAP_SYS_001.csv"
+    ).open("r", encoding="utf-8", newline="") as handle:
+        pinmap_rows = list(csv.DictReader(handle))
+
+    pinmap_mismatches: list[str] = []
+    pinmap_checked = 0
+    for row in pinmap_rows:
+        pin = _clean(row.get("physical_pin"))
+        expected_net = _clean(row.get("net_name"))
+        if not pin or not expected_net:
+            continue
+        pinmap_checked += 1
+        actual_net = pad_map.get(("U1", pin), "")
+        if actual_net != expected_net:
+            pinmap_mismatches.append(
+                f"U1.{pin}:{expected_net}!={actual_net or 'MISSING'}"
+            )
+
+    if pinmap_mismatches:
+        errors.append(
+            "pinmap_net_mismatch:"
+            + ",".join(sorted(pinmap_mismatches))
+        )
+
+    with (
+        system / "SYMBOL_PIN_CONTRACT_SYS_001.csv"
+    ).open("r", encoding="utf-8", newline="") as handle:
+        symbol_pin_rows = list(csv.DictReader(handle))
+
+    symbol_pin_mismatches: list[str] = []
+    symbol_pin_checked = 0
+    for row in symbol_pin_rows:
+        if _clean(row.get("policy")) != "CONNECT":
+            continue
+        ref = _clean(row.get("ref"))
+        pin = _clean(row.get("pin_number"))
+        expected_net = _clean(row.get("connection"))
+        if not ref or not pin or not expected_net:
+            continue
+        symbol_pin_checked += 1
+        actual_net = pad_map.get((ref, pin), "")
+        if actual_net != expected_net:
+            symbol_pin_mismatches.append(
+                f"{ref}.{pin}:{expected_net}!={actual_net or 'MISSING'}"
+            )
+
+    if symbol_pin_mismatches:
+        errors.append(
+            "symbol_pin_net_mismatch:"
+            + ",".join(sorted(symbol_pin_mismatches))
+        )
+
+    with (
+        system / "altium" / "ALTIUM_LAYER_STACK_SYS_001.csv"
+    ).open("r", encoding="utf-8", newline="") as handle:
+        expected_layer_rows = list(csv.DictReader(handle))
+
+    expected_layers = [
+        _clean(row.get("altium_layer"))
+        for row in sorted(
+            expected_layer_rows,
+            key=lambda row: int(_clean(row.get("order")) or "0"),
+        )
+        if _clean(row.get("altium_layer"))
+    ]
+    actual_layers = [
+        _clean(row.get("layer_name"))
+        for row in sorted(
+            layer_stack,
+            key=lambda row: int(_clean(row.get("order")) or "0"),
+        )
+        if _clean(row.get("layer_name"))
+    ]
+
+    if actual_layers != expected_layers:
+        errors.append(
+            "layer_stack_mismatch:"
+            + "|".join(expected_layers)
+            + "!="
+            + "|".join(actual_layers)
+        )
 
     return {
         "schema": SCHEMA,
@@ -151,17 +283,27 @@ def validate(
         "expected_component_count": len(expected_refs),
         "net_count": len(actual_nets),
         "required_p0_p1_net_count": len(required_nets),
-        "rule_count": len(actual_rule_names),
-        "required_rule_count": len(required_rule_names),
+        "rule_count": len(actual_rules),
+        "required_rule_count": len(rule_rows),
+        "pad_record_count": len(pad_map),
+        "pinmap_checked_count": pinmap_checked,
+        "symbol_pin_checked_count": symbol_pin_checked,
+        "layer_stack_count": len(actual_layers),
+        "expected_layer_stack_count": len(expected_layers),
         "input_sha256": input_sha256,
         "notes": [
             (
-                "PASS is a native PCB inventory cross-check only; the "
-                "full ALTIUM_EQUIVALENCE_GATE still controls layout authority."
+                "PASS cross-checks native components, P0/P1 net names, "
+                "rule names/families, MCU pin-to-net assignments, direct "
+                "symbol pin contracts and the four-layer copper stack."
             ),
             (
-                "Footprint pattern non-empty is checked here; exact footprint "
-                "equivalence remains controlled by the dedicated footprint report."
+                "Exact footprint equivalence, hierarchy/port semantics, "
+                "connector aggregate semantics and full rule scope/value "
+                "equivalence remain controlled by dedicated evidence."
+            ),
+            (
+                "The full ALTIUM_EQUIVALENCE_GATE still controls layout authority."
             ),
         ],
     }
