@@ -56,9 +56,12 @@ def evaluate(
     routing = None
 
     if generated_dir is not None:
+        generated_path = Path(generated_dir)
+        if not generated_path.is_absolute():
+            generated_path = root / generated_path
         routing = validate_routing(
             system_root=system,
-            generated_dir=generated_dir,
+            generated_dir=generated_path,
         )
 
     if not sch_present and not pcb_present:
