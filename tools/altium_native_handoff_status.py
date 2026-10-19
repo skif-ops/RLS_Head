@@ -58,6 +58,11 @@ def evaluate(repository_root: str | Path = ".") -> dict:
         evidence["schematic"]["present"]
         and evidence["pcb"]["present"]
     )
+    provenance_ready = (
+        evidence["import_package_manifest"]["present"]
+        and evidence["import_receipt"]["present"]
+        and evidence["import_log"]["present"]
+    )
     audit_ready = (
         evidence["component_inventory"]["present"]
         and evidence["net_inventory"]["present"]
@@ -71,6 +76,9 @@ def evaluate(repository_root: str | Path = ".") -> dict:
     if not native_ready:
         status = "WAITING_NATIVE_IMPORT"
         next_action = "CREATE_AND_SAVE_NATIVE_SCHDOC_PCBDOC_IN_ALTIUM"
+    elif not provenance_ready:
+        status = "WAITING_IMPORT_PROVENANCE"
+        next_action = "CAPTURE_IMPORT_PACKAGE_LOG_AND_RECEIPT"
     elif not audit_ready:
         status = "WAITING_NATIVE_AUDIT"
         next_action = "RUN_EVT_SYS_CARRIER_AUDIT_IN_ALTIUM"
@@ -86,6 +94,7 @@ def evaluate(repository_root: str | Path = ".") -> dict:
         "status": status,
         "next_action": next_action,
         "native_files_ready": native_ready,
+        "import_provenance_ready": provenance_ready,
         "native_audit_ready": audit_ready,
         "equivalence_evidence_complete": equivalence_ready,
         "missing_artifacts": sorted(missing),
