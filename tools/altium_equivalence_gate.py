@@ -68,6 +68,25 @@ CANONICAL_ARTIFACT_PATHS = {
     "pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
 }
 
+IMPORT_SNAPSHOT_PATHS = {
+    "schematic": CANONICAL_ARTIFACT_PATHS["schematic"],
+    "pcb": CANONICAL_ARTIFACT_PATHS["pcb"],
+    "import_log": (
+        "hardware/system_carrier/altium/equivalence/import_log.txt"
+    ),
+}
+
+
+def valid_sha256(value: object) -> bool:
+    text = str(value or "").strip().lower()
+    if len(text) != 64:
+        return False
+    try:
+        int(text, 16)
+    except ValueError:
+        return False
+    return True
+
 
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
@@ -234,6 +253,11 @@ def validate_manifest(
                 errors.append("import_receipt_schema")
             if import_receipt.get("status") != "PASS":
                 reasons.append("IMPORT_RECEIPT")
+            if (
+                import_receipt.get("snapshot_role")
+                != "POST_IMPORT_NATIVE_SNAPSHOT"
+            ):
+                errors.append("import_receipt_snapshot_role")
             if not str(import_receipt.get("altium_version", "")).strip():
                 errors.append("import_receipt_altium_version")
             if not str(import_receipt.get("importer_version", "")).strip():
@@ -268,21 +292,46 @@ def validate_manifest(
                     "import_log",
                 ):
                     record = native_records.get(artifact_id)
-                    claimed = (
-                        str(record.get("sha256", "")).lower()
-                        if isinstance(record, dict)
-                        else ""
-                    )
-                    actual = str(
-                        integrity.get(artifact_id, {}).get(
-                            "sha256_actual",
-                            "",
-                        )
-                    ).lower()
-                    if not actual or claimed != actual:
+                    if not isinstance(record, dict):
                         errors.append(
-                            f"import_receipt_hash:{artifact_id}"
+                            f"import_receipt_snapshot_record:{artifact_id}"
                         )
+                        continue
+
+                    expected_snapshot_path = IMPORT_SNAPSHOT_PATHS[
+                        artifact_id
+                    ]
+                    if (
+                        str(record.get("path", "")).strip()
+                        != expected_snapshot_path
+                    ):
+                        errors.append(
+                            f"import_receipt_snapshot_path:{artifact_id}"
+                        )
+
+                    claimed = str(
+                        record.get("sha256", "")
+                    ).strip().lower()
+                    if not valid_sha256(claimed):
+                        errors.append(
+                            f"import_receipt_snapshot_hash:{artifact_id}"
+                        )
+
+                    # Import-time SchDoc/PcbDoc hashes are provenance of the
+                    # immediate Import Wizard output. They are intentionally
+                    # allowed to differ from the later prepared pre-routing
+                    # snapshot, which is bound by native_file_preflight and
+                    # the equivalence manifest. The import log itself must
+                    # remain immutable and is therefore checked exactly.
+                    if artifact_id == "import_log":
+                        actual = str(
+                            integrity.get("import_log", {}).get(
+                                "sha256_actual",
+                                "",
+                            )
+                        ).lower()
+                        if not actual or claimed != actual:
+                            errors.append("import_receipt_hash:import_log")
 
             if import_package is not None:
                 receipt_source = str(
