@@ -50,6 +50,19 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
     gerber.write_bytes(b"GERBER_X2")
     gerber_hash = hashlib.sha256(gerber.read_bytes()).hexdigest()
 
+    native_schematic = (
+        tmp_path
+        / "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc"
+    )
+    native_schematic.parent.mkdir(parents=True, exist_ok=True)
+    native_schematic.write_bytes(b"EQUIVALENCE_APPROVED_SCH")
+    native_schematic_hash = hashlib.sha256(
+        native_schematic.read_bytes()
+    ).hexdigest()
+    native_schematic_relative = (
+        "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc"
+    )
+
     native_pcb = (
         tmp_path
         / "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
@@ -86,6 +99,12 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
                 "layout_authority": "AUTHORIZED",
                 "production_authority": "NOT_AUTHORIZED",
                 "preserve_kicad": True,
+                "integrity": {
+                    "schematic": {
+                        "path": native_schematic_relative,
+                        "sha256_actual": native_schematic_hash,
+                    }
+                },
             },
         ),
         "native_drc_result": (
@@ -187,6 +206,11 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
     }
 
     artifacts = [
+        {
+            "id": "native_schematic",
+            "path": native_schematic_relative,
+            "sha256": native_schematic_hash,
+        },
         {
             "id": "native_pcb",
             "path": native_pcb_relative,
@@ -447,3 +471,43 @@ def test_noncanonical_native_pcb_artifact_path_is_rejected(tmp_path):
 
     assert result["status"] == "INVALID"
     assert "native_pcb_canonical_path" in result["errors"]
+
+
+
+def test_changed_native_schematic_blocks_production_release(tmp_path):
+    manifest = _fixture(tmp_path)
+    schematic = (
+        tmp_path
+        / "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc"
+    )
+    schematic.write_bytes(b"CHANGED_AFTER_EQUIVALENCE")
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert "hash_mismatch:native_schematic" in result["errors"]
+
+
+def test_equivalence_result_with_different_schematic_hash_blocks_release(
+    tmp_path,
+):
+    manifest = _fixture(tmp_path)
+    data = json.loads(manifest.read_text())
+    item = next(
+        artifact
+        for artifact in data["artifacts"]
+        if artifact["id"] == "equivalence_result"
+    )
+    path = tmp_path / item["path"]
+    payload = json.loads(path.read_text())
+    payload["integrity"]["schematic"]["sha256_actual"] = "0" * 64
+    item["sha256"] = _write(path, payload)
+    manifest.write_text(
+        json.dumps(data, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert "equivalence_schematic_hash_mismatch" in result["errors"]
