@@ -37,7 +37,7 @@ All must be PASS:
 3. Connector pinout equivalence, machine-validated through the logical-to-native connector map and native pad/net inventory.
 4. Full PCB connectivity equivalence, machine-validated as physical endpoint partitions against the retained KiCad CI baseline.
 5. Footprint equivalence, machine-validated from native `IPCB_Component.Pattern` inventory against `FOOTPRINT_ASSIGNMENT_SYS_002.csv`.
-6. Hierarchy/port equivalence from compiled native hierarchy export.
+6. Hierarchy/port equivalence from compiled native hierarchy export, with each contract anchor ref/pin independently checked against native pad-to-net evidence.
 7. Altium PCB-rule equivalence: all 10 instantiated rule-query rules must have the required family, scope and enabled state; the 24-row layout constraint contract remains the broader design-policy source.
 8. Four-layer stack equivalence.
 9. PcbDoc-bound human review confirming no 76–81 GHz components, nets, routing or antenna on the System Carrier.
