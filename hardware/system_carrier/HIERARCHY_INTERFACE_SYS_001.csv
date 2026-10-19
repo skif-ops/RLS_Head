@@ -1,6 +1,6 @@
 sheet,net_name,pin_type,anchor_ref,anchor_pin,criticality,notes
 POWER_INPUT,3V3,output,L1,2,P0,Carrier 3V3 source
-POWER_INPUT,RADAR_12V,output,J2,1,P0,Protected radar supply
+POWER_INPUT,RADAR_12V,output,U7,6,P0,Protected radar supply from eFuse output
 POWER_INPUT,SYS_EFUSE_FLT,output,U6,4,P0,System eFuse fault
 POWER_INPUT,RADAR_EFUSE_FLT,output,U7,4,P0,Radar eFuse fault
 POWER_INPUT,GND,passive,J1,2,P0,Power return
