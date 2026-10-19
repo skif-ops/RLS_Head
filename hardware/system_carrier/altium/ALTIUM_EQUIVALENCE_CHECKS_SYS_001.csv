@@ -9,3 +9,4 @@ EQ-007,altium/ALTIUM_RULES_SYS_001.csv,equivalence/compile_report.json,All 24 ma
 EQ-008,altium/ALTIUM_LAYER_STACK_SYS_001.csv,equivalence/compile_report.json,Four-layer stack roles match L1/L2/L3/L4 contract,P0
 EQ-009,PCB_LAYOUT_CONSTRAINTS_SYS_001.csv,equivalence/compile_report.json,No 76-81GHz RF routing or antenna is present on System Carrier,P0
 EQ-010,Review A evidence,equivalence/compile_report.json,Altium compile reports zero errors and zero warnings,P0
+EQ-011,"BOM_SYS_CARRIER_LAYOUT_004.csv;NETLIST_SYS_001.csv;altium/ALTIUM_RULE_QUERY_SYS_001.csv",equivalence/native_audit_result.json,Native component net and rule inventory audit returns PASS,P0
