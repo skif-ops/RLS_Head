@@ -46,6 +46,12 @@ The Review A policy remains strict:
 The validator parses `sheets[].violations[]` itself; a successful
 `kicad-cli` process is not equivalent to Review A PASS.
 
+## Altium transition after electrical capture
+
+The ERC-clean KiCad schematic remains the Review A electrical comparison baseline. PCB implementation now targets Altium Designer as defined by `docs/CAD_POLICY_ALTIUM.md` and `hardware/system_carrier/CAD_AUTHORITY_SYS_001.json`.
+
+Native Altium `SchDoc` / `PcbDoc` files must pass the Altium equivalence gate before they become authoritative for PCB implementation. The retained KiCad source is not deleted after conversion.
+
 ## Review A P0 audits
 
 All must be explicitly PASS in the real manifest:
