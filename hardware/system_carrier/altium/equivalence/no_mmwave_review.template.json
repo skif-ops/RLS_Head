@@ -13,6 +13,7 @@
   },
   "evidence_refs": [],
   "notes": [
-    "Set PASS only after reviewing the exact native System Carrier PcbDoc; 76-81 GHz RF routing/antenna belongs outside this board."
+    "Set PASS only after reviewing the exact native pre-routing System Carrier PcbDoc used for equivalence.",
+    "The board must contain no intentional 76-81 GHz components, nets, antenna geometry or mmWave implementation; later ordinary System Carrier routing is reviewed separately by DRC/SI gates."
   ]
 }
