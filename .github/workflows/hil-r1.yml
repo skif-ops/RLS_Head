@@ -328,6 +328,8 @@ jobs:
           assert data["release_checklist_count"] == 18
           assert data["board_planning_count"] == 8
           assert data["dfm_profile_count"] == 10
+          assert data["implementation_step_count"] == 14
+          assert data["altium_phase"] == "IMPORT_PREPARED"
           print("Altium primary CAD policy PASS")
           PY
 
