@@ -44,6 +44,21 @@
       "sha256": "<SHA256>"
     },
     {
+      "id": "component_inventory",
+      "path": "hardware/system_carrier/altium/equivalence/component_inventory.csv",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "net_inventory",
+      "path": "hardware/system_carrier/altium/equivalence/net_inventory.csv",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "rule_inventory",
+      "path": "hardware/system_carrier/altium/equivalence/rule_inventory.csv",
+      "sha256": "<SHA256>"
+    },
+    {
       "id": "native_audit_result",
       "path": "hardware/system_carrier/altium/equivalence/native_audit_result.json",
       "sha256": "<SHA256>"
