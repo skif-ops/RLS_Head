@@ -59,12 +59,39 @@ def _valid_text(value: object) -> bool:
     return bool(text) and not text.startswith("<")
 
 
-def _valid_refs(value: object) -> bool:
-    return (
-        isinstance(value, list)
-        and bool(value)
-        and all(_valid_text(item) for item in value)
-    )
+def _validate_evidence_refs(
+    root: Path,
+    value: object,
+    prefix: str,
+    errors: list[str],
+) -> None:
+    if not isinstance(value, list) or not value:
+        errors.append(f"{prefix}_evidence_refs")
+        return
+
+    for index, item in enumerate(value):
+        if not isinstance(item, dict):
+            errors.append(f"{prefix}_evidence_ref_entry:{index}")
+            continue
+        relative = str(item.get("path", "")).strip()
+        expected_hash = str(item.get("sha256", "")).strip().lower()
+        try:
+            path = safe_repo_path(root, relative)
+        except ValueError as exc:
+            errors.append(
+                f"{prefix}_evidence_ref_path:{index}:{exc}"
+            )
+            continue
+        if not path.is_file():
+            errors.append(
+                f"{prefix}_evidence_ref_missing:{index}"
+            )
+            continue
+        actual_hash = sha256_file(path)
+        if len(expected_hash) != 64 or expected_hash != actual_hash:
+            errors.append(
+                f"{prefix}_evidence_ref_hash:{index}"
+            )
 
 
 def _read_json(path: Path, artifact_id: str, errors: list[str]) -> dict | None:
@@ -205,8 +232,12 @@ def validate_manifest(
                 reasons.append(f"MECHANICAL_{field.upper()}")
         if not _valid_text(mechanical.get("reviewer")):
             errors.append("mechanical_reviewer")
-        if not _valid_refs(mechanical.get("evidence_refs")):
-            errors.append("mechanical_evidence_refs")
+        _validate_evidence_refs(
+            root,
+            mechanical.get("evidence_refs"),
+            "mechanical",
+            errors,
+        )
 
     fabricator = evidence.get("fabricator_binding")
     if isinstance(fabricator, dict):
@@ -222,8 +253,12 @@ def validate_manifest(
                 reasons.append(f"FAB_{field.upper()}")
         if not _valid_text(fabricator.get("fabricator")):
             errors.append("fabricator_name")
-        if not _valid_refs(fabricator.get("evidence_refs")):
-            errors.append("fabricator_evidence_refs")
+        _validate_evidence_refs(
+            root,
+            fabricator.get("evidence_refs"),
+            "fabricator",
+            errors,
+        )
 
     si_review = evidence.get("return_path_si_review")
     if isinstance(si_review, dict):
@@ -237,15 +272,23 @@ def validate_manifest(
             reasons.append("ETH_MDI_RETURN_PATH")
         if not _valid_text(si_review.get("reviewer")):
             errors.append("si_reviewer")
-        if not _valid_refs(si_review.get("evidence_refs")):
-            errors.append("si_evidence_refs")
+        _validate_evidence_refs(
+            root,
+            si_review.get("evidence_refs"),
+            "si",
+            errors,
+        )
 
     dfm = evidence.get("dfm_result")
     if isinstance(dfm, dict):
         if int(dfm.get("p0_open_items", -1)) != 0:
             reasons.append("DFM_P0_OPEN_ITEMS")
-        if not _valid_refs(dfm.get("evidence_refs")):
-            errors.append("dfm_evidence_refs")
+        _validate_evidence_refs(
+            root,
+            dfm.get("evidence_refs"),
+            "dfm",
+            errors,
+        )
 
     outjob = evidence.get("outjob_release_manifest")
     if isinstance(outjob, dict):
