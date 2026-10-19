@@ -23,6 +23,8 @@ REQUIRED_ARTIFACTS = {
     "component_inventory",
     "net_inventory",
     "rule_inventory",
+    "pad_net_inventory",
+    "layer_stack_inventory",
     "native_audit_result",
 }
 
