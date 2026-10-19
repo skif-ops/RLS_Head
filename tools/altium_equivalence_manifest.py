@@ -118,6 +118,11 @@ def build_manifest(
                 "ALTIUM-NATIVE-CONNECTOR-RESULT-001",
                 "connector_pinout_equivalence",
             ),
+            (
+                "netlist_validation_result",
+                "ALTIUM-NATIVE-NETLIST-RESULT-001",
+                "netlist_equivalence",
+            ),
         ):
             item = next(
                 (
