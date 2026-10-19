@@ -21,12 +21,22 @@
   "target": {
     "project": "EVT_SYS_CARRIER.PrjPcb",
     "schematic": "native/EVT_SYS_CARRIER.SchDoc",
-    "pcb": "native/EVT_SYS_CARRIER.PcbDoc"
+    "pcb": "native/EVT_SYS_CARRIER.PcbDoc",
+    "child_sheets": [
+      "native/10_POWER_INPUT.SchDoc",
+      "native/20_MCU_CORE.SchDoc",
+      "native/30_TIME_GNSS.SchDoc",
+      "native/40_IMU.SchDoc",
+      "native/50_RADAR_IO_CAN.SchDoc",
+      "native/60_ETHERNET.SchDoc",
+      "native/70_DEBUG_BOOT.SchDoc"
+    ]
   },
   "net_identifier_scope": "hierarchical",
   "preserve_source_files": true,
   "import_log_required": true,
   "post_import_checks": [
+    "native_project_membership",
     "import_provenance_receipt",
     "compile_zero_errors",
     "compile_zero_warnings",
