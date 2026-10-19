@@ -74,6 +74,7 @@ def validate(
         hashes = {}
 
     actual_hashes = {
+        "review": sha256_file(review_path),
         "pcb": sha256_file(pcb),
         "component_inventory": sha256_file(components),
         "net_inventory": sha256_file(nets),
