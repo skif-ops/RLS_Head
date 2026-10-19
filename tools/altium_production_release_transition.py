@@ -77,12 +77,24 @@ def _sync_production_authority(
     result_hash = _sha256_file(result_path)
     pcb_hash = _sha256_file(pcb_path)
 
+    gate_pcb_hash = str(
+        release_result.get("native_pcb_sha256", "")
+    ).strip().lower()
+    if (
+        len(gate_pcb_hash) != 64
+        or gate_pcb_hash != pcb_hash
+    ):
+        raise ValueError(
+            "final native PcbDoc changed after production gate PASS"
+        )
+
     native_status["production_authority"] = "AUTHORIZED"
     native_status["production_release_result"] = (
         PATHS["release_result"].as_posix()
     )
     native_status["production_release_result_sha256"] = result_hash
     native_status["native_pcb_sha256"] = pcb_hash
+    native_status["production_release_source_pcb_sha256"] = gate_pcb_hash
 
     altium = implementation.setdefault("altium", {})
     altium["native_schdoc"] = True
@@ -92,6 +104,7 @@ def _sync_production_authority(
     altium["routing_started"] = True
     altium["production_release_authorized"] = True
     altium["native_pcb_sha256"] = pcb_hash
+    altium["production_release_source_pcb_sha256"] = gate_pcb_hash
 
     implementation["current_phase"] = "PRODUCTION_RELEASED"
     implementation["next_required_phase"] = "NONE"
@@ -107,6 +120,7 @@ def _sync_production_authority(
     authority["pcb_design_phase"] = "PRODUCTION_RELEASED"
     authority["production_release_authorized"] = True
     authority["native_pcb_sha256"] = pcb_hash
+    authority["production_release_source_pcb_sha256"] = gate_pcb_hash
     authority["production_release_result"] = (
         PATHS["release_result"].as_posix()
     )
