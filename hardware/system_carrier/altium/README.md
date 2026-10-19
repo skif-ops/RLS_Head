@@ -26,6 +26,10 @@ Use Altium Designer with the KiCad Importer extension:
 
 Do not delete any KiCad source, generated KiCad library or footprint used to establish the electrical baseline. KiCad is retained as an independent verification and recovery path.
 
+## Native CI phase gate
+
+The repository CI accepts two deliberate states: `PRE_IMPORT` while no native `SchDoc/PcbDoc` pair exists, and `POST_EQUIVALENCE` after both exist and equivalence has passed. `tools/altium_native_ci_gate.py` revalidates the committed equivalence result and tracked SHA-bound authority state, preventing a native CAD PR from bypassing the handoff/equivalence pipeline.
+
 ## Manufacturing
 
 All future Gerber/ODB++/IPC-2581, NC drill, pick-and-place, assembly drawings, fabrication drawings and STEP outputs for this board are to be released from the native Altium project after the equivalence gate passes.
