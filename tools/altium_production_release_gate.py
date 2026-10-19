@@ -54,6 +54,13 @@ def safe_repo_path(root: Path, relative: str) -> Path:
     return path
 
 
+def _int_or_default(value: object, default: int = -1) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+
 def _valid_text(value: object) -> bool:
     text = str(value or "").strip()
     return bool(text) and not text.startswith("<")
@@ -194,9 +201,9 @@ def validate_manifest(
 
     drc = evidence.get("native_drc_result")
     if isinstance(drc, dict):
-        if int(drc.get("blocking_errors", -1)) != 0:
+        if _int_or_default(drc.get("blocking_errors")) != 0:
             reasons.append("DRC_BLOCKING_ERRORS")
-        if int(drc.get("unrouted_nets", -1)) != 0:
+        if _int_or_default(drc.get("unrouted_nets")) != 0:
             reasons.append("UNROUTED_NETS")
         source_report = str(drc.get("source_report", "")).strip()
         expected_report_hash = str(
@@ -262,7 +269,7 @@ def validate_manifest(
 
     si_review = evidence.get("return_path_si_review")
     if isinstance(si_review, dict):
-        if int(si_review.get("p0_open_findings", -1)) != 0:
+        if _int_or_default(si_review.get("p0_open_findings")) != 0:
             reasons.append("SI_P0_OPEN_FINDINGS")
         if si_review.get("l2_ground_continuity_verified") is not True:
             reasons.append("L2_GROUND_CONTINUITY")
@@ -281,7 +288,7 @@ def validate_manifest(
 
     dfm = evidence.get("dfm_result")
     if isinstance(dfm, dict):
-        if int(dfm.get("p0_open_items", -1)) != 0:
+        if _int_or_default(dfm.get("p0_open_items")) != 0:
             reasons.append("DFM_P0_OPEN_ITEMS")
         _validate_evidence_refs(
             root,
