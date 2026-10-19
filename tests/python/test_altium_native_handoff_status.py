@@ -39,6 +39,7 @@ def test_native_handoff_initially_waits_for_native_import(tmp_path):
     assert result["schema"] == "ALTIUM-NATIVE-HANDOFF-STATUS-001"
     assert result["status"] == "WAITING_NATIVE_IMPORT"
     assert result["native_files_ready"] is False
+    assert result["native_file_preflight_ready"] is False
     assert result["import_provenance_ready"] is False
     assert result["semantic_checks_ready"] is False
     assert result["routing_authorized"] is False
@@ -52,6 +53,7 @@ def test_native_handoff_detects_complete_evidence_and_checks(tmp_path):
 
     assert result["status"] == "READY_TO_RUN_EQUIVALENCE_GATE"
     assert result["native_files_ready"] is True
+    assert result["native_file_preflight_ready"] is True
     assert result["import_provenance_ready"] is True
     assert result["native_audit_ready"] is True
     assert result["equivalence_evidence_complete"] is True
@@ -59,8 +61,27 @@ def test_native_handoff_detects_complete_evidence_and_checks(tmp_path):
     assert result["pending_equivalence_checks"] == []
 
 
-def test_native_handoff_waits_for_import_provenance_after_native_files(tmp_path):
+def test_native_handoff_waits_for_native_file_preflight(tmp_path):
     for artifact_id in ("project", "schematic", "pcb"):
+        path = tmp_path / REQUIRED[artifact_id]
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b"TEST")
+
+    result = evaluate(tmp_path)
+
+    assert result["status"] == "WAITING_NATIVE_FILE_PREFLIGHT"
+    assert result["native_files_ready"] is True
+    assert result["native_file_preflight_ready"] is False
+    assert result["next_action"] == "RUN_NATIVE_ALTIUM_FILE_PREFLIGHT"
+
+
+def test_native_handoff_waits_for_import_provenance_after_preflight(tmp_path):
+    for artifact_id in (
+        "project",
+        "schematic",
+        "pcb",
+        "native_file_preflight",
+    ):
         path = tmp_path / REQUIRED[artifact_id]
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(b"TEST")
@@ -69,6 +90,7 @@ def test_native_handoff_waits_for_import_provenance_after_native_files(tmp_path)
 
     assert result["status"] == "WAITING_IMPORT_PROVENANCE"
     assert result["native_files_ready"] is True
+    assert result["native_file_preflight_ready"] is True
     assert result["import_provenance_ready"] is False
     assert result["native_audit_ready"] is False
     assert result["next_action"] == "CAPTURE_IMPORT_PACKAGE_LOG_AND_RECEIPT"
