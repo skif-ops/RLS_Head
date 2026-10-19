@@ -1,0 +1,12 @@
+kind,id,x_mm,y_mm,width_mm,height_mm,diameter_mm,layer,criticality,status,notes
+BOARD,OUTLINE,0,0,100,80,,Mechanical,P0,EVT_PROVISIONAL,Rectangular EVT envelope; freeze after enclosure review
+BOARD,THICKNESS,,,,1.6,,Stackup,P0,LOCKED_FOR_EVT,Matches Micro-Fit recommended 1.57/1.60mm PCB
+BOARD,CORNER_RADIUS,,,,3,,Mechanical,P1,EVT_PROVISIONAL,3mm corner radius
+HOLE,H1,5,5,,,3.2,MultiLayer,P0,EVT_PROVISIONAL,M3 NPTH mounting
+HOLE,H2,95,5,,,3.2,MultiLayer,P0,EVT_PROVISIONAL,M3 NPTH mounting
+HOLE,H3,5,75,,,3.2,MultiLayer,P0,EVT_PROVISIONAL,M3 NPTH mounting
+HOLE,H4,95,75,,,3.2,MultiLayer,P0,EVT_PROVISIONAL,M3 NPTH mounting
+KEEPOUT,EDGE_COMPONENT,0,0,100,80,2,Mechanical,P1,LOCKED_FOR_EVT,2mm generic component-to-edge keepout except edge connectors
+KEEPOUT,COPPER_EDGE,0,0,100,80,0.5,AllCopper,P0,LOCKED_FOR_EVT,Minimum copper-to-board-edge clearance
+KEEPOUT,GNSS_QUIET_ZONE,5,52,35,23,,AllSignal,P0,LOCKED_FOR_EVT,Keep buck SW 50MHz clock and digital buses out except GNSS nets
+CONNECTOR_RULE,MICROFIT_EDGE,,,,10.16,,Mechanical,P0,LOCKED_FOR_EVT,Micro-Fit mating face must remain within 10.16mm of board edge

@@ -33,3 +33,18 @@ All future Gerber/ODB++/IPC-2581, NC drill, pick-and-place, assembly drawings, f
 ## Native equivalence gate
 
 After Altium Designer creates `native/EVT_SYS_CARRIER.SchDoc` and `native/EVT_SYS_CARRIER.PcbDoc`, populate `equivalence/manifest.json` from `equivalence/manifest.template.json` and run `python -m tools.altium_equivalence_gate`. Routing/layout authority remains blocked until this gate returns `PASS`.
+
+## EVT pre-layout baseline
+
+The current placement baseline uses a **100 x 80 x 1.6 mm** rectangular board envelope with four M3 NPTH mounting holes. This is marked `EVT_PROVISIONAL`: it is sufficient to begin native Altium placement after the equivalence gate, but it is not a production mechanical freeze.
+
+Authoritative pre-layout inputs:
+
+- `../BOM_SYS_CARRIER_LAYOUT_004.csv` — one row per physical/PCB-only reference;
+- `../FOOTPRINT_ASSIGNMENT_SYS_002.csv` — complete footprint assignment;
+- `ALTIUM_BOARD_MECHANICAL_SYS_001.csv` — provisional outline, holes and keepouts;
+- `ALTIUM_PLACEMENT_COORD_SYS_002.csv` — hard placement anchors and local placement directives;
+- `ALTIUM_ROUTING_SEQUENCE_SYS_001.csv` — required routing order;
+- `ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv` — numerical EVT defaults.
+
+The pre-layout validator requires the generated schematic, layout BOM and footprint reference sets to match exactly and rejects duplicate designators.

@@ -12,7 +12,7 @@ def test_authoritative_footprint_plan_is_frozen():
 
     assert "U1" in result["locked_refs"]
     assert "U4" in result["locked_refs"]
-    assert "D_CAN" in result["locked_refs"]
+    assert "D4" in result["locked_refs"]
 
     assert "U2" in result["locked_refs"]
     assert "U2" not in result["unresolved_refs"]
@@ -21,11 +21,11 @@ def test_authoritative_footprint_plan_is_frozen():
     assert result["unresolved_refs"] == []
     assert "U8" in result["locked_refs"]
     assert "U8" not in result["unresolved_refs"]
-    assert "J_ETH" in result["locked_refs"]
+    assert "J6" in result["locked_refs"]
 
 def test_gnss_esd_footprint_is_locked():
     result = evaluate(
         "hardware/system_carrier/FOOTPRINT_PLAN_SYS_001.csv"
     )
-    assert "D_GNSS" in result["locked_refs"]
-    assert "D_GNSS" not in result["unresolved_refs"]
+    assert "D8" in result["locked_refs"]
+    assert "D8" not in result["unresolved_refs"]

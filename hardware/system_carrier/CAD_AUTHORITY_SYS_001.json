@@ -28,12 +28,28 @@
     "hardware/system_carrier/altium/ALTIUM_RULES_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_NET_CLASSES_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_PLACEMENT_PLAN_SYS_001.csv",
-    "hardware/system_carrier/altium/ALTIUM_EQUIVALENCE_CHECKS_SYS_001.csv"
+    "hardware/system_carrier/altium/ALTIUM_EQUIVALENCE_CHECKS_SYS_001.csv",
+    "hardware/system_carrier/BOM_SYS_CARRIER_LAYOUT_004.csv",
+    "hardware/system_carrier/FOOTPRINT_ASSIGNMENT_SYS_002.csv",
+    "hardware/system_carrier/altium/ALTIUM_BOARD_MECHANICAL_SYS_001.csv",
+    "hardware/system_carrier/altium/ALTIUM_PLACEMENT_COORD_SYS_002.csv",
+    "hardware/system_carrier/altium/ALTIUM_ROUTING_SEQUENCE_SYS_001.csv",
+    "hardware/system_carrier/altium/ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv"
   ],
   "altium_equivalence_gate": {
     "validator": "tools/altium_equivalence_gate.py",
     "template": "hardware/system_carrier/altium/equivalence/manifest.template.json",
     "status_file": "hardware/system_carrier/altium/ALTIUM_NATIVE_STATUS_SYS_001.json",
     "required_before_layout_authority": true
+  },
+  "prelayout_gate": {
+    "validator": "tools/carrier_prelayout_validate.py",
+    "required_before_native_import_package": true,
+    "mechanical_status": "EVT_PROVISIONAL",
+    "board_envelope_mm": [
+      100,
+      80,
+      1.6
+    ]
   }
 }

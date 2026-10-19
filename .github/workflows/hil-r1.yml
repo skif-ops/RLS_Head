@@ -748,6 +748,39 @@ jobs:
           name: system-carrier-review-a
           path: build-cad/system_carrier/review_a/**
 
+      - name: Validate System Carrier Altium pre-layout
+        run: |
+          python -m tools.carrier_prelayout_validate \
+            --system-root hardware/system_carrier \
+            --generated-dir build-cad/system_carrier \
+            --output build-cad/system_carrier/prelayout_validation.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/prelayout_validation.json"
+              ).read_text()
+          )
+          assert data["schema"] == "SYSTEM-CARRIER-PRELAYOUT-001"
+          assert data["status"] == "PASS"
+          assert data["errors"] == []
+          assert data["mcu_vdd_decoupling_count"] == 14
+          assert data["board_width_mm"] == 100.0
+          assert data["board_height_mm"] == 80.0
+          assert (
+              data["physical_ref_count"]
+              == data["bom_ref_count"]
+              == data["footprint_ref_count"]
+          )
+          print(
+              "System Carrier Altium pre-layout PASS:",
+              data["physical_ref_count"],
+              "physical refs",
+          )
+          PY
+
       - name: Build Altium import package
         run: |
           python -m tools.altium_import_package \
