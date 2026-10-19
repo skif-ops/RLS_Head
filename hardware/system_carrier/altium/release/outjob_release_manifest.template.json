@@ -1,0 +1,11 @@
+{
+  "schema": "ALTIUM-OUTJOB-RELEASE-MANIFEST-001",
+  "status": "PENDING",
+  "required_outputs_complete": false,
+  "source_is_native_altium": false,
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "outputs": [],
+  "notes": [
+    "PASS requires every YES output from ALTIUM_OUTJOB_CONTRACT_SYS_001.csv."
+  ]
+}
