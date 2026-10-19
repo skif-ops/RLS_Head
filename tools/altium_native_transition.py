@@ -17,6 +17,7 @@ from tools.altium_native_hierarchy_validate import validate as validate_hierarch
 from tools.altium_native_import_receipt import build_receipt
 from tools.altium_native_netlist_validate import validate as validate_netlist
 from tools.altium_no_mmwave_review_validate import validate as validate_no_mmwave
+from tools.altium_project_membership_validate import validate as validate_project_membership
 
 
 SCHEMA = "ALTIUM-NATIVE-TRANSITION-001"
@@ -31,6 +32,8 @@ PATHS = {
     "schematic": NATIVE_REL / "EVT_SYS_CARRIER.SchDoc",
     "pcb": NATIVE_REL / "EVT_SYS_CARRIER.PcbDoc",
     "native_file_preflight": EQUIV_REL / "native_file_preflight.json",
+    "project_membership": EQUIV_REL / "project_membership_result.json",
+    "import_profile": ALTIUM_REL / "ALTIUM_IMPORT_PROFILE_SYS_001.json",
     "package_manifest": EQUIV_REL / "import_package_manifest.json",
     "import_log": EQUIV_REL / "import_log.txt",
     "import_receipt": EQUIV_REL / "import_receipt.json",
@@ -291,6 +294,27 @@ def run_transition(
             generated=generated,
             stage_results=stage_results,
             errors=native_file_preflight.get("errors", []),
+        )
+
+    project_membership = validate_project_membership(
+        project=_absolute(root, "project"),
+        import_profile=_absolute(root, "import_profile"),
+    )
+    _write_json(
+        _absolute(root, "project_membership"),
+        project_membership,
+    )
+    generated.append(PATHS["project_membership"].as_posix())
+    stage_results["project_membership"] = project_membership
+    if project_membership.get("status") != "PASS":
+        return _result(
+            status="WAITING_PROJECT_MEMBERSHIP",
+            next_action=(
+                "ADD_ROOT_SEVEN_CHILD_SCHDOCS_AND_PCBDOC_TO_PRJPCB"
+            ),
+            generated=generated,
+            stage_results=stage_results,
+            errors=project_membership.get("errors", []),
         )
 
     missing_provenance = _missing(
