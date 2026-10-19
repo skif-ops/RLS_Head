@@ -37,6 +37,9 @@ REQUIRED = {
     "rule_inventory": "hardware/system_carrier/altium/equivalence/rule_inventory.csv",
     "pad_net_inventory": "hardware/system_carrier/altium/equivalence/pad_net_inventory.csv",
     "layer_stack_inventory": "hardware/system_carrier/altium/equivalence/layer_stack_inventory.csv",
+    "hierarchy_port_inventory": "hardware/system_carrier/altium/equivalence/hierarchy_port_inventory.csv",
+    "hierarchy_sheet_entry_inventory": "hardware/system_carrier/altium/equivalence/hierarchy_sheet_entry_inventory.csv",
+    "hierarchy_validation_result": "hardware/system_carrier/altium/equivalence/hierarchy_validation_result.json",
     "native_audit_result": "hardware/system_carrier/altium/equivalence/native_audit_result.json",
     "manifest": "hardware/system_carrier/altium/equivalence/manifest.json",
 }
