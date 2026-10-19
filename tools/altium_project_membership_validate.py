@@ -10,6 +10,15 @@ from tools.altium_native_file_preflight import inspect_cfb
 
 SCHEMA = "ALTIUM-PROJECT-MEMBERSHIP-001"
 
+
+def sha256_file(path: Path) -> str:
+    digest = __import__("hashlib").sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 DOCUMENT_PATH_RE = re.compile(
     r"^\s*DocumentPath\s*=\s*(.*?)\s*$",
     re.IGNORECASE,
@@ -38,21 +47,34 @@ def expected_documents(profile: dict) -> list[str]:
     if not root_schematic or not pcb:
         raise ValueError("import profile target documents missing")
 
-    native_dir = PurePosixPath(root_schematic).parent
-    child_sheets = source.get("child_sheets")
-    if not isinstance(child_sheets, list):
-        raise ValueError("import profile child_sheets must be a list")
-
+    target_children = target.get("child_sheets")
     children: list[str] = []
-    for item in child_sheets:
-        source_name = PurePosixPath(str(item)).name
-        if not source_name.endswith(".kicad_sch"):
-            raise ValueError(
-                f"unexpected child sheet extension: {source_name}"
+    if isinstance(target_children, list) and target_children:
+        children = [
+            _normalize_project_path(str(item))
+            for item in target_children
+        ]
+    else:
+        native_dir = PurePosixPath(root_schematic).parent
+        child_sheets = source.get("child_sheets")
+        if not isinstance(child_sheets, list):
+            raise ValueError("import profile child_sheets must be a list")
+        for item in child_sheets:
+            source_name = PurePosixPath(str(item)).name
+            if not source_name.endswith(".kicad_sch"):
+                raise ValueError(
+                    f"unexpected child sheet extension: {source_name}"
+                )
+            native_name = (
+                source_name[: -len(".kicad_sch")] + ".SchDoc"
             )
-        native_name = source_name[: -len(".kicad_sch")] + ".SchDoc"
-        children.append(
-            (native_dir / native_name).as_posix()
+            children.append(
+                (native_dir / native_name).as_posix()
+            )
+
+    if len(children) != 7:
+        raise ValueError(
+            f"expected seven native child SchDocs, got {len(children)}"
         )
 
     return [root_schematic, *children, pcb]
@@ -218,6 +240,16 @@ def validate(
         "expected_documents": expected,
         "project_documents": actual,
         "document_results": document_results,
+        "input_sha256": {
+            "project": sha256_file(project_path),
+            "import_profile": sha256_file(profile_path),
+            "documents": {
+                item: document_results[item]["sha256"]
+                for item in expected
+                if item in document_results
+                and document_results[item].get("status") == "PASS"
+            },
+        },
         "verified_checks": {
             "native_project_membership": status,
         },
