@@ -547,6 +547,18 @@ def validate_manifest(
                     errors.append(
                         "hierarchy_validation_hash:hierarchy_export"
                     )
+                actual_pad_inventory = str(
+                    integrity.get("pad_net_inventory", {}).get(
+                        "sha256_actual", ""
+                    )
+                ).lower()
+                if (
+                    str(hashes.get("pad_net_inventory", "")).lower()
+                    != actual_pad_inventory
+                ):
+                    errors.append(
+                        "hierarchy_validation_hash:pad_net_inventory"
+                    )
                 contract_path = (
                     root
                     / "hardware/system_carrier/HIERARCHY_INTERFACE_SYS_001.csv"
