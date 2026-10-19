@@ -2,11 +2,20 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 from pathlib import Path
 
 
 SCHEMA = "ALTIUM-NATIVE-AUDIT-RESULT-001"
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -47,6 +56,12 @@ def validate(
     components = read_csv(component_path)
     nets = read_csv(net_path)
     rules = read_csv(rule_path)
+
+    input_sha256 = {
+        "component_inventory": sha256_file(component_path),
+        "net_inventory": sha256_file(net_path),
+        "rule_inventory": sha256_file(rule_path),
+    }
 
     component_refs = {
         str(row.get("designator", "")).strip()
@@ -138,6 +153,7 @@ def validate(
         "required_p0_p1_net_count": len(required_nets),
         "rule_count": len(actual_rule_names),
         "required_rule_count": len(required_rule_names),
+        "input_sha256": input_sha256,
         "notes": [
             (
                 "PASS is a native PCB inventory cross-check only; the "
