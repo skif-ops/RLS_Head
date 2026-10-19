@@ -101,6 +101,49 @@ def build_manifest(
                         else:
                             checks["native_pcb_audit"] = "PASS"
 
+    if isinstance(checks, dict):
+        for artifact_id, schema, check_name in (
+            (
+                "bom_validation_result",
+                "ALTIUM-NATIVE-BOM-RESULT-001",
+                "bom_designator_mpn_equivalence",
+            ),
+            (
+                "footprint_report",
+                "ALTIUM-NATIVE-FOOTPRINT-RESULT-001",
+                "footprint_equivalence",
+            ),
+        ):
+            item = next(
+                (
+                    artifact
+                    for artifact in artifacts
+                    if isinstance(artifact, dict)
+                    and artifact.get("id") == artifact_id
+                ),
+                None,
+            )
+            if not isinstance(item, dict):
+                continue
+            result_path = root / str(item.get("path", ""))
+            if not result_path.is_file():
+                continue
+            try:
+                result = json.loads(
+                    result_path.read_text(encoding="utf-8")
+                )
+            except (UnicodeDecodeError, json.JSONDecodeError):
+                continue
+            verified = result.get("verified_checks", {})
+            if (
+                result.get("schema") == schema
+                and result.get("status") == "PASS"
+                and isinstance(verified, dict)
+                and verified.get(check_name) == "PASS"
+                and check_name in checks
+            ):
+                checks[check_name] = "PASS"
+
     return {
         "status": "READY" if not errors else "INCOMPLETE",
         "errors": sorted(set(errors)),
