@@ -342,10 +342,18 @@ jobs:
               "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
           ).is_file()
           assert native_sch == native_pcb
+          production_released = Path(
+              "hardware/system_carrier/altium/release/"
+              "production_release_result.json"
+          ).is_file()
           expected_phase = (
-              "READY_FOR_ROUTING"
-              if native_sch
-              else "IMPORT_PREPARED"
+              "PRODUCTION_RELEASED"
+              if production_released
+              else (
+                  "READY_FOR_ROUTING"
+                  if native_sch
+                  else "IMPORT_PREPARED"
+              )
           )
           assert data["altium_phase"] == expected_phase
           print("Altium primary CAD policy PASS:", expected_phase)
@@ -1050,16 +1058,22 @@ jobs:
               "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
           ).is_file()
           assert native_sch == native_pcb
-          assert data["production_authorized"] is False
+          production_released = Path(
+              "hardware/system_carrier/altium/release/"
+              "production_release_result.json"
+          ).is_file()
+          assert data["production_authorized"] is production_released
           assert data["errors"] == []
           assert data["failed_checks"] == []
           if native_sch:
               assert data["status"] == "READY_FOR_ROUTING"
               assert data["routing_authorized"] is True
-              assert (
-                  data["next_action"]
-                  == "BEGIN_NATIVE_ALTIUM_PLACEMENT_AND_ROUTING"
+              expected_action = (
+                  "PRODUCTION_RELEASED"
+                  if production_released
+                  else "BEGIN_NATIVE_ALTIUM_PLACEMENT_AND_ROUTING"
               )
+              assert data["next_action"] == expected_action
           else:
               assert data["status"] == "READY_FOR_NATIVE_IMPORT"
               assert data["routing_authorized"] is False
@@ -1120,13 +1134,23 @@ jobs:
           )
           assert data["schema"] == "ALTIUM-NATIVE-CI-GATE-001"
           assert data["status"] == "PASS"
-          assert data["phase"] in {"PRE_IMPORT", "POST_EQUIVALENCE"}
-          assert data["production_authorized"] is False
+          assert data["phase"] in {
+              "PRE_IMPORT",
+              "POST_EQUIVALENCE",
+              "POST_PRODUCTION",
+          }
           if data["phase"] == "PRE_IMPORT":
               assert data["routing_authorized"] is False
+              assert data["production_authorized"] is False
+          elif data["phase"] == "POST_EQUIVALENCE":
+              assert data["routing_authorized"] is True
+              assert data["production_authorized"] is False
+              assert data["equivalence_status"] == "PASS"
           else:
               assert data["routing_authorized"] is True
+              assert data["production_authorized"] is True
               assert data["equivalence_status"] == "PASS"
+              assert data["production_release_status"] == "PASS"
           print(
               "Native Altium CI phase gate PASS:",
               data["phase"],

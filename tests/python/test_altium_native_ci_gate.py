@@ -193,3 +193,142 @@ def test_native_ci_gate_rejects_stale_cad_authority_hash(
 
     assert result["status"] == "FAIL"
     assert "cad_authority_hash:native_pcb_sha256" in result["errors"]
+
+
+
+def test_native_ci_gate_passes_post_production_state(
+    tmp_path,
+    monkeypatch,
+):
+    production_result = {
+        "schema": "ALTIUM-PRODUCTION-RELEASE-RESULT-001",
+        "status": "PASS",
+        "layout_authority": "AUTHORIZED",
+        "production_authority": "AUTHORIZED",
+        "errors": [],
+        "reason_codes": [],
+    }
+
+    _post_equivalence_fixture(tmp_path, monkeypatch)
+
+    release_manifest = tmp_path / ci_gate.RELEASE_MANIFEST_REL
+    production_path = tmp_path / ci_gate.PRODUCTION_RESULT_REL
+    _write_json(
+        release_manifest,
+        {
+            "schema": "ALTIUM-PRODUCTION-RELEASE-MANIFEST-001",
+            "artifacts": [],
+        },
+    )
+    _write_json(production_path, production_result)
+
+    native_status_path = tmp_path / ci_gate.NATIVE_STATUS_REL
+    native_status = json.loads(
+        native_status_path.read_text(encoding="utf-8")
+    )
+    native_status["production_authority"] = "AUTHORIZED"
+    native_status["production_release_result_sha256"] = _sha(
+        production_path
+    )
+    _write_json(native_status_path, native_status)
+
+    authority_path = tmp_path / ci_gate.CAD_AUTHORITY_REL
+    authority = json.loads(
+        authority_path.read_text(encoding="utf-8")
+    )
+    authority["production_release_authorized"] = True
+    authority["pcb_design_phase"] = "PRODUCTION_RELEASED"
+    authority["production_release_result_sha256"] = _sha(
+        production_path
+    )
+    _write_json(authority_path, authority)
+
+    implementation_path = tmp_path / ci_gate.IMPLEMENTATION_STATUS_REL
+    implementation = json.loads(
+        implementation_path.read_text(encoding="utf-8")
+    )
+    implementation["current_phase"] = "PRODUCTION_RELEASED"
+    implementation["altium"]["production_release_authorized"] = True
+    implementation["altium"]["placement_started"] = True
+    implementation["altium"]["routing_started"] = True
+    _write_json(implementation_path, implementation)
+
+    monkeypatch.setattr(
+        ci_gate,
+        "validate_production_release",
+        lambda *args, **kwargs: production_result,
+    )
+
+    result = ci_gate.evaluate(repository_root=tmp_path)
+
+    assert result["status"] == "PASS"
+    assert result["phase"] == "POST_PRODUCTION"
+    assert result["production_release_status"] == "PASS"
+    assert result["routing_authorized"] is True
+    assert result["production_authorized"] is True
+
+
+def test_native_ci_gate_rejects_stale_production_result_hash(
+    tmp_path,
+    monkeypatch,
+):
+    production_result = {
+        "schema": "ALTIUM-PRODUCTION-RELEASE-RESULT-001",
+        "status": "PASS",
+        "layout_authority": "AUTHORIZED",
+        "production_authority": "AUTHORIZED",
+        "errors": [],
+        "reason_codes": [],
+    }
+
+    _post_equivalence_fixture(tmp_path, monkeypatch)
+    _write_json(
+        tmp_path / ci_gate.RELEASE_MANIFEST_REL,
+        {
+            "schema": "ALTIUM-PRODUCTION-RELEASE-MANIFEST-001",
+            "artifacts": [],
+        },
+    )
+    production_path = tmp_path / ci_gate.PRODUCTION_RESULT_REL
+    _write_json(production_path, production_result)
+
+    native_status_path = tmp_path / ci_gate.NATIVE_STATUS_REL
+    native_status = json.loads(
+        native_status_path.read_text(encoding="utf-8")
+    )
+    native_status["production_authority"] = "AUTHORIZED"
+    native_status["production_release_result_sha256"] = "0" * 64
+    _write_json(native_status_path, native_status)
+
+    authority_path = tmp_path / ci_gate.CAD_AUTHORITY_REL
+    authority = json.loads(
+        authority_path.read_text(encoding="utf-8")
+    )
+    authority["production_release_authorized"] = True
+    authority["pcb_design_phase"] = "PRODUCTION_RELEASED"
+    authority["production_release_result_sha256"] = _sha(production_path)
+    _write_json(authority_path, authority)
+
+    implementation_path = tmp_path / ci_gate.IMPLEMENTATION_STATUS_REL
+    implementation = json.loads(
+        implementation_path.read_text(encoding="utf-8")
+    )
+    implementation["current_phase"] = "PRODUCTION_RELEASED"
+    implementation["altium"]["production_release_authorized"] = True
+    implementation["altium"]["placement_started"] = True
+    implementation["altium"]["routing_started"] = True
+    _write_json(implementation_path, implementation)
+
+    monkeypatch.setattr(
+        ci_gate,
+        "validate_production_release",
+        lambda *args, **kwargs: production_result,
+    )
+
+    result = ci_gate.evaluate(repository_root=tmp_path)
+
+    assert result["status"] == "FAIL"
+    assert (
+        "native_status_hash:production_release_result_sha256"
+        in result["errors"]
+    )

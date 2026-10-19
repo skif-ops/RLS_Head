@@ -46,9 +46,20 @@ def _phase_coherence(
         errors.append("altium_status_payload")
         altium_status = {}
 
+    implementation_production = (
+        altium_status.get("production_release_authorized") is True
+    )
+    authority_production = (
+        authority.get("production_release_authorized") is True
+    )
+    if implementation_production != authority_production:
+        errors.append("production_authority_mismatch")
+
     if not native_schdoc and not native_pcbdoc:
         if current_phase != "IMPORT_PREPARED":
             errors.append("altium_status_phase")
+        if implementation_production or authority_production:
+            errors.append("premature_production_release")
         if authority.get("native_document_status") != "PENDING_ALTIUM_IMPORT":
             errors.append("authority_native_document_status")
         routing_authority = authority.get("routing_readiness_gate", {})
@@ -59,8 +70,6 @@ def _phase_coherence(
         ):
             errors.append("authority_routing_status")
     elif native_schdoc and native_pcbdoc:
-        if current_phase != "READY_FOR_ROUTING":
-            errors.append("altium_status_phase")
         for field in (
             "native_schdoc",
             "native_pcbdoc",
@@ -80,10 +89,17 @@ def _phase_coherence(
         ):
             errors.append("authority_routing_status")
 
-    if altium_status.get("production_release_authorized") is not False:
-        errors.append("premature_production_release")
-    if authority.get("production_release_authorized") is not False:
-        errors.append("authority_premature_production_release")
+        if implementation_production and authority_production:
+            if current_phase != "PRODUCTION_RELEASED":
+                errors.append("altium_status_phase")
+            if authority.get("pcb_design_phase") != "PRODUCTION_RELEASED":
+                errors.append("authority_design_phase")
+            for field in ("placement_started", "routing_started"):
+                if altium_status.get(field) is not True:
+                    errors.append(f"altium_status_{field}")
+        else:
+            if current_phase != "READY_FOR_ROUTING":
+                errors.append("altium_status_phase")
 
     return errors, native_schdoc, native_pcbdoc
 

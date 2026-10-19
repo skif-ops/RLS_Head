@@ -104,8 +104,9 @@ def validate(
         )
     )
 
-    if production_authority == "AUTHORIZED":
-        errors.append("premature_production_authority")
+    production_authorized = (
+        production_authority == "AUTHORIZED"
+    )
 
     prep_ok = not errors
 
@@ -126,7 +127,11 @@ def validate(
     elif native_ready:
         status = "READY_FOR_ROUTING"
         routing_authorized = True
-        next_action = "BEGIN_NATIVE_ALTIUM_PLACEMENT_AND_ROUTING"
+        next_action = (
+            "PRODUCTION_RELEASED"
+            if production_authorized
+            else "BEGIN_NATIVE_ALTIUM_PLACEMENT_AND_ROUTING"
+        )
     else:
         status = "READY_FOR_NATIVE_IMPORT"
         routing_authorized = False
@@ -148,7 +153,7 @@ def validate(
         "schema": SCHEMA,
         "status": status,
         "routing_authorized": routing_authorized,
-        "production_authorized": False,
+        "production_authorized": production_authorized,
         "errors": sorted(set(errors)),
         "warnings": sorted(set(warnings)),
         "failed_checks": failed,
@@ -181,8 +186,9 @@ def validate(
                 "SchDoc/PcbDoc import and ALTIUM_EQUIVALENCE_GATE PASS."
             ),
             (
-                "Production authority remains separate and requires final "
-                "mechanical, fabricator-stack, DFM and release evidence."
+                "Production authority remains separate from routing authority; "
+                "when already AUTHORIZED by the production-release gate it does "
+                "not invalidate READY_FOR_ROUTING."
             ),
         ],
     }

@@ -90,6 +90,10 @@ A partial native pair, stale authority hash, non-reproducible equivalence result
 
 Equivalence PASS authorizes native placement/routing work only. Production remains blocked until final mechanical lock, fabricator stack/impedance binding, native Altium DRC, return-path/SI review, DFM and manufacturing release checks all pass.
 
+## Production lifecycle CI
+
+The same lifecycle CI gate also recognizes `POST_PRODUCTION`. In that phase CI re-runs the production-release gate from the committed release manifest, requires the committed result to be reproducible, verifies synchronized production authority/result hashes and keeps routing authority valid. A partial or stale production-status update fails CI.
+
 ## After routing authority
 
 After `ALTIUM_EQUIVALENCE_GATE = PASS`, native placement/routing may begin. Production remains separately blocked. The post-routing manufacturing path is defined under `hardware/system_carrier/altium/release/` and enforced by `tools.altium_production_release_gate`.
