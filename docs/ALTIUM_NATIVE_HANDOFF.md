@@ -47,8 +47,9 @@ Before routing:
 8. Build the manifest hashes deterministically:
    `python -m tools.altium_equivalence_manifest --template hardware/system_carrier/altium/equivalence/manifest.template.json --repository-root . --output hardware/system_carrier/altium/equivalence/manifest.json`.
    This automatically hashes every required artifact and promotes only machine-verified checks from a PASS native audit: `native_pcb_audit`, `pinmap_equivalence`, `rules_equivalence` and `stackup_equivalence`. It does not auto-approve the remaining semantic equivalence checks.
-9. Resolve the remaining semantic checks in `equivalence/manifest.json` from the native evidence.
-10. Run:
+9. Run `tools.altium_native_handoff_status` if needed: with all artifacts present but any semantic check still not `PASS`, the state must remain `WAITING_EQUIVALENCE_CHECKS`; `READY_TO_RUN_EQUIVALENCE_GATE` is reserved for a complete manifest whose mandatory checks are all `PASS`.
+10. Resolve the remaining semantic checks in `equivalence/manifest.json` from the native evidence.
+11. Run:
     `python -m tools.altium_equivalence_gate hardware/system_carrier/altium/equivalence/manifest.json --repository-root . --output altium_equivalence_result.json`.
 
 Only `ALTIUM_EQUIVALENCE_GATE = PASS` changes layout authority to Altium.
