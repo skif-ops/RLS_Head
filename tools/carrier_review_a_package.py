@@ -178,7 +178,6 @@ def build(
     output_dir: str | Path,
     source_commit: str,
     source_run_id: str,
-    source_artifact_digest: str,
 ) -> dict:
     generated = Path(generated_dir)
     system = Path(system_root)
@@ -265,7 +264,6 @@ def build(
         "evidence_level": "CAD_REVIEW",
         "source_commit": source_commit,
         "source_ci_run_id": source_run_id,
-        "source_artifact_digest": source_artifact_digest,
         "artifacts": [
             {
                 "id": artifact_id,
@@ -308,7 +306,6 @@ def build(
         "hardware_revision": "A",
         "source_commit": source_commit,
         "source_ci_run_id": source_run_id,
-        "source_artifact_digest": source_artifact_digest,
         "erc_violation_count": 0,
         "audits": audits,
         "artifact_count": len(copied),
@@ -345,7 +342,6 @@ def main() -> int:
         output_dir=args.output_dir,
         source_commit=args.source_commit,
         source_run_id=args.source_run_id,
-        source_artifact_digest=args.source_artifact_digest,
     )
     print(result["status"])
     return 0
