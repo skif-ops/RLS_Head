@@ -307,6 +307,25 @@ jobs:
           print("System Carrier hierarchy contract PASS")
           PY
 
+      - name: Validate Altium primary CAD policy
+        run: |
+          python -m tools.altium_cad_policy \
+            hardware/system_carrier \
+            --output altium_cad_policy.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("altium_cad_policy.json").read_text())
+          assert data["schema"] == "ALTIUM-CAD-POLICY-RESULT-001"
+          assert data["status"] == "PASS"
+          assert data["primary_cad"] == "Altium Designer"
+          assert data["preserve_kicad"] is True
+          assert data["source_rule_count"] == data["mapped_rule_count"] == 24
+          assert data["layer_count"] == 4
+          print("Altium primary CAD policy PASS")
+          PY
+
       - name: Validate System Carrier schematic contract
         run: |
           python -m tools.carrier_schematic_contract \
