@@ -1,0 +1,39 @@
+{
+  "schema": "ALTIUM-IMPORT-PROFILE-SYS-001",
+  "board_id": "EVT-SYS-CARRIER",
+  "target_cad": "Altium Designer",
+  "import_mechanism": "KiCad Importer / Import Wizard",
+  "source": {
+    "project": "EVT_SYS_CARRIER.kicad_pro",
+    "root_schematic": "EVT_SYS_CARRIER.kicad_sch",
+    "child_sheets": [
+      "10_POWER_INPUT.kicad_sch",
+      "20_MCU_CORE.kicad_sch",
+      "30_TIME_GNSS.kicad_sch",
+      "40_IMU.kicad_sch",
+      "50_RADAR_IO_CAN.kicad_sch",
+      "60_ETHERNET.kicad_sch",
+      "70_DEBUG_BOOT.kicad_sch"
+    ],
+    "symbol_library": "SystemCarrier_Local.kicad_sym",
+    "footprint_library": "SystemCarrier_Local.pretty"
+  },
+  "target": {
+    "project": "EVT_SYS_CARRIER.PrjPcb",
+    "schematic": "native/EVT_SYS_CARRIER.SchDoc",
+    "pcb": "native/EVT_SYS_CARRIER.PcbDoc"
+  },
+  "net_identifier_scope": "hierarchical",
+  "preserve_source_files": true,
+  "import_log_required": true,
+  "post_import_checks": [
+    "compile_zero_errors",
+    "compile_zero_warnings",
+    "bom_designator_mpn_equivalence",
+    "pinmap_equivalence",
+    "connector_pinout_equivalence",
+    "netlist_equivalence",
+    "footprint_equivalence",
+    "no_76_81GHz_rf_on_system_carrier"
+  ]
+}
