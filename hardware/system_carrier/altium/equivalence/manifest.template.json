@@ -1,0 +1,58 @@
+{
+  "schema": "ALTIUM-EQUIVALENCE-MANIFEST-001",
+  "board_id": "EVT-SYS-CARRIER",
+  "hardware_revision": "A",
+  "primary_cad": "Altium Designer",
+  "synthetic_fixture": false,
+  "evidence_level": "NATIVE_ALTIUM",
+  "review_a_status": "PASS",
+  "preserve_kicad": true,
+  "artifacts": [
+    {
+      "id": "project",
+      "path": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "schematic",
+      "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "pcb",
+      "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "compile_report",
+      "path": "hardware/system_carrier/altium/equivalence/compile_report.json",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "bom_export",
+      "path": "hardware/system_carrier/altium/equivalence/bom_export.csv",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "netlist_export",
+      "path": "hardware/system_carrier/altium/equivalence/netlist_export.csv",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "footprint_report",
+      "path": "hardware/system_carrier/altium/equivalence/footprint_report.json",
+      "sha256": "<SHA256>"
+    }
+  ],
+  "checks": {
+    "bom_designator_mpn_equivalence": "PENDING",
+    "pinmap_equivalence": "PENDING",
+    "connector_pinout_equivalence": "PENDING",
+    "netlist_equivalence": "PENDING",
+    "footprint_equivalence": "PENDING",
+    "hierarchy_equivalence": "PENDING",
+    "rules_equivalence": "PENDING",
+    "stackup_equivalence": "PENDING",
+    "no_76_81GHz_rf_on_system_carrier": "PENDING"
+  }
+}
