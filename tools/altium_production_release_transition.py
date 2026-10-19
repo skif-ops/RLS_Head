@@ -19,6 +19,7 @@ ALTIUM_REL = SYSTEM_REL / "altium"
 RELEASE_REL = ALTIUM_REL / "release"
 
 PATHS = {
+    "native_schematic": ALTIUM_REL / "native" / "EVT_SYS_CARRIER.SchDoc",
     "native_pcb": ALTIUM_REL / "native" / "EVT_SYS_CARRIER.PcbDoc",
     "native_status": ALTIUM_REL / "ALTIUM_NATIVE_STATUS_SYS_001.json",
     "implementation_status": ALTIUM_REL / "ALTIUM_STATUS_SYS_001.json",
@@ -68,6 +69,7 @@ def _sync_production_authority(
     implementation_status_path = _absolute(root, "implementation_status")
     authority_path = _absolute(root, "cad_authority")
     result_path = _absolute(root, "release_result")
+    schematic_path = _absolute(root, "native_schematic")
     pcb_path = _absolute(root, "native_pcb")
 
     native_status = _read_json(native_status_path)
@@ -75,7 +77,19 @@ def _sync_production_authority(
     authority = _read_json(authority_path)
 
     result_hash = _sha256_file(result_path)
+    schematic_hash = _sha256_file(schematic_path)
     pcb_hash = _sha256_file(pcb_path)
+
+    gate_schematic_hash = str(
+        release_result.get("native_schematic_sha256", "")
+    ).strip().lower()
+    if (
+        len(gate_schematic_hash) != 64
+        or gate_schematic_hash != schematic_hash
+    ):
+        raise ValueError(
+            "native SchDoc changed after production gate PASS"
+        )
 
     gate_pcb_hash = str(
         release_result.get("native_pcb_sha256", "")
@@ -93,7 +107,11 @@ def _sync_production_authority(
         PATHS["release_result"].as_posix()
     )
     native_status["production_release_result_sha256"] = result_hash
+    native_status["native_schematic_sha256"] = schematic_hash
     native_status["native_pcb_sha256"] = pcb_hash
+    native_status["production_release_source_schematic_sha256"] = (
+        gate_schematic_hash
+    )
     native_status["production_release_source_pcb_sha256"] = gate_pcb_hash
 
     altium = implementation.setdefault("altium", {})
@@ -103,7 +121,11 @@ def _sync_production_authority(
     altium["placement_started"] = True
     altium["routing_started"] = True
     altium["production_release_authorized"] = True
+    altium["native_schematic_sha256"] = schematic_hash
     altium["native_pcb_sha256"] = pcb_hash
+    altium["production_release_source_schematic_sha256"] = (
+        gate_schematic_hash
+    )
     altium["production_release_source_pcb_sha256"] = gate_pcb_hash
 
     implementation["current_phase"] = "PRODUCTION_RELEASED"
@@ -119,7 +141,11 @@ def _sync_production_authority(
     authority["pcb_layout_authority"] = "ALTIUM_AUTHORIZED"
     authority["pcb_design_phase"] = "PRODUCTION_RELEASED"
     authority["production_release_authorized"] = True
+    authority["native_schematic_sha256"] = schematic_hash
     authority["native_pcb_sha256"] = pcb_hash
+    authority["production_release_source_schematic_sha256"] = (
+        gate_schematic_hash
+    )
     authority["production_release_source_pcb_sha256"] = gate_pcb_hash
     authority["production_release_result"] = (
         PATHS["release_result"].as_posix()
@@ -258,7 +284,8 @@ def run_transition(
                 "ALTIUM_PRODUCTION_RELEASE_GATE PASS."
             ),
             (
-                "The release gate remains SHA-256-bound to one final native PcbDoc."
+                "The release gate and authority synchronization remain SHA-256-bound "
+                "to the equivalence-approved SchDoc and one final native PcbDoc."
             ),
         ],
     }
