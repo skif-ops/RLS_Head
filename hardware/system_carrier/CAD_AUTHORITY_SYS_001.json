@@ -59,5 +59,9 @@
     "hardware/system_carrier/altium/ALTIUM_DFM_PROFILE_SYS_001.csv"
   ],
   "pcb_design_phase": "ALTIUM_BOARD_PLANNING",
-  "production_release_authorized": false
+  "production_release_authorized": false,
+  "altium_implementation_files": [
+    "hardware/system_carrier/altium/ALTIUM_IMPLEMENTATION_SEQUENCE_SYS_001.csv",
+    "hardware/system_carrier/altium/ALTIUM_STATUS_SYS_001.json"
+  ]
 }
