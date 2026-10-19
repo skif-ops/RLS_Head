@@ -2,7 +2,7 @@ check_id,source_contract,altium_evidence,pass_condition,criticality
 EQ-001,BOM_SYS_CARRIER_LAYOUT_004.csv,equivalence/bom_validation_result.json,Native Altium BOM export designators and MPNs exactly match authoritative BOM,P0
 EQ-002,PINMAP_SYS_001.csv,equivalence/native_audit_result.json,All MCU physical-pin to net mappings match native pad-to-net inventory,P0
 EQ-003,"CONNECTOR_PINOUT_SYS_001.csv;CONNECTOR_NATIVE_PINMAP_SYS_001.csv",equivalence/connector_validation_result.json,All logical connector pins map to the required native physical pad/net assignments,P0
-EQ-004,NETLIST_SYS_001.csv,equivalence/netlist_export.csv,All P0/P1 nets and endpoints are electrically equivalent,P0
+EQ-004,Retained KiCad schematic CI baseline,equivalence/netlist_validation_result.json,Native PcbDoc physical endpoint connectivity partitions exactly match the retained KiCad baseline,P0
 EQ-005,FOOTPRINT_ASSIGNMENT_SYS_002.csv,equivalence/footprint_report.json,Every locked reference uses the approved native PCB footprint pattern,P0
 EQ-006,HIERARCHY_INTERFACE_SYS_001.csv,equivalence/netlist_export.csv,Sheet ports resolve to the same nets and directions,P0
 EQ-007,altium/ALTIUM_RULE_QUERY_SYS_001.csv,equivalence/native_audit_result.json,All 10 named native PCB rules have the required family scope and enabled state; the 24-row ALTIUM_RULES_SYS_001.csv remains the broader layout-design constraint contract,P0
