@@ -331,6 +331,8 @@ jobs:
           assert data["implementation_step_count"] == 14
           assert data["impedance_model_count"] == 2
           assert data["power_width_model_count"] == 4
+          assert data["diff_pair_count"] == 3
+          assert data["rule_query_count"] == 10
           assert data["altium_phase"] == "IMPORT_PREPARED"
           print("Altium primary CAD policy PASS")
           PY
@@ -391,6 +393,25 @@ jobs:
           assert len(data["models"]) == 4
           assert data["production_review_required"] is True
           print("Altium provisional power-width model PASS")
+          PY
+
+      - name: Validate Altium rule scopes and differential pairs
+        run: |
+          python -m tools.altium_rule_scope_gate \
+            hardware/system_carrier \
+            --output altium_rule_scope_gate.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("altium_rule_scope_gate.json").read_text())
+          assert data["schema"] == "ALTIUM-RULE-SCOPE-GATE-001"
+          assert data["status"] == "PASS"
+          assert data["errors"] == []
+          assert data["rule_count"] == 10
+          assert data["differential_pair_count"] == 3
+          assert data["differential_pair_class_count"] == 2
+          print("Altium rule scopes and differential pairs PASS")
           PY
 
       - name: Validate System Carrier schematic contract
@@ -906,6 +927,25 @@ jobs:
           print("Altium power-width evidence READY")
           PY
 
+      - name: Validate Altium rule scopes for import
+        run: |
+          python -m tools.altium_rule_scope_gate \
+            hardware/system_carrier \
+            --output build-cad/system_carrier/altium_rule_scope_gate.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/altium_rule_scope_gate.json"
+              ).read_text()
+          )
+          assert data["status"] == "PASS"
+          assert data["rule_count"] == 10
+          print("Altium native rule-scope evidence READY")
+          PY
+
       - name: Build Altium import package
         run: |
           python -m tools.altium_import_package \
@@ -928,7 +968,8 @@ jobs:
           assert data["placement_gate_included"] is True
           assert data["impedance_gate_included"] is True
           assert data["power_width_gate_included"] is True
-          assert data["file_count"] >= 37
+          assert data["rule_scope_gate_included"] is True
+          assert data["file_count"] >= 40
           print(
               "Altium import package READY:",
               data["file_count"],
