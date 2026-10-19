@@ -776,3 +776,29 @@ def test_netlist_baseline_must_be_bound_to_import_package(tmp_path):
         "netlist_baseline_not_bound_to_import_package"
         in checked["errors"]
     )
+
+
+
+def test_changed_raw_compile_report_invalidates_gate(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    raw_item = next(
+        item
+        for item in data["artifacts"]
+        if item["id"] == "compile_report_raw"
+    )
+    raw_path = tmp_path / raw_item["path"]
+    raw_path.write_bytes(b"CHANGED_RAW_COMPILE_REPORT")
+    raw_item["sha256"] = hashlib.sha256(
+        raw_path.read_bytes()
+    ).hexdigest()
+    manifest.write_text(
+        json.dumps(data, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert "compile_evidence:source_report_hash" in result["errors"]
