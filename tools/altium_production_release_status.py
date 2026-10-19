@@ -111,21 +111,24 @@ def evaluate(repository_root: str | Path = ".") -> dict:
             else:
                 manifest_ready = True
 
-    if not equivalence_ready:
+    if "equivalence_result" in invalid:
+        status = "INVALID_EQUIVALENCE_EVIDENCE"
+        next_action = "FIX_EQUIVALENCE_RESULT"
+    elif not equivalence_ready:
         status = "WAITING_EQUIVALENCE_PASS"
         next_action = "COMPLETE_NATIVE_EQUIVALENCE"
     elif not release_evidence_complete:
         status = "WAITING_RELEASE_EVIDENCE"
         next_action = "COMPLETE_DRC_MECHANICAL_FABRICATOR_SI_DFM_OUTJOB_EVIDENCE"
+    elif "manifest" in invalid:
+        status = "INVALID_RELEASE_MANIFEST"
+        next_action = "FIX_PRODUCTION_RELEASE_MANIFEST"
     elif invalid:
         status = "INVALID_RELEASE_EVIDENCE"
         next_action = "FIX_RELEASE_EVIDENCE_SCHEMA_OR_FORMAT"
     elif not release_reviews_pass:
         status = "WAITING_RELEASE_REVIEWS"
         next_action = "CLOSE_NON_PASS_RELEASE_REVIEWS"
-    elif "manifest" in invalid:
-        status = "INVALID_RELEASE_MANIFEST"
-        next_action = "FIX_PRODUCTION_RELEASE_MANIFEST"
     elif not manifest_ready:
         status = "WAITING_RELEASE_MANIFEST"
         next_action = "BUILD_PRODUCTION_RELEASE_MANIFEST"
