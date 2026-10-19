@@ -34,7 +34,7 @@ Use `python -m tools.altium_production_release_status --repository-root . --outp
 
 The normal state progression is:
 
-`WAITING_EQUIVALENCE_PASS` → `WAITING_RELEASE_EVIDENCE` → `WAITING_RELEASE_REVIEWS` → `WAITING_RELEASE_MANIFEST` → `READY_TO_RUN_PRODUCTION_RELEASE_GATE`.
+`WAITING_EQUIVALENCE_PASS` → `WAITING_RELEASE_EVIDENCE` → (`INVALID_RELEASE_SOURCE_BINDING` if any review points at a different final PcbDoc) → `WAITING_RELEASE_REVIEWS` → `WAITING_RELEASE_MANIFEST` → `READY_TO_RUN_PRODUCTION_RELEASE_GATE`.
 
 Build the final manifest hashes with:
 

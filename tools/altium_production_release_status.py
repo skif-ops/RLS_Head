@@ -7,6 +7,7 @@ from pathlib import Path
 
 
 SCHEMA = "ALTIUM-PRODUCTION-RELEASE-STATUS-001"
+NATIVE_PCB_PATH = "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
 
 REQUIRED = {
     "native_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
@@ -102,10 +103,49 @@ def evaluate(repository_root: str | Path = ".") -> dict:
     release_evidence_complete = all(
         evidence[name]["present"] for name in release_evidence_ids
     )
+
+    source_binding_errors: list[str] = []
+    native_pcb_hash = str(
+        evidence.get("native_pcb", {}).get("sha256", "")
+    ).lower()
+    for artifact_id in (
+        "native_drc_result",
+        "mechanical_review",
+        "fabricator_binding",
+        "return_path_si_review",
+        "dfm_result",
+        "outjob_release_manifest",
+    ):
+        item = evidence.get(artifact_id, {})
+        if not item.get("present"):
+            continue
+        path = root / REQUIRED[artifact_id]
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            continue
+
+        source_pcb = str(payload.get("source_pcb", "")).strip()
+        source_hash = str(
+            payload.get("source_pcb_sha256", "")
+        ).strip().lower()
+        if source_pcb != NATIVE_PCB_PATH:
+            source_binding_errors.append(
+                f"{artifact_id}:source_pcb"
+            )
+        if (
+            not native_pcb_hash
+            or len(source_hash) != 64
+            or source_hash != native_pcb_hash
+        ):
+            source_binding_errors.append(
+                f"{artifact_id}:source_pcb_sha256"
+            )
+
     release_reviews_pass = all(
         name not in invalid and name not in non_pass
         for name in release_evidence_ids
-    ) and release_evidence_complete
+    ) and release_evidence_complete and not source_binding_errors
 
     manifest_ready = False
     manifest_path = root / REQUIRED["manifest"]
@@ -193,6 +233,9 @@ def evaluate(repository_root: str | Path = ".") -> dict:
     elif invalid:
         status = "INVALID_RELEASE_EVIDENCE"
         next_action = "FIX_RELEASE_EVIDENCE_SCHEMA_OR_FORMAT"
+    elif source_binding_errors:
+        status = "INVALID_RELEASE_SOURCE_BINDING"
+        next_action = "REBIND_RELEASE_EVIDENCE_TO_FINAL_NATIVE_PCBDOC"
     elif not release_reviews_pass:
         status = "WAITING_RELEASE_REVIEWS"
         next_action = "CLOSE_NON_PASS_RELEASE_REVIEWS"
@@ -210,6 +253,8 @@ def evaluate(repository_root: str | Path = ".") -> dict:
         "equivalence_ready": equivalence_ready,
         "release_evidence_complete": release_evidence_complete,
         "release_reviews_pass": release_reviews_pass,
+        "source_binding_errors": sorted(set(source_binding_errors)),
+        "final_native_pcb_sha256": native_pcb_hash,
         "manifest_ready": manifest_ready,
         "manifest_errors": sorted(set(manifest_errors)),
         "missing_artifacts": sorted(missing),
