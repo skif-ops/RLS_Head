@@ -4,9 +4,9 @@ RV-002,GENERAL_SIGNAL,preferred_width,0.20,mm,EVT_BASELINE,
 RV-003,GENERAL_CLEARANCE,min_clearance,0.20,mm,EVT_BASELINE,
 RV-004,VIA_SIGNAL,finished_drill,0.30,mm,EVT_BASELINE,
 RV-005,VIA_SIGNAL,pad_diameter,0.60,mm,EVT_BASELINE,
-RV-006,VIN_RAW,min_neck_width,2.50,mm,EVT_BASELINE,Prefer polygon/pour; verify against final copper weight
+RV-006,VIN_RAW,min_neck_width,3.00,mm,EVT_CALCULATED,IPC-2221 external-trace screening at 5A 1oz 10C rise; prefer polygon/pour
 RV-007,RADAR_12V,min_neck_width,1.50,mm,EVT_BASELINE,Prefer polygon/pour; verify against final copper weight
-RV-008,3V3,min_trunk_width,1.00,mm,EVT_BASELINE,Prefer plane/pour for high-current distribution
+RV-008,3V3,min_trunk_width,1.50,mm,EVT_CALCULATED,IPC-2221 screening at 3A 1oz 10C rise; prefer polygon/pour
 RV-009,ETH_MDI,target_diff_impedance,100,ohm,FAB_BIND_REQUIRED,Width/gap derived from final stackup
 RV-010,GNSS_RF,target_impedance,50,ohm,FAB_BIND_REQUIRED,Width derived from final stackup
 RV-011,GNSS_RF,max_via_count,0,count,EVT_BASELINE,Top-layer direct route preferred
@@ -21,3 +21,4 @@ RV-019,ETH_MDI,evt_trace_width,0.26,mm,EVT_CALCULATED,Initial 100R differential 
 RV-020,ETH_MDI,evt_pair_gap,0.20,mm,EVT_CALCULATED,Initial 100R differential geometry over provisional L2 reference
 RV-021,GNSS_RF,evt_trace_width,0.36,mm,EVT_CALCULATED,Initial 50R microstrip geometry over provisional L2 reference
 RV-022,STACKUP,L1_L2_dielectric,0.18,mm,EVT_PROVISIONAL,Nominal FR-4 prepreg separation used for initial impedance estimates
+RV-023,VIN_PROTECTED,min_neck_width,3.00,mm,EVT_CALCULATED,Upstream split rail sized for 5A screen; prefer polygon/pour\nRV-024,POWER_EXTERNAL,screen_temp_rise,10,C,EVT_CALCULATED,Common conservative screening assumption for provisional power widths\n
