@@ -809,6 +809,26 @@ jobs:
           )
           PY
 
+      - name: Validate Altium placement geometry for import
+        run: |
+          python -m tools.altium_placement_gate \
+            hardware/system_carrier \
+            --output build-cad/system_carrier/altium_placement_gate.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/altium_placement_gate.json"
+              ).read_text()
+          )
+          assert data["schema"] == "ALTIUM-PLACEMENT-GATE-001"
+          assert data["status"] == "PASS"
+          assert data["errors"] == []
+          print("Altium placement geometry evidence READY")
+          PY
+
       - name: Build Altium import package
         run: |
           python -m tools.altium_import_package \
@@ -827,7 +847,9 @@ jobs:
           assert data["status"] == "READY_FOR_ALTIUM_IMPORT"
           assert data["target_cad"] == "Altium Designer"
           assert data["preserve_kicad"] is True
-          assert data["file_count"] >= 20
+          assert data["production_contracts_included"] is True
+          assert data["placement_gate_included"] is True
+          assert data["file_count"] >= 30
           print(
               "Altium import package READY:",
               data["file_count"],

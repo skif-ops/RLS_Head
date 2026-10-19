@@ -143,6 +143,12 @@ def build(
         "ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv",
         "ALTIUM_EQUIVALENCE_CHECKS_SYS_001.csv",
         "ALTIUM_NATIVE_STATUS_SYS_001.json",
+        "ALTIUM_OUTJOB_CONTRACT_SYS_001.csv",
+        "ALTIUM_RELEASE_CHECKLIST_SYS_001.csv",
+        "ALTIUM_BOARD_PLANNING_SYS_001.csv",
+        "ALTIUM_DFM_PROFILE_SYS_001.csv",
+        "ALTIUM_IMPLEMENTATION_SEQUENCE_SYS_001.csv",
+        "ALTIUM_STATUS_SYS_001.json",
         "README.md",
     ]:
         records.append(
@@ -152,17 +158,21 @@ def build(
             )
         )
 
-    prelayout_result = (
-        generated
-        / "prelayout_validation.json"
-    )
-    if prelayout_result.is_file():
+    evidence_files = [
+        "prelayout_validation.json",
+        "altium_placement_gate.json",
+        "erc.json",
+        "erc_triage.json",
+        "cad_ci_summary.json",
+    ]
+    for evidence_name in evidence_files:
+        evidence_path = generated / evidence_name
+        if not evidence_path.is_file():
+            continue
         records.append(
             copy_file(
-                prelayout_result,
-                output
-                / "evidence"
-                / "prelayout_validation.json",
+                evidence_path,
+                output / "evidence" / evidence_name,
             )
         )
 
@@ -193,6 +203,13 @@ def build(
         "post_import_checks": profile[
             "post_import_checks"
         ],
+        "production_contracts_included": True,
+        "placement_gate_included": any(
+            item["path"].endswith(
+                "evidence/altium_placement_gate.json"
+            )
+            for item in records
+        ),
         "notes": [
             (
                 "Import kicad_source through Altium Designer "
