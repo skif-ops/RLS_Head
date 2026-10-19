@@ -17,6 +17,7 @@ REQUIRED_ARTIFACTS = {
     "bom_export",
     "netlist_export",
     "footprint_report",
+    "native_audit_result",
 }
 
 REQUIRED_CHECKS = {
@@ -29,6 +30,7 @@ REQUIRED_CHECKS = {
     "rules_equivalence",
     "stackup_equivalence",
     "no_76_81GHz_rf_on_system_carrier",
+    "native_pcb_audit",
 }
 
 EXPECTED_EXTENSIONS = {
@@ -190,6 +192,24 @@ def validate_manifest(
                     f"COMPILE_WARNINGS:{compile_warnings}"
                 )
 
+    native_audit = None
+    native_audit_path = resolved.get("native_audit_result")
+    if native_audit_path is not None:
+        try:
+            native_audit = json.loads(
+                native_audit_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"native_audit_parse:{exc}")
+        else:
+            if (
+                native_audit.get("schema")
+                != "ALTIUM-NATIVE-AUDIT-RESULT-001"
+            ):
+                errors.append("native_audit_schema")
+            if native_audit.get("status") != "PASS":
+                reasons.append("NATIVE_AUDIT")
+
     checks_raw = manifest.get("checks")
     checks: dict[str, str] = {}
     if not isinstance(checks_raw, dict):
@@ -250,6 +270,7 @@ def validate_manifest(
         "reason_codes": sorted(set(reasons)),
         "integrity": integrity,
         "compile": compile_result,
+        "native_audit": native_audit,
         "checks": checks,
         "preserve_kicad": preserved_kicad,
         "review_a_status": review_a,
