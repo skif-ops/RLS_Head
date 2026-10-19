@@ -14,6 +14,7 @@
   "next_required_outputs": [
     "native/EVT_SYS_CARRIER.SchDoc",
     "native/EVT_SYS_CARRIER.PcbDoc",
+    "equivalence/import_log.txt",
     "equivalence/compile_report.json",
     "equivalence/bom_export.csv",
     "equivalence/netlist_export.csv",
