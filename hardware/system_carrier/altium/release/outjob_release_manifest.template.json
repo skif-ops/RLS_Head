@@ -7,5 +7,6 @@
   "outputs": [],
   "notes": [
     "PASS requires every YES output from ALTIUM_OUTJOB_CONTRACT_SYS_001.csv."
-  ]
+  ],
+  "source_pcb_sha256": "<SHA256_OF_FINAL_NATIVE_PCBDOC>"
 }
