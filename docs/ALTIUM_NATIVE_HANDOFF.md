@@ -80,6 +80,12 @@ Before routing:
 
 Only `ALTIUM_EQUIVALENCE_GATE = PASS` changes layout authority to Altium.
 
+## CI phase protection
+
+GitHub CI uses `tools.altium_native_ci_gate` to distinguish the repository phases. Before native import it requires `PRE_IMPORT` with `READY_FOR_NATIVE_IMPORT`. Once both native documents are present, CI switches to `POST_EQUIVALENCE`: it re-runs the equivalence gate from committed evidence, requires the committed result to be reproducible, verifies tracked authority hashes/status synchronization, and requires routing readiness to be `READY_FOR_ROUTING`.
+
+A partial native pair, stale authority hash, non-reproducible equivalence result or unsynchronized status fails CI.
+
 ## Still not production release
 
 Equivalence PASS authorizes native placement/routing work only. Production remains blocked until final mechanical lock, fabricator stack/impedance binding, native Altium DRC, return-path/SI review, DFM and manufacturing release checks all pass.
