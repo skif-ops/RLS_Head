@@ -115,8 +115,8 @@ def validate(
             ),
             (
                 "This check does not infer the absence of unnetted antenna "
-                "geometry from names; the routed-board visual/design review "
-                "is mandatory."
+                "geometry from names; review of the exact native pre-routing PcbDoc "
+                "is mandatory before layout authority."
             ),
         ],
     }
