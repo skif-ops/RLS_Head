@@ -2,11 +2,23 @@ import json
 from pathlib import Path
 
 import tools.altium_native_transition as transition
+from tools.altium_native_file_preflight import CFB_MAGIC
 
 
 def _write(path: Path, content: bytes = b"TEST") -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(content)
+
+
+def _cfb_stub() -> bytes:
+    data = bytearray(512)
+    data[:8] = CFB_MAGIC
+    data[24:26] = (0x003E).to_bytes(2, "little")
+    data[26:28] = (3).to_bytes(2, "little")
+    data[28:30] = (0xFFFE).to_bytes(2, "little")
+    data[30:32] = (9).to_bytes(2, "little")
+    data[32:34] = (6).to_bytes(2, "little")
+    return bytes(data)
 
 
 def _write_json(path: Path, payload: dict) -> None:
@@ -34,8 +46,10 @@ def test_native_transition_waits_for_real_altium_import(tmp_path):
 
 
 def test_native_transition_stops_at_compile_report_after_provenance(tmp_path):
-    for key in ("project", "schematic", "pcb", "package_manifest", "import_log"):
+    for key in ("project", "package_manifest", "import_log"):
         _write(_path(tmp_path, key))
+    _write(_path(tmp_path, "schematic"), _cfb_stub())
+    _write(_path(tmp_path, "pcb"), _cfb_stub())
 
     _write_json(
         _path(tmp_path, "import_receipt"),
@@ -58,8 +72,6 @@ def test_native_transition_full_pass_syncs_routing_authority(
 ):
     for key in (
         "project",
-        "schematic",
-        "pcb",
         "package_manifest",
         "import_log",
         "bom_export",
@@ -75,6 +87,8 @@ def test_native_transition_full_pass_syncs_routing_authority(
         "manifest_template",
     ):
         _write(_path(tmp_path, key))
+    _write(_path(tmp_path, "schematic"), _cfb_stub())
+    _write(_path(tmp_path, "pcb"), _cfb_stub())
 
     _write_json(
         _path(tmp_path, "import_receipt"),
