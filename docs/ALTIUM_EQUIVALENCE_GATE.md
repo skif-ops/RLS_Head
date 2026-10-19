@@ -36,7 +36,7 @@ All must be PASS:
 4. Netlist equivalence.
 5. Footprint equivalence.
 6. Hierarchy/port equivalence.
-7. Altium PCB-rule equivalence: all 10 instantiated rule-query rules must be present; the 24-row layout constraint contract remains the broader design-policy source.
+7. Altium PCB-rule equivalence: all 10 instantiated rule-query rules must have the required family, scope and enabled state; the 24-row layout constraint contract remains the broader design-policy source.
 8. Four-layer stack equivalence.
 9. No 76–81 GHz RF routing or antenna on the System Carrier.
 10. Native Altium compile: zero errors and zero warnings.
