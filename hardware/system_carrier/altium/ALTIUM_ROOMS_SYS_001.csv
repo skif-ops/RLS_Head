@@ -1,0 +1,8 @@
+room_id,zone_id,x_min_mm,y_min_mm,x_max_mm,y_max_mm,status,criticality,notes
+ROOM_PWR,ZONE_PWR,2,8,98,20,EVT_PROVISIONAL,P0,Power-entry and regulator corridor
+ROOM_CAN,ZONE_CAN,76,24,99,36,EVT_PROVISIONAL,P0,Radar CAN and reference connector corridor
+ROOM_MCU,ZONE_MCU,32,34,70,46,EVT_PROVISIONAL,P0,MCU clock and analog-support placement room
+ROOM_IMU,ZONE_IMU,46,52,58,64,EVT_PROVISIONAL,P1,Mechanically quiet IMU room
+ROOM_GNSS,ZONE_GNSS,3,56,32,72,EVT_PROVISIONAL,P0,GNSS quiet placement room inside GNSS keepout corridor
+ROOM_ETH,ZONE_ETH,62,46,99,66,EVT_PROVISIONAL,P0,PHY ESD and MagJack corridor
+ROOM_DEBUG,ZONE_DEBUG,45,2,75,10,EVT_PROVISIONAL,P1,SWD reset and debug-access room

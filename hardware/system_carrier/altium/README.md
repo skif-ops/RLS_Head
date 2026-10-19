@@ -60,3 +60,7 @@ For routing preparation, `ALTIUM_EVT_STACKUP_SYS_002.csv` defines a provisional 
 ## Native rule scopes
 
 `ALTIUM_DIFF_PAIRS_SYS_001.csv` defines the Ethernet MDI and CAN differential-pair objects/classes. `ALTIUM_RULE_QUERY_SYS_001.csv` contains the concrete Altium PCB query scopes to instantiate after native import, including `InNet(...)`, `InNetClass(...)`, and `InDifferentialPairClass(...)` expressions. These rules inherit the provisional impedance and power-width values and remain subject to native Altium DRC and final fabricator binding.
+
+## Routing readiness gate
+
+`ALTIUM_ROOMS_SYS_001.csv` defines seven provisional placement rooms aligned with the existing functional zones. `tools/altium_routing_readiness.py` consolidates the CAD-policy, pre-layout, placement, room, impedance, power-width and native-rule-scope gates. With the current repository state it is expected to report `READY_FOR_NATIVE_IMPORT`, not `READY_FOR_ROUTING`. Native routing authority is granted only after real Altium `SchDoc` / `PcbDoc` files exist and the Altium equivalence gate passes.

@@ -25,7 +25,9 @@
     "impedance_start_values_ready": true,
     "power_width_start_values_ready": true,
     "rule_query_contract_ready": true,
-    "differential_pairs_defined": true
+    "differential_pairs_defined": true,
+    "placement_rooms_ready": true,
+    "repository_routing_prerequisites_ready": true
   },
   "blockers": [
     "Native Altium import/save of SchDoc/PcbDoc has not yet been executed in Altium Designer.",
@@ -65,5 +67,14 @@
     "differential_pair_classes": 2,
     "native_instantiation_required": true,
     "native_drc_required": true
+  },
+  "routing_readiness": {
+    "expected_status": "READY_FOR_NATIVE_IMPORT",
+    "routing_authorized": false,
+    "required_to_authorize": [
+      "native/EVT_SYS_CARRIER.SchDoc",
+      "native/EVT_SYS_CARRIER.PcbDoc",
+      "ALTIUM_EQUIVALENCE_GATE PASS"
+    ]
   }
 }

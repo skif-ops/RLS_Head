@@ -51,6 +51,7 @@ def validate(root: str | Path) -> dict:
     power_width_path = root / "altium" / "ALTIUM_POWER_WIDTH_SYS_001.csv"
     diff_pair_path = root / "altium" / "ALTIUM_DIFF_PAIRS_SYS_001.csv"
     rule_query_path = root / "altium" / "ALTIUM_RULE_QUERY_SYS_001.csv"
+    rooms_path = root / "altium" / "ALTIUM_ROOMS_SYS_001.csv"
     implementation_path = root / "altium" / "ALTIUM_IMPLEMENTATION_SEQUENCE_SYS_001.csv"
     status_path = root / "altium" / "ALTIUM_STATUS_SYS_001.json"
     source_rules_path = root / "PCB_LAYOUT_CONSTRAINTS_SYS_001.csv"
@@ -209,6 +210,7 @@ def validate(root: str | Path) -> dict:
     power_width_ids = _csv_ids(power_width_path, "model_id")
     diff_pair_ids = _csv_ids(diff_pair_path, "pair_name")
     rule_query_ids = _csv_ids(rule_query_path, "rule_name")
+    room_ids = _csv_ids(rooms_path, "room_id")
 
     if len(outjob_ids) < 14:
         errors.append("outjob_contract_count")
@@ -228,6 +230,8 @@ def validate(root: str | Path) -> dict:
         errors.append("diff_pair_set")
     if len(rule_query_ids) != 10:
         errors.append("rule_query_count")
+    if len(room_ids) != 7:
+        errors.append("room_count")
 
     status_data = json.loads(status_path.read_text(encoding="utf-8"))
     if status_data.get("schema") != "ALTIUM-PCB-IMPLEMENTATION-STATUS-001":
@@ -282,6 +286,7 @@ def validate(root: str | Path) -> dict:
         "power_width_model_count": len(power_width_ids),
         "diff_pair_count": len(diff_pair_ids),
         "rule_query_count": len(rule_query_ids),
+        "room_count": len(room_ids),
         "altium_phase": status_data.get("current_phase"),
         "equivalence_check_count": len(equivalence_ids),
         "layout_bom_ref_count": len(layout_bom_refs),
