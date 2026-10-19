@@ -374,6 +374,7 @@ def test_release_status_rejects_stale_source_binding(tmp_path):
             "status": "PASS",
         },
     }
+    _bind_equivalence_schematic(tmp_path, payloads)
     _bind_release_payloads(tmp_path, payloads)
     payloads["return_path_si_review"]["source_pcb_sha256"] = "0" * 64
 
