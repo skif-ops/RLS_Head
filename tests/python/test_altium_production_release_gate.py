@@ -272,3 +272,32 @@ def test_changed_review_evidence_hash_blocks_release(tmp_path):
         error.startswith("mechanical_evidence_ref_hash:")
         for error in result["errors"]
     )
+
+
+
+def test_pending_null_numeric_evidence_fails_closed(tmp_path):
+    manifest = _fixture(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    item = next(
+        artifact
+        for artifact in data["artifacts"]
+        if artifact["id"] == "native_drc_result"
+    )
+    path = tmp_path / item["path"]
+    payload = json.loads(path.read_text())
+    payload["status"] = "PENDING"
+    payload["blocking_errors"] = None
+    payload["unrouted_nets"] = None
+    item["sha256"] = _write(path, payload)
+    manifest.write_text(
+        json.dumps(data, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "FAIL"
+    assert "NATIVE_DRC_RESULT_NOT_PASS" in result["reason_codes"]
+    assert "DRC_BLOCKING_ERRORS" in result["reason_codes"]
+    assert "UNROUTED_NETS" in result["reason_codes"]
