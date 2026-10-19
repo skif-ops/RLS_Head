@@ -42,6 +42,11 @@
       "id": "footprint_report",
       "path": "hardware/system_carrier/altium/equivalence/footprint_report.json",
       "sha256": "<SHA256>"
+    },
+    {
+      "id": "native_audit_result",
+      "path": "hardware/system_carrier/altium/equivalence/native_audit_result.json",
+      "sha256": "<SHA256>"
     }
   ],
   "checks": {
@@ -53,6 +58,7 @@
     "hierarchy_equivalence": "PENDING",
     "rules_equivalence": "PENDING",
     "stackup_equivalence": "PENDING",
-    "no_76_81GHz_rf_on_system_carrier": "PENDING"
+    "no_76_81GHz_rf_on_system_carrier": "PENDING",
+    "native_pcb_audit": "PENDING"
   }
 }
