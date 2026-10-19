@@ -1,0 +1,18 @@
+{
+  "schema": "ALTIUM-COMPILE-REPORT-001",
+  "status": "PENDING",
+  "errors": null,
+  "warnings": null,
+  "source_report": "hardware/system_carrier/altium/equivalence/compile_report_raw.txt",
+  "source_report_sha256": "<SHA256>",
+  "source_project": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
+  "source_project_sha256": "<SHA256>",
+  "source_schematic": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
+  "source_schematic_sha256": "<SHA256>",
+  "layout_authority": "NOT_AUTHORIZED",
+  "production_authority": "NOT_AUTHORIZED",
+  "notes": [
+    "Prefer generating compile_report.json with tools.altium_compile_evidence build.",
+    "PASS requires zero native Altium compile errors and zero warnings and exact SHA-256 binding to the raw report, project and native schematic."
+  ]
+}
