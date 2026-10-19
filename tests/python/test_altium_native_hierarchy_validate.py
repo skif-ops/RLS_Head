@@ -42,14 +42,12 @@ def test_hierarchy_validator_passes_matching_native_export(tmp_path):
     export = tmp_path / "hierarchy_export.csv"
     _write(
         export,
-        ["sheet", "net_name", "pin_type", "anchor_ref", "anchor_pin"],
+        ["sheet", "net_name", "pin_type"],
         [
             {
                 "sheet": "MCU_CORE",
                 "net_name": "GNSS_PPS",
                 "pin_type": "IN",
-                "anchor_ref": "U1",
-                "anchor_pin": "40",
             }
         ],
     )
@@ -107,14 +105,12 @@ def test_hierarchy_validator_detects_direction_mismatch(tmp_path):
     export = tmp_path / "hierarchy_export.csv"
     _write(
         export,
-        ["sheet", "net_name", "pin_type", "anchor_ref", "anchor_pin"],
+        ["sheet", "net_name", "pin_type"],
         [
             {
                 "sheet": "POWER_INPUT",
                 "net_name": "3V3",
                 "pin_type": "input",
-                "anchor_ref": "L1",
-                "anchor_pin": "2",
             }
         ],
     )
