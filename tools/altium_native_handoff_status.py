@@ -20,6 +20,7 @@ REQUIRED = {
     "compile_report": "hardware/system_carrier/altium/equivalence/compile_report.json",
     "bom_export": "hardware/system_carrier/altium/equivalence/bom_export.csv",
     "bom_validation_result": "hardware/system_carrier/altium/equivalence/bom_validation_result.json",
+    "connector_validation_result": "hardware/system_carrier/altium/equivalence/connector_validation_result.json",
     "netlist_export": "hardware/system_carrier/altium/equivalence/netlist_export.csv",
     "footprint_report": "hardware/system_carrier/altium/equivalence/footprint_report.json",
     "component_inventory": "hardware/system_carrier/altium/equivalence/component_inventory.csv",
