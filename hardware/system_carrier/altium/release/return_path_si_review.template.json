@@ -1,0 +1,13 @@
+{
+  "schema": "ALTIUM-RETURN-PATH-SI-REVIEW-001",
+  "status": "PENDING",
+  "p0_open_findings": null,
+  "l2_ground_continuity_verified": false,
+  "timing_return_paths_verified": false,
+  "ethernet_mdi_return_path_verified": false,
+  "reviewer": "<REVIEWER>",
+  "evidence_refs": [],
+  "notes": [
+    "PASS requires routed-board return-path/SI review."
+  ]
+}
