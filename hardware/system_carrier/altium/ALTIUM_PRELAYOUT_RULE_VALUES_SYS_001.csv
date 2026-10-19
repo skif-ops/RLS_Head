@@ -1,0 +1,19 @@
+rule_id,scope,parameter,value,unit,status,notes
+RV-001,GENERAL_SIGNAL,min_width,0.15,mm,EVT_BASELINE,Increase where fab capability or current requires
+RV-002,GENERAL_SIGNAL,preferred_width,0.20,mm,EVT_BASELINE,
+RV-003,GENERAL_CLEARANCE,min_clearance,0.20,mm,EVT_BASELINE,
+RV-004,VIA_SIGNAL,finished_drill,0.30,mm,EVT_BASELINE,
+RV-005,VIA_SIGNAL,pad_diameter,0.60,mm,EVT_BASELINE,
+RV-006,VIN_RAW,min_neck_width,2.50,mm,EVT_BASELINE,Prefer polygon/pour; verify against final copper weight
+RV-007,RADAR_12V,min_neck_width,1.50,mm,EVT_BASELINE,Prefer polygon/pour; verify against final copper weight
+RV-008,3V3,min_trunk_width,1.00,mm,EVT_BASELINE,Prefer plane/pour for high-current distribution
+RV-009,ETH_MDI,target_diff_impedance,100,ohm,FAB_BIND_REQUIRED,Width/gap derived from final stackup
+RV-010,GNSS_RF,target_impedance,50,ohm,FAB_BIND_REQUIRED,Width derived from final stackup
+RV-011,GNSS_RF,max_via_count,0,count,EVT_BASELINE,Top-layer direct route preferred
+RV-012,MCU_HSE_25M,max_via_count,0,count,EVT_BASELINE,
+RV-013,ETH_50M,branch_length_delta_max,5,mm,EVT_BASELINE,MCU and PHY branches from source
+RV-014,RMII,group_skew_max,10,mm,EVT_BASELINE,Not a strict high-speed matched bus; limits pathological skew
+RV-015,TIMING_P0,min_parallel_clearance_to_sw,1.00,mm,EVT_BASELINE,GNSS_PPS/RADAR_REF/IMU_DRDY
+RV-016,GNSS_QUIET_ZONE,digital_keepout,1,boolean,EVT_BASELINE,No unrelated clocks/buses in quiet zone
+RV-017,COPPER_EDGE,min_clearance,0.50,mm,EVT_BASELINE,
+RV-018,MOUNT_HOLE,copper_keepout_radius,2.50,mm,EVT_BASELINE,Around NPTH M3 holes
