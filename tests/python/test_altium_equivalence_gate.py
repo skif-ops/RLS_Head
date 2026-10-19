@@ -17,15 +17,15 @@ def _manifest(tmp_path: Path) -> Path:
     raw_audit_entries = {
         "component_inventory": (
             "equivalence/component_inventory.csv",
-            b"designator,pattern,x_mil,y_mil\\nU1,TEST,0,0\\n",
+            b"designator,pattern,x_mil,y_mil\nU1,TEST,0,0\n",
         ),
         "net_inventory": (
             "equivalence/net_inventory.csv",
-            b"net_name\\n3V3\\n",
+            b"net_name\n3V3\n",
         ),
         "rule_inventory": (
             "equivalence/rule_inventory.csv",
-            b"rule_name,rule_kind,unique_id\\nR_GENERAL_WIDTH,Width,TEST\\n",
+            b"rule_name,rule_kind,unique_id\nR_GENERAL_WIDTH,Width,TEST\n",
         ),
     }
     raw_hashes = {}
@@ -41,7 +41,7 @@ def _manifest(tmp_path: Path) -> Path:
         )
 
     entries = {
-        "project": ("EVT_SYS_CARRIER.PrjPcb", b"[Design]\\nVersion=1.0\\n"),
+        "project": ("EVT_SYS_CARRIER.PrjPcb", b"[Design]\nVersion=1.0\n"),
         "schematic": ("native/EVT_SYS_CARRIER.SchDoc", b"SYNTHETIC_TEST_SCHDOC"),
         "pcb": ("native/EVT_SYS_CARRIER.PcbDoc", b"SYNTHETIC_TEST_PCBDOC"),
         "compile_report": (
@@ -55,8 +55,8 @@ def _manifest(tmp_path: Path) -> Path:
                 sort_keys=True,
             ).encode(),
         ),
-        "bom_export": ("equivalence/bom_export.csv", b"ref,mpn\\nU1,STM32H753IIT6\\n"),
-        "netlist_export": ("equivalence/netlist_export.csv", b"net,ref,pin\\n3V3,U1,23\\n"),
+        "bom_export": ("equivalence/bom_export.csv", b"ref,mpn\nU1,STM32H753IIT6\n"),
+        "netlist_export": ("equivalence/netlist_export.csv", b"net,ref,pin\n3V3,U1,23\n"),
         "footprint_report": (
             "equivalence/footprint_report.json",
             b'{"status":"PASS"}',
@@ -114,7 +114,7 @@ def _manifest(tmp_path: Path) -> Path:
 
     path = tmp_path / "manifest.json"
     path.write_text(
-        json.dumps(manifest, indent=2) + "\\n",
+        json.dumps(manifest, indent=2) + "\n",
         encoding="utf-8",
     )
     return path
@@ -175,13 +175,11 @@ def test_failed_native_audit_blocks_gate(tmp_path):
         if item["id"] == "native_audit_result"
     )
     audit_path = tmp_path / audit_item["path"]
+    audit = json.loads(audit_path.read_text())
+    audit["status"] = "FAIL"
+    audit["errors"] = ["missing_rules:R_GENERAL_WIDTH"]
     audit_content = json.dumps(
-        {
-            "schema": "ALTIUM-NATIVE-AUDIT-RESULT-001",
-            "status": "FAIL",
-            "errors": ["missing_rules:R_GENERAL_WIDTH"],
-            "warnings": [],
-        },
+        audit,
         sort_keys=True,
     ).encode()
     audit_path.write_bytes(audit_content)
@@ -217,7 +215,7 @@ def test_native_audit_input_hash_mismatch_invalidates_gate(tmp_path):
     audit_content = json.dumps(audit, sort_keys=True).encode()
     audit_path.write_bytes(audit_content)
     audit_item["sha256"] = hashlib.sha256(audit_content).hexdigest()
-    manifest.write_text(json.dumps(data, indent=2) + "\\n")
+    manifest.write_text(json.dumps(data, indent=2) + "\n")
 
     result = validate_manifest(manifest, tmp_path)
 
