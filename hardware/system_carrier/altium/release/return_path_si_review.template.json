@@ -13,6 +13,12 @@
     }
   ],
   "notes": [
-    "PASS requires routed-board return-path/SI review."
-  ]
+    "PASS requires routed-board return-path/SI review.",
+    "The review also closes release checklist items for U5 hot loop/power widths, Ethernet MDI rule application, GNSS_RF controlled-impedance route and post-route confirmation that System Carrier contains no 76-81 GHz implementation."
+  ],
+  "power_hot_loop_verified": false,
+  "power_branch_widths_verified": false,
+  "ethernet_mdi_impedance_rule_verified": false,
+  "gnss_rf_route_verified": false,
+  "no_mmwave_post_route_verified": false
 }
