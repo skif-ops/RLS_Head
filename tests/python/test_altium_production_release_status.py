@@ -14,9 +14,30 @@ def _write_json(path: Path, payload: dict) -> None:
 
 
 def _write_native_pcb(root: Path) -> None:
+    schematic = root / REQUIRED["native_schematic"]
+    schematic.parent.mkdir(parents=True, exist_ok=True)
+    schematic.write_bytes(b"EQUIVALENCE_APPROVED_SCH")
+
     path = root / REQUIRED["native_pcb"]
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(b"FINAL_NATIVE_PCB")
+
+
+def _bind_equivalence_schematic(
+    root: Path,
+    payloads: dict[str, dict],
+) -> None:
+    schematic = root / REQUIRED["native_schematic"]
+    schematic_hash = hashlib.sha256(
+        schematic.read_bytes()
+    ).hexdigest()
+    payload = payloads["equivalence_result"]
+    payload["integrity"] = {
+        "schematic": {
+            "path": REQUIRED["native_schematic"],
+            "sha256_actual": schematic_hash,
+        }
+    }
 
 
 def _bind_release_payloads(root: Path, payloads: dict[str, dict]) -> None:
@@ -44,6 +65,10 @@ def test_release_status_initially_waits_for_equivalence(tmp_path):
 
 
 def test_release_status_waits_for_release_evidence(tmp_path):
+    _write_native_pcb(tmp_path)
+    schematic_hash = hashlib.sha256(
+        (tmp_path / REQUIRED["native_schematic"]).read_bytes()
+    ).hexdigest()
     path = tmp_path / REQUIRED["equivalence_result"]
     _write_json(
         path,
@@ -52,6 +77,12 @@ def test_release_status_waits_for_release_evidence(tmp_path):
             "status": "PASS",
             "layout_authority": "AUTHORIZED",
             "production_authority": "NOT_AUTHORIZED",
+            "integrity": {
+                "schematic": {
+                    "path": REQUIRED["native_schematic"],
+                    "sha256_actual": schematic_hash,
+                }
+            },
         },
     )
 
@@ -97,6 +128,7 @@ def test_release_status_waits_for_non_pass_review(tmp_path):
         },
     }
 
+    _bind_equivalence_schematic(tmp_path, payloads)
     _bind_release_payloads(tmp_path, payloads)
     for artifact_id, payload in payloads.items():
         _write_json(tmp_path / REQUIRED[artifact_id], payload)
@@ -142,6 +174,7 @@ def test_release_status_ready_only_after_manifest(tmp_path):
         },
     }
 
+    _bind_equivalence_schematic(tmp_path, payloads)
     _bind_release_payloads(tmp_path, payloads)
     for artifact_id, payload in payloads.items():
         _write_json(tmp_path / REQUIRED[artifact_id], payload)
@@ -217,6 +250,7 @@ def test_release_status_rejects_invalid_manifest(tmp_path):
             "status": "PASS",
         },
     }
+    _bind_equivalence_schematic(tmp_path, payloads)
     _bind_release_payloads(tmp_path, payloads)
     for artifact_id, payload in payloads.items():
         _write_json(tmp_path / REQUIRED[artifact_id], payload)
@@ -266,6 +300,7 @@ def test_release_status_rejects_manifest_hash_mismatch(tmp_path):
             "status": "PASS",
         },
     }
+    _bind_equivalence_schematic(tmp_path, payloads)
     _bind_release_payloads(tmp_path, payloads)
     for artifact_id, payload in payloads.items():
         _write_json(tmp_path / REQUIRED[artifact_id], payload)
@@ -354,3 +389,61 @@ def test_release_status_rejects_stale_source_binding(tmp_path):
         in result["source_binding_errors"]
     )
     assert result["final_native_pcb_sha256"] == pcb_hash
+
+
+
+def test_release_status_detects_stale_equivalence_schematic(tmp_path):
+    _write_native_pcb(tmp_path)
+    payloads = {
+        "equivalence_result": {
+            "schema": "ALTIUM-EQUIVALENCE-RESULT-001",
+            "status": "PASS",
+            "layout_authority": "AUTHORIZED",
+            "production_authority": "NOT_AUTHORIZED",
+        },
+        "native_drc_result": {
+            "schema": "ALTIUM-NATIVE-DRC-RESULT-001",
+            "status": "PASS",
+        },
+        "mechanical_review": {
+            "schema": "ALTIUM-MECHANICAL-REVIEW-001",
+            "status": "PASS",
+        },
+        "fabricator_binding": {
+            "schema": "ALTIUM-FABRICATOR-BINDING-001",
+            "status": "PASS",
+        },
+        "return_path_si_review": {
+            "schema": "ALTIUM-RETURN-PATH-SI-REVIEW-001",
+            "status": "PASS",
+        },
+        "dfm_result": {
+            "schema": "ALTIUM-DFM-RESULT-001",
+            "status": "PASS",
+        },
+        "outjob_release_manifest": {
+            "schema": "ALTIUM-OUTJOB-RELEASE-MANIFEST-001",
+            "status": "PASS",
+        },
+    }
+    _bind_equivalence_schematic(tmp_path, payloads)
+    _bind_release_payloads(tmp_path, payloads)
+
+    for artifact_id, payload in payloads.items():
+        _write_json(tmp_path / REQUIRED[artifact_id], payload)
+
+    approved = payloads["equivalence_result"]["integrity"]["schematic"][
+        "sha256_actual"
+    ]
+    (tmp_path / REQUIRED["native_schematic"]).write_bytes(
+        b"CHANGED_AFTER_EQUIVALENCE"
+    )
+
+    result = evaluate(tmp_path)
+
+    assert result["status"] == "STALE_EQUIVALENCE"
+    assert result["equivalence_ready"] is False
+    assert result["equivalence_schematic_stale"] is True
+    assert result["approved_schematic_sha256"] == approved
+    assert result["current_schematic_sha256"] != approved
+    assert result["next_action"] == "RERUN_NATIVE_ALTIUM_EQUIVALENCE_GATE"
