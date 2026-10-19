@@ -7,5 +7,7 @@
   "source_report_sha256": "<SHA256>",
   "notes": [
     "Populate only from the final routed native Altium PcbDoc DRC evidence."
-  ]
+  ],
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "<SHA256_OF_FINAL_NATIVE_PCBDOC>"
 }
