@@ -113,6 +113,7 @@ def build_receipt(
         "source_cad": package.get("source_cad"),
         "target_cad": package.get("target_cad"),
         "import_mechanism": "KiCad Importer / Import Wizard",
+        "snapshot_role": "POST_IMPORT_NATIVE_SNAPSHOT",
         "altium_version": altium_version,
         "importer_version": importer_version,
         "import_package_manifest": package_record,
@@ -122,12 +123,14 @@ def build_receipt(
         "production_authority": "NOT_AUTHORIZED",
         "notes": [
             (
-                "This receipt records the exact native files, import log and "
-                "CI import package used for the Altium conversion."
+                "This receipt records the import-time native snapshot, import "
+                "log and CI import package used for the Altium conversion."
             ),
             (
-                "A PASS receipt is provenance evidence only; layout authority "
-                "still requires ALTIUM_EQUIVALENCE_GATE PASS."
+                "The native SchDoc/PcbDoc may evolve after import while applying "
+                "approved pre-routing stack/rule preparation. The later native "
+                "file preflight and equivalence manifest bind the actual "
+                "pre-routing snapshot used for layout authority."
             ),
         ],
     }
