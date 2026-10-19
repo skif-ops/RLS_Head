@@ -123,6 +123,7 @@ def validate(root: str | Path) -> dict:
         "rules_equivalence",
         "stackup_equivalence",
         "no_76_81GHz_rf_on_system_carrier",
+        "native_pcb_audit",
     }
     actual = set(profile.get("post_import_checks", []))
     if not expected.issubset(actual):
@@ -147,7 +148,7 @@ def validate(root: str | Path) -> dict:
         errors.append("net_class_count")
     if len(placement_ids) < 7:
         errors.append("placement_zone_count")
-    if len(equivalence_ids) != 10:
+    if len(equivalence_ids) != 11:
         errors.append("equivalence_check_count")
     if layout_bom_refs != full_footprint_refs:
         errors.append(

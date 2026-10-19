@@ -17,6 +17,8 @@ The gate consumes:
 - BOM export;
 - netlist/pin export;
 - footprint assignment report;
+- read-only native PCB audit inventories (components, nets and rules);
+- validated native audit result `equivalence/native_audit_result.json`;
 - completed equivalence manifest.
 
 Use `hardware/system_carrier/altium/equivalence/manifest.template.json` as the starting manifest.
@@ -35,6 +37,7 @@ All must be PASS:
 8. Four-layer stack equivalence.
 9. No 76–81 GHz RF routing or antenna on the System Carrier.
 10. Native Altium compile: zero errors and zero warnings.
+11. Native PCB audit: component, P0/P1 net and required rule inventory PASS.
 
 ## Gate command
 

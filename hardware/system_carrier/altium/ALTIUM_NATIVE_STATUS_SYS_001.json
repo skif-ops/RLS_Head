@@ -18,7 +18,11 @@
     "equivalence/bom_export.csv",
     "equivalence/netlist_export.csv",
     "equivalence/footprint_report.json",
-    "equivalence/manifest.json"
+    "equivalence/manifest.json",
+    "equivalence/component_inventory.csv",
+    "equivalence/net_inventory.csv",
+    "equivalence/rule_inventory.csv",
+    "equivalence/native_audit_result.json"
   ],
   "notes": [
     "PCB implementation is Altium-first.",
