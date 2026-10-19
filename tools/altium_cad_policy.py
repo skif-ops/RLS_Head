@@ -49,6 +49,8 @@ def validate(root: str | Path) -> dict:
     evt_stack_path = root / "altium" / "ALTIUM_EVT_STACKUP_SYS_002.csv"
     impedance_start_path = root / "altium" / "ALTIUM_IMPEDANCE_START_SYS_001.csv"
     power_width_path = root / "altium" / "ALTIUM_POWER_WIDTH_SYS_001.csv"
+    diff_pair_path = root / "altium" / "ALTIUM_DIFF_PAIRS_SYS_001.csv"
+    rule_query_path = root / "altium" / "ALTIUM_RULE_QUERY_SYS_001.csv"
     implementation_path = root / "altium" / "ALTIUM_IMPLEMENTATION_SEQUENCE_SYS_001.csv"
     status_path = root / "altium" / "ALTIUM_STATUS_SYS_001.json"
     source_rules_path = root / "PCB_LAYOUT_CONSTRAINTS_SYS_001.csv"
@@ -205,6 +207,8 @@ def validate(root: str | Path) -> dict:
     implementation_ids = _csv_ids(implementation_path, "step_id")
     impedance_ids = _csv_ids(impedance_start_path, "model_id")
     power_width_ids = _csv_ids(power_width_path, "model_id")
+    diff_pair_ids = _csv_ids(diff_pair_path, "pair_name")
+    rule_query_ids = _csv_ids(rule_query_path, "rule_name")
 
     if len(outjob_ids) < 14:
         errors.append("outjob_contract_count")
@@ -220,6 +224,10 @@ def validate(root: str | Path) -> dict:
         errors.append("impedance_model_set")
     if power_width_ids != {"PWR-001", "PWR-002", "PWR-003", "PWR-004"}:
         errors.append("power_width_model_set")
+    if diff_pair_ids != {"DP_ETH_TX", "DP_ETH_RX", "DP_CAN"}:
+        errors.append("diff_pair_set")
+    if len(rule_query_ids) != 10:
+        errors.append("rule_query_count")
 
     status_data = json.loads(status_path.read_text(encoding="utf-8"))
     if status_data.get("schema") != "ALTIUM-PCB-IMPLEMENTATION-STATUS-001":
@@ -272,6 +280,8 @@ def validate(root: str | Path) -> dict:
         "implementation_step_count": len(implementation_ids),
         "impedance_model_count": len(impedance_ids),
         "power_width_model_count": len(power_width_ids),
+        "diff_pair_count": len(diff_pair_ids),
+        "rule_query_count": len(rule_query_ids),
         "altium_phase": status_data.get("current_phase"),
         "equivalence_check_count": len(equivalence_ids),
         "layout_bom_ref_count": len(layout_bom_refs),
