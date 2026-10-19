@@ -5,5 +5,4 @@ stage,input_net,output_net,device,setting,criticality,notes
 4A,VIN_PROTECTED,3V3,TPS62132RGTR,3.3V_3A_L2.2uH_CIN10uF_COUT22uF_SS3.3nF,P0,Fixed-output primary System Carrier rail
 4B,VIN_PROTECTED,RADAR_12V,TPS259470ARPWR,UVLO_10.51V_OVLO_14.57V_ILIM_3.18A_DVDT_3.3nF,P0,Dedicated radar branch; 470k/16.9k/43.7k divider and 1.05k ILIM
 5,3V3,VDDA_FILTERED,BLM18BD601SH1,FERRITE,P1,Precision/analog supply filtering
-6,3V3,IO_HIGH_CURRENT,BLM18KG221SN1,FERRITE,P1,High-current branch filtering
-7,RADAR_12V,J_RADAR_PWR,CONNECTOR,Micro-Fit_3.0_2C,P0,Protected 12V output to AWR2944PEVM power harness
+6,RADAR_12V,J_RADAR_PWR,CONNECTOR,Micro-Fit_3.0_2C,P0,Protected 12V output to AWR2944PEVM power harness
