@@ -271,6 +271,7 @@ def _manifest(tmp_path: Path) -> Path:
             "input_sha256": {
                 "hierarchy_contract": hierarchy_contract_hash,
                 "hierarchy_export": hierarchy_export_hash,
+                "pad_net_inventory": raw_hashes["pad_net_inventory"],
             },
             "verified_checks": {
                 "hierarchy_equivalence": "PASS",
