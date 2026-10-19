@@ -458,6 +458,7 @@ def test_synthetic_altium_equivalence_fixture_is_test_ready(tmp_path):
     )
 
     assert result["schema"] == "ALTIUM-EQUIVALENCE-RESULT-001"
+    assert result["errors"] == []
     assert result["status"] == "TEST_READY"
     assert result["synthetic_fixture"] is True
     assert result["errors"] == []
