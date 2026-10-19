@@ -111,6 +111,8 @@ def build(
 
     contract_names = [
         "BOM_SYS_CARRIER_003.csv",
+        "BOM_SYS_CARRIER_LAYOUT_004.csv",
+        "FOOTPRINT_ASSIGNMENT_SYS_002.csv",
         "PINMAP_SYS_001.csv",
         "CONNECTOR_PINOUT_SYS_001.csv",
         "NETLIST_SYS_001.csv",
@@ -135,12 +137,32 @@ def build(
         "ALTIUM_RULES_SYS_001.csv",
         "ALTIUM_NET_CLASSES_SYS_001.csv",
         "ALTIUM_PLACEMENT_PLAN_SYS_001.csv",
+        "ALTIUM_BOARD_MECHANICAL_SYS_001.csv",
+        "ALTIUM_PLACEMENT_COORD_SYS_002.csv",
+        "ALTIUM_ROUTING_SEQUENCE_SYS_001.csv",
+        "ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv",
+        "ALTIUM_EQUIVALENCE_CHECKS_SYS_001.csv",
+        "ALTIUM_NATIVE_STATUS_SYS_001.json",
         "README.md",
     ]:
         records.append(
             copy_file(
                 system / "altium" / name,
                 output / "altium_target" / name,
+            )
+        )
+
+    prelayout_result = (
+        generated
+        / "prelayout_validation.json"
+    )
+    if prelayout_result.is_file():
+        records.append(
+            copy_file(
+                prelayout_result,
+                output
+                / "evidence"
+                / "prelayout_validation.json",
             )
         )
 
