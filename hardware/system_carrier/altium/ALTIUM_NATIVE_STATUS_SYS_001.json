@@ -25,6 +25,8 @@
     "equivalence/component_inventory.csv",
     "equivalence/net_inventory.csv",
     "equivalence/rule_inventory.csv",
+    "equivalence/layer_stack_inventory.csv",
+    "equivalence/pad_net_inventory.csv",
     "equivalence/native_audit_result.json"
   ],
   "notes": [
