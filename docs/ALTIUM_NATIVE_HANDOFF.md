@@ -64,7 +64,7 @@ Before routing:
 15. Run `tools.altium_native_handoff_status` if needed: with all artifacts present but any semantic check still not `PASS`, the state must remain `WAITING_EQUIVALENCE_CHECKS`; `READY_TO_RUN_EQUIVALENCE_GATE` is reserved for a complete manifest whose mandatory checks are all `PASS`.
 16. The manifest builder now machine-promotes all ten mandatory semantic checks when their dedicated validators/reviews PASS. If any check remains non-PASS, resolve its evidence before proceeding.
 17. Run:
-    `python -m tools.altium_equivalence_gate hardware/system_carrier/altium/equivalence/manifest.json --repository-root . --output altium_equivalence_result.json`.
+    `python -m tools.altium_equivalence_gate hardware/system_carrier/altium/equivalence/manifest.json --repository-root . --output hardware/system_carrier/altium/equivalence/altium_equivalence_result.json`.
 
 Only `ALTIUM_EQUIVALENCE_GATE = PASS` changes layout authority to Altium.
 
