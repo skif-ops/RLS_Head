@@ -30,6 +30,12 @@ Do not delete any KiCad source, generated KiCad library or footprint used to est
 
 All future Gerber/ODB++/IPC-2581, NC drill, pick-and-place, assembly drawings, fabrication drawings and STEP outputs for this board are to be released from the native Altium project after the equivalence gate passes.
 
+## Native transition driver
+
+`tools/altium_native_transition.py` is the preferred repository-side driver after Altium Designer has created the real native documents. It is safe to rerun: it advances only through evidence that is actually present, stops at the first missing external Altium/human step, and writes `READY_FOR_ROUTING` into the tracked status files only after `ALTIUM_EQUIVALENCE_GATE = PASS`.
+
+The driver does not synthesize `.SchDoc` / `.PcbDoc`, does not replace native Altium compile/audit exports and does not auto-sign the no-mmWave human review.
+
 ## Native equivalence gate
 
 After Altium Designer creates `native/EVT_SYS_CARRIER.SchDoc` and `native/EVT_SYS_CARRIER.PcbDoc`, copy the exact CI import-package `manifest.json` to `equivalence/import_package_manifest.json`, save/export the KiCad Import Wizard log as `equivalence/import_log.txt`, generate `equivalence/import_receipt.json` with `tools.altium_native_import_receipt`, run the read-only native audit, then build `equivalence/manifest.json` with `tools.altium_equivalence_manifest`. The manifest builder can machine-promote eight checks from validated native evidence: `native_pcb_audit`, `pinmap_equivalence`, `rules_equivalence`, `stackup_equivalence`, `bom_designator_mpn_equivalence`, `footprint_equivalence`, `connector_pinout_equivalence` and `netlist_equivalence`. Hierarchy/port semantics and the no-76–81 GHz design review remain separate. `tools.altium_native_handoff_status` reports `WAITING_EQUIVALENCE_CHECKS` while any mandatory manifest check is not `PASS`; it reports `READY_TO_RUN_EQUIVALENCE_GATE` only when evidence and semantic checks are complete. Routing/layout authority remains blocked until `tools.altium_equivalence_gate` itself returns `PASS`.
