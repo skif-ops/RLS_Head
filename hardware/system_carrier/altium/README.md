@@ -6,7 +6,7 @@ This directory is the primary PCB CAD location for the System Carrier.
 
 The electrical capture is ERC-clean in the retained KiCad flow. PCB implementation now targets Altium Designer. The project shell `EVT_SYS_CARRIER.PrjPcb` is committed here so the native Altium import has a fixed repository destination.
 
-The binary native documents `native/EVT_SYS_CARRIER.SchDoc` and `native/EVT_SYS_CARRIER.PcbDoc` are intentionally **not fabricated by scripts**. They must be created/saved by Altium Designer.
+The binary native documents `native/EVT_SYS_CARRIER.SchDoc` and `native/EVT_SYS_CARRIER.PcbDoc` are intentionally **not fabricated by scripts**. They must be created/saved by Altium Designer. They are Microsoft Compound File Binary (OLE/CFB) containers; repository `.gitattributes` marks native Altium libraries/documents as binary, and `tools.altium_native_file_preflight` rejects extension-only placeholders or invalid container headers.
 
 ## Import source
 
@@ -20,7 +20,8 @@ Use Altium Designer with the KiCad Importer extension:
 6. Save the imported schematic as `native/EVT_SYS_CARRIER.SchDoc`.
 7. Create/transfer the PCB into `native/EVT_SYS_CARRIER.PcbDoc`.
 8. Load the constraints from `ALTIUM_RULES_SYS_001.csv` and stack definition from `ALTIUM_LAYER_STACK_SYS_001.csv`.
-9. Run the equivalence checks in `docs/CAD_POLICY_ALTIUM.md` before treating Altium as the implementation authority.
+9. Run `tools.altium_native_file_preflight` against the saved `SchDoc/PcbDoc`; require PASS.
+10. Run the equivalence checks in `docs/CAD_POLICY_ALTIUM.md` before treating Altium as the implementation authority.
 
 ## Preservation rule
 
@@ -28,7 +29,7 @@ Do not delete any KiCad source, generated KiCad library or footprint used to est
 
 ## Native CI phase gate
 
-The repository CI accepts two deliberate states: `PRE_IMPORT` while no native `SchDoc/PcbDoc` pair exists, and `POST_EQUIVALENCE` after both exist and equivalence has passed. `tools/altium_native_ci_gate.py` revalidates the committed equivalence result and tracked SHA-bound authority state, preventing a native CAD PR from bypassing the handoff/equivalence pipeline.
+The repository CI accepts three deliberate lifecycle states: `PRE_IMPORT` while no native `SchDoc/PcbDoc` pair exists, `POST_EQUIVALENCE` after both exist and equivalence has passed, and `POST_PRODUCTION` after the production-release gate passes. `tools/altium_native_ci_gate.py` revalidates the committed equivalence/release results and tracked SHA-bound authority state, preventing native CAD or manufacturing-release PRs from bypassing the gated lifecycle.
 
 ## Manufacturing
 
