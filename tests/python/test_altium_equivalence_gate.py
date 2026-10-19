@@ -35,6 +35,18 @@ def _manifest(tmp_path: Path) -> Path:
             "equivalence/footprint_report.json",
             b'{"status":"PASS"}',
         ),
+        "native_audit_result": (
+            "equivalence/native_audit_result.json",
+            json.dumps(
+                {
+                    "schema": "ALTIUM-NATIVE-AUDIT-RESULT-001",
+                    "status": "PASS",
+                    "errors": [],
+                    "warnings": [],
+                },
+                sort_keys=True,
+            ).encode(),
+        ),
     }
 
     for artifact_id, (relative, content) in entries.items():
@@ -57,6 +69,7 @@ def _manifest(tmp_path: Path) -> Path:
         "rules_equivalence": "PASS",
         "stackup_equivalence": "PASS",
         "no_76_81GHz_rf_on_system_carrier": "PASS",
+        "native_pcb_audit": "PASS",
     }
 
     manifest = {
@@ -94,6 +107,7 @@ def test_synthetic_altium_equivalence_fixture_is_test_ready(tmp_path):
     assert result["reason_codes"] == []
     assert result["compile"]["errors"] == 0
     assert result["compile"]["warnings"] == 0
+    assert result["native_audit"]["status"] == "PASS"
     assert all(
         value == "PASS"
         for value in result["checks"].values()
@@ -121,4 +135,41 @@ def test_failed_equivalence_check_blocks_gate(tmp_path):
         "CHECK_NETLIST_EQUIVALENCE"
         in result["reason_codes"]
     )
+    assert result["layout_authority"] == "NOT_AUTHORIZED"
+
+
+def test_failed_native_audit_blocks_gate(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    audit_item = next(
+        item
+        for item in data["artifacts"]
+        if item["id"] == "native_audit_result"
+    )
+    audit_path = tmp_path / audit_item["path"]
+    audit_content = json.dumps(
+        {
+            "schema": "ALTIUM-NATIVE-AUDIT-RESULT-001",
+            "status": "FAIL",
+            "errors": ["missing_rules:R_GENERAL_WIDTH"],
+            "warnings": [],
+        },
+        sort_keys=True,
+    ).encode()
+    audit_path.write_bytes(audit_content)
+    audit_item["sha256"] = hashlib.sha256(audit_content).hexdigest()
+
+    manifest.write_text(
+        json.dumps(data, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_manifest(
+        manifest,
+        tmp_path,
+    )
+
+    assert result["status"] == "FAIL"
+    assert "NATIVE_AUDIT" in result["reason_codes"]
     assert result["layout_authority"] == "NOT_AUTHORIZED"
