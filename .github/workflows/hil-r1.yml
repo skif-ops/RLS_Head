@@ -330,6 +330,7 @@ jobs:
           assert data["dfm_profile_count"] == 10
           assert data["implementation_step_count"] == 14
           assert data["impedance_model_count"] == 2
+          assert data["power_width_model_count"] == 4
           assert data["altium_phase"] == "IMPORT_PREPARED"
           print("Altium primary CAD policy PASS")
           PY
@@ -372,6 +373,24 @@ jobs:
           assert len(data["models"]) == 2
           assert data["production_binding_required"] is True
           print("Altium provisional impedance model PASS")
+          PY
+
+      - name: Validate Altium provisional power widths
+        run: |
+          python -m tools.altium_power_width_gate \
+            hardware/system_carrier \
+            --output altium_power_width_gate.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("altium_power_width_gate.json").read_text())
+          assert data["schema"] == "ALTIUM-POWER-WIDTH-GATE-001"
+          assert data["status"] == "PASS"
+          assert data["errors"] == []
+          assert len(data["models"]) == 4
+          assert data["production_review_required"] is True
+          print("Altium provisional power-width model PASS")
           PY
 
       - name: Validate System Carrier schematic contract
@@ -868,6 +887,25 @@ jobs:
           print("Altium impedance evidence READY")
           PY
 
+      - name: Validate Altium power widths for import
+        run: |
+          python -m tools.altium_power_width_gate \
+            hardware/system_carrier \
+            --output build-cad/system_carrier/altium_power_width_gate.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/altium_power_width_gate.json"
+              ).read_text()
+          )
+          assert data["status"] == "PASS"
+          assert data["production_review_required"] is True
+          print("Altium power-width evidence READY")
+          PY
+
       - name: Build Altium import package
         run: |
           python -m tools.altium_import_package \
@@ -889,7 +927,8 @@ jobs:
           assert data["production_contracts_included"] is True
           assert data["placement_gate_included"] is True
           assert data["impedance_gate_included"] is True
-          assert data["file_count"] >= 35
+          assert data["power_width_gate_included"] is True
+          assert data["file_count"] >= 37
           print(
               "Altium import package READY:",
               data["file_count"],
