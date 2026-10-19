@@ -48,13 +48,15 @@ Before routing:
    `python -m tools.altium_native_bom_validate --system-root hardware/system_carrier --bom-export hardware/system_carrier/altium/equivalence/bom_export.csv --output hardware/system_carrier/altium/equivalence/bom_validation_result.json`.
 9. Validate native footprint patterns from the audit inventory:
    `python -m tools.altium_native_footprint_validate --system-root hardware/system_carrier --component-inventory hardware/system_carrier/altium/equivalence/component_inventory.csv --output hardware/system_carrier/altium/equivalence/footprint_report.json`.
-10. Export the remaining Altium netlist/pin evidence required by the equivalence manifest.
-11. Build the manifest hashes deterministically:
+10. Validate connector pinout equivalence from the native pad/net inventory:
+    `python -m tools.altium_native_connector_validate --system-root hardware/system_carrier --pad-net-inventory hardware/system_carrier/altium/equivalence/pad_net_inventory.csv --output hardware/system_carrier/altium/equivalence/connector_validation_result.json`.
+11. Export the remaining Altium netlist/hierarchy evidence required by the equivalence manifest.
+12. Build the manifest hashes deterministically:
    `python -m tools.altium_equivalence_manifest --template hardware/system_carrier/altium/equivalence/manifest.template.json --repository-root . --output hardware/system_carrier/altium/equivalence/manifest.json`.
-   This automatically hashes every required artifact. It promotes `native_pcb_audit`, `pinmap_equivalence`, `rules_equivalence` and `stackup_equivalence` from a PASS native audit, `bom_designator_mpn_equivalence` from a PASS BOM validator, and `footprint_equivalence` from a PASS footprint validator. It does not auto-approve the remaining semantic equivalence checks.
-12. Run `tools.altium_native_handoff_status` if needed: with all artifacts present but any semantic check still not `PASS`, the state must remain `WAITING_EQUIVALENCE_CHECKS`; `READY_TO_RUN_EQUIVALENCE_GATE` is reserved for a complete manifest whose mandatory checks are all `PASS`.
-13. Resolve the remaining semantic checks in `equivalence/manifest.json` from the native evidence.
-14. Run:
+   This automatically hashes every required artifact. It promotes `native_pcb_audit`, `pinmap_equivalence`, `rules_equivalence` and `stackup_equivalence` from a PASS native audit, `bom_designator_mpn_equivalence` from a PASS BOM validator, `footprint_equivalence` from a PASS footprint validator, and `connector_pinout_equivalence` from a PASS connector validator. It does not auto-approve the remaining semantic equivalence checks.
+13. Run `tools.altium_native_handoff_status` if needed: with all artifacts present but any semantic check still not `PASS`, the state must remain `WAITING_EQUIVALENCE_CHECKS`; `READY_TO_RUN_EQUIVALENCE_GATE` is reserved for a complete manifest whose mandatory checks are all `PASS`.
+14. Resolve the remaining semantic checks in `equivalence/manifest.json` from the native evidence.
+15. Run:
     `python -m tools.altium_equivalence_gate hardware/system_carrier/altium/equivalence/manifest.json --repository-root . --output altium_equivalence_result.json`.
 
 Only `ALTIUM_EQUIVALENCE_GATE = PASS` changes layout authority to Altium.
