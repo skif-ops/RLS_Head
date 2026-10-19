@@ -19,6 +19,41 @@
       "sha256": "<SHA256>"
     },
     {
+      "id": "schematic_power_input",
+      "path": "hardware/system_carrier/altium/native/10_POWER_INPUT.SchDoc",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "schematic_mcu_core",
+      "path": "hardware/system_carrier/altium/native/20_MCU_CORE.SchDoc",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "schematic_time_gnss",
+      "path": "hardware/system_carrier/altium/native/30_TIME_GNSS.SchDoc",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "schematic_imu",
+      "path": "hardware/system_carrier/altium/native/40_IMU.SchDoc",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "schematic_radar_io_can",
+      "path": "hardware/system_carrier/altium/native/50_RADAR_IO_CAN.SchDoc",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "schematic_ethernet",
+      "path": "hardware/system_carrier/altium/native/60_ETHERNET.SchDoc",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "schematic_debug_boot",
+      "path": "hardware/system_carrier/altium/native/70_DEBUG_BOOT.SchDoc",
+      "sha256": "<SHA256>"
+    },
+    {
       "id": "pcb",
       "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
       "sha256": "<SHA256>"
