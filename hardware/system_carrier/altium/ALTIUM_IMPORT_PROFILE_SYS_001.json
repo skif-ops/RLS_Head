@@ -27,6 +27,7 @@
   "preserve_source_files": true,
   "import_log_required": true,
   "post_import_checks": [
+    "import_provenance_receipt",
     "compile_zero_errors",
     "compile_zero_warnings",
     "bom_designator_mpn_equivalence",
@@ -52,5 +53,7 @@
     "altium/ALTIUM_PLACEMENT_COORD_SYS_002.csv",
     "altium/ALTIUM_ROUTING_SEQUENCE_SYS_001.csv",
     "altium/ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv"
-  ]
+  ],
+  "import_package_manifest_required": true,
+  "import_receipt_required": true
 }
