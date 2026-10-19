@@ -39,14 +39,14 @@ Before routing:
 3. Apply provisional placement rooms/coordinates only as EVT planning data; they are not a production mechanical freeze.
 4. Run the read-only script project:
    `scripts/EVT_SYS_CARRIER_Audit.PrjScr` → `ExportNativeAudit`.
-5. Copy the generated CSV inventories to:
+5. Confirm the script generated all five CSV inventories (`component`, `net`, `rule`, `pad_net`, `layer_stack`) and copy them to:
    `hardware/system_carrier/altium/equivalence/`.
 6. Run:
    `python -m tools.altium_native_audit_validate --system-root hardware/system_carrier --audit-dir hardware/system_carrier/altium/equivalence --output hardware/system_carrier/altium/equivalence/native_audit_result.json`.
 7. Export the Altium compile report, BOM, netlist/pin evidence and footprint report required by the equivalence manifest.
 8. Build the manifest hashes deterministically:
    `python -m tools.altium_equivalence_manifest --template hardware/system_carrier/altium/equivalence/manifest.template.json --repository-root . --output hardware/system_carrier/altium/equivalence/manifest.json`.
-   This automatically hashes every required artifact and marks `native_pcb_audit=PASS` only when the validated native audit result is PASS. It does not auto-approve the remaining semantic equivalence checks.
+   This automatically hashes every required artifact and promotes only machine-verified checks from a PASS native audit: `native_pcb_audit`, `pinmap_equivalence`, `rules_equivalence` and `stackup_equivalence`. It does not auto-approve the remaining semantic equivalence checks.
 9. Resolve the remaining semantic checks in `equivalence/manifest.json` from the native evidence.
 10. Run:
     `python -m tools.altium_equivalence_gate hardware/system_carrier/altium/equivalence/manifest.json --repository-root . --output altium_equivalence_result.json`.

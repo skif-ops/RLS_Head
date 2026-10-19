@@ -22,6 +22,8 @@ REQUIRED = {
     "component_inventory": "hardware/system_carrier/altium/equivalence/component_inventory.csv",
     "net_inventory": "hardware/system_carrier/altium/equivalence/net_inventory.csv",
     "rule_inventory": "hardware/system_carrier/altium/equivalence/rule_inventory.csv",
+    "pad_net_inventory": "hardware/system_carrier/altium/equivalence/pad_net_inventory.csv",
+    "layer_stack_inventory": "hardware/system_carrier/altium/equivalence/layer_stack_inventory.csv",
     "native_audit_result": "hardware/system_carrier/altium/equivalence/native_audit_result.json",
     "manifest": "hardware/system_carrier/altium/equivalence/manifest.json",
 }
@@ -67,6 +69,8 @@ def evaluate(repository_root: str | Path = ".") -> dict:
         evidence["component_inventory"]["present"]
         and evidence["net_inventory"]["present"]
         and evidence["rule_inventory"]["present"]
+        and evidence["pad_net_inventory"]["present"]
+        and evidence["layer_stack_inventory"]["present"]
         and evidence["native_audit_result"]["present"]
     )
     equivalence_ready = (

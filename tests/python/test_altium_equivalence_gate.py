@@ -26,7 +26,15 @@ def _manifest(tmp_path: Path) -> Path:
         ),
         "rule_inventory": (
             "equivalence/rule_inventory.csv",
-            b"rule_name,rule_kind,unique_id\nR_GENERAL_WIDTH,Width,TEST\n",
+            b"rule_name,rule_kind,unique_id,scope_1,scope_2,drc_enabled\nR_GENERAL_WIDTH,Width,TEST,All,All,true\n",
+        ),
+        "pad_net_inventory": (
+            "equivalence/pad_net_inventory.csv",
+            b"designator,pad_name,net_name\nU1,40,GNSS_PPS\n",
+        ),
+        "layer_stack_inventory": (
+            "equivalence/layer_stack_inventory.csv",
+            b"order,layer_name\n1,Top Layer\n2,Mid-Layer 1\n3,Mid-Layer 2\n4,Bottom Layer\n",
         ),
     }
     raw_hashes = {}

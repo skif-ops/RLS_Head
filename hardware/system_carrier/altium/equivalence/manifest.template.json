@@ -74,6 +74,16 @@
       "sha256": "<SHA256>"
     },
     {
+      "id": "pad_net_inventory",
+      "path": "hardware/system_carrier/altium/equivalence/pad_net_inventory.csv",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "layer_stack_inventory",
+      "path": "hardware/system_carrier/altium/equivalence/layer_stack_inventory.csv",
+      "sha256": "<SHA256>"
+    },
+    {
       "id": "native_audit_result",
       "path": "hardware/system_carrier/altium/equivalence/native_audit_result.json",
       "sha256": "<SHA256>"

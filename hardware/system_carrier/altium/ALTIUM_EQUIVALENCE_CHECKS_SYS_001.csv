@@ -1,12 +1,12 @@
 check_id,source_contract,altium_evidence,pass_condition,criticality
 EQ-001,BOM_SYS_CARRIER_LAYOUT_004.csv,equivalence/bom_export.csv,Designators and MPNs exactly match authoritative BOM,P0
-EQ-002,PINMAP_SYS_001.csv,equivalence/netlist_export.csv,All locked MCU signal-to-pin mappings match,P0
+EQ-002,PINMAP_SYS_001.csv,equivalence/native_audit_result.json,All MCU physical-pin to net mappings match native pad-to-net inventory,P0
 EQ-003,CONNECTOR_PINOUT_SYS_001.csv,equivalence/netlist_export.csv,All connector pin-to-net assignments match,P0
 EQ-004,NETLIST_SYS_001.csv,equivalence/netlist_export.csv,All P0/P1 nets and endpoints are electrically equivalent,P0
 EQ-005,FOOTPRINT_ASSIGNMENT_SYS_002.csv,equivalence/footprint_report.json,Every locked reference uses the approved footprint,P0
 EQ-006,HIERARCHY_INTERFACE_SYS_001.csv,equivalence/netlist_export.csv,Sheet ports resolve to the same nets and directions,P0
-EQ-007,altium/ALTIUM_RULE_QUERY_SYS_001.csv,equivalence/rule_inventory.csv,All 10 named native PCB rules from the rule-query contract are present; the 24-row ALTIUM_RULES_SYS_001.csv remains the broader layout-design constraint contract,P0
-EQ-008,altium/ALTIUM_LAYER_STACK_SYS_001.csv,equivalence/compile_report.json,Four-layer stack roles match L1/L2/L3/L4 contract,P0
+EQ-007,altium/ALTIUM_RULE_QUERY_SYS_001.csv,equivalence/native_audit_result.json,All 10 named native PCB rules have the required family scope and enabled state; the 24-row ALTIUM_RULES_SYS_001.csv remains the broader layout-design constraint contract,P0
+EQ-008,altium/ALTIUM_LAYER_STACK_SYS_001.csv,equivalence/native_audit_result.json,Native copper layer order matches Top Layer / Mid-Layer 1 / Mid-Layer 2 / Bottom Layer contract,P0
 EQ-009,PCB_LAYOUT_CONSTRAINTS_SYS_001.csv,equivalence/compile_report.json,No 76-81GHz RF routing or antenna is present on System Carrier,P0
 EQ-010,Review A evidence,equivalence/compile_report.json,Altium compile reports zero errors and zero warnings,P0
 EQ-011,"BOM_SYS_CARRIER_LAYOUT_004.csv;NETLIST_SYS_001.csv;altium/ALTIUM_RULE_QUERY_SYS_001.csv",equivalence/native_audit_result.json,Native component net and rule inventory audit returns PASS,P0

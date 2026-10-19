@@ -85,7 +85,21 @@ def build_manifest(
                         == "ALTIUM-NATIVE-AUDIT-RESULT-001"
                         and audit.get("status") == "PASS"
                     ):
-                        checks["native_pcb_audit"] = "PASS"
+                        verified = audit.get("verified_checks", {})
+                        if isinstance(verified, dict):
+                            for check_name in (
+                                "native_pcb_audit",
+                                "pinmap_equivalence",
+                                "rules_equivalence",
+                                "stackup_equivalence",
+                            ):
+                                if (
+                                    check_name in checks
+                                    and verified.get(check_name) == "PASS"
+                                ):
+                                    checks[check_name] = "PASS"
+                        else:
+                            checks["native_pcb_audit"] = "PASS"
 
     return {
         "status": "READY" if not errors else "INCOMPLETE",
