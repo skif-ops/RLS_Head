@@ -256,8 +256,8 @@ def _manifest(tmp_path: Path) -> Path:
     ).encode()
 
     hierarchy_export_content = (
-        b"sheet,net_name,pin_type,anchor_ref,anchor_pin\n"
-        b"MCU_CORE,GNSS_PPS,input,U1,40\n"
+        b"sheet,net_name,pin_type\n"
+        b"MCU_CORE,GNSS_PPS,input\n"
     )
     hierarchy_export_hash = hashlib.sha256(
         hierarchy_export_content
