@@ -111,11 +111,6 @@ def validate(root: str | Path) -> dict:
         if "solid GND" not in str(rows[1].get("role", "")):
             errors.append("l2_ground_role")
 
-    native_paths = [
-        root.parent.parent
-        / str(path).replace("hardware/system_carrier/", "")
-        for path in []
-    ]
     native_status = str(authority.get("native_document_status", ""))
     if native_status != "PENDING_ALTIUM_IMPORT":
         warnings.append(f"native_document_status:{native_status}")
