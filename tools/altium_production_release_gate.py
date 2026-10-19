@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 from pathlib import Path
@@ -51,6 +52,19 @@ def safe_repo_path(root: Path, relative: str) -> Path:
             f"artifact escapes repository root: {relative}"
         ) from exc
     return path
+
+
+def _valid_text(value: object) -> bool:
+    text = str(value or "").strip()
+    return bool(text) and not text.startswith("<")
+
+
+def _valid_refs(value: object) -> bool:
+    return (
+        isinstance(value, list)
+        and bool(value)
+        and all(_valid_text(item) for item in value)
+    )
 
 
 def _read_json(path: Path, artifact_id: str, errors: list[str]) -> dict | None:
@@ -157,6 +171,27 @@ def validate_manifest(
             reasons.append("DRC_BLOCKING_ERRORS")
         if int(drc.get("unrouted_nets", -1)) != 0:
             reasons.append("UNROUTED_NETS")
+        source_report = str(drc.get("source_report", "")).strip()
+        expected_report_hash = str(
+            drc.get("source_report_sha256", "")
+        ).strip().lower()
+        if not source_report:
+            errors.append("drc_source_report")
+        else:
+            try:
+                report_path = safe_repo_path(root, source_report)
+            except ValueError as exc:
+                errors.append(f"drc_source_report_path:{exc}")
+            else:
+                if not report_path.is_file():
+                    errors.append("drc_source_report_missing")
+                else:
+                    actual_report_hash = sha256_file(report_path)
+                    if (
+                        len(expected_report_hash) != 64
+                        or expected_report_hash != actual_report_hash
+                    ):
+                        errors.append("drc_source_report_hash")
 
     mechanical = evidence.get("mechanical_review")
     if isinstance(mechanical, dict):
@@ -168,6 +203,10 @@ def validate_manifest(
         ):
             if mechanical.get(field) is not True:
                 reasons.append(f"MECHANICAL_{field.upper()}")
+        if not _valid_text(mechanical.get("reviewer")):
+            errors.append("mechanical_reviewer")
+        if not _valid_refs(mechanical.get("evidence_refs")):
+            errors.append("mechanical_evidence_refs")
 
     fabricator = evidence.get("fabricator_binding")
     if isinstance(fabricator, dict):
@@ -181,6 +220,10 @@ def validate_manifest(
         ):
             if fabricator.get(field) is not True:
                 reasons.append(f"FAB_{field.upper()}")
+        if not _valid_text(fabricator.get("fabricator")):
+            errors.append("fabricator_name")
+        if not _valid_refs(fabricator.get("evidence_refs")):
+            errors.append("fabricator_evidence_refs")
 
     si_review = evidence.get("return_path_si_review")
     if isinstance(si_review, dict):
@@ -192,11 +235,17 @@ def validate_manifest(
             reasons.append("TIMING_RETURN_PATHS")
         if si_review.get("ethernet_mdi_return_path_verified") is not True:
             reasons.append("ETH_MDI_RETURN_PATH")
+        if not _valid_text(si_review.get("reviewer")):
+            errors.append("si_reviewer")
+        if not _valid_refs(si_review.get("evidence_refs")):
+            errors.append("si_evidence_refs")
 
     dfm = evidence.get("dfm_result")
     if isinstance(dfm, dict):
         if int(dfm.get("p0_open_items", -1)) != 0:
             reasons.append("DFM_P0_OPEN_ITEMS")
+        if not _valid_refs(dfm.get("evidence_refs")):
+            errors.append("dfm_evidence_refs")
 
     outjob = evidence.get("outjob_release_manifest")
     if isinstance(outjob, dict):
@@ -204,6 +253,74 @@ def validate_manifest(
             reasons.append("OUTJOB_REQUIRED_OUTPUTS_INCOMPLETE")
         if outjob.get("source_is_native_altium") is not True:
             reasons.append("OUTJOB_SOURCE_NOT_NATIVE_ALTIUM")
+
+        contract_path = (
+            root
+            / "hardware/system_carrier/altium/ALTIUM_OUTJOB_CONTRACT_SYS_001.csv"
+        )
+        if not contract_path.is_file():
+            errors.append("outjob_contract_missing")
+        else:
+            with contract_path.open(
+                "r",
+                encoding="utf-8-sig",
+                newline="",
+            ) as handle:
+                contract_rows = list(csv.DictReader(handle))
+            required_ids = {
+                str(row.get("output_id", "")).strip()
+                for row in contract_rows
+                if str(row.get("required", "")).strip() == "YES"
+            }
+
+            outputs_raw = outjob.get("outputs")
+            if not isinstance(outputs_raw, list):
+                errors.append("outjob_outputs")
+                outputs_raw = []
+
+            outputs: dict[str, dict] = {}
+            for item in outputs_raw:
+                if not isinstance(item, dict):
+                    errors.append("outjob_output_entry")
+                    continue
+                output_id = str(item.get("output_id", "")).strip()
+                if not output_id:
+                    errors.append("outjob_output_without_id")
+                    continue
+                if output_id in outputs:
+                    errors.append(f"outjob_duplicate:{output_id}")
+                    continue
+                outputs[output_id] = item
+
+            missing_outputs = sorted(required_ids - set(outputs))
+            if missing_outputs:
+                errors.append(
+                    "outjob_missing_required:"
+                    + ",".join(missing_outputs)
+                )
+
+            for output_id in sorted(required_ids & set(outputs)):
+                item = outputs[output_id]
+                relative = str(item.get("path", "")).strip()
+                expected_hash = str(
+                    item.get("sha256", "")
+                ).strip().lower()
+                try:
+                    output_path = safe_repo_path(root, relative)
+                except ValueError as exc:
+                    errors.append(
+                        f"outjob_path:{output_id}:{exc}"
+                    )
+                    continue
+                if not output_path.is_file():
+                    errors.append(f"outjob_missing_file:{output_id}")
+                    continue
+                actual_hash = sha256_file(output_path)
+                if (
+                    len(expected_hash) != 64
+                    or expected_hash != actual_hash
+                ):
+                    errors.append(f"outjob_hash:{output_id}")
 
     synthetic = bool(manifest.get("synthetic_fixture", False))
     evidence_level = str(manifest.get("evidence_level", "")).strip()
