@@ -335,8 +335,20 @@ jobs:
           assert data["rule_query_count"] == 10
           assert data["room_count"] == 7
           assert data["equivalence_check_count"] == 11
-          assert data["altium_phase"] == "IMPORT_PREPARED"
-          print("Altium primary CAD policy PASS")
+          native_sch = Path(
+              "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc"
+          ).is_file()
+          native_pcb = Path(
+              "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+          ).is_file()
+          assert native_sch == native_pcb
+          expected_phase = (
+              "READY_FOR_ROUTING"
+              if native_sch
+              else "IMPORT_PREPARED"
+          )
+          assert data["altium_phase"] == expected_phase
+          print("Altium primary CAD policy PASS:", expected_phase)
           PY
 
       - name: Validate Altium placement geometry
@@ -1031,13 +1043,31 @@ jobs:
               ).read_text()
           )
           assert data["schema"] == "ALTIUM-ROUTING-READINESS-001"
-          assert data["status"] == "READY_FOR_NATIVE_IMPORT"
-          assert data["routing_authorized"] is False
+          native_sch = Path(
+              "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc"
+          ).is_file()
+          native_pcb = Path(
+              "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+          ).is_file()
+          assert native_sch == native_pcb
           assert data["production_authorized"] is False
           assert data["errors"] == []
           assert data["failed_checks"] == []
-          assert data["next_action"] == "RUN_NATIVE_ALTIUM_IMPORT_AND_EQUIVALENCE"
-          print("Altium routing prerequisites READY_FOR_NATIVE_IMPORT")
+          if native_sch:
+              assert data["status"] == "READY_FOR_ROUTING"
+              assert data["routing_authorized"] is True
+              assert (
+                  data["next_action"]
+                  == "BEGIN_NATIVE_ALTIUM_PLACEMENT_AND_ROUTING"
+              )
+          else:
+              assert data["status"] == "READY_FOR_NATIVE_IMPORT"
+              assert data["routing_authorized"] is False
+              assert (
+                  data["next_action"]
+                  == "RUN_NATIVE_ALTIUM_IMPORT_AND_EQUIVALENCE"
+              )
+          print("Altium routing readiness:", data["status"])
           PY
 
       - name: Evaluate native Altium handoff status
@@ -1055,10 +1085,52 @@ jobs:
               ).read_text()
           )
           assert data["schema"] == "ALTIUM-NATIVE-HANDOFF-STATUS-001"
-          assert data["status"] == "WAITING_NATIVE_IMPORT"
+          native_sch = Path(
+              "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc"
+          ).is_file()
+          native_pcb = Path(
+              "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+          ).is_file()
+          assert native_sch == native_pcb
+          expected_status = (
+              "READY_TO_RUN_EQUIVALENCE_GATE"
+              if native_sch
+              else "WAITING_NATIVE_IMPORT"
+          )
+          assert data["status"] == expected_status
           assert data["routing_authorized"] is False
           assert data["production_authorized"] is False
           print("Native Altium handoff status:", data["status"])
+          PY
+
+      - name: Evaluate two-phase native Altium CI gate
+        run: |
+          python -m tools.altium_native_ci_gate \
+            --repository-root . \
+            --generated-dir build-cad/system_carrier \
+            --output build-cad/system_carrier/altium_native_ci_gate.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/altium_native_ci_gate.json"
+              ).read_text()
+          )
+          assert data["schema"] == "ALTIUM-NATIVE-CI-GATE-001"
+          assert data["status"] == "PASS"
+          assert data["phase"] in {"PRE_IMPORT", "POST_EQUIVALENCE"}
+          assert data["production_authorized"] is False
+          if data["phase"] == "PRE_IMPORT":
+              assert data["routing_authorized"] is False
+          else:
+              assert data["routing_authorized"] is True
+              assert data["equivalence_status"] == "PASS"
+          print(
+              "Native Altium CI phase gate PASS:",
+              data["phase"],
+          )
           PY
 
       - name: Build Altium import package
