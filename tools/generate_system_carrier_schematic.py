@@ -5,6 +5,7 @@ import csv
 import json
 import re
 import shutil
+import uuid
 from pathlib import Path
 
 import kicad_sch_api as ksa
@@ -1532,17 +1533,148 @@ def _point_on_segment(
     )
 
 
+def _segment_endpoint_count(
+    point: tuple[float, float],
+    segments: list[
+        tuple[
+            tuple[float, float],
+            tuple[float, float],
+        ]
+    ],
+) -> tuple[int, int]:
+    containing = 0
+    endpoints = 0
+    key = _coord_key(*point)
+
+    for first, second in segments:
+        if not _point_on_segment(
+            point,
+            first,
+            second,
+        ):
+            continue
+
+        containing += 1
+        if (
+            _coord_key(*first) == key
+            or _coord_key(*second) == key
+        ):
+            endpoints += 1
+
+    return containing, endpoints
+
+
+def _orientation(
+    a: tuple[float, float],
+    b: tuple[float, float],
+    c: tuple[float, float],
+) -> float:
+    return (
+        (b[0] - a[0]) * (c[1] - a[1])
+        - (b[1] - a[1]) * (c[0] - a[0])
+    )
+
+
+def _candidate_stub_is_clear(
+    start: tuple[float, float],
+    end: tuple[float, float],
+    segments: list[
+        tuple[
+            tuple[float, float],
+            tuple[float, float],
+        ]
+    ],
+    occupied_points: set[tuple[int, int]],
+) -> bool:
+    if _coord_key(*end) in occupied_points:
+        return False
+
+    tolerance = 1e-6
+
+    for first, second in segments:
+        first_key = _coord_key(*first)
+        second_key = _coord_key(*second)
+        start_key = _coord_key(*start)
+
+        # New endpoint must remain a genuinely free endpoint.
+        if _point_on_segment(
+            end,
+            first,
+            second,
+        ):
+            return False
+
+        # Existing endpoints must not land on the new stub except at start.
+        for point, key in (
+            (first, first_key),
+            (second, second_key),
+        ):
+            if (
+                key != start_key
+                and _point_on_segment(
+                    point,
+                    start,
+                    end,
+                )
+            ):
+                return False
+
+        o1 = _orientation(start, end, first)
+        o2 = _orientation(start, end, second)
+        o3 = _orientation(first, second, start)
+        o4 = _orientation(first, second, end)
+
+        proper_cross = (
+            (
+                o1 > tolerance
+                and o2 < -tolerance
+                or o1 < -tolerance
+                and o2 > tolerance
+            )
+            and (
+                o3 > tolerance
+                and o4 < -tolerance
+                or o3 < -tolerance
+                and o4 > tolerance
+            )
+        )
+        if proper_cross:
+            return False
+
+        # Reject collinear overlap. Touching only at the original start is
+        # allowed because that is the intended electrical connection.
+        if (
+            abs(o1) <= tolerance
+            and abs(o2) <= tolerance
+            and abs(o3) <= tolerance
+            and abs(o4) <= tolerance
+        ):
+            if not (
+                first_key == start_key
+                or second_key == start_key
+            ):
+                return False
+
+    return True
+
+
 def normalize_local_label_junctions(
     schematic_path: Path,
     *,
-    extension: float = 1.27,
+    stub_lengths: tuple[float, ...] = (
+        0.635,
+        1.27,
+        2.54,
+    ),
 ) -> int:
-    """Move local labels away from wire crossings without editing wires.
+    """Put local labels on true one-wire endpoints.
 
-    KiCad ERC warns when a local label sits exactly where two or more wire
-    segments cross.  The label can be moved a short distance along one of
-    those already-connected segments; this preserves the netlist and wire
-    geometry while removing the ambiguous graphical attachment.
+    KiCad ERC requires a local label to terminate at a free wire endpoint.
+    Labels directly on component pins, wire interiors, or multi-wire
+    junctions can trigger label_multiple_wires.  This post-process leaves
+    already-correct labels untouched and, for every other local label,
+    adds one short collision-checked stub from the existing connection
+    point to a new free endpoint, then moves only the label there.
     """
 
     text = schematic_path.read_text(
@@ -1573,6 +1705,9 @@ def normalize_local_label_junctions(
             tuple[float, float],
         ]
     ] = []
+    occupied_points: set[
+        tuple[int, int]
+    ] = set()
 
     for _, _, block in wire_blocks:
         points = [
@@ -1582,6 +1717,10 @@ def normalize_local_label_junctions(
             )
             for match in xy_re.finditer(block)
         ]
+        for point in points:
+            occupied_points.add(
+                _coord_key(*point)
+            )
         for first, second in zip(
             points,
             points[1:],
@@ -1592,98 +1731,84 @@ def normalize_local_label_junctions(
                 (first, second)
             )
 
-    replacements: list[
-        tuple[int, int, str]
+    labels: list[
+        tuple[
+            int,
+            int,
+            str,
+            re.Match[str],
+            tuple[float, float],
+        ]
     ] = []
-    normalized = 0
 
     for label_start, label_end, label_block in label_blocks:
         match = at_re.search(label_block)
         if match is None:
             continue
-
         point = (
             float(match.group(1)),
             float(match.group(2)),
         )
-
-        crossing = [
-            segment
-            for segment in segments
-            if _point_on_segment(
+        occupied_points.add(
+            _coord_key(*point)
+        )
+        labels.append(
+            (
+                label_start,
+                label_end,
+                label_block,
+                match,
                 point,
-                segment[0],
-                segment[1],
             )
-        ]
+        )
 
-        if len(crossing) < 2:
+    replacements: list[
+        tuple[int, int, str]
+    ] = []
+    new_wires: list[str] = []
+    normalized = 0
+
+    directions = (
+        (1.0, 0.0),
+        (-1.0, 0.0),
+        (0.0, 1.0),
+        (0.0, -1.0),
+    )
+
+    for (
+        label_start,
+        label_end,
+        label_block,
+        match,
+        point,
+    ) in labels:
+        containing, endpoint_count = (
+            _segment_endpoint_count(
+                point,
+                segments,
+            )
+        )
+
+        # This is already the canonical KiCad attachment: exactly one
+        # explicit wire reaches the label and terminates there.
+        if containing == 1 and endpoint_count == 1:
             continue
 
         new_point = None
-
-        # Prefer moving toward the farther endpoint on the longest
-        # crossing segment.  Try progressively shorter moves when needed.
-        ordered = sorted(
-            crossing,
-            key=lambda segment: -(
-                (segment[1][0] - segment[0][0]) ** 2
-                + (segment[1][1] - segment[0][1]) ** 2
-            ),
-        )
-
-        for first, second in ordered:
-            distances = [
-                (
-                    (endpoint[0] - point[0]) ** 2
-                    + (endpoint[1] - point[1]) ** 2,
-                    endpoint,
-                )
-                for endpoint in (first, second)
-            ]
-            _, endpoint = max(
-                distances,
-                key=lambda item: item[0],
-            )
-
-            vx = endpoint[0] - point[0]
-            vy = endpoint[1] - point[1]
-            length = (
-                vx * vx + vy * vy
-            ) ** 0.5
-            if length <= 1e-9:
-                continue
-
-            ux = vx / length
-            uy = vy / length
-
-            for distance in (
-                extension,
-                extension / 2.0,
-                extension / 4.0,
-            ):
-                if distance >= length:
-                    continue
-
+        for length in stub_lengths:
+            for dx, dy in directions:
                 candidate = (
-                    point[0] + ux * distance,
-                    point[1] + uy * distance,
+                    point[0] + dx * length,
+                    point[1] + dy * length,
                 )
-
-                attached = [
-                    segment
-                    for segment in segments
-                    if _point_on_segment(
-                        candidate,
-                        segment[0],
-                        segment[1],
-                    )
-                ]
-
-                if len(attached) == 1:
+                if _candidate_stub_is_clear(
+                    point,
+                    candidate,
+                    segments,
+                    occupied_points,
+                ):
                     new_point = candidate
                     break
-
             if new_point is not None:
                 break
 
@@ -1716,13 +1841,34 @@ def normalize_local_label_junctions(
             + at_text
             + label_block[match.end():]
         )
-
         replacements.append(
             (
                 label_start,
                 label_end,
                 new_label_block,
             )
+        )
+
+        wire_uuid = str(uuid.uuid4())
+        new_wires.append(
+            "  (wire\n"
+            "    (pts\n"
+            f"      (xy {point[0]:.6f} {point[1]:.6f})\n"
+            f"      (xy {new_point[0]:.6f} {new_point[1]:.6f})\n"
+            "    )\n"
+            "    (stroke\n"
+            "      (width 0)\n"
+            "      (type default)\n"
+            "    )\n"
+            f'    (uuid "{wire_uuid}")\n'
+            "  )\n"
+        )
+
+        segments.append(
+            (point, new_point)
+        )
+        occupied_points.add(
+            _coord_key(*new_point)
         )
         normalized += 1
 
@@ -1735,6 +1881,18 @@ def normalize_local_label_junctions(
             text[:replace_start]
             + replacement
             + text[replace_end:]
+        )
+
+    if new_wires:
+        insertion = text.find(
+            "(sheet_instances"
+        )
+        if insertion < 0:
+            insertion = text.rfind(")")
+        text = (
+            text[:insertion]
+            + "".join(new_wires)
+            + text[insertion:]
         )
 
     schematic_path.write_text(
