@@ -1,0 +1,163 @@
+{ EVT System Carrier native Altium read-only audit exporter.
+  This script does not modify the PCB. It exports component, net and
+  PCB-rule inventories from the currently active PcbDoc.
+
+  Run procedure: ExportNativeAudit
+}
+
+Function CsvQuote(S : String) : String;
+Begin
+    S := StringReplace(S, '"', '""', rfReplaceAll);
+    Result := '"' + S + '"';
+End;
+
+Function RuleKindToString(ARuleKind : TRuleKind) : String;
+Begin
+    Result := IntToStr(Ord(ARuleKind));
+
+    Case ARuleKind Of
+        eRule_Clearance                : Result := 'Clearance';
+        eRule_MaxMinWidth              : Result := 'Width';
+        eRule_MatchedLengths           : Result := 'MatchedLengths';
+        eRule_DaisyChainStubLength     : Result := 'StubLength';
+        eRule_PowerPlaneConnectStyle   : Result := 'PlaneConnect';
+        eRule_RoutingTopology          : Result := 'RoutingTopology';
+        eRule_RoutingPriority          : Result := 'RoutingPriority';
+        eRule_RoutingLayers            : Result := 'RoutingLayers';
+        eRule_RoutingCornerStyle       : Result := 'RoutingCorners';
+        eRule_RoutingViaStyle          : Result := 'RoutingVias';
+        eRule_PowerPlaneClearance      : Result := 'PlaneClearance';
+        eRule_SolderMaskExpansion      : Result := 'SolderMaskExpansion';
+        eRule_PasteMaskExpansion       : Result := 'PasteMaskExpansion';
+        eRule_ShortCircuit             : Result := 'ShortCircuit';
+        eRule_BrokenNets               : Result := 'UnRoutedNet';
+        eRule_MinimumAnnularRing       : Result := 'MinimumAnnularRing';
+        eRule_PolygonConnectStyle      : Result := 'PolygonConnect';
+        eRule_ComponentClearance       : Result := 'ComponentClearance';
+        eRule_ComponentRotations       : Result := 'ComponentOrientations';
+        eRule_PermittedLayers          : Result := 'PermittedLayers';
+        eRule_MaxMinImpedance          : Result := 'MaxMinImpedance';
+        eRule_MaxMinHoleSize           : Result := 'HoleSize';
+        eRule_MaxMinHeight             : Result := 'Height';
+        eRule_DifferentialPairsRouting : Result := 'DiffPairsRouting';
+        eRule_ConfinementConstraint    : Result := 'RoomDefinition';
+    End;
+End;
+
+Procedure ExportComponents(Board : IPCB_Board; BasePath : String);
+Var
+    Iterator  : IPCB_BoardIterator;
+    Component : IPCB_Component;
+    Rpt       : TStringList;
+Begin
+    Rpt := TStringList.Create;
+    Rpt.Add('designator,pattern,x_mil,y_mil');
+
+    Iterator := Board.BoardIterator_Create;
+    Iterator.AddFilter_ObjectSet(MkSet(eComponentObject));
+    Iterator.AddFilter_LayerSet(AllLayers);
+    Iterator.AddFilter_Method(eProcessAll);
+
+    Component := Iterator.FirstPCBObject;
+    While Component <> Nil Do
+    Begin
+        Rpt.Add(
+            CsvQuote(Component.SourceDesignator) + ',' +
+            CsvQuote(Component.Pattern) + ',' +
+            FloatToStr(CoordToMils(Component.X)) + ',' +
+            FloatToStr(CoordToMils(Component.Y))
+        );
+        Component := Iterator.NextPCBObject;
+    End;
+
+    Board.BoardIterator_Destroy(Iterator);
+    Rpt.SaveToFile(BasePath + 'component_inventory.csv');
+    Rpt.Free;
+End;
+
+Procedure ExportNets(Board : IPCB_Board; BasePath : String);
+Var
+    Iterator : IPCB_BoardIterator;
+    Net      : IPCB_Net;
+    Rpt      : TStringList;
+Begin
+    Rpt := TStringList.Create;
+    Rpt.Add('net_name');
+
+    Iterator := Board.BoardIterator_Create;
+    Iterator.AddFilter_ObjectSet(MkSet(eNetObject));
+    Iterator.AddFilter_LayerSet(AllLayers);
+    Iterator.AddFilter_Method(eProcessAll);
+
+    Net := Iterator.FirstPCBObject;
+    While Net <> Nil Do
+    Begin
+        Rpt.Add(CsvQuote(Net.Name));
+        Net := Iterator.NextPCBObject;
+    End;
+
+    Board.BoardIterator_Destroy(Iterator);
+    Rpt.SaveToFile(BasePath + 'net_inventory.csv');
+    Rpt.Free;
+End;
+
+Procedure ExportRules(Board : IPCB_Board; BasePath : String);
+Var
+    Iterator : IPCB_BoardIterator;
+    Rule     : IPCB_Rule;
+    Rpt      : TStringList;
+Begin
+    Rpt := TStringList.Create;
+    Rpt.Add('rule_name,rule_kind,unique_id');
+
+    Iterator := Board.BoardIterator_Create;
+    Iterator.AddFilter_ObjectSet(MkSet(eRuleObject));
+    Iterator.AddFilter_LayerSet(AllLayers);
+    Iterator.AddFilter_Method(eProcessAll);
+
+    Rule := Iterator.FirstPCBObject;
+    While Rule <> Nil Do
+    Begin
+        Rpt.Add(
+            CsvQuote(Rule.Name) + ',' +
+            CsvQuote(RuleKindToString(Rule.RuleKind)) + ',' +
+            CsvQuote(Rule.UniqueId)
+        );
+        Rule := Iterator.NextPCBObject;
+    End;
+
+    Board.BoardIterator_Destroy(Iterator);
+    Rpt.SaveToFile(BasePath + 'rule_inventory.csv');
+    Rpt.Free;
+End;
+
+Procedure ExportNativeAudit;
+Var
+    Board    : IPCB_Board;
+    BasePath : String;
+Begin
+    Board := PCBServer.GetCurrentPCBBoard;
+    If Board = Nil Then
+    Begin
+        ShowMessage('EVT System Carrier audit: no active PCB document.');
+        Exit;
+    End;
+
+    If Board.IsLibrary Then
+    Begin
+        ShowMessage('EVT System Carrier audit: active document is a PCB library, not a PcbDoc.');
+        Exit;
+    End;
+
+    BasePath := ExtractFilePath(Board.FileName) + 'equivalence\';
+    ForceDirectories(BasePath);
+
+    ExportComponents(Board, BasePath);
+    ExportNets(Board, BasePath);
+    ExportRules(Board, BasePath);
+
+    ShowMessage(
+        'EVT System Carrier native audit exported to:' + #13#10 +
+        BasePath
+    );
+End;
