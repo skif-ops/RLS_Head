@@ -56,6 +56,7 @@ def test_native_import_receipt_binds_package_and_native_files(tmp_path):
     assert result["status"] == "PASS"
     assert result["errors"] == []
     assert result["source_commit"] == "1" * 40
+    assert result["snapshot_role"] == "POST_IMPORT_NATIVE_SNAPSHOT"
     assert len(result["import_package_manifest"]["sha256"]) == 64
     assert set(result["native_artifacts"]) == {
         "schematic",
