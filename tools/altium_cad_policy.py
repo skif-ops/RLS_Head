@@ -42,6 +42,10 @@ def validate(root: str | Path) -> dict:
     equivalence_checks_path = root / "altium" / "ALTIUM_EQUIVALENCE_CHECKS_SYS_001.csv"
     native_status_path = root / "altium" / "ALTIUM_NATIVE_STATUS_SYS_001.json"
     equivalence_template_path = root / "altium" / "equivalence" / "manifest.template.json"
+    outjob_contract_path = root / "altium" / "ALTIUM_OUTJOB_CONTRACT_SYS_001.csv"
+    release_checklist_path = root / "altium" / "ALTIUM_RELEASE_CHECKLIST_SYS_001.csv"
+    board_planning_path = root / "altium" / "ALTIUM_BOARD_PLANNING_SYS_001.csv"
+    dfm_profile_path = root / "altium" / "ALTIUM_DFM_PROFILE_SYS_001.csv"
     source_rules_path = root / "PCB_LAYOUT_CONSTRAINTS_SYS_001.csv"
 
     for path in (
@@ -189,6 +193,30 @@ def validate(root: str | Path) -> dict:
     ):
         errors.append("equivalence_template_schema")
 
+    outjob_ids = _csv_ids(outjob_contract_path, "output_id")
+    release_ids = _csv_ids(release_checklist_path, "check_id")
+    planning_ids = _csv_ids(board_planning_path, "plan_id")
+    dfm_ids = _csv_ids(dfm_profile_path, "dfm_id")
+
+    if len(outjob_ids) < 14:
+        errors.append("outjob_contract_count")
+    if len(release_ids) < 18:
+        errors.append("release_checklist_count")
+    if len(planning_ids) < 8:
+        errors.append("board_planning_count")
+    if len(dfm_ids) < 10:
+        errors.append("dfm_profile_count")
+
+    with outjob_contract_path.open("r", encoding="utf-8", newline="") as handle:
+        out_rows = list(csv.DictReader(handle))
+    required_outputs = {
+        str(row.get("output_id", "")).strip()
+        for row in out_rows
+        if str(row.get("required", "")).strip() == "YES"
+    }
+    if len(required_outputs) < 13:
+        errors.append("required_output_count")
+
     with stack_path.open("r", encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
     if len(rows) != 4:
@@ -214,6 +242,11 @@ def validate(root: str | Path) -> dict:
         "layer_count": len(rows),
         "net_class_count": len(net_class_ids),
         "placement_zone_count": len(placement_ids),
+        "outjob_contract_count": len(outjob_ids),
+        "required_output_count": len(required_outputs),
+        "release_checklist_count": len(release_ids),
+        "board_planning_count": len(planning_ids),
+        "dfm_profile_count": len(dfm_ids),
         "equivalence_check_count": len(equivalence_ids),
         "layout_bom_ref_count": len(layout_bom_refs),
         "full_footprint_ref_count": len(full_footprint_refs),
