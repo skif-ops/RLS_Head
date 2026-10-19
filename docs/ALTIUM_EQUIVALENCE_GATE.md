@@ -13,6 +13,7 @@ The gate consumes:
 - `hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb`;
 - `hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc`;
 - `hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc`;
+- saved/exported KiCad Import Wizard log `equivalence/import_log.txt`;
 - Altium compile report with zero errors and zero warnings;
 - BOM export;
 - netlist/pin export;
