@@ -292,6 +292,12 @@ def build(
             )
             for item in records
         ),
+        "native_hierarchy_audit_script_included": any(
+            item["path"].endswith(
+                "altium_target/scripts/EVT_SYS_CARRIER_HierarchyAudit.pas"
+            )
+            for item in records
+        ),
         "native_handoff_runbook_included": any(
             item["path"].endswith(
                 "handoff/ALTIUM_NATIVE_HANDOFF.md"
