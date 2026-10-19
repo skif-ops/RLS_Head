@@ -56,6 +56,21 @@ def test_manifest_builder_hashes_artifacts_and_marks_native_audit(tmp_path):
         encoding="utf-8",
     )
 
+    netlist_result_path = evidence / "netlist_validation_result.json"
+    netlist_result_path.write_text(
+        json.dumps(
+            {
+                "schema": "ALTIUM-NATIVE-NETLIST-RESULT-001",
+                "status": "PASS",
+                "verified_checks": {
+                    "netlist_equivalence": "PASS",
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
     audit_path = evidence / "native_audit_result.json"
     audit_path.write_text(
         json.dumps(
@@ -103,6 +118,11 @@ def test_manifest_builder_hashes_artifacts_and_marks_native_audit(tmp_path):
                     {
                         "id": "connector_validation_result",
                         "path": "evidence/connector_validation_result.json",
+                        "sha256": "<SHA256>",
+                    },
+                    {
+                        "id": "netlist_validation_result",
+                        "path": "evidence/netlist_validation_result.json",
                         "sha256": "<SHA256>",
                     },
                 ],
