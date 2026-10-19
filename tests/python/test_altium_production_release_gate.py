@@ -35,6 +35,20 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
     gerber.write_bytes(b"GERBER_X2")
     gerber_hash = hashlib.sha256(gerber.read_bytes()).hexdigest()
 
+    review_evidence = {}
+    for name in ("mechanical", "fabricator", "si", "dfm"):
+        evidence_path = tmp_path / f"release/{name}_evidence.txt"
+        evidence_path.write_text(
+            f"{name} evidence\n",
+            encoding="utf-8",
+        )
+        review_evidence[name] = {
+            "path": f"release/{name}_evidence.txt",
+            "sha256": hashlib.sha256(
+                evidence_path.read_bytes()
+            ).hexdigest(),
+        }
+
     entries = {
         "equivalence_result": (
             "equivalence/altium_equivalence_result.json",
@@ -67,7 +81,7 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
                 "connector_access_verified": True,
                 "step_enclosure_verified": True,
                 "reviewer": "Synthetic CI",
-                "evidence_refs": ["mechanical/step-review"],
+                "evidence_refs": [review_evidence["mechanical"]],
             },
         ),
         "fabricator_binding": (
@@ -82,7 +96,7 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
                 "min_trace_clearance_bound": True,
                 "via_rules_bound": True,
                 "fabricator": "Synthetic Fab",
-                "evidence_refs": ["fab/process-profile"],
+                "evidence_refs": [review_evidence["fabricator"]],
             },
         ),
         "return_path_si_review": (
@@ -95,7 +109,7 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
                 "timing_return_paths_verified": True,
                 "ethernet_mdi_return_path_verified": True,
                 "reviewer": "Synthetic CI",
-                "evidence_refs": ["si/return-path-review"],
+                "evidence_refs": [review_evidence["si"]],
             },
         ),
         "dfm_result": (
@@ -104,7 +118,7 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
                 "schema": "ALTIUM-DFM-RESULT-001",
                 "status": "PASS",
                 "p0_open_items": 0,
-                "evidence_refs": ["dfm/final-report"],
+                "evidence_refs": [review_evidence["dfm"]],
             },
         ),
         "outjob_release_manifest": (
@@ -233,4 +247,28 @@ def test_manifest_builder_hashes_exact_release_evidence(tmp_path):
     assert all(
         len(item["sha256"]) == 64
         for item in result["manifest"]["artifacts"]
+    )
+
+
+
+def test_changed_review_evidence_hash_blocks_release(tmp_path):
+    manifest = _fixture(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    item = next(
+        artifact
+        for artifact in data["artifacts"]
+        if artifact["id"] == "mechanical_review"
+    )
+    review_path = tmp_path / item["path"]
+    review = json.loads(review_path.read_text())
+    evidence_path = tmp_path / review["evidence_refs"][0]["path"]
+    evidence_path.write_text("changed evidence\n", encoding="utf-8")
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert any(
+        error.startswith("mechanical_evidence_ref_hash:")
+        for error in result["errors"]
     )
