@@ -64,7 +64,14 @@ def _native_fixture(tmp_path: Path, *, drop_last_rule: bool = False) -> None:
     rule_rows = rule_contract[:-1] if drop_last_rule else rule_contract
     _write_csv(
         tmp_path / "rule_inventory.csv",
-        ["rule_name", "rule_kind", "unique_id"],
+        [
+            "rule_name",
+            "rule_kind",
+            "unique_id",
+            "scope_1",
+            "scope_2",
+            "drc_enabled",
+        ],
         [
             {
                 "rule_name": row["rule_name"],
@@ -74,6 +81,9 @@ def _native_fixture(tmp_path: Path, *, drop_last_rule: bool = False) -> None:
                     else row["rule_family"]
                 ),
                 "unique_id": "TEST",
+                "scope_1": row["scope_1"],
+                "scope_2": row["scope_2"],
+                "drc_enabled": "true",
             }
             for row in rule_rows
         ],
@@ -131,6 +141,12 @@ def test_native_audit_validator_passes_complete_fixture(tmp_path):
     assert result["pinmap_checked_count"] > 0
     assert result["symbol_pin_checked_count"] > 0
     assert result["layer_stack_count"] == 4
+    assert result["verified_checks"] == {
+        "native_pcb_audit": "PASS",
+        "pinmap_equivalence": "PASS",
+        "rules_equivalence": "PASS",
+        "stackup_equivalence": "PASS",
+    }
     assert set(result["input_sha256"]) == {
         "component_inventory",
         "net_inventory",
@@ -195,3 +211,30 @@ def test_native_audit_validator_detects_layer_stack_mismatch(tmp_path):
         item.startswith("layer_stack_mismatch:")
         for item in result["errors"]
     )
+
+
+
+def test_native_audit_validator_detects_rule_scope_mismatch(tmp_path):
+    _native_fixture(tmp_path)
+
+    path = tmp_path / "rule_inventory.csv"
+    rows = _contract_rows(path)
+    rows[0]["scope_1"] = "All"
+    _write_csv(
+        path,
+        [
+            "rule_name",
+            "rule_kind",
+            "unique_id",
+            "scope_1",
+            "scope_2",
+            "drc_enabled",
+        ],
+        rows,
+    )
+
+    result = validate(system_root=SYSTEM, audit_dir=tmp_path)
+
+    assert result["status"] == "FAIL"
+    assert "rule_scope_1_mismatch:R_GNSS_RF_WIDTH" in result["errors"]
+    assert result["verified_checks"]["rules_equivalence"] == "FAIL"
