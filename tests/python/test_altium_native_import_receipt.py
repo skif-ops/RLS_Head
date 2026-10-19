@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from tools.altium_native_import_receipt import build_receipt
+from tools.altium_native_import_receipt import NATIVE_ARTIFACTS, build_receipt
 
 
 def _write_package(root: Path) -> Path:
@@ -31,15 +31,10 @@ def _write_package(root: Path) -> Path:
 
 
 def _write_native(root: Path) -> None:
-    files = {
-        "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc": b"SCH",
-        "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc": b"PCB",
-        "hardware/system_carrier/altium/equivalence/import_log.txt": b"IMPORT\n",
-    }
-    for relative, content in files.items():
+    for artifact_id, relative in NATIVE_ARTIFACTS.items():
         path = root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(content)
+        path.write_bytes(("TEST:" + artifact_id).encode())
 
 
 def test_native_import_receipt_binds_package_and_native_files(tmp_path):
@@ -57,10 +52,20 @@ def test_native_import_receipt_binds_package_and_native_files(tmp_path):
     assert result["errors"] == []
     assert result["source_commit"] == "1" * 40
     assert len(result["import_package_manifest"]["sha256"]) == 64
-    assert set(result["native_artifacts"]) == {
+    assert set(result["native_artifacts"]) == set(NATIVE_ARTIFACTS)
+    assert {
+        key
+        for key in result["native_artifacts"]
+        if key.startswith("schematic")
+    } == {
         "schematic",
-        "pcb",
-        "import_log",
+        "schematic_power_input",
+        "schematic_mcu_core",
+        "schematic_time_gnss",
+        "schematic_imu",
+        "schematic_radar_io_can",
+        "schematic_ethernet",
+        "schematic_debug_boot",
     }
     assert all(
         len(item["sha256"]) == 64
@@ -83,3 +88,24 @@ def test_native_import_receipt_requires_tool_versions(tmp_path):
     assert result["status"] == "FAIL"
     assert "altium_version" in result["errors"]
     assert "importer_version" in result["errors"]
+
+
+
+def test_native_import_receipt_requires_every_child_schematic(tmp_path):
+    package = _write_package(tmp_path)
+    _write_native(tmp_path)
+    missing = (
+        tmp_path
+        / NATIVE_ARTIFACTS["schematic_ethernet"]
+    )
+    missing.unlink()
+
+    result = build_receipt(
+        repository_root=tmp_path,
+        package_manifest=package,
+        altium_version="26.0.1",
+        importer_version="KiCad Importer 26.0.1",
+    )
+
+    assert result["status"] == "FAIL"
+    assert "missing:schematic_ethernet" in result["errors"]
