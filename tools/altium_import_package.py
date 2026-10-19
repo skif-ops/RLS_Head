@@ -143,6 +143,24 @@ def build(
                 )
             )
 
+    handoff_files = [
+        (
+            system.parent.parent / "docs" / "ALTIUM_NATIVE_HANDOFF.md",
+            output / "handoff" / "ALTIUM_NATIVE_HANDOFF.md",
+        ),
+        (
+            system / "altium" / "equivalence" / "manifest.template.json",
+            output / "handoff" / "manifest.template.json",
+        ),
+    ]
+    for source_path, target_path in handoff_files:
+        records.append(
+            copy_file(
+                source_path,
+                target_path,
+            )
+        )
+
     for name in [
         "EVT_SYS_CARRIER.PrjPcb",
         "ALTIUM_IMPORT_PROFILE_SYS_001.json",
@@ -267,6 +285,18 @@ def build(
         "native_audit_script_included": any(
             item["path"].endswith(
                 "altium_target/scripts/EVT_SYS_CARRIER_Audit.pas"
+            )
+            for item in records
+        ),
+        "native_handoff_runbook_included": any(
+            item["path"].endswith(
+                "handoff/ALTIUM_NATIVE_HANDOFF.md"
+            )
+            for item in records
+        ),
+        "equivalence_manifest_template_included": any(
+            item["path"].endswith(
+                "handoff/manifest.template.json"
             )
             for item in records
         ),
