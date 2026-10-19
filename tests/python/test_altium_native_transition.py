@@ -62,7 +62,10 @@ def test_native_transition_stops_at_compile_report_after_provenance(tmp_path):
     result = transition.run_transition(repository_root=tmp_path)
 
     assert result["status"] == "WAITING_COMPILE_REPORT"
-    assert result["missing_inputs"] == ["compile_report"]
+    assert result["missing_inputs"] == [
+        "compile_report",
+        "compile_report_raw",
+    ]
     assert result["routing_authorized"] is False
 
 
@@ -97,10 +100,12 @@ def test_native_transition_full_pass_syncs_routing_authority(
             "status": "PASS",
         },
     )
+    _write(_path(tmp_path, "compile_report_raw"), b"RAW_COMPILE_REPORT")
     _write_json(
         _path(tmp_path, "compile_report"),
         {
             "schema": "ALTIUM-COMPILE-REPORT-001",
+            "status": "PASS",
             "errors": 0,
             "warnings": 0,
         },
@@ -160,6 +165,23 @@ def test_native_transition_full_pass_syncs_routing_authority(
         "errors": [],
         "warnings": [],
     }
+
+    monkeypatch.setattr(
+        transition,
+        "validate_compile_evidence",
+        lambda **kwargs: {
+            "schema": "ALTIUM-COMPILE-EVIDENCE-VALIDATION-001",
+            "status": "PASS",
+            "errors": [],
+            "reason_codes": [],
+            "compile": {
+                "schema": "ALTIUM-COMPILE-REPORT-001",
+                "status": "PASS",
+                "errors": 0,
+                "warnings": 0,
+            },
+        },
+    )
 
     monkeypatch.setattr(
         transition,

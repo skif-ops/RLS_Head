@@ -153,6 +153,10 @@ def build(
             system / "altium" / "equivalence" / "manifest.template.json",
             output / "handoff" / "manifest.template.json",
         ),
+        (
+            system / "altium" / "equivalence" / "compile_report.template.json",
+            output / "handoff" / "compile_report.template.json",
+        ),
     ]
     for source_path, target_path in handoff_files:
         records.append(
@@ -301,6 +305,12 @@ def build(
         "equivalence_manifest_template_included": any(
             item["path"].endswith(
                 "handoff/manifest.template.json"
+            )
+            for item in records
+        ),
+        "compile_evidence_template_included": any(
+            item["path"].endswith(
+                "handoff/compile_report.template.json"
             )
             for item in records
         ),

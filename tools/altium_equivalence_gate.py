@@ -5,6 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 
+from tools.altium_compile_evidence import validate as validate_compile_evidence
 from tools.altium_native_file_preflight import validate as validate_native_files
 
 
@@ -19,6 +20,7 @@ REQUIRED_ARTIFACTS = {
     "import_package_manifest",
     "import_receipt",
     "import_log",
+    "compile_report_raw",
     "compile_report",
     "bom_export",
     "bom_validation_result",
@@ -329,34 +331,42 @@ def validate_manifest(
                 errors.append(f"native_file_rerun:{item}")
 
     compile_result = None
+    compile_validation = None
     compile_path = resolved.get("compile_report")
     if compile_path is not None:
-        try:
-            compile_result = json.loads(
-                compile_path.read_text(encoding="utf-8")
-            )
-        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-            errors.append(f"compile_report_parse:{exc}")
-        else:
-            if (
-                compile_result.get("schema")
-                != "ALTIUM-COMPILE-REPORT-001"
+        compile_validation = validate_compile_evidence(
+            compile_report=compile_path,
+            repository_root=root,
+        )
+        compile_result = compile_validation.get("compile")
+        validation_status = compile_validation.get("status")
+        if validation_status == "INVALID":
+            for item in compile_validation.get("errors", []):
+                errors.append(f"compile_evidence:{item}")
+        elif validation_status != "PASS":
+            for item in compile_validation.get("reason_codes", []):
+                reasons.append(item)
+
+        if isinstance(compile_result, dict):
+            for artifact_id, path_key in (
+                ("compile_report_raw", "source_report"),
+                ("project", "source_project"),
+                ("schematic", "source_schematic"),
             ):
-                errors.append("compile_report_schema")
-            compile_errors = int(
-                compile_result.get("errors", -1)
-            )
-            compile_warnings = int(
-                compile_result.get("warnings", -1)
-            )
-            if compile_errors != 0:
-                reasons.append(
-                    f"COMPILE_ERRORS:{compile_errors}"
+                expected_path = str(
+                    integrity.get(artifact_id, {}).get(
+                        "path",
+                        "",
+                    )
                 )
-            if compile_warnings != 0:
-                reasons.append(
-                    f"COMPILE_WARNINGS:{compile_warnings}"
-                )
+                if (
+                    str(compile_result.get(path_key, "")).strip()
+                    != expected_path
+                ):
+                    errors.append(
+                        f"compile_evidence:{path_key}_manifest_path"
+                    )
+
 
     bom_validation = None
     bom_validation_path = resolved.get("bom_validation_result")
@@ -778,6 +788,7 @@ def validate_manifest(
         "hierarchy_validation": hierarchy_validation,
         "no_mmwave_validation": no_mmwave_validation,
         "compile": compile_result,
+        "compile_validation": compile_validation,
         "native_audit": native_audit,
         "checks": checks,
         "preserve_kicad": preserved_kicad,

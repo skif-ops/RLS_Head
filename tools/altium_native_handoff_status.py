@@ -18,6 +18,7 @@ REQUIRED = {
     "import_package_manifest": "hardware/system_carrier/altium/equivalence/import_package_manifest.json",
     "import_receipt": "hardware/system_carrier/altium/equivalence/import_receipt.json",
     "import_log": "hardware/system_carrier/altium/equivalence/import_log.txt",
+    "compile_report_raw": "hardware/system_carrier/altium/equivalence/compile_report_raw.txt",
     "compile_report": "hardware/system_carrier/altium/equivalence/compile_report.json",
     "bom_export": "hardware/system_carrier/altium/equivalence/bom_export.csv",
     "bom_validation_result": "hardware/system_carrier/altium/equivalence/bom_validation_result.json",

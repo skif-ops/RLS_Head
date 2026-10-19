@@ -17,7 +17,7 @@ The gate consumes:
 - exact CI import-package manifest copied to `equivalence/import_package_manifest.json`;
 - generated native import provenance receipt `equivalence/import_receipt.json`;
 - saved/exported KiCad Import Wizard log `equivalence/import_log.txt`;
-- Altium compile report with zero errors and zero warnings;
+- raw Altium compile/ERC report plus `compile_report.json` with zero errors/warnings, SHA-256-bound to that raw report, the exact `.PrjPcb` and native `.SchDoc`;
 - BOM export plus `equivalence/bom_validation_result.json`;
 - connector validation result derived from native pad/net inventory;
 - retained KiCad connectivity baseline copied from the exact CI import package plus native netlist validation result;
@@ -42,7 +42,7 @@ All must be PASS:
 7. Altium PCB-rule equivalence: all 10 instantiated rule-query rules must have the required family, scope and enabled state; the 24-row layout constraint contract remains the broader design-policy source.
 8. Four-layer stack equivalence.
 9. PcbDoc-bound human review confirming no 76–81 GHz components, nets, routing or antenna on the System Carrier.
-10. Native Altium compile: zero errors and zero warnings.
+10. Native Altium compile: zero errors and zero warnings with validated raw-report/project/schematic provenance.
 11. Native PCB audit: component, P0/P1 net, required rule family, MCU/direct-symbol pin-to-net and four-layer copper-stack inventory PASS.
 
 ## Gate command
