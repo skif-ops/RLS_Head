@@ -8,7 +8,12 @@
   "impedance_100r_bound": false,
   "min_trace_clearance_bound": false,
   "via_rules_bound": false,
-  "evidence_refs": [],
+  "evidence_refs": [
+    {
+      "path": "<REPO_RELATIVE_EVIDENCE_PATH>",
+      "sha256": "<SHA256>"
+    }
+  ],
   "notes": [
     "PASS binds provisional EVT values to the selected fabricator process."
   ]
