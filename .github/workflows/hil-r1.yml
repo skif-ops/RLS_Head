@@ -1087,6 +1087,7 @@ jobs:
           assert data["room_gate_included"] is True
           assert data["routing_readiness_included"] is True
           assert data["native_audit_script_included"] is True
+          assert data["native_hierarchy_audit_script_included"] is True
           assert data["native_handoff_runbook_included"] is True
           assert data["equivalence_manifest_template_included"] is True
           assert data["kicad_netlist_baseline_included"] is True
