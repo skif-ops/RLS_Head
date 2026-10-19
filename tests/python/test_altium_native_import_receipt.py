@@ -1,3 +1,4 @@
+import hashlib
 import json
 from pathlib import Path
 
@@ -42,13 +43,63 @@ def _write_native(root: Path) -> None:
         path.write_bytes(content)
 
 
+def _write_import_preflight(root: Path) -> Path:
+    schematic = (
+        root
+        / "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc"
+    )
+    pcb = (
+        root
+        / "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+    )
+    path = (
+        root
+        / "hardware/system_carrier/altium/equivalence/"
+        "import_native_file_preflight.json"
+    )
+    path.write_text(
+        json.dumps(
+            {
+                "schema": "ALTIUM-NATIVE-FILE-PREFLIGHT-001",
+                "status": "PASS",
+                "errors": [],
+                "artifacts": {
+                    "schematic": {
+                        "path": (
+                            "hardware/system_carrier/altium/native/"
+                            "EVT_SYS_CARRIER.SchDoc"
+                        ),
+                        "sha256": hashlib.sha256(
+                            schematic.read_bytes()
+                        ).hexdigest(),
+                    },
+                    "pcb": {
+                        "path": (
+                            "hardware/system_carrier/altium/native/"
+                            "EVT_SYS_CARRIER.PcbDoc"
+                        ),
+                        "sha256": hashlib.sha256(
+                            pcb.read_bytes()
+                        ).hexdigest(),
+                    },
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    return path
+
+
 def test_native_import_receipt_binds_package_and_native_files(tmp_path):
     package = _write_package(tmp_path)
     _write_native(tmp_path)
+    preflight = _write_import_preflight(tmp_path)
 
     result = build_receipt(
         repository_root=tmp_path,
         package_manifest=package,
+        import_preflight=preflight,
         altium_version="26.0.1",
         importer_version="KiCad Importer 26.0.1",
     )
@@ -58,6 +109,7 @@ def test_native_import_receipt_binds_package_and_native_files(tmp_path):
     assert result["source_commit"] == "1" * 40
     assert result["snapshot_role"] == "POST_IMPORT_NATIVE_SNAPSHOT"
     assert len(result["import_package_manifest"]["sha256"]) == 64
+    assert len(result["import_native_file_preflight"]["sha256"]) == 64
     assert set(result["native_artifacts"]) == {
         "schematic",
         "pcb",
@@ -73,10 +125,12 @@ def test_native_import_receipt_binds_package_and_native_files(tmp_path):
 def test_native_import_receipt_requires_tool_versions(tmp_path):
     package = _write_package(tmp_path)
     _write_native(tmp_path)
+    preflight = _write_import_preflight(tmp_path)
 
     result = build_receipt(
         repository_root=tmp_path,
         package_manifest=package,
+        import_preflight=preflight,
         altium_version="",
         importer_version="",
     )
@@ -84,3 +138,47 @@ def test_native_import_receipt_requires_tool_versions(tmp_path):
     assert result["status"] == "FAIL"
     assert "altium_version" in result["errors"]
     assert "importer_version" in result["errors"]
+
+
+
+def test_native_import_receipt_rejects_preflight_hash_mismatch(tmp_path):
+    package = _write_package(tmp_path)
+    _write_native(tmp_path)
+    preflight = _write_import_preflight(tmp_path)
+
+    pcb = (
+        tmp_path
+        / "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+    )
+    pcb.write_bytes(b"PCB_CHANGED_AFTER_IMPORT_CAPTURE")
+
+    result = build_receipt(
+        repository_root=tmp_path,
+        package_manifest=package,
+        import_preflight=preflight,
+        altium_version="26.0.1",
+        importer_version="KiCad Importer 26.0.1",
+    )
+
+    assert result["status"] == "FAIL"
+    assert "import_preflight_hash:pcb" in result["errors"]
+
+
+def test_native_import_receipt_requires_import_preflight(tmp_path):
+    package = _write_package(tmp_path)
+    _write_native(tmp_path)
+
+    result = build_receipt(
+        repository_root=tmp_path,
+        package_manifest=package,
+        import_preflight=(
+            tmp_path
+            / "hardware/system_carrier/altium/equivalence/"
+            "import_native_file_preflight.json"
+        ),
+        altium_version="26.0.1",
+        importer_version="KiCad Importer 26.0.1",
+    )
+
+    assert result["status"] == "FAIL"
+    assert "missing_import_native_file_preflight" in result["errors"]
