@@ -13,6 +13,8 @@ The gate consumes:
 - `hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb`;
 - `hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc`;
 - `hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc`;
+- exact CI import-package manifest copied to `equivalence/import_package_manifest.json`;
+- generated native import provenance receipt `equivalence/import_receipt.json`;
 - saved/exported KiCad Import Wizard log `equivalence/import_log.txt`;
 - Altium compile report with zero errors and zero warnings;
 - BOM export;
