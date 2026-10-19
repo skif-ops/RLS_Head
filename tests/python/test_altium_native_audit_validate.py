@@ -67,6 +67,15 @@ def test_native_audit_validator_passes_complete_fixture(tmp_path):
     assert result["errors"] == []
     assert result["component_count"] == result["expected_component_count"]
     assert result["required_rule_count"] == 10
+    assert set(result["input_sha256"]) == {
+        "component_inventory",
+        "net_inventory",
+        "rule_inventory",
+    }
+    assert all(
+        len(value) == 64
+        for value in result["input_sha256"].values()
+    )
 
 
 def test_native_audit_validator_detects_missing_rule(tmp_path):
