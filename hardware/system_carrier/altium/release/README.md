@@ -14,7 +14,7 @@ The gate requires SHA-256-bound native evidence for:
 - DFM closure with no open P0 items;
 - complete required OutJob outputs generated from native Altium.
 
-The gate does not infer or fabricate any of these reviews. Until every evidence file exists and passes, `production_authority` remains `NOT_AUTHORIZED`.
+The gate does not infer or fabricate any of these reviews. Until every evidence file exists and passes, `production_authority` remains `NOT_AUTHORIZED`. After a gate PASS, the transition driver re-hashes the current final `PcbDoc` before synchronizing tracked production authority; if the board changes between gate evaluation and status synchronization, the transition fails closed and does not mark the current workspace production-authorized.
 
 Start from `manifest.template.json`, populate SHA-256 hashes from the exact release evidence files, and run:
 
