@@ -561,7 +561,6 @@ def populate_power(sch, placeholders: list[dict]) -> None:
 
     sch.components.add("Device:C", "C6D", "3.3nF", pos(43, 36))
     sch.components.add("Device:C", "C7D", "3.3nF", pos(43, 54))
-    sch.components.add("Connector_Generic:Conn_01x02", "J2", "RADAR_12V_OUT", pos(75, 50))
     sch.components.add(
         "power:PWR_FLAG",
         "#FLG0201",
@@ -607,8 +606,7 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         if p is not None:
             sch.no_connects.add(position=(p.x,p.y))
 
-    for pin, net in {"5":"VIN_PROTECTED","6":"RADAR_12V"}.items():
-        add_pin_label(sch, net, "U7", pin)
+    add_pin_label(sch, "VIN_PROTECTED", "U7", "5")
     add_tps25947_ground_label(sch, "U7")
     add_pin_label(sch, "VIN_PROTECTED", "R71", "1")
     for ref, pin in (("R71", "2"), ("U7", "1"), ("R72", "1")):
@@ -659,8 +657,6 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "GND", "C2", "2")
     add_pin_label(sch, "VIN_PROTECTED", "C4", "1")
     add_pin_label(sch, "GND", "C4", "2")
-    # J2.1 receives the authoritative hierarchical RADAR_12V label later.
-    add_pin_label(sch, "GND", "J2", "2")
 
 
 def populate_mcu(
@@ -1175,15 +1171,15 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
         Compatibility_Basis="Bel_SI-60182-F_vs_SI-60062-F_verified",
     )
 
-    sch.components.add("Device:R", "R60", "12.1k 1%", pos(42, 45))
-    for ref, y in [("R61", 42), ("R62", 52), ("R63", 62), ("R64", 72)]:
+    sch.components.add("Device:R", "R600", "12.1k 1%", pos(42, 45))
+    for ref, y in [("R601", 42), ("R602", 52), ("R603", 62), ("R604", 72)]:
         sch.components.add("Device:R", ref, "49.9R 1%", pos(68, y))
 
     sch.components.add("Device:C", "C60", "1uF", pos(50, 45))
     sch.components.add("Device:C", "C61", "470pF C0G", pos(56, 45))
     sch.components.add("Device:C", "C62", "100nF", pos(36, 45))
     sch.components.add("Device:C", "C63", "22nF C0G", pos(82, 54))
-    sch.components.add("Device:R", "R65", "10k 1% NRST_PD", pos(58, 51))
+    sch.components.add("Device:R", "R605", "10k 1% NRST_PD", pos(58, 51))
     sch.components.add(
         "power:PWR_FLAG",
         "#FLG0601",
@@ -1203,8 +1199,8 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
     if sch.get_component_pin_position("U3", "25") is not None:
         add_pin_label_stub(sch, "GND", "U3", "25")
 
-    sch.add_wire_between_pins("U3", "24", "R60", "1")
-    add_pin_label_stub(sch, "GND", "R60", "2")
+    sch.add_wire_between_pins("U3", "24", "R600", "1")
+    add_pin_label_stub(sch, "GND", "R600", "2")
 
     sch.add_wire_between_pins("U3", "6", "C60", "1")
     sch.add_wire_between_pins("C60", "1", "#FLG0601", "1")
@@ -1223,8 +1219,8 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
             sch.no_connects.add(position=(p.x, p.y))
 
     # PHY controlled reset pulldown.
-    add_pin_label_stub(sch, "ETH_NRST", "R65", "1")
-    add_pin_label_stub(sch, "GND", "R65", "2")
+    add_pin_label_stub(sch, "ETH_NRST", "R605", "1")
+    add_pin_label_stub(sch, "GND", "R605", "2")
 
     # 50 MHz oscillator.
     add_pin_label_stub(sch, "GND", "Y2", "2")
@@ -1275,10 +1271,10 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
 
     # Four 49.9-ohm MDI terminations to analog 3.3V rail.
     for ref, net in {
-        "R61": "ETH_TXP",
-        "R62": "ETH_TXN",
-        "R63": "ETH_RXP",
-        "R64": "ETH_RXN",
+        "R601": "ETH_TXP",
+        "R602": "ETH_TXN",
+        "R603": "ETH_RXP",
+        "R604": "ETH_RXN",
     }.items():
         add_pin_label_stub(sch, net, ref, "1")
         add_pin_label_stub(sch, "3V3", ref, "2")
