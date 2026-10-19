@@ -57,11 +57,25 @@ def evaluate(repository_root: str | Path = ".") -> dict:
         if payload.get("status") != "PASS":
             non_pass.append(artifact_id)
 
-    equivalence_ready = (
+    equivalence_ready = False
+    equivalence_path = root / REQUIRED["equivalence_result"]
+    if (
         evidence["equivalence_result"]["present"]
         and "equivalence_result" not in invalid
         and "equivalence_result" not in non_pass
-    )
+    ):
+        try:
+            equivalence_payload = json.loads(
+                equivalence_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            invalid.append("equivalence_result")
+        else:
+            equivalence_ready = (
+                equivalence_payload.get("layout_authority") == "AUTHORIZED"
+                and equivalence_payload.get("production_authority")
+                == "NOT_AUTHORIZED"
+            )
 
     release_evidence_ids = [
         "native_drc_result",
@@ -79,7 +93,23 @@ def evaluate(repository_root: str | Path = ".") -> dict:
         for name in release_evidence_ids
     ) and release_evidence_complete
 
-    manifest_ready = evidence["manifest"]["present"]
+    manifest_ready = False
+    manifest_path = root / REQUIRED["manifest"]
+    if evidence["manifest"]["present"]:
+        try:
+            release_manifest = json.loads(
+                manifest_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            invalid.append("manifest")
+        else:
+            if (
+                release_manifest.get("schema")
+                != "ALTIUM-PRODUCTION-RELEASE-MANIFEST-001"
+            ):
+                invalid.append("manifest")
+            else:
+                manifest_ready = True
 
     if not equivalence_ready:
         status = "WAITING_EQUIVALENCE_PASS"
@@ -93,6 +123,9 @@ def evaluate(repository_root: str | Path = ".") -> dict:
     elif not release_reviews_pass:
         status = "WAITING_RELEASE_REVIEWS"
         next_action = "CLOSE_NON_PASS_RELEASE_REVIEWS"
+    elif "manifest" in invalid:
+        status = "INVALID_RELEASE_MANIFEST"
+        next_action = "FIX_PRODUCTION_RELEASE_MANIFEST"
     elif not manifest_ready:
         status = "WAITING_RELEASE_MANIFEST"
         next_action = "BUILD_PRODUCTION_RELEASE_MANIFEST"
