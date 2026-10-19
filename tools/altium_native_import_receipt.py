@@ -12,6 +12,13 @@ PACKAGE_SCHEMA = "ALTIUM-IMPORT-PACKAGE-001"
 
 NATIVE_ARTIFACTS = {
     "schematic": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
+    "schematic_power_input": "hardware/system_carrier/altium/native/10_POWER_INPUT.SchDoc",
+    "schematic_mcu_core": "hardware/system_carrier/altium/native/20_MCU_CORE.SchDoc",
+    "schematic_time_gnss": "hardware/system_carrier/altium/native/30_TIME_GNSS.SchDoc",
+    "schematic_imu": "hardware/system_carrier/altium/native/40_IMU.SchDoc",
+    "schematic_radar_io_can": "hardware/system_carrier/altium/native/50_RADAR_IO_CAN.SchDoc",
+    "schematic_ethernet": "hardware/system_carrier/altium/native/60_ETHERNET.SchDoc",
+    "schematic_debug_boot": "hardware/system_carrier/altium/native/70_DEBUG_BOOT.SchDoc",
     "pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
     "import_log": "hardware/system_carrier/altium/equivalence/import_log.txt",
 }
