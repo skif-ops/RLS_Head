@@ -22,15 +22,18 @@ The repository must report:
    `hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc`.
 7. Create/update the PCB and save as:
    `hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc`.
-8. Copy the exact CI Altium import-package `manifest.json` used for this import to:
+8. Validate that both native files are genuine non-trivial Altium CFB/OLE containers:
+   `python -m tools.altium_native_file_preflight --schematic hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc --pcb hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc --output hardware/system_carrier/altium/equivalence/native_file_preflight.json`.
+   Require `PASS`. The check validates the Microsoft Compound File Binary signature/header geometry and rejects extension-only placeholders or damaged containers; it does not replace electrical equivalence.
+9. Copy the exact CI Altium import-package `manifest.json` used for this import to:
    `hardware/system_carrier/altium/equivalence/import_package_manifest.json`.
    From that same package, copy `evidence/kicad_netlist_baseline.csv` to:
    `hardware/system_carrier/altium/equivalence/kicad_netlist_baseline.csv`.
-9. Save/export the KiCad Import Wizard log as:
+10. Save/export the KiCad Import Wizard log as:
    `hardware/system_carrier/altium/equivalence/import_log.txt`.
-10. Generate the provenance receipt, recording the actual Altium Designer and KiCad Importer versions:
+11. Generate the provenance receipt, recording the actual Altium Designer and KiCad Importer versions:
     `python -m tools.altium_native_import_receipt --repository-root . --package-manifest hardware/system_carrier/altium/equivalence/import_package_manifest.json --altium-version "<ALTIUM_VERSION>" --importer-version "<IMPORTER_VERSION>" --output hardware/system_carrier/altium/equivalence/import_receipt.json`.
-11. Require the command to return `PASS`. Do not delete or overwrite the retained KiCad source.
+12. Require the command to return `PASS`. Do not delete or overwrite the retained KiCad source.
 
 ## Recommended orchestrated transition
 
@@ -38,7 +41,7 @@ After the native `SchDoc` / `PcbDoc`, import-package manifest and Import Wizard 
 
 `python -m tools.altium_native_transition --repository-root . --altium-version "<ALTIUM_VERSION>" --importer-version "<IMPORTER_VERSION>" --output hardware/system_carrier/altium/equivalence/native_transition_result.json`
 
-The command is intentionally re-runnable and fail-closed. It executes every repository-controlled validator that has enough input evidence, writes the corresponding result files, builds the equivalence manifest, runs the equivalence gate when all ten checks are PASS, and synchronizes the tracked Altium status JSON to `READY_FOR_ROUTING` only after a real gate PASS.
+The command is intentionally re-runnable and fail-closed. Its first native-document action is the CFB/OLE file preflight; it then executes every repository-controlled validator that has enough input evidence, writes the corresponding result files, builds the equivalence manifest, runs the equivalence gate when all ten checks are PASS, and synchronizes the tracked Altium status JSON to `READY_FOR_ROUTING` only after a real gate PASS.
 
 When an external Altium action is still required, it stops with an explicit state such as `WAITING_COMPILE_REPORT`, `WAITING_NATIVE_AUDIT_EXPORT`, `WAITING_BOM_EXPORT`, `WAITING_NETLIST_EXPORT`, `WAITING_HIERARCHY_EXPORT` or `WAITING_NO_MMWAVE_REVIEW`. It never creates native Altium documents and never auto-approves the human no-mmWave review.
 
