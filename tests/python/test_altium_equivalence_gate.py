@@ -802,3 +802,35 @@ def test_changed_raw_compile_report_invalidates_gate(tmp_path):
 
     assert result["status"] == "INVALID"
     assert "compile_evidence:source_report_hash" in result["errors"]
+
+
+
+def test_noncanonical_native_pcb_path_invalidates_equivalence_gate(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    pcb_item = next(
+        item
+        for item in data["artifacts"]
+        if item["id"] == "pcb"
+    )
+    canonical = tmp_path / pcb_item["path"]
+    alternate = tmp_path / "hardware/system_carrier/altium/native/ALT.PcbDoc"
+    alternate.parent.mkdir(parents=True, exist_ok=True)
+    alternate.write_bytes(canonical.read_bytes())
+
+    pcb_item["path"] = (
+        "hardware/system_carrier/altium/native/ALT.PcbDoc"
+    )
+    pcb_item["sha256"] = hashlib.sha256(
+        alternate.read_bytes()
+    ).hexdigest()
+    manifest.write_text(
+        json.dumps(data, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert "canonical_path:pcb" in result["errors"]
