@@ -357,12 +357,20 @@ def add_labels_by_pin_name(
     sch,
     reference: str,
     mapping: dict[str, str],
+    *,
+    skip_pin_numbers: set[str] | None = None,
 ) -> None:
     component = sch.components.get(reference)
     if component is None:
         raise ValueError(f"missing component:{reference}")
 
+    skip = skip_pin_numbers or set()
+
     for pin in component.pins:
+        pin_number = str(pin.number).strip()
+        if pin_number in skip:
+            continue
+
         name = str(pin.name).strip()
         net = mapping.get(name)
         if net is None:
@@ -529,7 +537,7 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     )
 
     sch.components.add("Connector_Generic:Conn_01x02", "J1", "12V_IN", pos(18, 24))
-    sch.components.add("Device:D_TVS", "D1", "SMAJ15CA", pos(30, 18))
+    sch.components.add("Device:D_TVS", "D1", "SMAJ15CA", pos(26, 18))
     add_local_symbol(sch, "U6", "TPS259470ARPWR", "TPS259470ARPWR_SYS", pos(43, 24), placeholders)
     add_local_symbol(sch, "U5", "TPS62132RGTR", "TPS62132RGTR_3V3", pos(60, 24), placeholders)
     add_local_symbol(sch, "U7", "TPS259470ARPWR", "TPS259470ARPWR_RADAR", pos(43, 42), placeholders)
@@ -565,28 +573,26 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         "power:PWR_FLAG",
         "#FLG0202",
         "PWR_FLAG",
-        pos(20, 32),
+        pos(15, 70),
     )
-    sch.add_label(
-        "GND",
-        position=pos(20, 32),
-    )
+    add_pin_label(sch, "GND", "#FLG0202", "1")
 
     add_pin_label(sch, "VIN_RAW", "J1", "1")
-    add_pin_label(sch, "GND", "J1", "2")
+    # J1.2 receives the authoritative hierarchical GND label later.
     add_pin_label(sch, "VIN_RAW", "D1", "1")
     add_pin_label(sch, "GND", "D1", "2")
 
-    for pin, net in {"4":"SYS_EFUSE_FLT","5":"VIN_RAW","6":"VIN_PROTECTED"}.items():
+    for pin, net in {"5":"VIN_RAW","6":"VIN_PROTECTED"}.items():
         add_pin_label(sch, net, "U6", pin)
     add_tps25947_ground_label(sch, "U6")
     add_pin_label(sch, "VIN_RAW", "R61", "1")
-    sch.add_wire_between_pins("R61", "2", "U6", "1")
-    sch.add_wire_between_pins("U6", "1", "R62", "1")
-    sch.add_wire_between_pins("R62", "2", "U6", "2")
-    sch.add_wire_between_pins("U6", "2", "R63", "1")
+    for ref, pin in (("R61", "2"), ("U6", "1"), ("R62", "1")):
+        add_pin_label(sch, "U6_UVLO_LOCAL", ref, pin)
+    for ref, pin in (("R62", "2"), ("U6", "2"), ("R63", "1")):
+        add_pin_label(sch, "U6_OVLO_LOCAL", ref, pin)
     add_pin_label(sch, "GND", "R63", "2")
-    sch.add_wire_between_pins("U6", "9", "R1", "1")
+    add_pin_label(sch, "U6_ILIM_LOCAL", "U6", "9")
+    add_pin_label(sch, "U6_ILIM_LOCAL", "R1", "1")
     add_pin_label(sch, "GND", "R1", "2")
     add_tps25947_dvdt_labels(
         sch, "U6", "C6D", "U6_DVDT"
@@ -601,16 +607,17 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         if p is not None:
             sch.no_connects.add(position=(p.x,p.y))
 
-    for pin, net in {"4":"RADAR_EFUSE_FLT","5":"VIN_PROTECTED","6":"RADAR_12V"}.items():
+    for pin, net in {"5":"VIN_PROTECTED","6":"RADAR_12V"}.items():
         add_pin_label(sch, net, "U7", pin)
     add_tps25947_ground_label(sch, "U7")
     add_pin_label(sch, "VIN_PROTECTED", "R71", "1")
-    sch.add_wire_between_pins("R71", "2", "U7", "1")
-    sch.add_wire_between_pins("U7", "1", "R72", "1")
-    sch.add_wire_between_pins("R72", "2", "U7", "2")
-    sch.add_wire_between_pins("U7", "2", "R73", "1")
+    for ref, pin in (("R71", "2"), ("U7", "1"), ("R72", "1")):
+        add_pin_label(sch, "U7_UVLO_LOCAL", ref, pin)
+    for ref, pin in (("R72", "2"), ("U7", "2"), ("R73", "1")):
+        add_pin_label(sch, "U7_OVLO_LOCAL", ref, pin)
     add_pin_label(sch, "GND", "R73", "2")
-    sch.add_wire_between_pins("U7", "9", "R2", "1")
+    add_pin_label(sch, "U7_ILIM_LOCAL", "U7", "9")
+    add_pin_label(sch, "U7_ILIM_LOCAL", "R2", "1")
     add_pin_label(sch, "GND", "R2", "2")
     add_tps25947_dvdt_labels(
         sch, "U7", "C7D", "U7_DVDT"
@@ -628,7 +635,7 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     for pin in ("1","2","3"):
         add_pin_label(sch, "BUCK_SW", "U5", pin)
     add_pin_label(sch, "BUCK_SW", "L1", "1")
-    add_pin_label(sch, "3V3", "L1", "2")
+    # L1.2 receives the authoritative hierarchical 3V3 label later.
     add_pin_label(sch, "U5_PG", "U5", "4")
     add_pin_label(sch, "U5_PG", "R5P", "1")
     add_pin_label(sch, "3V3", "R5P", "2")
@@ -639,7 +646,8 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         p=sch.get_component_pin_position("U5", pin)
         if p is not None:
             sch.no_connects.add(position=(p.x,p.y))
-    sch.add_wire_between_pins("U5", "9", "C3", "1")
+    add_pin_label(sch, "U5_SS_LOCAL", "U5", "9")
+    add_pin_label(sch, "U5_SS_LOCAL", "C3", "1")
     add_pin_label(sch, "GND", "C3", "2")
     for pin in ("10","11","12","13"):
         add_pin_label(sch, "VIN_PROTECTED", "U5", pin)
@@ -651,7 +659,7 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "GND", "C2", "2")
     add_pin_label(sch, "VIN_PROTECTED", "C4", "1")
     add_pin_label(sch, "GND", "C4", "2")
-    add_pin_label(sch, "RADAR_12V", "J2", "1")
+    # J2.1 receives the authoritative hierarchical RADAR_12V label later.
     add_pin_label(sch, "GND", "J2", "2")
 
 
@@ -660,6 +668,7 @@ def populate_mcu(
     placeholders: list[dict],
     assigned_gpio: set[str],
     pinmap_rows: list[dict[str, str]],
+    hierarchy_nets: set[str],
 ) -> int:
     sch.add_text(
         "MCU_CORE — STM32H753IIT6\n"
@@ -771,6 +780,7 @@ def populate_mcu(
         if (
             physical
             and net_name
+            and net_name not in hierarchy_nets
             and net_name not in {
                 "MCU_HSE_25M",
                 "DEBUG_TX",
@@ -790,9 +800,12 @@ def populate_mcu(
     if p is not None:
         sch.no_connects.add(position=(p.x, p.y))
     add_pin_label(sch, "GND", "Y1", "2")
-    sch.add_wire_between_pins("Y1", "3", "U1", "29")
-    sch.add_wire_between_pins("U1", "147", "TP1", "1")
-    sch.add_wire_between_pins("U1", "150", "TP2", "1")
+    add_pin_label(sch, "MCU_HSE_25M", "Y1", "3")
+    add_pin_label(sch, "MCU_HSE_25M", "U1", "29")
+    add_pin_label(sch, "DEBUG_TX", "U1", "147")
+    add_pin_label(sch, "DEBUG_TX", "TP1", "1")
+    add_pin_label(sch, "DEBUG_RX", "U1", "150")
+    add_pin_label(sch, "DEBUG_RX", "TP2", "1")
     add_pin_label(sch, "3V3", "Y1", "4")
     add_pin_label(sch, "3V3", "C15", "1")
     add_pin_label(sch, "GND", "C15", "2")
@@ -811,22 +824,15 @@ def populate_mcu(
             "VREF+": "VDDA_FILTERED",
             "PDR_ON": "3V3",
         },
+        skip_pin_numbers={"23", "14"},
     )
 
     # VCAP pins each receive their own 2.2 uF low-ESR capacitor.
-    sch.add_wire_between_pins(
-        "U1",
-        "81",
-        "C10",
-        "1",
-    )
+    add_pin_label(sch, "VCAP1_LOCAL", "U1", "81")
+    add_pin_label(sch, "VCAP1_LOCAL", "C10", "1")
     add_pin_label(sch, "GND", "C10", "2")
-    sch.add_wire_between_pins(
-        "U1",
-        "125",
-        "C11",
-        "1",
-    )
+    add_pin_label(sch, "VCAP2_LOCAL", "U1", "125")
+    add_pin_label(sch, "VCAP2_LOCAL", "C11", "1")
     add_pin_label(sch, "GND", "C11", "2")
 
     # Digital bulk capacitor.
@@ -857,12 +863,7 @@ def populate_mcu(
     add_pin_label(sch, "GND", "C14", "2")
 
     # BOOT0 default-low strap.
-    sch.add_wire_between_pins(
-        "U1",
-        "166",
-        "R10",
-        "1",
-    )
+    add_pin_label(sch, "BOOT0", "R10", "1")
     add_pin_label(sch, "GND", "R10", "2")
 
     # SWD Tag-Connect pinout from CONNECTOR_PINOUT_SYS_001.
@@ -955,11 +956,30 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
     add_pin_label_stub(sch, "GND", "C81", "2")
 
     # Backup-domain and unused USB supply requirements.
-    sch.add_wire_between_pins("U8", "22", "R82", "1")
-    sch.add_wire_between_pins("U8", "22", "#FLG0301", "1")
+    for ref, pin in (
+        ("U8", "22"),
+        ("R82", "1"),
+        ("#FLG0301", "1"),
+    ):
+        add_pin_label(
+            sch,
+            "GNSS_BCKP_LOCAL",
+            ref,
+            pin,
+        )
     add_pin_label_stub(sch, "3V3", "R82", "2")
-    sch.add_wire_between_pins("U8", "7", "R81", "1")
-    sch.add_wire_between_pins("U8", "7", "#FLG0302", "1")
+
+    for ref, pin in (
+        ("U8", "7"),
+        ("R81", "1"),
+        ("#FLG0302", "1"),
+    ):
+        add_pin_label(
+            sch,
+            "GNSS_VUSB_LOCAL",
+            ref,
+            pin,
+        )
     add_pin_label_stub(sch, "GND", "R81", "2")
 
     # Internal straps intentionally left open by contract.
@@ -1178,7 +1198,7 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
     )
 
     # LAN8742 power and mandatory local bias/support network.
-    for pin in ("1", "9", "19"):
+    for pin in ("9", "19"):
         add_pin_label_stub(sch, "3V3", "U3", pin)
     if sch.get_component_pin_position("U3", "25") is not None:
         add_pin_label_stub(sch, "GND", "U3", "25")
@@ -1192,7 +1212,7 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
 
     # Local 3V3 decoupling / analog filter caps.
     add_pin_label_stub(sch, "3V3", "C62", "1")
-    add_pin_label_stub(sch, "GND", "C62", "2")
+    # C62.2 receives the authoritative hierarchical GND label later.
     add_pin_label_stub(sch, "3V3", "C61", "1")
     add_pin_label_stub(sch, "GND", "C61", "2")
 
@@ -1752,6 +1772,15 @@ def build(output_dir: Path) -> dict:
         child = ksa.create_schematic(PROJECT_NAME)
         child.set_hierarchy_context(parent_uuid, sheet_uuids[name])
 
+        sheet_hierarchy_rows = hierarchy_rows_for_sheet(
+            hierarchy_rows,
+            name,
+        )
+        hierarchy_nets = {
+            str(row["net_name"]).strip()
+            for row in sheet_hierarchy_rows
+        }
+
         if name == "POWER_INPUT":
             populate_power(child, placeholders)
         elif name == "MCU_CORE":
@@ -1761,6 +1790,7 @@ def build(output_dir: Path) -> dict:
                     placeholders,
                     assigned_mcu_gpio,
                     pinmap_rows,
+                    hierarchy_nets,
                 )
             )
         elif name == "TIME_GNSS":
@@ -1788,15 +1818,6 @@ def build(output_dir: Path) -> dict:
                 child,
                 placeholders,
             )
-
-        sheet_hierarchy_rows = hierarchy_rows_for_sheet(
-            hierarchy_rows,
-            name,
-        )
-        hierarchy_nets = {
-            str(row["net_name"]).strip()
-            for row in sheet_hierarchy_rows
-        }
 
         contract_refs_by_sheet = {
             "TIME_GNSS": {"U8"},
