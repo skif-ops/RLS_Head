@@ -50,6 +50,19 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
     gerber.write_bytes(b"GERBER_X2")
     gerber_hash = hashlib.sha256(gerber.read_bytes()).hexdigest()
 
+    native_pcb = (
+        tmp_path
+        / "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+    )
+    native_pcb.parent.mkdir(parents=True, exist_ok=True)
+    native_pcb.write_bytes(b"FINAL_NATIVE_PCB")
+    native_pcb_hash = hashlib.sha256(
+        native_pcb.read_bytes()
+    ).hexdigest()
+    native_pcb_relative = (
+        "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+    )
+
     review_evidence = {}
     for name in ("mechanical", "fabricator", "si", "dfm"):
         evidence_path = tmp_path / f"release/{name}_evidence.txt"
@@ -79,6 +92,8 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
             "release/native_drc_result.json",
             {
                 "schema": "ALTIUM-NATIVE-DRC-RESULT-001",
+                "source_pcb": native_pcb_relative,
+                "source_pcb_sha256": native_pcb_hash,
                 "status": "PASS",
                 "blocking_errors": 0,
                 "unrouted_nets": 0,
@@ -90,6 +105,8 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
             "release/mechanical_review.json",
             {
                 "schema": "ALTIUM-MECHANICAL-REVIEW-001",
+                "source_pcb": native_pcb_relative,
+                "source_pcb_sha256": native_pcb_hash,
                 "status": "PASS",
                 "board_outline_frozen": True,
                 "mounting_geometry_frozen": True,
@@ -103,6 +120,8 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
             "release/fabricator_binding.json",
             {
                 "schema": "ALTIUM-FABRICATOR-BINDING-001",
+                "source_pcb": native_pcb_relative,
+                "source_pcb_sha256": native_pcb_hash,
                 "status": "PASS",
                 "stackup_bound": True,
                 "copper_weight_bound": True,
@@ -118,6 +137,8 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
             "release/return_path_si_review.json",
             {
                 "schema": "ALTIUM-RETURN-PATH-SI-REVIEW-001",
+                "source_pcb": native_pcb_relative,
+                "source_pcb_sha256": native_pcb_hash,
                 "status": "PASS",
                 "p0_open_findings": 0,
                 "l2_ground_continuity_verified": True,
@@ -136,6 +157,8 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
             "release/dfm_result.json",
             {
                 "schema": "ALTIUM-DFM-RESULT-001",
+                "source_pcb": native_pcb_relative,
+                "source_pcb_sha256": native_pcb_hash,
                 "status": "PASS",
                 "p0_open_items": 0,
                 "profile_sha256": dfm_profile_hash,
@@ -147,6 +170,8 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
             "release/outjob_release_manifest.json",
             {
                 "schema": "ALTIUM-OUTJOB-RELEASE-MANIFEST-001",
+                "source_pcb": native_pcb_relative,
+                "source_pcb_sha256": native_pcb_hash,
                 "status": "PASS",
                 "required_outputs_complete": True,
                 "source_is_native_altium": True,
@@ -161,7 +186,13 @@ def _fixture(tmp_path: Path, *, synthetic: bool = True) -> Path:
         ),
     }
 
-    artifacts = []
+    artifacts = [
+        {
+            "id": "native_pcb",
+            "path": native_pcb_relative,
+            "sha256": native_pcb_hash,
+        }
+    ]
     for artifact_id, (relative, payload) in entries.items():
         digest = _write(tmp_path / relative, payload)
         artifacts.append(
@@ -348,3 +379,41 @@ def test_incomplete_dfm_p0_set_blocks_release(tmp_path):
 
     assert result["status"] == "FAIL"
     assert "DFM_P0_SET_INCOMPLETE" in result["reason_codes"]
+
+
+
+def test_changed_final_pcb_blocks_release(tmp_path):
+    manifest = _fixture(tmp_path)
+    pcb = (
+        tmp_path
+        / "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+    )
+    pcb.write_bytes(b"CHANGED_AFTER_REVIEWS")
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert "hash_mismatch:native_pcb" in result["errors"]
+
+
+def test_mismatched_review_pcb_hash_blocks_release(tmp_path):
+    manifest = _fixture(tmp_path)
+    data = json.loads(manifest.read_text())
+    item = next(
+        artifact
+        for artifact in data["artifacts"]
+        if artifact["id"] == "return_path_si_review"
+    )
+    review_path = tmp_path / item["path"]
+    review = json.loads(review_path.read_text())
+    review["source_pcb_sha256"] = "0" * 64
+    item["sha256"] = _write(review_path, review)
+    manifest.write_text(
+        json.dumps(data, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert "return_path_si_review_source_pcb_hash" in result["errors"]
