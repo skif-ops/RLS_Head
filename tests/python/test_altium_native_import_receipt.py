@@ -6,6 +6,19 @@ from tools.altium_native_import_receipt import build_receipt
 
 
 def _write_package(root: Path) -> Path:
+    bound_data = b"BOUND\n"
+    bound_path = (
+        root
+        / "hardware/system_carrier/BOM_SYS_CARRIER_LAYOUT_004.csv"
+    )
+    bound_path.parent.mkdir(parents=True, exist_ok=True)
+    bound_path.write_bytes(bound_data)
+
+    package_record = {
+        "path": "contracts/BOM_SYS_CARRIER_LAYOUT_004.csv",
+        "size": len(bound_data),
+        "sha256": hashlib.sha256(bound_data).hexdigest(),
+    }
     path = (
         root
         / "hardware/system_carrier/altium/equivalence/"
@@ -23,8 +36,19 @@ def _write_package(root: Path) -> Path:
                 "source_cad": "KiCad 9 retained verification baseline",
                 "target_cad": "Altium Designer",
                 "preserve_kicad": True,
-                "file_count": 0,
-                "files": [],
+                "current_source_binding_required": True,
+                "source_binding_count": 1,
+                "source_bindings": [
+                    {
+                        "package_path": package_record["path"],
+                        "repository_path": (
+                            "hardware/system_carrier/"
+                            "BOM_SYS_CARRIER_LAYOUT_004.csv"
+                        ),
+                    }
+                ],
+                "file_count": 1,
+                "files": [package_record],
             }
         )
         + "\n",
@@ -39,6 +63,7 @@ def _write_package_verification(root: Path, package: Path) -> Path:
         / "hardware/system_carrier/altium/equivalence/"
         "import_package_verification.json"
     )
+    package_data = json.loads(package.read_text(encoding="utf-8"))
     payload = {
         "schema": "ALTIUM-IMPORT-PACKAGE-VERIFY-001",
         "status": "PASS",
@@ -49,9 +74,10 @@ def _write_package_verification(root: Path, package: Path) -> Path:
             "path": "manifest.json",
             "sha256": hashlib.sha256(package.read_bytes()).hexdigest(),
         },
-        "expected_file_count": 0,
-        "verified_file_count": 0,
-        "verified_files": [],
+        "expected_file_count": 1,
+        "verified_file_count": 1,
+        "verified_files": package_data["files"],
+        "source_binding_count": 1,
         "errors": [],
     }
     path.write_text(
@@ -142,6 +168,8 @@ def test_native_import_receipt_binds_package_and_native_files(tmp_path):
     assert result["snapshot_role"] == "POST_IMPORT_NATIVE_SNAPSHOT"
     assert len(result["import_package_manifest"]["sha256"]) == 64
     assert len(result["import_native_file_preflight"]["sha256"]) == 64
+    assert result["import_source_binding"]["status"] == "PASS"
+    assert result["import_source_binding"]["checked_count"] == 1
     assert set(result["native_artifacts"]) == {
         "schematic",
         "pcb",
@@ -242,3 +270,34 @@ def test_native_import_receipt_requires_package_verification(tmp_path):
 
     assert result["status"] == "FAIL"
     assert "missing_import_package_verification" in result["errors"]
+
+
+def test_native_import_receipt_rejects_stale_bound_source(tmp_path):
+    package = _write_package(tmp_path)
+    verification = _write_package_verification(tmp_path, package)
+    _write_native(tmp_path)
+    preflight = _write_import_preflight(tmp_path)
+
+    bound_path = (
+        tmp_path
+        / "hardware/system_carrier/BOM_SYS_CARRIER_LAYOUT_004.csv"
+    )
+    bound_path.write_bytes(b"CHANGED_AFTER_PACKAGE\n")
+
+    result = build_receipt(
+        repository_root=tmp_path,
+        package_manifest=package,
+        package_verification=verification,
+        import_preflight=preflight,
+        altium_version="26.0.1",
+        importer_version="KiCad Importer 26.0.1",
+    )
+
+    assert result["status"] == "FAIL"
+    assert result["import_source_binding"]["status"] == "FAIL"
+    assert any(
+        item.startswith(
+            "import_source_binding:source_binding_hash:"
+        )
+        for item in result["errors"]
+    )
