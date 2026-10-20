@@ -156,6 +156,7 @@ def test_native_import_receipt_binds_package_and_native_files(tmp_path):
 
 def test_native_import_receipt_requires_tool_versions(tmp_path):
     package = _write_package(tmp_path)
+    verification = _write_package_verification(tmp_path, package)
     _write_native(tmp_path)
     preflight = _write_import_preflight(tmp_path)
 
@@ -176,6 +177,7 @@ def test_native_import_receipt_requires_tool_versions(tmp_path):
 
 def test_native_import_receipt_rejects_preflight_hash_mismatch(tmp_path):
     package = _write_package(tmp_path)
+    verification = _write_package_verification(tmp_path, package)
     _write_native(tmp_path)
     preflight = _write_import_preflight(tmp_path)
 
@@ -200,11 +202,13 @@ def test_native_import_receipt_rejects_preflight_hash_mismatch(tmp_path):
 
 def test_native_import_receipt_requires_import_preflight(tmp_path):
     package = _write_package(tmp_path)
+    verification = _write_package_verification(tmp_path, package)
     _write_native(tmp_path)
 
     result = build_receipt(
         repository_root=tmp_path,
         package_manifest=package,
+        package_verification=verification,
         import_preflight=(
             tmp_path
             / "hardware/system_carrier/altium/equivalence/"
