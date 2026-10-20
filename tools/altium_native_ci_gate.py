@@ -44,6 +44,39 @@ def read_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _tracked_production_surfaces(root: Path) -> dict[str, bool] | None:
+    paths = {
+        "native_status": root / NATIVE_STATUS_REL,
+        "implementation_status": root / IMPLEMENTATION_STATUS_REL,
+        "cad_authority": root / CAD_AUTHORITY_REL,
+    }
+    if not all(path.is_file() for path in paths.values()):
+        return None
+
+    try:
+        native_status = read_json(paths["native_status"])
+        implementation = read_json(paths["implementation_status"])
+        authority = read_json(paths["cad_authority"])
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        return None
+
+    altium = implementation.get("altium")
+    if not isinstance(altium, dict):
+        altium = {}
+
+    return {
+        "native_status": (
+            native_status.get("production_authority") == "AUTHORIZED"
+        ),
+        "implementation_status": (
+            altium.get("production_release_authorized") is True
+        ),
+        "cad_authority": (
+            authority.get("production_release_authorized") is True
+        ),
+    }
+
+
 def evaluate(
     *,
     repository_root: str | Path = ".",
@@ -138,7 +171,10 @@ def evaluate(
 
     production_result_path = root / PRODUCTION_RESULT_REL
     production_result_present = production_result_path.is_file()
+    production_result_pass = False
+    production_authority_surfaces = _tracked_production_surfaces(root)
     production_released = False
+
     if production_result_present:
         try:
             production_probe = read_json(production_result_path)
@@ -159,13 +195,30 @@ def evaluate(
                 != "AUTHORIZED"
             ):
                 errors.append("committed_production_authority")
-            production_released = (
+
+            production_result_pass = (
                 production_probe.get("schema")
                 == "ALTIUM-PRODUCTION-RELEASE-RESULT-001"
                 and production_probe.get("status") == "PASS"
                 and production_probe.get("layout_authority") == "AUTHORIZED"
                 and production_probe.get("production_authority")
                 == "AUTHORIZED"
+            )
+
+    if (
+        production_result_pass
+        and isinstance(production_authority_surfaces, dict)
+    ):
+        surface_values = list(
+            production_authority_surfaces.values()
+        )
+        if any(surface_values) and not all(surface_values):
+            errors.append("production_authority_surface_consensus")
+        elif all(surface_values):
+            production_released = True
+        else:
+            warnings.append(
+                "historical_production_result_inactive"
             )
 
     phase = (
@@ -558,6 +611,9 @@ def evaluate(
             if isinstance(rerun_production, dict)
             else None
         ),
+        "production_result_present": production_result_present,
+        "production_result_pass": production_result_pass,
+        "production_authority_surfaces": production_authority_surfaces,
         "routing_authorized": (
             status == "PASS"
             and (
