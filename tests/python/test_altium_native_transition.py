@@ -577,6 +577,7 @@ def test_layout_authority_sync_rejects_native_change_after_gate(tmp_path):
             },
         },
     }
+    _write_json(_path(tmp_path, "gate_result"), gate)
 
     _write(_path(tmp_path, "pcb"), b"CHANGED_AFTER_GATE_PASS")
 
@@ -603,3 +604,80 @@ def test_status_sync_failure_never_reports_routing_authorized():
 
     assert "routing_authorized=False" in block
     assert "routing_authorized=True" not in block
+
+
+
+def test_layout_authority_sync_rejects_changed_gate_result(tmp_path):
+    _write(_path(tmp_path, "schematic"), b"APPROVED_SCH")
+    _write(_path(tmp_path, "pcb"), b"APPROVED_PCB")
+
+    for key, payload in (
+        (
+            "native_status",
+            {
+                "schema": "ALTIUM-NATIVE-STATUS-SYS-001",
+                "native_import_status": "WAITING_NATIVE_ALTIUM_IMPORT",
+                "equivalence_gate_status": "NOT_RUN",
+                "layout_authority": "NOT_AUTHORIZED",
+                "production_authority": "NOT_AUTHORIZED",
+            },
+        ),
+        (
+            "implementation_status",
+            {
+                "schema": "ALTIUM-PCB-IMPLEMENTATION-STATUS-001",
+                "current_phase": "IMPORT_PREPARED",
+                "altium": {},
+                "routing_readiness": {},
+                "blockers": [],
+            },
+        ),
+        (
+            "cad_authority",
+            {
+                "schema": "SYSTEM-CARRIER-CAD-AUTHORITY-001",
+                "native_document_status": "PENDING_ALTIUM_IMPORT",
+                "pcb_layout_authority": "ALTIUM_AFTER_EQUIVALENCE_GATE",
+                "pcb_design_phase": "ALTIUM_BOARD_PLANNING",
+                "production_release_authorized": False,
+                "routing_readiness_gate": {},
+                "altium_rule_query_contract": {},
+            },
+        ),
+    ):
+        _write_json(_path(tmp_path, key), payload)
+
+    approved_sch = hashlib.sha256(
+        _path(tmp_path, "schematic").read_bytes()
+    ).hexdigest()
+    approved_pcb = hashlib.sha256(
+        _path(tmp_path, "pcb").read_bytes()
+    ).hexdigest()
+
+    gate = {
+        "schema": "ALTIUM-EQUIVALENCE-RESULT-001",
+        "status": "PASS",
+        "layout_authority": "AUTHORIZED",
+        "production_authority": "NOT_AUTHORIZED",
+        "integrity": {
+            "schematic": {"sha256_actual": approved_sch},
+            "pcb": {"sha256_actual": approved_pcb},
+        },
+    }
+    tampered = {
+        **gate,
+        "reason_codes": ["TAMPERED_AFTER_GATE_PASS"],
+    }
+    _write_json(_path(tmp_path, "gate_result"), tampered)
+
+    try:
+        transition._sync_layout_authority_status(tmp_path, gate)
+    except ValueError as exc:
+        assert "equivalence result changed after gate PASS" in str(exc)
+    else:
+        raise AssertionError("expected equivalence-result TOCTOU rejection")
+
+    native_status = json.loads(
+        _path(tmp_path, "native_status").read_text(encoding="utf-8")
+    )
+    assert native_status["layout_authority"] == "NOT_AUTHORIZED"
