@@ -1,0 +1,9 @@
+# Issue #216: native import attempt from CI artifact 12258438685
+
+This directory preserves the Altium Designer 26.10.1 import attempt from the verified `system-carrier-altium-import` artifact. `package_verification.json` and `current_source_binding.json` both report PASS for the 112-file package and 52 current source bindings. `attempt_status.json` lists the retained files and their SHA-256 hashes. Text evidence uses LF line endings in Git; the native binary containers are byte-exact copies.
+
+Altium produced eight genuine SchDoc containers. Their PCB model records cover all 92 physical schematic references. A separate KiCad footprint-library import produced a genuine PcbLib with 29 patterns. Altium created a genuine PcbDoc and the project includes both that PcbDoc and the PcbLib. The proposed schematic-to-PCB engineering change order contained 92 component additions, but it was **not executed**. The PcbDoc's Components6, Nets6, Pads6, Tracks6 and Vias6 data streams are empty.
+
+The import logs include 2,916 schematic and 689 footprint warnings. The native compile reported errors. The ECO report export modal could not be controlled through the available Altium UI session, so no report export is claimed. The six `SystemCarrier_Altium` footprint import bridges remain provisional and require native geometry review.
+
+`native_snapshot/` is evidence from this incomplete attempt, **not** the canonical `../native/` design. The repository's native CI lifecycle remains `PRE_IMPORT`. Do not copy this empty board into the canonical native path or grant routing authority. Complete the ECO, apply and verify the locked EVT mechanical datum, routing stack and power routing contracts, then produce native compile/audit/BOM/netlist/hierarchy/no-mmWave evidence and run `ALTIUM_EQUIVALENCE_GATE`. Routing may be authorized only after that gate passes. Production authority remains `NOT_AUTHORIZED`.
