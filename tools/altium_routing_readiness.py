@@ -59,6 +59,7 @@ def validate(
     implementation_status_path = (
         altium / "ALTIUM_STATUS_SYS_001.json"
     )
+    cad_authority_path = system / "CAD_AUTHORITY_SYS_001.json"
 
     errors: list[str] = []
     warnings: list[str] = []
@@ -79,6 +80,14 @@ def validate(
             implementation_status_path.read_text(
                 encoding="utf-8"
             )
+        )
+
+    if not cad_authority_path.is_file():
+        errors.append("missing_cad_authority")
+        cad_authority = {}
+    else:
+        cad_authority = json.loads(
+            cad_authority_path.read_text(encoding="utf-8")
         )
 
     if failed:
@@ -113,9 +122,176 @@ def validate(
         )
     )
 
-    production_authorized = (
+    current_phase = str(
+        implementation_status.get(
+            "current_phase",
+            "UNKNOWN",
+        )
+    )
+    implementation_altium = implementation_status.get("altium")
+    if not isinstance(implementation_altium, dict):
+        implementation_altium = {}
+    implementation_routing = implementation_status.get(
+        "routing_readiness"
+    )
+    if not isinstance(implementation_routing, dict):
+        implementation_routing = {}
+    authority_routing = cad_authority.get("routing_readiness_gate")
+    if not isinstance(authority_routing, dict):
+        authority_routing = {}
+
+    native_layout_claim = (
+        equivalence == "PASS"
+        and layout_authority == "AUTHORIZED"
+    )
+    implementation_layout_claim = (
+        implementation_altium.get("equivalence_gate") is True
+        and implementation_routing.get("routing_authorized") is True
+        and current_phase in {"READY_FOR_ROUTING", "PRODUCTION_RELEASED"}
+    )
+    cad_layout_claim = (
+        cad_authority.get("native_document_status")
+        == "NATIVE_EQUIVALENCE_PASS"
+        and cad_authority.get("pcb_layout_authority")
+        == "ALTIUM_AUTHORIZED"
+        and authority_routing.get("current_expected_status")
+        == "READY_FOR_ROUTING"
+        and cad_authority.get("pcb_design_phase")
+        in {"ALTIUM_NATIVE_ROUTING", "PRODUCTION_RELEASED"}
+    )
+
+    layout_claimed = (
+        native_layout_claim
+        or implementation_layout_claim
+        or cad_layout_claim
+    )
+    layout_authority_consensus = (
+        native_layout_claim
+        and implementation_layout_claim
+        and cad_layout_claim
+    )
+    authority_consensus_errors: list[str] = []
+
+    if layout_claimed and not layout_authority_consensus:
+        if not native_layout_claim:
+            authority_consensus_errors.append(
+                "layout:native_status"
+            )
+        if not implementation_layout_claim:
+            authority_consensus_errors.append(
+                "layout:implementation_status"
+            )
+        if not cad_layout_claim:
+            authority_consensus_errors.append(
+                "layout:cad_authority"
+            )
+
+    native_production_claim = (
         production_authority == "AUTHORIZED"
     )
+    implementation_production_claim = (
+        implementation_altium.get(
+            "production_release_authorized"
+        )
+        is True
+        and current_phase == "PRODUCTION_RELEASED"
+    )
+    cad_production_claim = (
+        cad_authority.get("production_release_authorized") is True
+        and cad_authority.get("pcb_design_phase")
+        == "PRODUCTION_RELEASED"
+    )
+    production_claimed = (
+        native_production_claim
+        or implementation_production_claim
+        or cad_production_claim
+    )
+    production_authority_consensus = (
+        native_production_claim
+        and implementation_production_claim
+        and cad_production_claim
+    )
+
+    if production_claimed and not production_authority_consensus:
+        if not native_production_claim:
+            authority_consensus_errors.append(
+                "production:native_status"
+            )
+        if not implementation_production_claim:
+            authority_consensus_errors.append(
+                "production:implementation_status"
+            )
+        if not cad_production_claim:
+            authority_consensus_errors.append(
+                "production:cad_authority"
+            )
+
+    def _tracked_hash_mismatch(
+        field: str,
+        values: list[str],
+    ) -> bool:
+        normalized = [
+            str(value or "").strip().lower()
+            for value in values
+        ]
+        return (
+            any(len(value) != 64 for value in normalized)
+            or len(set(normalized)) != 1
+        )
+
+    if layout_authority_consensus:
+        if _tracked_hash_mismatch(
+            "native_schematic_sha256",
+            [
+                native_status.get("native_schematic_sha256", ""),
+                cad_authority.get("native_schematic_sha256", ""),
+            ],
+        ):
+            authority_consensus_errors.append(
+                "hash:native_schematic_sha256"
+            )
+
+        if _tracked_hash_mismatch(
+            "native_pcb_sha256",
+            [
+                native_status.get("native_pcb_sha256", ""),
+                implementation_altium.get("native_pcb_sha256", ""),
+                cad_authority.get("native_pcb_sha256", ""),
+            ],
+        ):
+            authority_consensus_errors.append(
+                "hash:native_pcb_sha256"
+            )
+
+    if production_authority_consensus:
+        if _tracked_hash_mismatch(
+            "production_release_source_pcb_sha256",
+            [
+                native_status.get(
+                    "production_release_source_pcb_sha256",
+                    "",
+                ),
+                implementation_altium.get(
+                    "production_release_source_pcb_sha256",
+                    "",
+                ),
+                cad_authority.get(
+                    "production_release_source_pcb_sha256",
+                    "",
+                ),
+            ],
+        ):
+            authority_consensus_errors.append(
+                "hash:production_release_source_pcb_sha256"
+            )
+
+    if authority_consensus_errors:
+        errors.extend(
+            f"authority_consensus:{item}"
+            for item in authority_consensus_errors
+        )
+
+    production_authorized = production_authority_consensus
 
     equivalence_stale = False
     expected_schematic_hash = str(
@@ -127,10 +303,7 @@ def validate(
     current_schematic_hash = ""
     schematic_path = altium / "native" / "EVT_SYS_CARRIER.SchDoc"
 
-    equivalence_authorized = (
-        equivalence == "PASS"
-        and layout_authority == "AUTHORIZED"
-    )
+    equivalence_authorized = layout_authority_consensus
     if equivalence_authorized:
         if not schematic_path.is_file():
             equivalence_stale = True
@@ -181,8 +354,7 @@ def validate(
             "PASS",
             "NATIVE_FILES_READY",
         }
-        and equivalence == "PASS"
-        and layout_authority == "AUTHORIZED"
+        and layout_authority_consensus
         and not equivalence_stale
     )
 
@@ -228,6 +400,11 @@ def validate(
         "status": status,
         "routing_authorized": routing_authorized,
         "production_authorized": production_authorized,
+        "layout_authority_consensus": layout_authority_consensus,
+        "production_authority_consensus": production_authority_consensus,
+        "authority_consensus_errors": sorted(
+            set(authority_consensus_errors)
+        ),
         "equivalence_stale": equivalence_stale,
         "expected_schematic_sha256": expected_schematic_hash,
         "current_schematic_sha256": current_schematic_hash,
@@ -260,6 +437,11 @@ def validate(
             (
                 "READY_FOR_NATIVE_IMPORT means all repository-controlled "
                 "routing prerequisites pass; it does not authorize routing."
+            ),
+            (
+                "READY_FOR_ROUTING requires consensus across "
+                "ALTIUM_NATIVE_STATUS, ALTIUM_STATUS and CAD_AUTHORITY; "
+                "a partial tracked-status update fails closed."
             ),
             (
                 "READY_FOR_ROUTING is possible only after native Altium "
