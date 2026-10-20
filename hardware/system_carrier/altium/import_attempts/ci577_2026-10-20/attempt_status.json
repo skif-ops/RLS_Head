@@ -101,6 +101,7 @@
   },
   "native_equivalence_gate": "NOT_RUN",
   "native_snapshot": {
+    "full_pcblib_names_matching_schematic_models": 29,
     "pcb_component_count": 0,
     "pcb_net_count": 0,
     "pcb_stream_data_bytes": {
@@ -112,6 +113,7 @@
     },
     "pcblib_pattern_count": 29,
     "schdoc_count": 8,
+    "schematic_model_names_missing_in_pcblib": [],
     "schematic_pcb_model_records_by_document": {
       "10_POWER_INPUT.SchDoc": 23,
       "20_MCU_CORE.SchDoc": 29,
