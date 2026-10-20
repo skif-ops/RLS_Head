@@ -56,6 +56,7 @@ def test_native_handoff_detects_complete_evidence_and_checks(tmp_path):
     assert result["native_file_preflight_ready"] is True
     assert result["import_provenance_ready"] is True
     assert result["native_audit_ready"] is True
+    assert result["script_runtime_ready"] is True
     assert result["equivalence_evidence_complete"] is True
     assert result["semantic_checks_ready"] is True
     assert result["pending_equivalence_checks"] == []
@@ -119,3 +120,42 @@ def test_native_handoff_rejects_invalid_manifest(tmp_path):
     assert result["semantic_checks_ready"] is False
     assert result["manifest_errors"]
     assert result["next_action"] == "FIX_EQUIVALENCE_MANIFEST"
+
+
+
+def test_native_handoff_waits_for_script_runtime_receipt(tmp_path):
+    # All required artifacts except the two explicit runtime-evidence files.
+    for artifact_id, relative in REQUIRED.items():
+        if artifact_id in {
+            "script_runtime_receipt",
+            "script_runtime_result",
+        }:
+            continue
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        if artifact_id == "manifest":
+            path.write_text(
+                json.dumps(
+                    {
+                        "checks": {
+                            name: "PASS"
+                            for name in REQUIRED_CHECKS
+                        }
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+        else:
+            path.write_bytes(b"TEST")
+
+    result = evaluate(tmp_path)
+
+    assert result["status"] == "WAITING_SCRIPT_RUNTIME_RECEIPT"
+    assert result["native_audit_ready"] is True
+    assert result["script_runtime_ready"] is False
+    assert result["routing_authorized"] is False
+    assert (
+        result["next_action"]
+        == "RECORD_ALTIUM_SCRIPT_RUNTIME_RECEIPT"
+    )
