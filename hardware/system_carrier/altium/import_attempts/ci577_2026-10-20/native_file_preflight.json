@@ -6,8 +6,8 @@
       "path": "hardware/system_carrier/altium/import_attempts/ci577_2026-10-20/native_snapshot/EVT_SYS_CARRIER.PcbDoc",
       "sector_shift": 9,
       "sector_size": 512,
-      "sha256": "0ecf920b9d44cc600e747d8df89f24810999269799a77e21df3bd78c53ff6fb4",
-      "size": 161280,
+      "sha256": "aafc59da674bbe8bfda76d94876f7f8e118ff5e1cf91923128d013e637200bb9",
+      "size": 1711104,
       "status": "PASS"
     },
     "schematic": {

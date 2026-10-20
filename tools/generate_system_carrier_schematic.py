@@ -1688,6 +1688,30 @@ def add_child_hierarchy_labels(
                 f"{reference}:{pin_number}:{net_name}"
             )
 
+        # Keep the child port on a short wire. KiCad treats a label placed
+        # directly on a pin as connected, but Altium's KiCad importer can
+        # leave that same imported port detached from its component pin.
+        component = sch.components.get(reference)
+        if component is None:
+            raise ValueError(f"hierarchy component missing:{reference}")
+        dx = position.x - component.position.x
+        dy = position.y - component.position.y
+        stub = 1.27
+        if abs(dx) >= abs(dy):
+            label_position = (
+                position.x + (stub if dx >= 0 else -stub),
+                position.y,
+            )
+        else:
+            label_position = (
+                position.x,
+                position.y + (stub if dy >= 0 else -stub),
+            )
+        sch.wires.add(
+            start=(position.x, position.y),
+            end=label_position,
+        )
+
         shape = {
             "input": HierarchicalLabelShape.INPUT,
             "output": HierarchicalLabelShape.OUTPUT,
@@ -1704,18 +1728,12 @@ def add_child_hierarchy_labels(
             sch.add_hierarchical_label(
                 text=net_name,
                 label_type=pin_type,
-                position=(
-                    position.x,
-                    position.y,
-                ),
+                position=label_position,
             )
         except TypeError:
             sch.add_hierarchical_label(
                 text=net_name,
-                position=(
-                    position.x,
-                    position.y,
-                ),
+                position=label_position,
                 shape=shape,
             )
 

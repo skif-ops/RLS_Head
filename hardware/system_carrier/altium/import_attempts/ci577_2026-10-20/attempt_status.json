@@ -1,24 +1,73 @@
 {
   "altium_version": "26.10.1 Trial",
   "blocking_reasons": [
-    "PCB document contains no components or nets; ECO has not been executed.",
-    "Altium compilation reported errors; no validated native compile, audit, BOM, netlist, hierarchy, no-mmWave or equivalence evidence exists.",
+    "The executed ECO leaves 19 endpoints on multi-pin KiCad nets without logged PCB assignments; native connectivity equivalence has not passed.",
+    "Altium project validation has 43 errors and 154 warnings with Global net scope; no validated native compile result exists.",
     "Six Altium-only footprint names use provisional KiCad import bridges; native geometry audit is required.",
-    "Locked EVT mechanical, routing-stack and power-routing contracts have not been instantiated and checked in the native PCB."
+    "Locked EVT mechanical, routing-stack and power-routing contracts have not been instantiated and checked in the native PCB.",
+    "The CI577 import package is stale after the hierarchy-label generator fix; a new qualified CI package and Altium reimport are required."
   ],
   "board_id": "EVT-SYS-CARRIER",
+  "compile_observation": {
+    "automatic_scope": {
+      "errors": 33,
+      "messages_file": "compile_automatic.txt",
+      "warnings": 156
+    },
+    "global_scope": {
+      "errors": 43,
+      "messages_file": "compile_global.txt",
+      "warnings": 154
+    },
+    "validated_compile_status": "FAIL"
+  },
   "date": "2026-10-20",
-  "disposition": "INCOMPLETE_IMPORT",
+  "disposition": "EQUIVALENCE_BLOCKED_AFTER_ECO",
+  "eco_endpoint_comparison": {
+    "altium_name_alias_endpoint_count": 10,
+    "eco_assigned_unique_endpoints": 316,
+    "kicad_endpoint_count": 483,
+    "status": "FAIL",
+    "unassigned_multi_endpoint_count": 19
+  },
   "eco_observation": {
-    "add_components_proposed": 92,
-    "execute_changes": "NOT_EXECUTED",
-    "report_export": "BLOCKED_BY_MODAL_CONTROL",
-    "visible_initial_validation_checks": "PASS"
+    "eco_logs": [
+      "eco_initial.log",
+      "eco_global.log"
+    ],
+    "global_scope_add_pin_to_net_log_records": 98,
+    "global_scope_add_pin_to_net_proposed": 99,
+    "global_scope_component_class_renames": 7,
+    "global_scope_duplicate_net_add_checks_failed": 7,
+    "initial_add_components_executed": 92,
+    "initial_add_nets_executed": 67,
+    "initial_pin_to_net_log_records": 221,
+    "project_net_identifier_scope": "Global (Netlabels and ports global)"
   },
   "files": {
+    "compile_automatic.txt": {
+      "sha256": "25d92df36eae13d9d4a070a4634ae5e69b5b90f47fc7855285329aec30945823",
+      "size": 21177
+    },
+    "compile_global.txt": {
+      "sha256": "fa5a949231501b3d10fd4e675947a5a818bf0d7bb7bb106abfde346f6cea0304",
+      "size": 21900
+    },
     "current_source_binding.json": {
       "sha256": "6a7a93a57cd658cbd5aa34cd4bcea233f69edd872f0bce4830f4f3a23dca3d21",
       "size": 23448
+    },
+    "eco_endpoint_comparison.json": {
+      "sha256": "857835045e3024d69c91741a300d9748a2e1a26356837da2cd02323f69a8a87f",
+      "size": 3660
+    },
+    "eco_global.log": {
+      "sha256": "89336c65b3cf35780ffb00de1d63a25ae73806ef6f2e8980dd7fe0b4baa26516",
+      "size": 4815
+    },
+    "eco_initial.log": {
+      "sha256": "23f8c48ad09c3f3f2fa15fd0a3adf2e598a0d5293db75297f3609f8de6b80e66",
+      "size": 47229
     },
     "footprint_import.log": {
       "sha256": "9c299a0b9b4d98ff110bb6cd910900e815d4adb2f7c75424ce60d2d11195c76e",
@@ -27,6 +76,10 @@
     "kicad_netlist_baseline.csv": {
       "sha256": "ee72dab91135fcd2ae90121bbee743e67b785c3e9ff96213f3274c7beff3f8db",
       "size": 10938
+    },
+    "native_file_preflight.json": {
+      "sha256": "9cbd8e79ce593852f5ef7e77bc462e2080cdb34ad6d412dacc97028eb0eb03d7",
+      "size": 1221
     },
     "native_snapshot/10_POWER_INPUT.SchDoc": {
       "sha256": "844c4f3279e2625b18cad50fed023c809107021c2c45f035699ead147ace4148",
@@ -57,12 +110,12 @@
       "size": 28160
     },
     "native_snapshot/EVT_SYS_CARRIER.PcbDoc": {
-      "sha256": "0ecf920b9d44cc600e747d8df89f24810999269799a77e21df3bd78c53ff6fb4",
-      "size": 161280
+      "sha256": "aafc59da674bbe8bfda76d94876f7f8e118ff5e1cf91923128d013e637200bb9",
+      "size": 1711104
     },
     "native_snapshot/EVT_SYS_CARRIER.PrjPcb": {
-      "sha256": "39896707a85e1382a8d6605ce6dcc7472b77ffc804f789c731e5cfd2fe34f9c8",
-      "size": 34541
+      "sha256": "e4b373d76ba5c0612b940aca2e189aa75af57830547c51db8ae5bcdd5704957b",
+      "size": 34538
     },
     "native_snapshot/EVT_SYS_CARRIER.SchDoc": {
       "sha256": "64d65ded9210fde68cddae255cfe13f5ab9b9f844ffd305f9fd3b7fe51d32979",
@@ -88,9 +141,25 @@
       "sha256": "f6f77902dd0c2ed5cb220b6930db24ff3a84015cb453d14a6f4502d715c0ee18",
       "size": 21119
     },
+    "pre_eco/EVT_SYS_CARRIER.PcbDoc": {
+      "sha256": "0ecf920b9d44cc600e747d8df89f24810999269799a77e21df3bd78c53ff6fb4",
+      "size": 161280
+    },
+    "pre_eco/EVT_SYS_CARRIER.PrjPcb": {
+      "sha256": "67e7613434753a7e3eba736c3747bd1ae9d66442477d3146db05f2ab630613e2",
+      "size": 34538
+    },
+    "pre_eco/native_file_preflight.json": {
+      "sha256": "26e4130d68928e4afce8e3f3504f92fcad45402dcc6c9f7c81e58a78f5579cce",
+      "size": 1220
+    },
     "schematic_import.log": {
       "sha256": "fbac6902765206b2828299c07f5140eb8440f56b7f680d3f6db44ce1c5f1b3cb",
       "size": 151767
+    },
+    "source_binding_after_generator_fix.json": {
+      "sha256": "ce1050cf055cd1660ee24b5719179b04912f4b450d5f0144938324aef1db630f",
+      "size": 23591
     }
   },
   "hardware_revision": "A",
@@ -102,15 +171,18 @@
   "native_equivalence_gate": "NOT_RUN",
   "native_snapshot": {
     "full_pcblib_names_matching_schematic_models": 29,
-    "pcb_component_count": 0,
-    "pcb_net_count": 0,
+    "pcb_component_count": 92,
+    "pcb_net_count": 67,
+    "pcb_pad_count": 525,
     "pcb_stream_data_bytes": {
-      "Components6": 0,
-      "Nets6": 0,
-      "Pads6": 0,
-      "Tracks6": 0,
+      "Classes6": 8078,
+      "Components6": 55875,
+      "Nets6": 16871,
+      "Pads6": 406789,
+      "Tracks6": 56916,
       "Vias6": 0
     },
+    "pcb_track_primitive_count": 1054,
     "pcblib_pattern_count": 29,
     "schdoc_count": 8,
     "schematic_model_names_missing_in_pcblib": [],
@@ -131,7 +203,8 @@
   "qualified_package": {
     "artifact_id": 12258438685,
     "artifact_name": "system-carrier-altium-import",
-    "current_source_binding": "PASS",
+    "current_source_binding_after_generator_fix": "FAIL_EXPECTED_STALE_ARTIFACT",
+    "current_source_binding_at_import": "PASS",
     "files_verified": 112,
     "package_verification": "PASS",
     "source_bindings_checked": 52,
