@@ -1041,6 +1041,37 @@ def test_import_receipt_import_log_must_remain_exact(tmp_path):
     assert "import_receipt_hash:import_log" in result["errors"]
 
 
+def test_import_receipt_rejects_tampered_source_binding(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    receipt_item = next(
+        item
+        for item in data["artifacts"]
+        if item["id"] == "import_receipt"
+    )
+    receipt_path = tmp_path / receipt_item["path"]
+    receipt = json.loads(receipt_path.read_text())
+    receipt["import_source_binding"]["bindings"][0][
+        "current_sha256"
+    ] = "0" * 64
+
+    receipt_content = json.dumps(receipt, sort_keys=True).encode()
+    receipt_path.write_bytes(receipt_content)
+    receipt_item["sha256"] = hashlib.sha256(
+        receipt_content
+    ).hexdigest()
+    manifest.write_text(json.dumps(data, indent=2) + "\n")
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert any(
+        item.startswith("import_receipt_source_binding_hash:")
+        for item in result["errors"]
+    )
+
+
 def test_import_receipt_requires_snapshot_role(tmp_path):
     manifest = _manifest(tmp_path)
     data = json.loads(manifest.read_text())
