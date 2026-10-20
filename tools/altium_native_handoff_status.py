@@ -92,9 +92,18 @@ def evaluate(repository_root: str | Path = ".") -> dict:
         and evidence["layer_stack_inventory"]["present"]
         and evidence["native_audit_result"]["present"]
     )
+    hierarchy_export_ready = evidence[
+        "hierarchy_export"
+    ]["present"]
+    script_runtime_receipt_ready = evidence[
+        "script_runtime_receipt"
+    ]["present"]
+    script_runtime_result_ready = evidence[
+        "script_runtime_result"
+    ]["present"]
     script_runtime_ready = (
-        evidence["script_runtime_receipt"]["present"]
-        and evidence["script_runtime_result"]["present"]
+        script_runtime_receipt_ready
+        and script_runtime_result_ready
     )
     equivalence_ready = (
         not missing
@@ -143,9 +152,15 @@ def evaluate(repository_root: str | Path = ".") -> dict:
     elif not audit_ready:
         status = "WAITING_NATIVE_AUDIT"
         next_action = "RUN_EVT_SYS_CARRIER_AUDIT_IN_ALTIUM"
-    elif not script_runtime_ready:
+    elif not hierarchy_export_ready:
+        status = "WAITING_HIERARCHY_EXPORT"
+        next_action = "RUN_EXPORT_NATIVE_HIERARCHY_IN_ALTIUM"
+    elif not script_runtime_receipt_ready:
         status = "WAITING_SCRIPT_RUNTIME_RECEIPT"
         next_action = "RECORD_ALTIUM_SCRIPT_RUNTIME_RECEIPT"
+    elif not script_runtime_result_ready:
+        status = "WAITING_SCRIPT_RUNTIME_VALIDATION"
+        next_action = "VALIDATE_ALTIUM_SCRIPT_RUNTIME_RECEIPT"
     elif not equivalence_ready:
         status = "WAITING_EQUIVALENCE_EVIDENCE"
         next_action = "COMPLETE_COMPILE_BOM_NETLIST_FOOTPRINT_AND_MANIFEST_EVIDENCE"
@@ -167,6 +182,13 @@ def evaluate(repository_root: str | Path = ".") -> dict:
         "native_file_preflight_ready": native_file_preflight_ready,
         "import_provenance_ready": provenance_ready,
         "native_audit_ready": audit_ready,
+        "hierarchy_export_ready": hierarchy_export_ready,
+        "script_runtime_receipt_ready": (
+            script_runtime_receipt_ready
+        ),
+        "script_runtime_result_ready": (
+            script_runtime_result_ready
+        ),
         "script_runtime_ready": script_runtime_ready,
         "equivalence_evidence_complete": equivalence_ready,
         "semantic_checks_ready": semantic_checks_ready,
