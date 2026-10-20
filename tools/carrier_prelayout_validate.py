@@ -402,8 +402,9 @@ def validate(
                 "native Altium equivalence is a separate gate."
             ),
             (
-                "The 100x80mm outline is EVT_PROVISIONAL and does "
-                "not constitute a production mechanical freeze."
+                "The 100x80mm outline is EVT_ROUTING_LOCKED for "
+                "native layout datum use; it does not constitute a "
+                "production mechanical freeze."
             ),
         ],
     }
