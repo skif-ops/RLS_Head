@@ -447,3 +447,76 @@ def test_native_ci_gate_does_not_treat_failed_release_result_as_production(
     assert result["production_authorized"] is False
     assert "committed_production_not_pass" in result["errors"]
     assert "committed_production_authority" in result["errors"]
+
+
+
+def test_native_ci_gate_treats_revoked_pass_release_as_historical(
+    tmp_path,
+    monkeypatch,
+):
+    _post_equivalence_fixture(tmp_path, monkeypatch)
+
+    production_path = tmp_path / ci_gate.PRODUCTION_RESULT_REL
+    _write_json(
+        production_path,
+        {
+            "schema": "ALTIUM-PRODUCTION-RELEASE-RESULT-001",
+            "status": "PASS",
+            "layout_authority": "AUTHORIZED",
+            "production_authority": "AUTHORIZED",
+            "errors": [],
+            "reason_codes": [],
+        },
+    )
+
+    result = ci_gate.evaluate(repository_root=tmp_path)
+
+    assert result["status"] == "PASS"
+    assert result["phase"] == "POST_EQUIVALENCE"
+    assert result["production_result_present"] is True
+    assert result["production_result_pass"] is True
+    assert result["production_result_active"] is False
+    assert result["production_authority_surfaces"] == {
+        "native_status": False,
+        "implementation_status": False,
+        "cad_authority": False,
+    }
+    assert "historical_production_result_inactive" in result["warnings"]
+    assert result["routing_authorized"] is True
+    assert result["production_authorized"] is False
+
+
+def test_native_ci_gate_rejects_partial_production_authority_consensus(
+    tmp_path,
+    monkeypatch,
+):
+    _post_equivalence_fixture(tmp_path, monkeypatch)
+
+    production_path = tmp_path / ci_gate.PRODUCTION_RESULT_REL
+    _write_json(
+        production_path,
+        {
+            "schema": "ALTIUM-PRODUCTION-RELEASE-RESULT-001",
+            "status": "PASS",
+            "layout_authority": "AUTHORIZED",
+            "production_authority": "AUTHORIZED",
+            "errors": [],
+            "reason_codes": [],
+        },
+    )
+
+    native_status_path = tmp_path / ci_gate.NATIVE_STATUS_REL
+    native_status = json.loads(
+        native_status_path.read_text(encoding="utf-8")
+    )
+    native_status["production_authority"] = "AUTHORIZED"
+    _write_json(native_status_path, native_status)
+
+    result = ci_gate.evaluate(repository_root=tmp_path)
+
+    assert result["status"] == "FAIL"
+    assert result["phase"] == "POST_EQUIVALENCE"
+    assert result["production_result_pass"] is True
+    assert result["production_result_active"] is False
+    assert "production_authority_surface_consensus" in result["errors"]
+    assert result["production_authorized"] is False
