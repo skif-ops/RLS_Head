@@ -157,6 +157,29 @@ def _sync_layout_authority_status(
     implementation_status = _read_json(implementation_status_path)
     authority = _read_json(authority_path)
 
+    integrity = gate_result.get("integrity")
+    if not isinstance(integrity, dict):
+        raise ValueError("equivalence PASS missing integrity map")
+
+    current_hashes = {
+        "schematic": _sha256_file(_absolute(root, "schematic")),
+        "pcb": _sha256_file(_absolute(root, "pcb")),
+    }
+    for artifact_id, current_hash in current_hashes.items():
+        record = integrity.get(artifact_id)
+        approved_hash = (
+            str(record.get("sha256_actual", "")).strip().lower()
+            if isinstance(record, dict)
+            else ""
+        )
+        if (
+            len(approved_hash) != 64
+            or approved_hash != current_hash
+        ):
+            raise ValueError(
+                f"native {artifact_id} changed after equivalence gate PASS"
+            )
+
     native_status["native_import_status"] = "NATIVE_FILES_READY"
     native_status["equivalence_gate_status"] = "PASS"
     native_status["layout_authority"] = "AUTHORIZED"
@@ -168,12 +191,10 @@ def _sync_layout_authority_status(
     native_status["equivalence_result_sha256"] = _sha256_file(
         _absolute(root, "gate_result")
     )
-    native_status["native_schematic_sha256"] = _sha256_file(
-        _absolute(root, "schematic")
-    )
-    native_status["native_pcb_sha256"] = _sha256_file(
-        _absolute(root, "pcb")
-    )
+    native_status["native_schematic_sha256"] = current_hashes[
+        "schematic"
+    ]
+    native_status["native_pcb_sha256"] = current_hashes["pcb"]
 
     altium = implementation_status.setdefault("altium", {})
     altium["native_schdoc"] = True
