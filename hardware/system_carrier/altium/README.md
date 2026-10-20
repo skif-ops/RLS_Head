@@ -31,7 +31,7 @@ Do not delete any KiCad source, generated KiCad library or footprint used to est
 
 `ALTIUM_SCRIPT_API_COMPAT_SYS_001.json` is the repository contract for the read-only PCB and hierarchy audit scripts. `tools/altium_script_api_compatibility.py` statically verifies required API symbols, expected outputs and the absence of known mutation APIs. CI includes the resulting evidence in the Altium import package.
 
-Static compatibility is intentionally not treated as proof of execution. The target Altium Designer installation must still run both exporter procedures successfully; this runtime check remains external until the real native project exists.
+Static compatibility is intentionally not treated as proof of execution. The target Altium Designer installation must still run both exporter procedures successfully. That external execution is captured in `equivalence/script_runtime_receipt.json` and validated into `script_runtime_result.json`; equivalence authority is blocked unless this SHA-bound runtime evidence is PASS.
 
 ## Native CI phase gate
 

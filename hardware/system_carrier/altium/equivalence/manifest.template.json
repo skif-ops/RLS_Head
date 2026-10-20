@@ -129,6 +129,16 @@
       "sha256": "<SHA256>"
     },
     {
+      "id": "script_runtime_receipt",
+      "path": "hardware/system_carrier/altium/equivalence/script_runtime_receipt.json",
+      "sha256": "<SHA256>"
+    },
+    {
+      "id": "script_runtime_result",
+      "path": "hardware/system_carrier/altium/equivalence/script_runtime_result.json",
+      "sha256": "<SHA256>"
+    },
+    {
       "id": "no_mmwave_review",
       "path": "hardware/system_carrier/altium/equivalence/no_mmwave_review.json",
       "sha256": "<SHA256>"

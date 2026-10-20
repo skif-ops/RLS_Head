@@ -28,6 +28,8 @@
     "equivalence/kicad_netlist_baseline.csv",
     "equivalence/netlist_export.csv",
     "equivalence/footprint_report.json",
+    "equivalence/script_runtime_result.json",
+    "equivalence/script_runtime_receipt.json",
     "equivalence/no_mmwave_review_result.json",
     "equivalence/no_mmwave_review.json",
     "equivalence/hierarchy_validation_result.json",

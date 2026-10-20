@@ -1243,8 +1243,9 @@ jobs:
           assert data["native_audit_script_included"] is True
           assert data["native_handoff_runbook_included"] is True
           assert data["equivalence_manifest_template_included"] is True
+          assert data["script_runtime_receipt_template_included"] is True
           assert data["kicad_netlist_baseline_included"] is True
-          assert data["file_count"] >= 47
+          assert data["file_count"] >= 48
           print(
               "Altium import package READY:",
               data["file_count"],

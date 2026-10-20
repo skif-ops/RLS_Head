@@ -111,6 +111,7 @@ def test_native_transition_full_pass_syncs_routing_authority(
         "kicad_netlist_baseline",
         "netlist_export",
         "hierarchy_export",
+        "script_runtime_receipt",
         "no_mmwave_review",
         "manifest_template",
     ):
@@ -273,6 +274,17 @@ def test_native_transition_full_pass_syncs_routing_authority(
     )
     monkeypatch.setattr(
         transition,
+        "validate_script_runtime",
+        lambda **kwargs: {
+            "schema": "ALTIUM-SCRIPT-RUNTIME-RESULT-001",
+            "status": "PASS",
+            "errors": [],
+            "reason_codes": [],
+            "runtime_validated": True,
+        },
+    )
+    monkeypatch.setattr(
+        transition,
         "validate_no_mmwave",
         lambda **kwargs: {
             **pass_result,
@@ -342,6 +354,8 @@ def test_native_transition_full_pass_syncs_routing_authority(
     assert result["status"] == "READY_FOR_ROUTING"
     assert result["routing_authorized"] is True
     assert result["production_authorized"] is False
+    assert _path(tmp_path, "script_runtime_result").is_file()
+    assert result["stage_results"]["script_runtime"]["status"] == "PASS"
 
     native_status = json.loads(
         _path(tmp_path, "native_status").read_text(encoding="utf-8")
@@ -681,3 +695,77 @@ def test_layout_authority_sync_rejects_changed_gate_result(tmp_path):
         _path(tmp_path, "native_status").read_text(encoding="utf-8")
     )
     assert native_status["layout_authority"] == "NOT_AUTHORIZED"
+
+
+
+def test_native_transition_waits_for_script_runtime_receipt(
+    tmp_path,
+    monkeypatch,
+):
+    for key in (
+        "project",
+        "schematic",
+        "pcb",
+        "import_native_file_preflight",
+        "package_manifest",
+        "import_log",
+        "compile_report_raw",
+        "compile_report",
+        "bom_export",
+        "component_inventory",
+        "net_inventory",
+        "rule_inventory",
+        "pad_net_inventory",
+        "layer_stack_inventory",
+        "kicad_netlist_baseline",
+        "netlist_export",
+        "hierarchy_export",
+    ):
+        _write(_path(tmp_path, key), b"TEST")
+
+    _write_json(
+        _path(tmp_path, "import_receipt"),
+        {
+            "schema": "ALTIUM-NATIVE-IMPORT-RECEIPT-001",
+            "status": "PASS",
+        },
+    )
+
+    monkeypatch.setattr(
+        transition,
+        "validate_native_files",
+        lambda **kwargs: {
+            "schema": "ALTIUM-NATIVE-FILE-PREFLIGHT-001",
+            "status": "PASS",
+            "errors": [],
+            "artifacts": {},
+        },
+    )
+    monkeypatch.setattr(
+        transition,
+        "validate_compile_evidence",
+        lambda **kwargs: {
+            "schema": "ALTIUM-COMPILE-EVIDENCE-VALIDATION-001",
+            "status": "PASS",
+            "errors": [],
+            "reason_codes": [],
+        },
+    )
+    simple_pass = lambda **kwargs: {
+        "status": "PASS",
+        "errors": [],
+        "warnings": [],
+    }
+    monkeypatch.setattr(transition, "validate_audit", simple_pass)
+    monkeypatch.setattr(transition, "validate_bom", simple_pass)
+    monkeypatch.setattr(transition, "validate_footprint", simple_pass)
+    monkeypatch.setattr(transition, "validate_connector", simple_pass)
+    monkeypatch.setattr(transition, "validate_netlist", simple_pass)
+    monkeypatch.setattr(transition, "validate_hierarchy", simple_pass)
+
+    result = transition.run_transition(repository_root=tmp_path)
+
+    assert result["status"] == "WAITING_SCRIPT_RUNTIME_RECEIPT"
+    assert result["next_action"] == "RECORD_ALTIUM_SCRIPT_RUNTIME_RECEIPT"
+    assert result["routing_authorized"] is False
+    assert result["missing_inputs"] == ["script_runtime_receipt"]
