@@ -457,6 +457,17 @@ def _manifest(tmp_path: Path) -> Path:
             "input_sha256": runtime_input_hashes,
             "output_sha256": runtime_output_hashes,
             "receipt_sha256": runtime_receipt_hash,
+            "notes": [
+                (
+                    "PASS validates the operator runtime receipt against the exact "
+                    "pre-routing native documents, scripts, API contract and CSV "
+                    "outputs used for equivalence."
+                ),
+                (
+                    "The receipt is explicit external Altium Designer execution "
+                    "evidence; it is never synthesized by repository automation."
+                ),
+            ],
         },
         sort_keys=True,
     ).encode()
