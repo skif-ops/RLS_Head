@@ -51,7 +51,7 @@ def test_native_transition_waits_for_real_altium_import(tmp_path):
 def test_native_transition_requires_import_snapshot_before_receipt(
     tmp_path,
 ):
-    for key in ("project", "package_manifest", "import_log"):
+    for key in ("project", "package_manifest", "package_verification", "import_log"):
         _write(_path(tmp_path, key))
     _write(_path(tmp_path, "schematic"), _cfb_stub())
     _write(_path(tmp_path, "pcb"), _cfb_stub())
@@ -70,7 +70,7 @@ def test_native_transition_requires_import_snapshot_before_receipt(
     assert not _path(tmp_path, "import_receipt").exists()
 
 def test_native_transition_stops_at_compile_report_after_provenance(tmp_path):
-    for key in ("project", "package_manifest", "import_log"):
+    for key in ("project", "package_manifest", "package_verification", "import_log"):
         _write(_path(tmp_path, key))
     _write(_path(tmp_path, "schematic"), _cfb_stub())
     _write(_path(tmp_path, "pcb"), _cfb_stub())
@@ -101,6 +101,7 @@ def test_native_transition_full_pass_syncs_routing_authority(
         "project",
         "import_native_file_preflight",
         "package_manifest",
+        "package_verification",
         "import_log",
         "bom_export",
         "component_inventory",
@@ -524,6 +525,7 @@ def test_native_transition_force_recheck_bypasses_valid_lifecycle_guard(
     assert result["status"] == "WAITING_IMPORT_PROVENANCE"
     assert result["routing_authorized"] is False
     assert "package_manifest" in result["missing_inputs"]
+    assert "package_verification" in result["missing_inputs"]
     assert "import_log" in result["missing_inputs"]
     assert _path(tmp_path, "native_file_preflight").is_file()
     assert "existing_lifecycle" not in result["stage_results"]
@@ -708,6 +710,7 @@ def test_native_transition_waits_for_script_runtime_receipt(
         "pcb",
         "import_native_file_preflight",
         "package_manifest",
+        "package_verification",
         "import_log",
         "compile_report_raw",
         "compile_report",
