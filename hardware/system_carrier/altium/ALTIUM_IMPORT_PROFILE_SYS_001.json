@@ -39,6 +39,7 @@
     "hierarchy_equivalence",
     "rules_equivalence",
     "stackup_equivalence",
+    "script_runtime_execution_receipt",
     "native_pcb_audit"
   ],
   "contracts": [
