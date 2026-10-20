@@ -639,6 +639,122 @@ def validate_manifest(
                             "import_receipt_source_binding_count"
                         )
 
+                    package_bindings_raw = import_package.get(
+                        "source_bindings",
+                        [],
+                    )
+                    source_binding_rows = source_binding.get(
+                        "bindings",
+                        [],
+                    )
+                    if not isinstance(package_bindings_raw, list):
+                        errors.append(
+                            "import_package_source_bindings"
+                        )
+                        package_bindings_raw = []
+                    if not isinstance(source_binding_rows, list):
+                        errors.append(
+                            "import_receipt_source_binding_rows"
+                        )
+                        source_binding_rows = []
+
+                    package_binding_map = {
+                        str(
+                            item.get("repository_path", "")
+                        ).strip().replace("\\", "/"): str(
+                            item.get("package_path", "")
+                        ).strip().replace("\\", "/")
+                        for item in package_bindings_raw
+                        if isinstance(item, dict)
+                    }
+                    package_file_map = {
+                        str(
+                            item.get("path", "")
+                        ).strip().replace("\\", "/"): item
+                        for item in import_package.get("files", [])
+                        if isinstance(item, dict)
+                    }
+
+                    if len(source_binding_rows) != binding_count:
+                        errors.append(
+                            "import_receipt_source_binding_row_count"
+                        )
+
+                    seen_binding_repositories: set[str] = set()
+                    for index, item in enumerate(
+                        source_binding_rows
+                    ):
+                        if not isinstance(item, dict):
+                            errors.append(
+                                "import_receipt_source_binding_row:"
+                                + str(index)
+                            )
+                            continue
+
+                        repository_path = str(
+                            item.get("repository_path", "")
+                        ).strip().replace("\\", "/")
+                        package_path = str(
+                            item.get("package_path", "")
+                        ).strip().replace("\\", "/")
+                        if (
+                            not repository_path
+                            or repository_path
+                            in seen_binding_repositories
+                        ):
+                            errors.append(
+                                "import_receipt_source_binding_repository:"
+                                + str(index)
+                            )
+                            continue
+                        seen_binding_repositories.add(repository_path)
+
+                        if (
+                            package_binding_map.get(repository_path)
+                            != package_path
+                        ):
+                            errors.append(
+                                "import_receipt_source_binding_mapping:"
+                                + repository_path
+                            )
+                            continue
+
+                        file_record = package_file_map.get(package_path)
+                        if not isinstance(file_record, dict):
+                            errors.append(
+                                "import_receipt_source_binding_package_file:"
+                                + package_path
+                            )
+                            continue
+
+                        expected_hash = str(
+                            file_record.get("sha256", "")
+                        ).strip().lower()
+                        expected_size = file_record.get("size")
+                        package_hash = str(
+                            item.get("package_sha256", "")
+                        ).strip().lower()
+                        current_hash = str(
+                            item.get("current_sha256", "")
+                        ).strip().lower()
+                        if (
+                            package_hash != expected_hash
+                            or current_hash != expected_hash
+                            or item.get("match") is not True
+                        ):
+                            errors.append(
+                                "import_receipt_source_binding_hash:"
+                                + repository_path
+                            )
+                        if (
+                            item.get("package_size") != expected_size
+                            or item.get("current_size") != expected_size
+                        ):
+                            errors.append(
+                                "import_receipt_source_binding_size:"
+                                + repository_path
+                            )
+
     native_file_preflight = None
     preflight_path = resolved.get("native_file_preflight")
     if preflight_path is not None:
