@@ -230,6 +230,11 @@ def _manifest(tmp_path: Path) -> Path:
         "sha256": baseline_hash,
         "size": len(baseline_content),
     }
+    bound_bom_file = {
+        "path": "contracts/BOM_SYS_CARRIER_LAYOUT_004.csv",
+        "sha256": bom_contract_hash,
+        "size": len(bom_contract_content),
+    }
     package_content = json.dumps(
         {
             "schema": "ALTIUM-IMPORT-PACKAGE-001",
@@ -245,15 +250,15 @@ def _manifest(tmp_path: Path) -> Path:
             "source_binding_count": 1,
             "source_bindings": [
                 {
-                    "package_path": package_file["path"],
+                    "package_path": bound_bom_file["path"],
                     "repository_path": (
                         "hardware/system_carrier/"
                         "BOM_SYS_CARRIER_LAYOUT_004.csv"
                     ),
                 }
             ],
-            "file_count": 1,
-            "files": [package_file],
+            "file_count": 2,
+            "files": [package_file, bound_bom_file],
         },
         sort_keys=True,
     ).encode()
@@ -270,9 +275,9 @@ def _manifest(tmp_path: Path) -> Path:
                 "path": "manifest.json",
                 "sha256": package_hash,
             },
-            "expected_file_count": 1,
-            "verified_file_count": 1,
-            "verified_files": [package_file],
+            "expected_file_count": 2,
+            "verified_file_count": 2,
+            "verified_files": [package_file, bound_bom_file],
             "source_binding_count": 1,
             "errors": [],
         },
@@ -314,7 +319,20 @@ def _manifest(tmp_path: Path) -> Path:
                 "source_commit": source_commit,
                 "expected_count": 1,
                 "checked_count": 1,
-                "bindings": [],
+                "bindings": [
+                    {
+                        "package_path": bound_bom_file["path"],
+                        "repository_path": (
+                            "hardware/system_carrier/"
+                            "BOM_SYS_CARRIER_LAYOUT_004.csv"
+                        ),
+                        "package_sha256": bom_contract_hash,
+                        "current_sha256": bom_contract_hash,
+                        "package_size": len(bom_contract_content),
+                        "current_size": len(bom_contract_content),
+                        "match": True,
+                    }
+                ],
             },
             "import_native_file_preflight": {
                 "path": (
