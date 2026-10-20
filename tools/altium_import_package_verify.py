@@ -35,11 +35,12 @@ def verify(
     manifest_path: str | Path | None = None,
 ) -> dict:
     root = Path(package_root)
-    manifest = (
-        Path(manifest_path)
-        if manifest_path is not None
-        else root / "manifest.json"
-    )
+    if manifest_path is None:
+        manifest = root / "manifest.json"
+    else:
+        manifest = Path(manifest_path)
+        if not manifest.is_absolute():
+            manifest = root / manifest
 
     errors: list[str] = []
     verified_files: list[dict] = []
