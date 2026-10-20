@@ -9,6 +9,7 @@ from pathlib import Path
 
 SCHEMA = "ALTIUM-NATIVE-IMPORT-RECEIPT-001"
 PACKAGE_SCHEMA = "ALTIUM-IMPORT-PACKAGE-001"
+PACKAGE_VERIFY_SCHEMA = "ALTIUM-IMPORT-PACKAGE-VERIFY-001"
 
 NATIVE_ARTIFACTS = {
     "schematic": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
@@ -33,6 +34,7 @@ def build_receipt(
     *,
     repository_root: str | Path,
     package_manifest: str | Path,
+    package_verification: str | Path,
     import_preflight: str | Path,
     altium_version: str,
     importer_version: str,
@@ -41,6 +43,10 @@ def build_receipt(
     package_path = Path(package_manifest)
     if not package_path.is_absolute():
         package_path = root / package_path
+
+    verification_path = Path(package_verification)
+    if not verification_path.is_absolute():
+        verification_path = root / verification_path
 
     preflight_path = Path(import_preflight)
     if not preflight_path.is_absolute():
@@ -71,6 +77,64 @@ def build_receipt(
             errors.append("target_cad")
         if package.get("preserve_kicad") is not True:
             errors.append("preserve_kicad")
+
+    package_verification_data = None
+    if not verification_path.is_file():
+        errors.append("missing_import_package_verification")
+    else:
+        try:
+            package_verification_data = json.loads(
+                verification_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"import_package_verification_parse:{exc}")
+        else:
+            if (
+                package_verification_data.get("schema")
+                != PACKAGE_VERIFY_SCHEMA
+            ):
+                errors.append("import_package_verification_schema")
+            if package_verification_data.get("status") != "PASS":
+                errors.append("import_package_verification_status")
+            if package_verification_data.get("errors") not in ([], None):
+                errors.append("import_package_verification_errors")
+
+            package_record = package_verification_data.get(
+                "package_manifest"
+            )
+            if not isinstance(package_record, dict):
+                errors.append("import_package_verification_manifest_record")
+            elif package_path.is_file():
+                recorded_hash = str(
+                    package_record.get("sha256", "")
+                ).strip().lower()
+                if recorded_hash != sha256_file(package_path):
+                    errors.append(
+                        "import_package_verification_manifest_hash"
+                    )
+
+            verified_source = str(
+                package_verification_data.get("source_commit", "")
+            ).strip().lower()
+            package_source = str(
+                package.get("source_commit", "")
+            ).strip().lower()
+            if not verified_source or verified_source != package_source:
+                errors.append("import_package_verification_source_commit")
+
+            expected_count = package_verification_data.get(
+                "expected_file_count"
+            )
+            verified_count = package_verification_data.get(
+                "verified_file_count"
+            )
+            if (
+                not isinstance(expected_count, int)
+                or not isinstance(verified_count, int)
+                or expected_count != verified_count
+                or expected_count != package.get("file_count")
+            ):
+                errors.append("import_package_verification_file_count")
 
     source_commit = str(package.get("source_commit", "")).strip()
     if source_commit and not re.fullmatch(r"[0-9a-fA-F]{40}", source_commit):
@@ -155,6 +219,19 @@ def build_receipt(
                 "sha256": sha256_file(package_path),
             }
 
+    package_verification_record = None
+    if verification_path.is_file():
+        try:
+            verification_relative = _repo_relative(root, verification_path)
+        except ValueError:
+            errors.append("import_package_verification_outside_repository")
+        else:
+            package_verification_record = {
+                "path": verification_relative,
+                "size": verification_path.stat().st_size,
+                "sha256": sha256_file(verification_path),
+            }
+
     preflight_record = None
     if preflight_path.is_file():
         try:
@@ -182,6 +259,7 @@ def build_receipt(
         "altium_version": altium_version,
         "importer_version": importer_version,
         "import_package_manifest": package_record,
+        "import_package_verification": package_verification_record,
         "import_native_file_preflight": preflight_record,
         "native_artifacts": artifacts,
         "errors": sorted(set(errors)),
@@ -206,6 +284,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repository-root", default=".")
     parser.add_argument("--package-manifest", required=True)
+    parser.add_argument("--package-verification", required=True)
     parser.add_argument("--import-preflight", required=True)
     parser.add_argument("--altium-version", required=True)
     parser.add_argument("--importer-version", required=True)
@@ -215,6 +294,7 @@ def main() -> int:
     result = build_receipt(
         repository_root=args.repository_root,
         package_manifest=args.package_manifest,
+        package_verification=args.package_verification,
         import_preflight=args.import_preflight,
         altium_version=args.altium_version,
         importer_version=args.importer_version,
