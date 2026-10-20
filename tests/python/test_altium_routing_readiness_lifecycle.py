@@ -20,6 +20,36 @@ def _write_schematic(altium: Path, data: bytes = b"NATIVE_SCH") -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _write_authority_result(
+    altium: Path,
+    *,
+    production: bool,
+) -> str:
+    if production:
+        path = altium / "release" / "production_release_result.json"
+        payload = {
+            "schema": "ALTIUM-PRODUCTION-RELEASE-RESULT-001",
+            "status": "PASS",
+            "layout_authority": "AUTHORIZED",
+            "production_authority": "AUTHORIZED",
+        }
+    else:
+        path = (
+            altium
+            / "equivalence"
+            / "altium_equivalence_result.json"
+        )
+        payload = {
+            "schema": "ALTIUM-EQUIVALENCE-RESULT-001",
+            "status": "PASS",
+            "layout_authority": "AUTHORIZED",
+            "production_authority": "NOT_AUTHORIZED",
+        }
+
+    _write_json(path, payload)
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
 def test_routing_readiness_remains_valid_after_production_release(
     tmp_path,
     monkeypatch,
@@ -34,6 +64,14 @@ def test_routing_readiness_remains_valid_after_production_release(
     pcb.parent.mkdir(parents=True, exist_ok=True)
     pcb.write_bytes(b"FINAL_NATIVE_PCB")
     pcb_hash = hashlib.sha256(pcb.read_bytes()).hexdigest()
+    equivalence_result_hash = _write_authority_result(
+        altium,
+        production=False,
+    )
+    production_result_hash = _write_authority_result(
+        altium,
+        production=True,
+    )
 
     pass_result = {
         "schema": "TEST",
@@ -69,9 +107,9 @@ def test_routing_readiness_remains_valid_after_production_release(
             "production_authority": "AUTHORIZED",
             "native_schematic_sha256": schematic_hash,
             "native_pcb_sha256": pcb_hash,
-            "equivalence_result_sha256": "a" * 64,
+            "equivalence_result_sha256": equivalence_result_hash,
             "production_release_source_pcb_sha256": pcb_hash,
-            "production_release_result_sha256": "b" * 64,
+            "production_release_result_sha256": production_result_hash,
         },
     )
     _write_json(
@@ -98,9 +136,9 @@ def test_routing_readiness_remains_valid_after_production_release(
             "production_release_authorized": True,
             "native_schematic_sha256": schematic_hash,
             "native_pcb_sha256": pcb_hash,
-            "equivalence_result_sha256": "a" * 64,
+            "equivalence_result_sha256": equivalence_result_hash,
             "production_release_source_pcb_sha256": pcb_hash,
-            "production_release_result_sha256": "b" * 64,
+            "production_release_result_sha256": production_result_hash,
             "routing_readiness_gate": {
                 "current_expected_status": "READY_FOR_ROUTING",
             },
@@ -118,6 +156,14 @@ def test_routing_readiness_remains_valid_after_production_release(
     assert result["layout_authority_consensus"] is True
     assert result["production_authority_consensus"] is True
     assert result["authority_consensus_errors"] == []
+    assert (
+        result["current_equivalence_result_sha256"]
+        == equivalence_result_hash
+    )
+    assert (
+        result["current_production_result_sha256"]
+        == production_result_hash
+    )
     assert result["production_release_stale"] is False
     assert result["expected_release_pcb_sha256"] == pcb_hash
     assert result["current_pcb_sha256"] == pcb_hash
@@ -167,6 +213,14 @@ def test_routing_readiness_detects_stale_production_release(
     pcb = altium / "native" / "EVT_SYS_CARRIER.PcbDoc"
     pcb.parent.mkdir(parents=True, exist_ok=True)
     pcb.write_bytes(b"CHANGED_AFTER_PRODUCTION_RELEASE")
+    equivalence_result_hash = _write_authority_result(
+        altium,
+        production=False,
+    )
+    production_result_hash = _write_authority_result(
+        altium,
+        production=True,
+    )
 
     _write_json(
         altium / "ALTIUM_NATIVE_STATUS_SYS_001.json",
@@ -177,9 +231,9 @@ def test_routing_readiness_detects_stale_production_release(
             "production_authority": "AUTHORIZED",
             "native_schematic_sha256": schematic_hash,
             "native_pcb_sha256": approved_pcb_hash,
-            "equivalence_result_sha256": "c" * 64,
+            "equivalence_result_sha256": equivalence_result_hash,
             "production_release_source_pcb_sha256": approved_pcb_hash,
-            "production_release_result_sha256": "d" * 64,
+            "production_release_result_sha256": production_result_hash,
         },
     )
     _write_json(
@@ -206,9 +260,9 @@ def test_routing_readiness_detects_stale_production_release(
             "production_release_authorized": True,
             "native_schematic_sha256": schematic_hash,
             "native_pcb_sha256": approved_pcb_hash,
-            "equivalence_result_sha256": "c" * 64,
+            "equivalence_result_sha256": equivalence_result_hash,
             "production_release_source_pcb_sha256": approved_pcb_hash,
-            "production_release_result_sha256": "d" * 64,
+            "production_release_result_sha256": production_result_hash,
             "routing_readiness_gate": {
                 "current_expected_status": "READY_FOR_ROUTING",
             },
@@ -279,7 +333,7 @@ def test_routing_readiness_detects_stale_equivalence_after_schematic_change(
             "production_authority": "NOT_AUTHORIZED",
             "native_schematic_sha256": approved_hash,
             "native_pcb_sha256": pcb_hash,
-            "equivalence_result_sha256": "e" * 64,
+            "equivalence_result_sha256": equivalence_result_hash,
         },
     )
     _write_json(
@@ -305,7 +359,7 @@ def test_routing_readiness_detects_stale_equivalence_after_schematic_change(
             "production_release_authorized": False,
             "native_schematic_sha256": approved_hash,
             "native_pcb_sha256": pcb_hash,
-            "equivalence_result_sha256": "e" * 64,
+            "equivalence_result_sha256": equivalence_result_hash,
             "routing_readiness_gate": {
                 "current_expected_status": "READY_FOR_ROUTING",
             },
@@ -517,3 +571,117 @@ def test_routing_readiness_blocks_gate_result_hash_disagreement(
         "hash:equivalence_result_sha256"
         in result["authority_consensus_errors"]
     )
+
+
+
+def test_routing_readiness_blocks_tampered_equivalence_result(
+    tmp_path,
+    monkeypatch,
+):
+    system = tmp_path / "hardware/system_carrier"
+    altium = system / "altium"
+    generated = tmp_path / "generated"
+    generated.mkdir()
+
+    schematic_hash = _write_schematic(altium)
+    pcb = altium / "native" / "EVT_SYS_CARRIER.PcbDoc"
+    pcb.write_bytes(b"PRE_ROUTING_PCB")
+    pcb_hash = hashlib.sha256(pcb.read_bytes()).hexdigest()
+    equivalence_result_hash = _write_authority_result(
+        altium,
+        production=False,
+    )
+
+    pass_result = {
+        "schema": "TEST",
+        "status": "PASS",
+        "errors": [],
+        "warnings": [],
+    }
+    for name in (
+        "validate_cad_policy",
+        "validate_placement",
+        "validate_rooms",
+        "validate_impedance",
+        "validate_power_width",
+        "validate_rule_scope",
+    ):
+        monkeypatch.setattr(
+            routing,
+            name,
+            lambda *args, **kwargs: dict(pass_result),
+        )
+    monkeypatch.setattr(
+        routing,
+        "validate_prelayout",
+        lambda **kwargs: dict(pass_result),
+    )
+
+    _write_json(
+        altium / "ALTIUM_NATIVE_STATUS_SYS_001.json",
+        {
+            "native_import_status": "NATIVE_FILES_READY",
+            "equivalence_gate_status": "PASS",
+            "layout_authority": "AUTHORIZED",
+            "production_authority": "NOT_AUTHORIZED",
+            "native_schematic_sha256": schematic_hash,
+            "native_pcb_sha256": pcb_hash,
+            "equivalence_result_sha256": equivalence_result_hash,
+        },
+    )
+    _write_json(
+        altium / "ALTIUM_STATUS_SYS_001.json",
+        {
+            "current_phase": "READY_FOR_ROUTING",
+            "altium": {
+                "equivalence_gate": True,
+                "production_release_authorized": False,
+                "native_pcb_sha256": pcb_hash,
+            },
+            "routing_readiness": {
+                "routing_authorized": True,
+            },
+        },
+    )
+    _write_json(
+        system / "CAD_AUTHORITY_SYS_001.json",
+        {
+            "native_document_status": "NATIVE_EQUIVALENCE_PASS",
+            "pcb_layout_authority": "ALTIUM_AUTHORIZED",
+            "pcb_design_phase": "ALTIUM_NATIVE_ROUTING",
+            "production_release_authorized": False,
+            "native_schematic_sha256": schematic_hash,
+            "native_pcb_sha256": pcb_hash,
+            "equivalence_result_sha256": equivalence_result_hash,
+            "routing_readiness_gate": {
+                "current_expected_status": "READY_FOR_ROUTING",
+            },
+        },
+    )
+
+    result_path = (
+        altium / "equivalence" / "altium_equivalence_result.json"
+    )
+    _write_json(
+        result_path,
+        {
+            "schema": "ALTIUM-EQUIVALENCE-RESULT-001",
+            "status": "FAIL",
+            "layout_authority": "NOT_AUTHORIZED",
+            "production_authority": "NOT_AUTHORIZED",
+        },
+    )
+
+    result = routing.validate(
+        system_root=system,
+        generated_dir=generated,
+    )
+
+    assert result["status"] == "BLOCKED"
+    assert result["routing_authorized"] is False
+    assert "hash:equivalence_result_file" in result[
+        "authority_consensus_errors"
+    ]
+    assert "result:equivalence_semantics" in result[
+        "authority_consensus_errors"
+    ]
