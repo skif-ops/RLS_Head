@@ -573,6 +573,72 @@ def validate_manifest(
                 if not receipt_source or receipt_source != package_source:
                     errors.append("import_receipt_source_commit")
 
+                source_binding = import_receipt.get(
+                    "import_source_binding"
+                )
+                if not isinstance(source_binding, dict):
+                    errors.append("import_receipt_source_binding")
+                else:
+                    if (
+                        source_binding.get("schema")
+                        != "ALTIUM-IMPORT-SOURCE-BINDING-001"
+                    ):
+                        errors.append(
+                            "import_receipt_source_binding_schema"
+                        )
+                    if source_binding.get("status") != "PASS":
+                        errors.append(
+                            "import_receipt_source_binding_status"
+                        )
+                    if source_binding.get("errors") not in ([], None):
+                        errors.append(
+                            "import_receipt_source_binding_errors"
+                        )
+
+                    binding_manifest_hash = str(
+                        source_binding.get(
+                            "package_manifest_sha256",
+                            "",
+                        )
+                    ).strip().lower()
+                    actual_manifest_hash = str(
+                        integrity.get(
+                            "import_package_manifest",
+                            {},
+                        ).get("sha256_actual", "")
+                    ).strip().lower()
+                    if (
+                        not actual_manifest_hash
+                        or binding_manifest_hash
+                        != actual_manifest_hash
+                    ):
+                        errors.append(
+                            "import_receipt_source_binding_manifest_hash"
+                        )
+
+                    if (
+                        str(
+                            source_binding.get("source_commit", "")
+                        ).strip().lower()
+                        != package_source
+                    ):
+                        errors.append(
+                            "import_receipt_source_binding_source_commit"
+                        )
+
+                    binding_count = import_package.get(
+                        "source_binding_count"
+                    )
+                    if (
+                        source_binding.get("expected_count")
+                        != binding_count
+                        or source_binding.get("checked_count")
+                        != binding_count
+                    ):
+                        errors.append(
+                            "import_receipt_source_binding_count"
+                        )
+
     native_file_preflight = None
     preflight_path = resolved.get("native_file_preflight")
     if preflight_path is not None:
