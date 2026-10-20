@@ -76,6 +76,12 @@ def _sync_production_authority(
     implementation = _read_json(implementation_status_path)
     authority = _read_json(authority_path)
 
+    committed_release_result = _read_json(result_path)
+    if committed_release_result != release_result:
+        raise ValueError(
+            "production release result changed after gate PASS"
+        )
+
     result_hash = _sha256_file(result_path)
     schematic_hash = _sha256_file(schematic_path)
     pcb_hash = _sha256_file(pcb_path)
