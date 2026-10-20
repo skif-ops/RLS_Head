@@ -263,6 +263,17 @@ def validate(
                 "hash:native_pcb_sha256"
             )
 
+        if _tracked_hash_mismatch(
+            "equivalence_result_sha256",
+            [
+                native_status.get("equivalence_result_sha256", ""),
+                cad_authority.get("equivalence_result_sha256", ""),
+            ],
+        ):
+            authority_consensus_errors.append(
+                "hash:equivalence_result_sha256"
+            )
+
     if production_authority_consensus:
         if _tracked_hash_mismatch(
             "production_release_source_pcb_sha256",
@@ -283,6 +294,23 @@ def validate(
         ):
             authority_consensus_errors.append(
                 "hash:production_release_source_pcb_sha256"
+            )
+
+        if _tracked_hash_mismatch(
+            "production_release_result_sha256",
+            [
+                native_status.get(
+                    "production_release_result_sha256",
+                    "",
+                ),
+                cad_authority.get(
+                    "production_release_result_sha256",
+                    "",
+                ),
+            ],
+        ):
+            authority_consensus_errors.append(
+                "hash:production_release_result_sha256"
             )
 
     if authority_consensus_errors:
