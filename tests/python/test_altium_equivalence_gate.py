@@ -52,6 +52,15 @@ def _manifest(tmp_path: Path) -> Path:
     raw_hashes = {}
     for artifact_id, (relative, content) in raw_audit_entries.items():
         digest = _write(tmp_path / relative, content)
+        canonical_relative = (
+            "hardware/system_carrier/altium/equivalence/"
+            + Path(relative).name
+        )
+        canonical_digest = _write(
+            tmp_path / canonical_relative,
+            content,
+        )
+        assert canonical_digest == digest
         raw_hashes[artifact_id] = digest
         artifacts.append(
             {
@@ -353,6 +362,15 @@ def _manifest(tmp_path: Path) -> Path:
     hierarchy_export_hash = hashlib.sha256(
         hierarchy_export_content
     ).hexdigest()
+    assert (
+        _write(
+            tmp_path
+            / "hardware/system_carrier/altium/equivalence/"
+            "hierarchy_export.csv",
+            hierarchy_export_content,
+        )
+        == hierarchy_export_hash
+    )
     hierarchy_validation_content = json.dumps(
         {
             "schema": "ALTIUM-NATIVE-HIERARCHY-RESULT-001",
