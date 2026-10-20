@@ -52,6 +52,15 @@ def _manifest(tmp_path: Path) -> Path:
     raw_hashes = {}
     for artifact_id, (relative, content) in raw_audit_entries.items():
         digest = _write(tmp_path / relative, content)
+        canonical_relative = (
+            "hardware/system_carrier/altium/equivalence/"
+            + Path(relative).name
+        )
+        canonical_digest = _write(
+            tmp_path / canonical_relative,
+            content,
+        )
+        assert canonical_digest == digest
         raw_hashes[artifact_id] = digest
         artifacts.append(
             {
@@ -353,6 +362,15 @@ def _manifest(tmp_path: Path) -> Path:
     hierarchy_export_hash = hashlib.sha256(
         hierarchy_export_content
     ).hexdigest()
+    assert (
+        _write(
+            tmp_path
+            / "hardware/system_carrier/altium/equivalence/"
+            "hierarchy_export.csv",
+            hierarchy_export_content,
+        )
+        == hierarchy_export_hash
+    )
     hierarchy_validation_content = json.dumps(
         {
             "schema": "ALTIUM-NATIVE-HIERARCHY-RESULT-001",
@@ -457,6 +475,17 @@ def _manifest(tmp_path: Path) -> Path:
             "input_sha256": runtime_input_hashes,
             "output_sha256": runtime_output_hashes,
             "receipt_sha256": runtime_receipt_hash,
+            "notes": [
+                (
+                    "PASS validates the operator runtime receipt against the exact "
+                    "pre-routing native documents, scripts, API contract and CSV "
+                    "outputs used for equivalence."
+                ),
+                (
+                    "The receipt is explicit external Altium Designer execution "
+                    "evidence; it is never synthesized by repository automation."
+                ),
+            ],
         },
         sort_keys=True,
     ).encode()
@@ -698,6 +727,7 @@ def test_synthetic_altium_equivalence_fixture_is_test_ready(tmp_path):
     assert result["native_audit"]["status"] == "PASS"
     assert result["script_runtime"]["status"] == "PASS"
     assert result["script_runtime"]["runtime_validated"] is True
+    assert result["script_runtime_rerun"] == result["script_runtime"]
     assert all(
         value == "PASS"
         for value in result["checks"].values()
@@ -1166,3 +1196,53 @@ def test_changed_runtime_export_invalidates_equivalence_gate(tmp_path):
 
     assert result["status"] == "INVALID"
     assert "script_runtime_hash:hierarchy_export" in result["errors"]
+
+
+
+def test_forged_runtime_pass_result_is_not_reproducible(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    receipt_item = next(
+        item
+        for item in data["artifacts"]
+        if item["id"] == "script_runtime_receipt"
+    )
+    result_item = next(
+        item
+        for item in data["artifacts"]
+        if item["id"] == "script_runtime_result"
+    )
+
+    receipt_path = tmp_path / receipt_item["path"]
+    receipt = json.loads(receipt_path.read_text())
+    receipt["procedures"]["ExportNativeAudit"]["runtime_errors"] = 1
+    receipt_content = json.dumps(receipt, sort_keys=True).encode()
+    receipt_path.write_bytes(receipt_content)
+    receipt_hash = hashlib.sha256(receipt_content).hexdigest()
+    receipt_item["sha256"] = receipt_hash
+
+    # Forge only the committed validation result: retain PASS semantics
+    # and update the receipt hash so simple provenance checks still match.
+    result_path = tmp_path / result_item["path"]
+    forged = json.loads(result_path.read_text())
+    forged["receipt_sha256"] = receipt_hash
+    forged_content = json.dumps(forged, sort_keys=True).encode()
+    result_path.write_bytes(forged_content)
+    result_item["sha256"] = hashlib.sha256(
+        forged_content
+    ).hexdigest()
+
+    manifest.write_text(
+        json.dumps(data, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert (
+        "script_runtime_result_not_reproducible"
+        in result["errors"]
+    )
+    assert "SCRIPT_RUNTIME_RERUN" in result["reason_codes"]
