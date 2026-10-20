@@ -708,7 +708,7 @@ def run_transition(
                 generated=generated,
                 stage_results=stage_results,
                 errors=[f"status_sync:{exc}"],
-                routing_authorized=True,
+                routing_authorized=False,
             )
         generated.extend(
             [
