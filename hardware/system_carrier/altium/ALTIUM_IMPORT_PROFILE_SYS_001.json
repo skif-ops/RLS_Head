@@ -27,6 +27,7 @@
   "preserve_source_files": true,
   "import_log_required": true,
   "post_import_checks": [
+    "current_source_binding",
     "import_provenance_receipt",
     "compile_zero_errors",
     "compile_zero_warnings",
@@ -57,5 +58,7 @@
     "altium/ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv"
   ],
   "import_package_manifest_required": true,
-  "import_receipt_required": true
+  "import_receipt_required": true,
+  "import_package_verification_required": true,
+  "current_source_binding_required": true
 }
