@@ -6,6 +6,8 @@ from pathlib import Path
 
 import kicad_sch_api as ksa
 
+from tools.generate_system_carrier_schematic import load_footprint_assignments
+
 
 EXPECTED_CHILDREN = {
     "10_POWER_INPUT.kicad_sch",
@@ -26,6 +28,18 @@ def validate(root: Path) -> dict:
 
     errors: list[str] = []
     parsed: list[str] = []
+    footprint_assignments = load_footprint_assignments(
+        Path(__file__).resolve().parents[1]
+        / "hardware"
+        / "system_carrier"
+        / "FOOTPRINT_ASSIGNMENT_SYS_002.csv"
+    )
+    found_footprint_refs: set[str] = set()
+
+    if manifest.get("footprint_assignment_count") != len(
+        footprint_assignments
+    ):
+        errors.append("footprint_assignment_count")
 
     if manifest.get("schema") != "SYSTEM-CARRIER-CAD-SCAFFOLD-001":
         errors.append("manifest_schema")
@@ -142,19 +156,35 @@ def validate(root: Path) -> dict:
             errors.append(f"missing:{path.name}")
             continue
         try:
-            ksa.load_schematic(str(path))
+            schematic = ksa.load_schematic(str(path))
         except Exception as exc:
             errors.append(
                 f"parse:{path.name}:{type(exc).__name__}"
             )
         else:
             parsed.append(path.name)
+            for component in schematic.components:
+                reference = component.reference
+                if reference.startswith("#FLG"):
+                    continue
+                if reference in found_footprint_refs:
+                    errors.append(f"duplicate_reference:{reference}")
+                found_footprint_refs.add(reference)
+                expected = footprint_assignments.get(reference)
+                if expected is None:
+                    errors.append(f"uncontracted_reference:{reference}")
+                elif component.footprint != expected:
+                    errors.append(f"footprint_mismatch:{reference}")
+
+    for reference in sorted(set(footprint_assignments) - found_footprint_refs):
+        errors.append(f"missing_footprint_reference:{reference}")
 
     return {
         "schema": "SYSTEM-CARRIER-CAD-SCAFFOLD-VALIDATION-001",
         "status": "PASS" if not errors else "FAIL",
         "errors": errors,
         "parsed_schematics": parsed,
+        "verified_footprint_count": len(found_footprint_refs),
         "placeholder_count": len(
             manifest.get("symbol_placeholders", [])
         ),
@@ -164,6 +194,7 @@ def validate(root: Path) -> dict:
             unused_gpio_nc_count,
         "notes": [
             "PASS verifies generated KiCad syntax/hierarchy files parse through kicad-sch-api.",
+            "Every physical component must retain its locked footprint assignment after serialization.",
             "Placeholder count is informational and must reach zero before Review A.",
         ],
     }

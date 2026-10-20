@@ -63,6 +63,9 @@ def build(
         source["root_schematic"],
         *source["child_sheets"],
         source["symbol_library"],
+        "fp-lib-table",
+        "sym-lib-table",
+        "footprint_import_staging.json",
     ]
 
     missing = [
@@ -111,25 +114,21 @@ def build(
         / "footprints"
         / source["footprint_library"]
     )
-    for path in sorted(
-        footprint_dir.rglob("*")
-    ):
+    for path in sorted(generated.glob("*.pretty/*.kicad_mod")):
         if not path.is_file():
             continue
         rel = path.relative_to(generated)
         target = output / "kicad_source" / rel
         records.append(copy_file(path, target))
-        footprint_rel = path.relative_to(footprint_dir)
-        source_footprint = footprint_source_root / footprint_rel
-        if not source_footprint.is_file():
-            raise FileNotFoundError(
-                "missing source footprint for import binding: "
-                + source_footprint.as_posix()
-            )
-        register_binding(
-            target=target,
-            source_path=source_footprint,
-        )
+        if path.is_relative_to(footprint_dir):
+            footprint_rel = path.relative_to(footprint_dir)
+            source_footprint = footprint_source_root / footprint_rel
+            if not source_footprint.is_file():
+                raise FileNotFoundError(
+                    "missing source footprint for import binding: "
+                    + source_footprint.as_posix()
+                )
+            register_binding(target=target, source_path=source_footprint)
 
     contract_names = [
         "BOM_SYS_CARRIER_003.csv",
@@ -243,6 +242,7 @@ def build(
     generator_sources = [
         repo_root / "tools" / "generate_system_carrier_schematic.py",
         repo_root / "tools" / "generate_system_carrier_symbols.py",
+        repo_root / "tools" / "validate_system_carrier_cad_scaffold.py",
         repo_root / "tools" / "kicad_netlist_baseline.py",
         repo_root / ".github" / "workflows" / "hil-r1.yml",
     ]

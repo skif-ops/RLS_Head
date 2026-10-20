@@ -1509,5 +1509,5 @@ jobs:
             build-cad/system_carrier/*.json
             build-cad/system_carrier/fp-lib-table
             build-cad/system_carrier/sym-lib-table
-            build-cad/system_carrier/SystemCarrier_Local.pretty/*.kicad_mod
+            build-cad/system_carrier/*.pretty/*.kicad_mod
 

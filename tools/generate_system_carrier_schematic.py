@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
+import os
 import re
 import shutil
 from pathlib import Path
@@ -45,6 +47,104 @@ SYMBOL_LIBRARIES = {
     "Interface_Ethernet": "${KICAD9_SYMBOL_DIR}/Interface_Ethernet.kicad_sym",
 }
 
+# Contract names for Altium native patterns use KiCad stock geometry as an
+# import bridge. Native pad geometry still requires the separate Altium audit.
+ALTIUM_IMPORT_BRIDGES = {
+    "Molex_43650-0200_RA_THT_2P": (
+        "Connector_Molex",
+        "Molex_Micro-Fit_3.0_43650-0200_1x02_P3.00mm_Horizontal",
+    ),
+    "Molex_43045-0600_RA_THT_6P": (
+        "Connector_Molex",
+        "Molex_Micro-Fit_3.0_43045-0600_2x03_P3.00mm_Horizontal",
+    ),
+    "Hirose_UFL_R_SMT_K": (
+        "Connector_Coaxial",
+        "U.FL_Hirose_U.FL-R-SMT-1_Vertical",
+    ),
+    "TagConnect_TC2030_NL": (
+        "Connector",
+        "Tag-Connect_TC2030-IDC-NL_2x03_P1.27mm_Vertical",
+    ),
+    "Coilcraft_XFL4020_4x4": (
+        "Inductor_SMD",
+        "L_Coilcraft_XxL4020",
+    ),
+    "ESwitch_TL3301_GullWing_6x6": (
+        "Button_Switch_SMD",
+        "SW_Push_1P1T_NO_E-Switch_TL3301NxxxxxG",
+    ),
+}
+
+
+def find_stock_footprints() -> Path:
+    candidates = [
+        os.environ.get("KICAD_FOOTPRINT_DIR", ""),
+        os.environ.get("KICAD9_FOOTPRINT_DIR", ""),
+        os.environ.get("KICAD10_FOOTPRINT_DIR", ""),
+        "/usr/share/kicad/footprints",
+        str(
+            Path(os.environ.get("ProgramFiles", "C:/Program Files"))
+            / "KiCad/10.0/share/kicad/footprints"
+        ),
+    ]
+    for candidate in candidates:
+        if candidate and (Path(candidate) / "Capacitor_SMD.pretty").is_dir():
+            return Path(candidate)
+    raise FileNotFoundError("KiCad stock footprint libraries not found")
+
+
+def stage_import_footprints(
+    output_dir: Path,
+    assignments: dict[str, str],
+) -> dict:
+    stock_root = find_stock_footprints()
+    records: list[dict[str, str | bool]] = []
+    for identifier in sorted(set(assignments.values())):
+        library, name = identifier.split(":", 1)
+        if library == "SystemCarrier_Local":
+            continue
+        bridge = library == "SystemCarrier_Altium"
+        source_library, source_name = (
+            ALTIUM_IMPORT_BRIDGES[name]
+            if bridge
+            else (library, name)
+        )
+        source = stock_root / f"{source_library}.pretty" / f"{source_name}.kicad_mod"
+        if not source.is_file():
+            raise FileNotFoundError(f"Missing KiCad footprint: {source}")
+        content = source.read_bytes()
+        if bridge:
+            original = f'(footprint "{source_name}"'.encode()
+            alias = f'(footprint "{name}"'.encode()
+            if not content.startswith(original):
+                raise ValueError(f"Unexpected KiCad footprint header: {source}")
+            content = alias + content[len(original):]
+        target = output_dir / f"{library}.pretty" / f"{name}.kicad_mod"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(content)
+        records.append(
+            {
+                "footprint_id": identifier,
+                "source_library": source_library,
+                "source_name": source_name,
+                "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                "staged_sha256": hashlib.sha256(content).hexdigest(),
+                "altium_import_bridge": bridge,
+            }
+        )
+    manifest = {
+        "schema": "SYSTEM-CARRIER-FOOTPRINT-IMPORT-STAGING-001",
+        "status": "STAGED_FOR_IMPORT",
+        "stock_footprint_root": str(stock_root),
+        "records": records,
+        "native_geometry_audit_required": True,
+    }
+    (output_dir / "footprint_import_staging.json").write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    return manifest
+
 
 def write_symbol_library_table(output_dir: Path) -> None:
     lines = [
@@ -81,6 +181,25 @@ def load_symbol_pin_contract(
         if reader.fieldnames is None:
             raise ValueError("SYMBOL_PIN_CONTRACT_SYS_001.csv missing header")
         return list(reader)
+
+
+def load_footprint_assignments(path: Path) -> dict[str, str]:
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        rows = csv.DictReader(handle)
+        if rows.fieldnames is None or not {"ref", "footprint_id"}.issubset(
+            rows.fieldnames
+        ):
+            raise ValueError("FOOTPRINT_ASSIGNMENT_SYS_002.csv missing columns")
+        assignments: dict[str, str] = {}
+        for row in rows:
+            reference = str(row["ref"] or "").strip()
+            footprint = str(row["footprint_id"] or "").strip()
+            if not reference or not footprint or ":" not in footprint:
+                raise ValueError(f"Invalid footprint assignment: {reference}")
+            if reference in assignments:
+                raise ValueError(f"Duplicate footprint assignment: {reference}")
+            assignments[reference] = footprint
+    return assignments
 
 
 def apply_symbol_pin_contract(
@@ -1644,17 +1763,6 @@ def build(output_dir: Path) -> dict:
         local_fp_output,
         dirs_exist_ok=True,
     )
-    (output_dir / "fp-lib-table").write_text(
-        "(fp_lib_table\n"
-        "  (lib (name \"SystemCarrier_Local\") "
-        "(type \"KiCad\") "
-        "(uri \"${KIPRJMOD}/SystemCarrier_Local.pretty\") "
-        "(options \"\") "
-        "(descr \"RLS Head System Carrier local footprints\"))\n"
-        ")\n",
-        encoding="utf-8",
-    )
-
     write_symbol_library_table(output_dir)
 
     symbol_cache = ksa.library.get_symbol_cache()
@@ -1680,6 +1788,31 @@ def build(output_dir: Path) -> dict:
         / "system_carrier"
         / "SYMBOL_PIN_CONTRACT_SYS_001.csv"
     )
+    footprint_assignments = load_footprint_assignments(
+        repo_root
+        / "hardware"
+        / "system_carrier"
+        / "FOOTPRINT_ASSIGNMENT_SYS_002.csv"
+    )
+    footprint_staging = stage_import_footprints(
+        output_dir, footprint_assignments
+    )
+    footprint_libraries = {
+        identifier.split(":", 1)[0]
+        for identifier in footprint_assignments.values()
+    }
+    fp_table = ["(fp_lib_table"]
+    for library in sorted(footprint_libraries):
+        fp_table.append(
+            f'  (lib (name "{library}") (type "KiCad") '
+            f'(uri "${{KIPRJMOD}}/{library}.pretty") '
+            '(options "") (descr "System Carrier import footprint"))'
+        )
+    fp_table.append(")")
+    (output_dir / "fp-lib-table").write_text(
+        "\n".join(fp_table) + "\n", encoding="utf-8"
+    )
+    assigned_footprint_refs: set[str] = set()
 
     hierarchy_interface_path = (
         repo_root
@@ -1879,6 +2012,17 @@ def build(output_dir: Path) -> dict:
             sheet_hierarchy_rows,
         )
 
+        for component in child.components:
+            reference = component.reference
+            if reference.startswith("#FLG"):
+                continue
+            if reference not in footprint_assignments:
+                raise ValueError(f"Missing footprint contract: {reference}")
+            if reference in assigned_footprint_refs:
+                raise ValueError(f"Duplicate schematic reference: {reference}")
+            component.footprint = footprint_assignments[reference]
+            assigned_footprint_refs.add(reference)
+
         child_path = output_dir / filename
         child.save(str(child_path))
         normalize_serialized_hierarchy_shapes(
@@ -1887,6 +2031,13 @@ def build(output_dir: Path) -> dict:
                 hierarchy_rows,
                 name,
             ),
+        )
+
+    missing_footprint_refs = set(footprint_assignments) - assigned_footprint_refs
+    if missing_footprint_refs:
+        raise ValueError(
+            "Footprint assignments absent from schematic: "
+            + ", ".join(sorted(missing_footprint_refs))
         )
 
     (output_dir / f"{PROJECT_NAME}.kicad_pro").write_text(
@@ -1920,6 +2071,12 @@ def build(output_dir: Path) -> dict:
         "local_symbol_library": local_symbol_path.name,
         "local_symbol_manifest": local_symbol_manifest,
         "local_footprint_library": "SystemCarrier_Local.pretty",
+        "footprint_assignment_count": len(assigned_footprint_refs),
+        "staged_footprint_count": len(footprint_staging["records"]),
+        "altium_import_bridge_count": sum(
+            bool(record["altium_import_bridge"])
+            for record in footprint_staging["records"]
+        ),
         "fp_lib_table": "fp-lib-table",
         "sym_lib_table": "sym-lib-table",
         "symbol_library_bindings": dict(SYMBOL_LIBRARIES),

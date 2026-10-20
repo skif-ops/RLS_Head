@@ -96,7 +96,7 @@ def test_locked_footprints_are_embedded_only_when_available(tmp_path):
     }
 
     assert by_name["TCAN3404DRBRQ1"]["footprint"] == (
-        "Package_SON:Texas_DRB0008A"
+        "Package_DFN_QFN:Texas_DRB0008A"
     )
     assert by_name["TPS62132RGTR"]["footprint"] == (
         "Package_DFN_QFN:"
