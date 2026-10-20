@@ -96,7 +96,7 @@ Only `ALTIUM_EQUIVALENCE_GATE = PASS` changes layout authority to Altium. Immedi
 
 GitHub CI uses `tools.altium_native_ci_gate` to distinguish the repository phases. Before native import it requires `PRE_IMPORT` with `READY_FOR_NATIVE_IMPORT`. Once both native documents are present, CI switches to `POST_EQUIVALENCE`: it re-runs the equivalence gate from committed evidence, requires the committed result to be reproducible, verifies tracked authority hashes/status synchronization, and requires routing readiness to be `READY_FOR_ROUTING`.
 
-A partial native pair, stale authority hash, non-reproducible equivalence result or unsynchronized status fails CI.
+A partial native pair, stale authority hash, non-reproducible equivalence result or unsynchronized status fails CI. Effective routing/production authority also requires consensus across `ALTIUM_NATIVE_STATUS_SYS_001.json`, `ALTIUM_STATUS_SYS_001.json` and `CAD_AUTHORITY_SYS_001.json`; no single tracked status file is authoritative by itself.
 
 ## Still not production release
 
