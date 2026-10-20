@@ -863,6 +863,10 @@ jobs:
           assert manifest["status"] == "CAD_SCAFFOLD_READY"
           assert validation["status"] == "PASS"
           assert validation["placeholder_count"] == 0
+          assert validation["verified_footprint_count"] == 92
+          assert manifest["footprint_assignment_count"] == 92
+          assert manifest["staged_footprint_count"] == 25
+          assert manifest["altium_import_bridge_count"] == 6
           assert erc["source"] == "EVT_SYS_CARRIER.kicad_sch"
 
           violations = sum(
@@ -1396,6 +1400,12 @@ jobs:
               item["path"]
               for item in data["files"]
           }
+          assert "kicad_source/fp-lib-table" in package_paths
+          assert "kicad_source/sym-lib-table" in package_paths
+          assert sum(
+              path.endswith(".kicad_mod")
+              for path in package_paths
+          ) == 29
           assert all(
               item["package_path"] in package_paths
               for item in data["source_bindings"]
