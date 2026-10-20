@@ -38,6 +38,7 @@ def build(
     generated = Path(generated_dir)
     system = Path(system_root)
     output = Path(output_dir)
+    repo_root = system.parent.parent
 
     profile_path = (
         system
@@ -87,6 +88,15 @@ def build(
     output.mkdir(parents=True)
 
     records: list[dict] = []
+    source_bindings: list[dict[str, str]] = []
+
+    def register_binding(*, target: Path, source_path: Path) -> None:
+        source_bindings.append(
+            {
+                "package_path": target.relative_to(output).as_posix(),
+                "repository_path": source_path.relative_to(repo_root).as_posix(),
+            }
+        )
 
     for name in required_generated:
         records.append(
@@ -96,23 +106,37 @@ def build(
             )
         )
 
+    footprint_source_root = (
+        system
+        / "footprints"
+        / source["footprint_library"]
+    )
     for path in sorted(
         footprint_dir.rglob("*")
     ):
         if not path.is_file():
             continue
         rel = path.relative_to(generated)
-        records.append(
-            copy_file(
-                path,
-                output / "kicad_source" / rel,
+        target = output / "kicad_source" / rel
+        records.append(copy_file(path, target))
+        footprint_rel = path.relative_to(footprint_dir)
+        source_footprint = footprint_source_root / footprint_rel
+        if not source_footprint.is_file():
+            raise FileNotFoundError(
+                "missing source footprint for import binding: "
+                + source_footprint.as_posix()
             )
+        register_binding(
+            target=target,
+            source_path=source_footprint,
         )
 
     contract_names = [
         "BOM_SYS_CARRIER_003.csv",
         "BOM_SYS_CARRIER_LAYOUT_004.csv",
         "FOOTPRINT_ASSIGNMENT_SYS_002.csv",
+        "SYMBOL_PIN_CONTRACT_SYS_001.csv",
+        "AUX_SYMBOL_PIN_CONTRACT_SYS_001.csv",
         "PINMAP_SYS_001.csv",
         "CONNECTOR_PINOUT_SYS_001.csv",
         "CONNECTOR_NATIVE_PINMAP_SYS_001.csv",
@@ -124,11 +148,12 @@ def build(
     ]
 
     for name in contract_names:
-        records.append(
-            copy_file(
-                system / name,
-                output / "contracts" / name,
-            )
+        source_path = system / name
+        target = output / "contracts" / name
+        records.append(copy_file(source_path, target))
+        register_binding(
+            target=target,
+            source_path=source_path,
         )
 
     audit_script_dir = system / "altium" / "scripts"
@@ -137,11 +162,11 @@ def build(
             if not script_path.is_file():
                 continue
             rel = script_path.relative_to(system / "altium")
-            records.append(
-                copy_file(
-                    script_path,
-                    output / "altium_target" / rel,
-                )
+            target = output / "altium_target" / rel
+            records.append(copy_file(script_path, target))
+            register_binding(
+                target=target,
+                source_path=script_path,
             )
 
     handoff_files = [
@@ -175,7 +200,7 @@ def build(
             )
         )
 
-    for name in [
+    altium_target_names = [
         "EVT_SYS_CARRIER.PrjPcb",
         "ALTIUM_IMPORT_PROFILE_SYS_001.json",
         "ALTIUM_LAYER_STACK_SYS_001.csv",
@@ -202,12 +227,33 @@ def build(
         "ALTIUM_STATUS_SYS_001.json",
         "ALTIUM_SCRIPT_API_COMPAT_SYS_001.json",
         "README.md",
-    ]:
-        records.append(
-            copy_file(
-                system / "altium" / name,
-                output / "altium_target" / name,
+    ]
+    for name in altium_target_names:
+        source_path = system / "altium" / name
+        target = output / "altium_target" / name
+        records.append(copy_file(source_path, target))
+        if name != "README.md":
+            register_binding(
+                target=target,
+                source_path=source_path,
             )
+
+    generator_sources = [
+        repo_root / "tools" / "generate_system_carrier_schematic.py",
+        repo_root / "tools" / "generate_system_carrier_symbols.py",
+        repo_root / "tools" / "kicad_netlist_baseline.py",
+        repo_root / ".github" / "workflows" / "hil-r1.yml",
+    ]
+    for source_path in generator_sources:
+        target = (
+            output
+            / "source_binding"
+            / source_path.relative_to(repo_root)
+        )
+        records.append(copy_file(source_path, target))
+        register_binding(
+            target=target,
+            source_path=source_path,
         )
 
     evidence_files = [
@@ -271,6 +317,15 @@ def build(
         "preserve_kicad": authority[
             "preserve_kicad"
         ],
+        "current_source_binding_required": True,
+        "source_binding_count": len(source_bindings),
+        "source_bindings": sorted(
+            source_bindings,
+            key=lambda item: (
+                item["repository_path"],
+                item["package_path"],
+            ),
+        ),
         "file_count": len(records),
         "files": records,
         "post_import_checks": profile[

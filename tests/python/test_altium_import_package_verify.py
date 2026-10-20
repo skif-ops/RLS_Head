@@ -32,6 +32,18 @@ def _write_package(root: Path) -> None:
         "board_id": "EVT-SYS-CARRIER",
         "hardware_revision": "A",
         "source_commit": "1" * 40,
+        "current_source_binding_required": True,
+        "source_binding_count": 1,
+        "source_bindings": [
+            {
+                "package_path": (
+                    "kicad_source/EVT_SYS_CARRIER.kicad_pro"
+                ),
+                "repository_path": (
+                    "hardware/system_carrier/EVT_SYS_CARRIER.source"
+                ),
+            }
+        ],
         "file_count": len(records),
         "files": records,
     }
@@ -50,6 +62,7 @@ def test_import_package_verify_passes_exact_package(tmp_path):
     assert result["errors"] == []
     assert result["expected_file_count"] == 2
     assert result["verified_file_count"] == 2
+    assert result["source_binding_count"] == 1
     assert len(result["package_manifest"]["sha256"]) == 64
 
 

@@ -6,6 +6,10 @@ import json
 import re
 from pathlib import Path
 
+from tools.altium_import_source_binding import (
+    validate as validate_import_source_binding,
+)
+
 
 SCHEMA = "ALTIUM-NATIVE-IMPORT-RECEIPT-001"
 PACKAGE_SCHEMA = "ALTIUM-IMPORT-PACKAGE-001"
@@ -136,6 +140,24 @@ def build_receipt(
             ):
                 errors.append("import_package_verification_file_count")
 
+            if (
+                package_verification_data.get("source_binding_count")
+                != package.get("source_binding_count")
+            ):
+                errors.append(
+                    "import_package_verification_source_binding_count"
+                )
+
+    import_source_binding = None
+    if package_path.is_file():
+        import_source_binding = validate_import_source_binding(
+            package_manifest=package_path,
+            repository_root=root,
+        )
+        if import_source_binding.get("status") != "PASS":
+            for item in import_source_binding.get("errors", []):
+                errors.append(f"import_source_binding:{item}")
+
     source_commit = str(package.get("source_commit", "")).strip()
     if source_commit and not re.fullmatch(r"[0-9a-fA-F]{40}", source_commit):
         errors.append("source_commit")
@@ -260,6 +282,7 @@ def build_receipt(
         "importer_version": importer_version,
         "import_package_manifest": package_record,
         "import_package_verification": package_verification_record,
+        "import_source_binding": import_source_binding,
         "import_native_file_preflight": preflight_record,
         "native_artifacts": artifacts,
         "errors": sorted(set(errors)),
@@ -269,6 +292,11 @@ def build_receipt(
             (
                 "This receipt records the import-time native snapshot, import "
                 "log and CI import package used for the Altium conversion."
+            ),
+            (
+                "A PASS receipt also proves the verified import package source "
+                "bindings matched the current repository checkout byte-for-byte "
+                "at import time."
             ),
             (
                 "The native SchDoc/PcbDoc may evolve after import while applying "

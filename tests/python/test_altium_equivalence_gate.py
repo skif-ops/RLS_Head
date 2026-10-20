@@ -230,6 +230,11 @@ def _manifest(tmp_path: Path) -> Path:
         "sha256": baseline_hash,
         "size": len(baseline_content),
     }
+    bound_bom_file = {
+        "path": "contracts/BOM_SYS_CARRIER_LAYOUT_004.csv",
+        "sha256": bom_contract_hash,
+        "size": len(bom_contract_content),
+    }
     package_content = json.dumps(
         {
             "schema": "ALTIUM-IMPORT-PACKAGE-001",
@@ -241,8 +246,19 @@ def _manifest(tmp_path: Path) -> Path:
             "source_cad": "KiCad 9 retained verification baseline",
             "target_cad": "Altium Designer",
             "preserve_kicad": True,
-            "file_count": 1,
-            "files": [package_file],
+            "current_source_binding_required": True,
+            "source_binding_count": 1,
+            "source_bindings": [
+                {
+                    "package_path": bound_bom_file["path"],
+                    "repository_path": (
+                        "hardware/system_carrier/"
+                        "BOM_SYS_CARRIER_LAYOUT_004.csv"
+                    ),
+                }
+            ],
+            "file_count": 2,
+            "files": [package_file, bound_bom_file],
         },
         sort_keys=True,
     ).encode()
@@ -259,9 +275,10 @@ def _manifest(tmp_path: Path) -> Path:
                 "path": "manifest.json",
                 "sha256": package_hash,
             },
-            "expected_file_count": 1,
-            "verified_file_count": 1,
-            "verified_files": [package_file],
+            "expected_file_count": 2,
+            "verified_file_count": 2,
+            "verified_files": [package_file, bound_bom_file],
+            "source_binding_count": 1,
             "errors": [],
         },
         sort_keys=True,
@@ -293,6 +310,29 @@ def _manifest(tmp_path: Path) -> Path:
                     "import_package_verification.json"
                 ),
                 "sha256": package_verification_hash,
+            },
+            "import_source_binding": {
+                "schema": "ALTIUM-IMPORT-SOURCE-BINDING-001",
+                "status": "PASS",
+                "errors": [],
+                "package_manifest_sha256": package_hash,
+                "source_commit": source_commit,
+                "expected_count": 1,
+                "checked_count": 1,
+                "bindings": [
+                    {
+                        "package_path": bound_bom_file["path"],
+                        "repository_path": (
+                            "hardware/system_carrier/"
+                            "BOM_SYS_CARRIER_LAYOUT_004.csv"
+                        ),
+                        "package_sha256": bom_contract_hash,
+                        "current_sha256": bom_contract_hash,
+                        "package_size": len(bom_contract_content),
+                        "current_size": len(bom_contract_content),
+                        "match": True,
+                    }
+                ],
             },
             "import_native_file_preflight": {
                 "path": (
@@ -999,6 +1039,37 @@ def test_import_receipt_import_log_must_remain_exact(tmp_path):
 
     assert result["status"] == "INVALID"
     assert "import_receipt_hash:import_log" in result["errors"]
+
+
+def test_import_receipt_rejects_tampered_source_binding(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    receipt_item = next(
+        item
+        for item in data["artifacts"]
+        if item["id"] == "import_receipt"
+    )
+    receipt_path = tmp_path / receipt_item["path"]
+    receipt = json.loads(receipt_path.read_text())
+    receipt["import_source_binding"]["bindings"][0][
+        "current_sha256"
+    ] = "0" * 64
+
+    receipt_content = json.dumps(receipt, sort_keys=True).encode()
+    receipt_path.write_bytes(receipt_content)
+    receipt_item["sha256"] = hashlib.sha256(
+        receipt_content
+    ).hexdigest()
+    manifest.write_text(json.dumps(data, indent=2) + "\n")
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert any(
+        item.startswith("import_receipt_source_binding_hash:")
+        for item in result["errors"]
+    )
 
 
 def test_import_receipt_requires_snapshot_role(tmp_path):
