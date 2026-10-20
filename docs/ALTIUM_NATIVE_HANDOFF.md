@@ -17,7 +17,7 @@ Before opening any import source in Altium Designer, verify the exact extracted 
 
 `python -m tools.altium_import_package_verify --package-root "<EXTRACTED_PACKAGE_ROOT>" --output hardware/system_carrier/altium/equivalence/import_package_verification.json`
 
-Require `PASS`. The package manifest uses package-root-relative paths, so verification is independent of the CI runner's temporary `build-cad` path. The verifier checks every manifest-listed file for path safety, size and SHA-256. Keep the generated canonical `import_package_verification.json`; the later import receipt and equivalence gate require it and bind it to the exact copied package manifest. A package that fails verification must not be imported.
+Require `PASS`. The package manifest uses package-root-relative paths, so verification is independent of the CI runner's temporary `build-cad` path. The verifier checks every manifest-listed file for path safety, size and SHA-256 and validates the package's `source_bindings` inventory. Keep the generated canonical `import_package_verification.json`; the later import receipt and equivalence gate require it and bind it to the exact copied package manifest. A package that fails verification must not be imported. The package Git SHA does not have to equal the current checkout after a squash/rebase: the import receipt instead performs a byte-for-byte current-source binding check against all bound generator inputs, contracts, footprints and audit scripts. If any bound source has changed since the artifact was produced, the receipt fails and the artifact must be regenerated before import.
 
 ## Native import
 
@@ -41,7 +41,7 @@ Require `PASS`. The package manifest uses package-root-relative paths, so verifi
    `hardware/system_carrier/altium/equivalence/import_log.txt`.
 11. Generate the provenance receipt immediately after import, recording the actual Altium Designer and KiCad Importer versions:
     `python -m tools.altium_native_import_receipt --repository-root . --package-manifest hardware/system_carrier/altium/equivalence/import_package_manifest.json --package-verification hardware/system_carrier/altium/equivalence/import_package_verification.json --import-preflight hardware/system_carrier/altium/equivalence/import_native_file_preflight.json --altium-version "<ALTIUM_VERSION>" --importer-version "<IMPORTER_VERSION>" --output hardware/system_carrier/altium/equivalence/import_receipt.json`.
-12. Require the command to return `PASS`. The receipt is the immutable `POST_IMPORT_NATIVE_SNAPSHOT`: its SchDoc/PcbDoc hashes describe the immediate import outputs and are not regenerated merely because approved pre-routing stack/rule preparation later changes the native files. Do not delete or overwrite the retained KiCad source.
+12. Require the command to return `PASS`. A PASS receipt now also proves that the verified package's source-binding inventory still matched the current repository checkout byte-for-byte at import time. The receipt is the immutable `POST_IMPORT_NATIVE_SNAPSHOT`: its SchDoc/PcbDoc hashes describe the immediate import outputs and are not regenerated merely because approved pre-routing stack/rule preparation later changes the native files. Do not delete or overwrite the retained KiCad source.
 
 ## Recommended orchestrated transition
 
