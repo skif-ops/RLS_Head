@@ -157,6 +157,13 @@ def _sync_layout_authority_status(
     implementation_status = _read_json(implementation_status_path)
     authority = _read_json(authority_path)
 
+    gate_result_path = _absolute(root, "gate_result")
+    committed_gate_result = _read_json(gate_result_path)
+    if committed_gate_result != gate_result:
+        raise ValueError(
+            "equivalence result changed after gate PASS"
+        )
+
     integrity = gate_result.get("integrity")
     if not isinstance(integrity, dict):
         raise ValueError("equivalence PASS missing integrity map")
@@ -189,7 +196,7 @@ def _sync_layout_authority_status(
         PATHS["gate_result"].as_posix()
     )
     native_status["equivalence_result_sha256"] = _sha256_file(
-        _absolute(root, "gate_result")
+        gate_result_path
     )
     native_status["native_schematic_sha256"] = current_hashes[
         "schematic"
