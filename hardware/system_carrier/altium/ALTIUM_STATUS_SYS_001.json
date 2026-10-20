@@ -28,7 +28,8 @@
     "differential_pairs_defined": true,
     "placement_rooms_ready": true,
     "repository_routing_prerequisites_ready": true,
-    "evt_mechanical_routing_datums_locked": true
+    "evt_mechanical_routing_datums_locked": true,
+    "evt_routing_stack_locked": true
   },
   "blockers": [
     "Native Altium import/save of SchDoc/PcbDoc has not yet been executed in Altium Designer.",
@@ -73,12 +74,15 @@
     "expected_status": "READY_FOR_NATIVE_IMPORT",
     "routing_authorized": false,
     "required_to_authorize": [
+      "ALTIUM_EVT_ROUTING_STACK_GATE PASS",
       "ALTIUM_EVT_MECHANICAL_DATUM_GATE PASS",
       "native/EVT_SYS_CARRIER.SchDoc",
       "native/EVT_SYS_CARRIER.PcbDoc",
       "ALTIUM_EQUIVALENCE_GATE PASS"
     ],
     "evt_mechanical_routing_datums_locked": true,
-    "production_mechanical_freeze_required": true
+    "production_mechanical_freeze_required": true,
+    "evt_routing_stack_locked": true,
+    "production_fabricator_binding_required": true
   }
 }
