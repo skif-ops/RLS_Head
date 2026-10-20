@@ -31,8 +31,8 @@
   },
   "files": {
     "README.md": {
-      "sha256": "df7872f3855461fb3012677e305492b6a9b97e254d1054cabd302d4088f22513",
-      "size": 2567
+      "sha256": "584158e7a0be890edcee91b8c16837bcdb602e7a1aab5e99babc27052c75033e",
+      "size": 3440
     },
     "attempt_import_receipt.json": {
       "sha256": "84508cae86d7ee60ab453c97815cb825fcc6426e7e426c586d7f6a558acfb6de",
@@ -53,6 +53,30 @@
     "eco_initial.log": {
       "sha256": "d9b73d0e42704fd2023cdc1c717d8a6ec65194e2deaafbd399cdc05e1212bf6a",
       "size": 43498
+    },
+    "hierarchy_probe/3v3_only_compile_automatic.txt": {
+      "sha256": "6c1f93aa09ec3e2a7290e7f2eb50b778c8a949e334186d63e8ff0ccab351bf99",
+      "size": 33502
+    },
+    "hierarchy_probe/3v3_only_kicad_erc_triage.json": {
+      "sha256": "c8b7bf240d5f2b781c5a2075a8cfea3305d55c5234063b7994a0ea075cc6d454",
+      "size": 359
+    },
+    "hierarchy_probe/3v3_only_kicad_netlist_baseline_result.json": {
+      "sha256": "8f79a4a76b3cc8abf99597797cb29b8a37fd8f67073944d419e6093e2317a266",
+      "size": 647
+    },
+    "hierarchy_probe/u1_only_compile_automatic.txt": {
+      "sha256": "82aa0e41791f3bbaaa4b4b5d7cf38946073c3d705c95923e7ffdeb55c9d67ea1",
+      "size": 33508
+    },
+    "hierarchy_probe/u1_only_compile_hierarchical.txt": {
+      "sha256": "c2d0837b1d26eeb0201a4a8dfc6e8fff7ac11afdd620dd0ec91cf21f601e1675",
+      "size": 33355
+    },
+    "hierarchy_probe/u1_only_compile_hierarchical_ports_unnamed.txt": {
+      "sha256": "24970b0f0c7ebc7a5c1c75df0b0964611dda61cc1b8e0e8315a439bdfaed0b0c",
+      "size": 32005
     },
     "kicad_netlist_baseline.csv": {
       "sha256": "ee72dab91135fcd2ae90121bbee743e67b785c3e9ff96213f3274c7beff3f8db",
@@ -141,6 +165,36 @@
     "schematic_import.log": {
       "sha256": "43874e90a1faab517ab6d89151ac38cf84e7ea84e35be767e64d10224759166d",
       "size": 151767
+    }
+  },
+  "hierarchy_probe": {
+    "3v3_only": {
+      "altium_automatic": {
+        "errors": 54,
+        "warnings": 169
+      },
+      "kicad_erc_violations": 0,
+      "kicad_netlist_baseline_delta": 0,
+      "kicad_netlist_endpoint_count": 483
+    },
+    "generator_change_committed": false,
+    "qualified_package": false,
+    "result": "INSUFFICIENT",
+    "source_binding_after_revert": "PASS_52_OF_52",
+    "u1_only": {
+      "altium_automatic": {
+        "errors": 54,
+        "warnings": 169
+      },
+      "altium_hierarchical": {
+        "errors": 54,
+        "warnings": 169
+      },
+      "altium_hierarchical_ports_unnamed": {
+        "errors": 49,
+        "warnings": 169
+      },
+      "anchor": "U1 pin 23 / 3V3"
     }
   },
   "native_equivalence_gate": "NOT_RUN",
