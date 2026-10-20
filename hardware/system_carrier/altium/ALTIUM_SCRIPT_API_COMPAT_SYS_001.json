@@ -1,0 +1,223 @@
+{
+  "schema": "ALTIUM-SCRIPT-API-COMPAT-001",
+  "board_id": "EVT-SYS-CARRIER",
+  "purpose": "Static compatibility and read-only policy contract for native Altium DelphiScript audit exporters.",
+  "runtime_validation_required": true,
+  "policy": {
+    "documented_symbols_must_be_present": true,
+    "runtime_verify_symbols_must_be_present": true,
+    "forbidden_mutation_tokens_must_be_absent": true,
+    "static_pass_does_not_prove_altium_runtime_execution": true
+  },
+  "references": {
+    "pcb_system_api": "https://www.altium.com/documentation/altium-dxp-developer/pcb-api-system-interfaces-reference?version=4.0",
+    "pcb_design_objects_api": "https://www.altium.com/documentation/altium-dxp-developer/pcb-api-design-objects-interfaces-reference?version=4.0",
+    "workspace_manager_api": "https://www.altium.com/documentation/altium-dxp-developer/workspace-manager-api",
+    "schematic_design_objects_api": "https://www.altium.com/documentation/altium-dxp-developer/schematic-api-design-objects-interfaces-reference?version=4.0",
+    "delphi_sdk_faq": "https://www.altium.com/documentation/altium-dxp-developer/delphi-sdk-how-to-faq?version=4.0"
+  },
+  "scripts": [
+    {
+      "id": "pcb_native_audit",
+      "path": "hardware/system_carrier/altium/scripts/EVT_SYS_CARRIER_Audit.pas",
+      "run_procedure": "ExportNativeAudit",
+      "required_symbols": [
+        {
+          "symbol": "PCBServer.GetCurrentPCBBoard",
+          "interface": "IPCB_ServerInterface",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "Board.BoardIterator_Create",
+          "interface": "IPCB_Board",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "Board.BoardIterator_Destroy",
+          "interface": "IPCB_Board",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "Pad.Component",
+          "interface": "IPCB_Primitive/IPCB_Pad",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "Pad.Net",
+          "interface": "IPCB_Primitive/IPCB_Pad",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "Pad.Name",
+          "interface": "IPCB_Pad",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "Board.LayerStack",
+          "interface": "IPCB_Board",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "Stack.FirstLayer",
+          "interface": "IPCB_LayerStack",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "Stack.NextLayer",
+          "interface": "IPCB_LayerStack",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "Rule.Scope1Expression",
+          "interface": "IPCB_Rule",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "Rule.Scope2Expression",
+          "interface": "IPCB_Rule",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "Rule.DRCEnabled",
+          "interface": "IPCB_Rule",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        }
+      ],
+      "forbidden_tokens": [
+        "PCBServer.PreProcess",
+        "PCBServer.PostProcess",
+        "PCBServer.PCBObjectFactory",
+        "PCBObjectFactory(",
+        "DestroyPCBObject",
+        "AddPCBObject(",
+        "RemovePCBObject(",
+        "SendMessageToRobots",
+        ".SetState_"
+      ],
+      "expected_outputs": [
+        "component_inventory.csv",
+        "net_inventory.csv",
+        "rule_inventory.csv",
+        "pad_net_inventory.csv",
+        "layer_stack_inventory.csv"
+      ]
+    },
+    {
+      "id": "schematic_hierarchy_audit",
+      "path": "hardware/system_carrier/altium/scripts/EVT_SYS_CARRIER_Hierarchy_Audit.pas",
+      "run_procedure": "ExportNativeHierarchy",
+      "required_symbols": [
+        {
+          "symbol": "GetWorkspace",
+          "interface": "IWorkspace",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "WS.DM_FocusedProject",
+          "interface": "IWorkspace",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "Project.DM_LogicalDocumentCount",
+          "interface": "IProject",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "Project.DM_LogicalDocuments",
+          "interface": "IProject",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "Project.DM_NeedsCompile",
+          "interface": "IProject",
+          "status": "RUNTIME_VERIFY",
+          "access": "READ"
+        },
+        {
+          "symbol": "Project.DM_Compile",
+          "interface": "IProject",
+          "status": "RUNTIME_VERIFY",
+          "access": "COMPILE_PROJECT"
+        },
+        {
+          "symbol": "SchServer.GetSchDocumentByPath",
+          "interface": "ISch_ServerInterface",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "SchDoc.SchIterator_Create",
+          "interface": "ISch_Document",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "SchDoc.SchIterator_Destroy",
+          "interface": "ISch_Document",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "Iterator.SetState_IterationDepth",
+          "interface": "ISch_Iterator",
+          "status": "RUNTIME_VERIFY",
+          "access": "ITERATOR_CONFIG"
+        },
+        {
+          "symbol": "Port.Name",
+          "interface": "ISch_Port",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        },
+        {
+          "symbol": "Port.IOType",
+          "interface": "ISch_Port",
+          "status": "DOCUMENTED",
+          "access": "READ"
+        }
+      ],
+      "forbidden_tokens": [
+        "SchServer.SchObjectFactory",
+        "AddSchObject(",
+        "RemoveSchObject(",
+        "DestroySchObject",
+        "RobotManager.SendMessage",
+        "ProcessControl.PreProcess",
+        "ProcessControl.PostProcess",
+        "Port.SetState_",
+        "SetState_Name(",
+        "SetState_IOType(",
+        "SetState_X(",
+        "SetState_Y("
+      ],
+      "expected_outputs": [
+        "hierarchy_export.csv"
+      ]
+    }
+  ],
+  "runtime_gate": {
+    "status": "REQUIRED_IN_ALTIUM_DESIGNER",
+    "pass_conditions": [
+      "ExportNativeAudit runs without script compile/runtime error on the target Altium Designer version.",
+      "ExportNativeHierarchy runs without script compile/runtime error on the target Altium Designer version.",
+      "All expected CSV files are generated and accepted by repository validators.",
+      "No native CAD objects are modified by the audit procedures."
+    ]
+  }
+}
