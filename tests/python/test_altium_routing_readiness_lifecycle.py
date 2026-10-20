@@ -296,6 +296,10 @@ def test_routing_readiness_detects_stale_equivalence_after_schematic_change(
     pcb = altium / "native" / "EVT_SYS_CARRIER.PcbDoc"
     pcb.write_bytes(b"PRE_ROUTING_PCB")
     pcb_hash = hashlib.sha256(pcb.read_bytes()).hexdigest()
+    equivalence_result_hash = _write_authority_result(
+        altium,
+        production=False,
+    )
     schematic = altium / "native" / "EVT_SYS_CARRIER.SchDoc"
     schematic.write_bytes(b"CHANGED_AFTER_EQUIVALENCE")
 
