@@ -329,8 +329,10 @@ def validate(system_root: str | Path) -> dict:
         ),
         "notes": [
             (
-                "This gate validates the provisional Altium placement plan "
-                "only; it does not freeze production mechanics."
+                "This gate validates the Altium placement plan; selected "
+                "board/connector datums may be EVT_ROUTING_LOCKED while "
+                "functional placement remains provisional. It does not freeze "
+                "production mechanics."
             ),
             (
                 "All checks use repository-defined EVT coordinates and "
