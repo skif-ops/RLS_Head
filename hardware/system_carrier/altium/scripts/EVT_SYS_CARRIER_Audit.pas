@@ -190,6 +190,7 @@ Var
     LayerObj : IPCB_LayerObject;
     Rpt      : TStringList;
     OrderNo  : Integer;
+    Layer    : TLayer;
 Begin
     Rpt := TStringList.Create;
     Rpt.Add('order,layer_name');
@@ -198,15 +199,33 @@ Begin
     If Stack <> Nil Then
     Begin
         OrderNo := 1;
-        LayerObj := Stack.FirstLayer;
-        While LayerObj <> Nil Do
+        { AD26 DelphiScript does not expose FirstLayer/NextLayer. Enumerate
+          signal and plane layer IDs and retain only layers in this stack. }
+        For Layer := eTopLayer To eBottomLayer Do
         Begin
-            Rpt.Add(
-                IntToStr(OrderNo) + ',' +
-                CsvQuote(Layer2String(LayerObj.LayerID))
-            );
-            Inc(OrderNo);
-            LayerObj := Stack.NextLayer(LayerObj);
+            LayerObj := Stack.LayerObject[Layer];
+            If LayerObj <> Nil Then
+                If LayerObj.IsInLayerStack Then
+                Begin
+                    Rpt.Add(
+                        IntToStr(OrderNo) + ',' +
+                        CsvQuote(Layer2String(LayerObj.LayerID))
+                    );
+                    Inc(OrderNo);
+                End;
+        End;
+        For Layer := eInternalPlane1 To eInternalPlane16 Do
+        Begin
+            LayerObj := Stack.LayerObject[Layer];
+            If LayerObj <> Nil Then
+                If LayerObj.IsInLayerStack Then
+                Begin
+                    Rpt.Add(
+                        IntToStr(OrderNo) + ',' +
+                        CsvQuote(Layer2String(LayerObj.LayerID))
+                    );
+                    Inc(OrderNo);
+                End;
         End;
     End;
 
@@ -226,7 +245,8 @@ Begin
         Exit;
     End;
 
-    If Board.IsLibrary Then
+    { In AD26 Board.IsLibrary is true for the focused .PcbDoc as well. }
+    If UpperCase(ExtractFileExt(Board.FileName)) = '.PCBLIB' Then
     Begin
         ShowMessage('EVT System Carrier audit: active document is a PCB library, not a PcbDoc.');
         Exit;
