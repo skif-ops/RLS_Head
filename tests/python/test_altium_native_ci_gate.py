@@ -520,3 +520,76 @@ def test_native_ci_gate_rejects_partial_production_authority_consensus(
     assert result["production_result_active"] is False
     assert "production_authority_surface_consensus" in result["errors"]
     assert result["production_authorized"] is False
+
+
+
+def test_native_ci_gate_accepts_safe_reequivalence_required_state(
+    tmp_path,
+    monkeypatch,
+):
+    _post_equivalence_fixture(tmp_path, monkeypatch)
+
+    schdoc = tmp_path / ci_gate.SCHDOC_REL
+    schdoc.write_bytes(b"SCHEMATIC_REWORK_PENDING_REEQUIVALENCE")
+
+    native_status_path = tmp_path / ci_gate.NATIVE_STATUS_REL
+    native_status = json.loads(
+        native_status_path.read_text(encoding="utf-8")
+    )
+    native_status["equivalence_gate_status"] = "STALE"
+    native_status["layout_authority"] = "NOT_AUTHORIZED"
+    native_status["production_authority"] = "NOT_AUTHORIZED"
+    _write_json(native_status_path, native_status)
+
+    implementation_path = tmp_path / ci_gate.IMPLEMENTATION_STATUS_REL
+    implementation = json.loads(
+        implementation_path.read_text(encoding="utf-8")
+    )
+    implementation["current_phase"] = "EQUIVALENCE_STALE"
+    implementation["next_required_phase"] = "NATIVE_ALTIUM_REEQUIVALENCE"
+    implementation["altium"]["equivalence_gate"] = False
+    implementation["altium"]["production_release_authorized"] = False
+    implementation["routing_readiness"] = {
+        "expected_status": "STALE_EQUIVALENCE",
+        "routing_authorized": False,
+        "required_to_authorize": [
+            "RERUN_NATIVE_ALTIUM_EQUIVALENCE_GATE"
+        ],
+    }
+    _write_json(implementation_path, implementation)
+
+    authority_path = tmp_path / ci_gate.CAD_AUTHORITY_REL
+    authority = json.loads(
+        authority_path.read_text(encoding="utf-8")
+    )
+    authority["native_document_status"] = "NATIVE_EQUIVALENCE_STALE"
+    authority["pcb_layout_authority"] = "NOT_AUTHORIZED"
+    authority["pcb_design_phase"] = "ALTIUM_REEQUIVALENCE_REQUIRED"
+    authority["production_release_authorized"] = False
+    authority["routing_readiness_gate"] = {
+        "current_expected_status": "STALE_EQUIVALENCE",
+    }
+    _write_json(authority_path, authority)
+
+    monkeypatch.setattr(
+        ci_gate,
+        "validate_routing",
+        lambda **kwargs: {
+            "schema": "ALTIUM-ROUTING-READINESS-001",
+            "status": "STALE_EQUIVALENCE",
+            "routing_authorized": False,
+            "production_authorized": False,
+        },
+    )
+
+    result = ci_gate.evaluate(
+        repository_root=tmp_path,
+        generated_dir=tmp_path,
+    )
+
+    assert result["status"] == "PASS"
+    assert result["phase"] == "REEQUIVALENCE_REQUIRED"
+    assert result["equivalence_status"] == "STALE"
+    assert result["routing_authorized"] is False
+    assert result["production_authorized"] is False
+    assert result["routing_status"] == "STALE_EQUIVALENCE"
