@@ -264,7 +264,7 @@ def validate_manifest(
             if not isinstance(import_artifacts, dict):
                 errors.append("import_native_preflight_artifacts")
             else:
-                for artifact_id in ("schematic", "pcb"):
+                for artifact_id in ("project", "schematic", "pcb"):
                     record = import_artifacts.get(artifact_id)
                     if not isinstance(record, dict):
                         errors.append(
@@ -948,6 +948,10 @@ def validate_manifest(
                 "api_contract": (
                     "hardware/system_carrier/altium/"
                     "ALTIUM_SCRIPT_API_COMPAT_SYS_001.json"
+                ),
+                "script_project": (
+                    "hardware/system_carrier/altium/scripts/"
+                    "EVT_SYS_CARRIER_Audit.PrjScr"
                 ),
             }
             for artifact_id, relative in runtime_source_paths.items():
