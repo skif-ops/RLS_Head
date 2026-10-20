@@ -709,7 +709,6 @@ def test_native_transition_waits_for_script_runtime_receipt(
         "import_native_file_preflight",
         "package_manifest",
         "import_log",
-        "import_receipt",
         "compile_report_raw",
         "compile_report",
         "bom_export",
@@ -723,6 +722,14 @@ def test_native_transition_waits_for_script_runtime_receipt(
         "hierarchy_export",
     ):
         _write(_path(tmp_path, key), b"TEST")
+
+    _write_json(
+        _path(tmp_path, "import_receipt"),
+        {
+            "schema": "ALTIUM-NATIVE-IMPORT-RECEIPT-001",
+            "status": "PASS",
+        },
+    )
 
     monkeypatch.setattr(
         transition,
