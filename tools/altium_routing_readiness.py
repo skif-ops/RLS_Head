@@ -60,6 +60,12 @@ def validate(
         altium / "ALTIUM_STATUS_SYS_001.json"
     )
     cad_authority_path = system / "CAD_AUTHORITY_SYS_001.json"
+    equivalence_result_path = (
+        altium / "equivalence" / "altium_equivalence_result.json"
+    )
+    production_result_path = (
+        altium / "release" / "production_release_result.json"
+    )
 
     errors: list[str] = []
     warnings: list[str] = []
@@ -171,6 +177,56 @@ def validate(
         and cad_layout_claim
     )
     authority_consensus_errors: list[str] = []
+    current_equivalence_result_sha256 = ""
+    current_production_result_sha256 = ""
+
+    def _validate_result_file(
+        *,
+        path: Path,
+        tracked_hash: str,
+        expected_production_authority: str,
+        prefix: str,
+    ) -> str:
+        if not path.is_file():
+            authority_consensus_errors.append(
+                f"result:{prefix}_missing"
+            )
+            return ""
+
+        actual_hash = sha256_file(path)
+        if (
+            len(tracked_hash) != 64
+            or tracked_hash != actual_hash
+        ):
+            authority_consensus_errors.append(
+                f"hash:{prefix}_result_file"
+            )
+
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            authority_consensus_errors.append(
+                f"result:{prefix}_parse"
+            )
+            return actual_hash
+
+        expected_schema = (
+            "ALTIUM-EQUIVALENCE-RESULT-001"
+            if prefix == "equivalence"
+            else "ALTIUM-PRODUCTION-RELEASE-RESULT-001"
+        )
+        if (
+            payload.get("schema") != expected_schema
+            or payload.get("status") != "PASS"
+            or payload.get("layout_authority") != "AUTHORIZED"
+            or payload.get("production_authority")
+            != expected_production_authority
+        ):
+            authority_consensus_errors.append(
+                f"result:{prefix}_semantics"
+            )
+
+        return actual_hash
 
     if layout_claimed and not layout_authority_consensus:
         if not native_layout_claim:
@@ -263,16 +319,26 @@ def validate(
                 "hash:native_pcb_sha256"
             )
 
+        tracked_equivalence_hash = str(
+            native_status.get("equivalence_result_sha256", "")
+        ).strip().lower()
         if _tracked_hash_mismatch(
             "equivalence_result_sha256",
             [
-                native_status.get("equivalence_result_sha256", ""),
+                tracked_equivalence_hash,
                 cad_authority.get("equivalence_result_sha256", ""),
             ],
         ):
             authority_consensus_errors.append(
                 "hash:equivalence_result_sha256"
             )
+
+        current_equivalence_result_sha256 = _validate_result_file(
+            path=equivalence_result_path,
+            tracked_hash=tracked_equivalence_hash,
+            expected_production_authority="NOT_AUTHORIZED",
+            prefix="equivalence",
+        )
 
     if production_authority_consensus:
         if _tracked_hash_mismatch(
@@ -296,13 +362,16 @@ def validate(
                 "hash:production_release_source_pcb_sha256"
             )
 
+        tracked_production_hash = str(
+            native_status.get(
+                "production_release_result_sha256",
+                "",
+            )
+        ).strip().lower()
         if _tracked_hash_mismatch(
             "production_release_result_sha256",
             [
-                native_status.get(
-                    "production_release_result_sha256",
-                    "",
-                ),
+                tracked_production_hash,
                 cad_authority.get(
                     "production_release_result_sha256",
                     "",
@@ -312,6 +381,13 @@ def validate(
             authority_consensus_errors.append(
                 "hash:production_release_result_sha256"
             )
+
+        current_production_result_sha256 = _validate_result_file(
+            path=production_result_path,
+            tracked_hash=tracked_production_hash,
+            expected_production_authority="AUTHORIZED",
+            prefix="production",
+        )
 
     if authority_consensus_errors:
         errors.extend(
@@ -433,6 +509,12 @@ def validate(
         "authority_consensus_errors": sorted(
             set(authority_consensus_errors)
         ),
+        "current_equivalence_result_sha256": (
+            current_equivalence_result_sha256
+        ),
+        "current_production_result_sha256": (
+            current_production_result_sha256
+        ),
         "equivalence_stale": equivalence_stale,
         "expected_schematic_sha256": expected_schematic_hash,
         "current_schematic_sha256": current_schematic_hash,
@@ -470,6 +552,11 @@ def validate(
                 "READY_FOR_ROUTING requires consensus across "
                 "ALTIUM_NATIVE_STATUS, ALTIUM_STATUS and CAD_AUTHORITY; "
                 "a partial tracked-status update fails closed."
+            ),
+            (
+                "Tracked gate-result hashes must also match the canonical "
+                "committed equivalence/production result files and their PASS "
+                "authority semantics."
             ),
             (
                 "READY_FOR_ROUTING is possible only after native Altium "

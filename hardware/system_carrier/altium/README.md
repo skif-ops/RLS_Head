@@ -29,7 +29,7 @@ Do not delete any KiCad source, generated KiCad library or footprint used to est
 
 ## Native CI phase gate
 
-The repository CI accepts three deliberate lifecycle states: `PRE_IMPORT` while no native `SchDoc/PcbDoc` pair exists, `POST_EQUIVALENCE` after both exist and equivalence has passed, and `POST_PRODUCTION` after the production-release gate passes. `tools/altium_native_ci_gate.py` revalidates the committed equivalence/release results and tracked SHA-bound authority state, preventing native CAD or manufacturing-release PRs from bypassing the gated lifecycle. `tools.altium_routing_readiness` independently requires three-file authority consensus across `ALTIUM_NATIVE_STATUS_SYS_001.json`, `ALTIUM_STATUS_SYS_001.json` and `CAD_AUTHORITY_SYS_001.json`, so a partial tracked-status write fails closed.
+The repository CI accepts three deliberate lifecycle states: `PRE_IMPORT` while no native `SchDoc/PcbDoc` pair exists, `POST_EQUIVALENCE` after both exist and equivalence has passed, and `POST_PRODUCTION` after the production-release gate passes. `tools/altium_native_ci_gate.py` revalidates the committed equivalence/release results and tracked SHA-bound authority state, preventing native CAD or manufacturing-release PRs from bypassing the gated lifecycle. `tools.altium_routing_readiness` independently requires three-file authority consensus across `ALTIUM_NATIVE_STATUS_SYS_001.json`, `ALTIUM_STATUS_SYS_001.json` and `CAD_AUTHORITY_SYS_001.json`, so a partial tracked-status write fails closed. It also verifies that the consensus gate-result hashes match the canonical committed PASS authority-result JSON files.
 
 ## Manufacturing
 
