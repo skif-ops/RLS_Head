@@ -389,12 +389,20 @@ def _manifest(tmp_path: Path) -> Path:
         sort_keys=True,
     ).encode()
 
+    project_content = b"[Design]\nVersion=1.0\n"
+    project_hash = hashlib.sha256(project_content).hexdigest()
+
     pcb_audit_script_content = b"Procedure ExportNativeAudit; Begin End;\n"
     hierarchy_audit_script_content = (
         b"Procedure ExportNativeHierarchy; Begin End;\n"
     )
     api_contract_content = (
         b'{"schema":"ALTIUM-SCRIPT-API-COMPAT-001"}\n'
+    )
+    script_project_content = (
+        b"[Design]\nVersion=1.0\n"
+        b"[Document1]\nDocumentPath=EVT_SYS_CARRIER_Audit.pas\n"
+        b"[Document2]\nDocumentPath=EVT_SYS_CARRIER_Hierarchy_Audit.pas\n"
     )
 
     pcb_audit_script_path = (
@@ -412,6 +420,11 @@ def _manifest(tmp_path: Path) -> Path:
         / "hardware/system_carrier/altium/"
         "ALTIUM_SCRIPT_API_COMPAT_SYS_001.json"
     )
+    script_project_path = (
+        tmp_path
+        / "hardware/system_carrier/altium/scripts/"
+        "EVT_SYS_CARRIER_Audit.PrjScr"
+    )
     pcb_audit_script_hash = _write(
         pcb_audit_script_path,
         pcb_audit_script_content,
@@ -424,13 +437,19 @@ def _manifest(tmp_path: Path) -> Path:
         api_contract_path,
         api_contract_content,
     )
+    script_project_hash = _write(
+        script_project_path,
+        script_project_content,
+    )
 
     runtime_input_hashes = {
+        "project": project_hash,
         "schematic": native_hashes["schematic"],
         "pcb": native_hashes["pcb"],
         "pcb_audit_script": pcb_audit_script_hash,
         "hierarchy_audit_script": hierarchy_audit_script_hash,
         "api_contract": api_contract_hash,
+        "script_project": script_project_hash,
     }
     runtime_output_hashes = {
         **raw_hashes,
@@ -505,8 +524,6 @@ def _manifest(tmp_path: Path) -> Path:
     no_mmwave_review_hash = hashlib.sha256(
         no_mmwave_review_content
     ).hexdigest()
-    project_content = b"[Design]\nVersion=1.0\n"
-    project_hash = hashlib.sha256(project_content).hexdigest()
     compile_raw_content = b"Altium compile: 0 errors, 0 warnings\n"
     compile_raw_hash = hashlib.sha256(
         compile_raw_content
@@ -1246,3 +1263,21 @@ def test_forged_runtime_pass_result_is_not_reproducible(tmp_path):
         in result["errors"]
     )
     assert "SCRIPT_RUNTIME_RERUN" in result["reason_codes"]
+
+
+
+def test_changed_script_project_invalidates_runtime_evidence(tmp_path):
+    manifest = _manifest(tmp_path)
+
+    script_project = (
+        tmp_path
+        / "hardware/system_carrier/altium/scripts/"
+        "EVT_SYS_CARRIER_Audit.PrjScr"
+    )
+    script_project.write_bytes(b"CHANGED_SCRIPT_PROJECT")
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert "script_runtime_result_not_reproducible" in result["errors"]
+    assert "script_runtime_hash:script_project" in result["errors"]
