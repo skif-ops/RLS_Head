@@ -698,7 +698,7 @@ def validate_manifest(
                     for item in package_files
                     if isinstance(item, dict)
                     and str(item.get("path", "")).replace("\\", "/").endswith(
-                        "/evidence/kicad_netlist_baseline.csv"
+                        "evidence/kicad_netlist_baseline.csv"
                     )
                 }
                 if (
