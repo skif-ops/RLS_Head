@@ -73,6 +73,7 @@
     "expected_status": "READY_FOR_NATIVE_IMPORT",
     "routing_authorized": false,
     "required_to_authorize": [
+      "ALTIUM_EVT_MECHANICAL_DATUM_GATE PASS",
       "native/EVT_SYS_CARRIER.SchDoc",
       "native/EVT_SYS_CARRIER.PcbDoc",
       "ALTIUM_EQUIVALENCE_GATE PASS"
