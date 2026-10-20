@@ -254,6 +254,19 @@ def validate_manifest(
                 errors.append("import_package_schema")
             if import_package.get("status") != "READY_FOR_ALTIUM_IMPORT":
                 errors.append("import_package_status")
+            if import_package.get("current_source_binding_required") is not True:
+                errors.append("import_package_source_binding_required")
+            package_source_bindings = import_package.get("source_bindings")
+            if not isinstance(package_source_bindings, list):
+                errors.append("import_package_source_bindings")
+            else:
+                if not package_source_bindings:
+                    errors.append("import_package_source_bindings_empty")
+                if (
+                    import_package.get("source_binding_count")
+                    != len(package_source_bindings)
+                ):
+                    errors.append("import_package_source_binding_count")
 
     import_package_verification = None
     package_verification_path = resolved.get("import_package_verification")
@@ -345,6 +358,15 @@ def validate_manifest(
                 ):
                     errors.append(
                         "import_package_verification_file_count"
+                    )
+                if (
+                    import_package_verification.get(
+                        "source_binding_count"
+                    )
+                    != import_package.get("source_binding_count")
+                ):
+                    errors.append(
+                        "import_package_verification_source_binding_count"
                     )
 
     import_native_preflight = None
