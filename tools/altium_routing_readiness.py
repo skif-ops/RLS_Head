@@ -9,6 +9,9 @@ from tools.altium_cad_policy import validate as validate_cad_policy
 from tools.altium_evt_mechanical_datum_gate import (
     validate as validate_evt_mechanical_datum,
 )
+from tools.altium_evt_routing_stack_gate import (
+    validate as validate_evt_routing_stack,
+)
 from tools.altium_impedance_gate import validate as validate_impedance
 from tools.altium_placement_gate import validate as validate_placement
 from tools.altium_power_width_gate import validate as validate_power_width
@@ -47,6 +50,7 @@ def validate(
         "evt_mechanical_datum": validate_evt_mechanical_datum(system),
         "rooms": validate_rooms(system),
         "impedance": validate_impedance(system),
+        "evt_routing_stack": validate_evt_routing_stack(system),
         "power_width": validate_power_width(system),
         "rule_scope": validate_rule_scope(system),
     }

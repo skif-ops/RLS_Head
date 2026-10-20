@@ -74,7 +74,7 @@ A static PASS does **not** replace runtime validation. On the target Altium Desi
 Before routing:
 
 1. Compile the project and resolve every compile error and warning relevant to the imported design.
-2. Apply the four-layer stack and the rule/query contracts supplied under `hardware/system_carrier/altium/`.
+2. Apply the exact EVT-routing stack baseline from `ALTIUM_EVT_ROUTING_STACK_LOCK_SYS_001.json` together with `ALTIUM_EVT_STACKUP_SYS_002.csv`, `ALTIUM_IMPEDANCE_START_SYS_001.csv` and the rule/query contracts. Validate it with `python -m tools.altium_evt_routing_stack_gate hardware/system_carrier --output hardware/system_carrier/altium/equivalence/evt_routing_stack_gate.json` and require `PASS`. This locks the routing baseline only; selected-fabricator stack binding and field-solver geometry remain mandatory before production release.
 3. Apply the repository EVT mechanical routing datum exactly: the 100×80 mm board envelope, R3 corners, four M3 NPTH mounting holes and primary edge-connector anchors are `EVT_ROUTING_LOCKED`; remaining functional placement/rooms are EVT planning data. Validate with `python -m tools.altium_evt_mechanical_datum_gate hardware/system_carrier --output hardware/system_carrier/altium/equivalence/evt_mechanical_datum_gate.json`. This routing datum is not a production enclosure/STEP freeze.
 4. Run the read-only script project:
    `scripts/EVT_SYS_CARRIER_Audit.PrjScr` → `ExportNativeAudit`.
@@ -125,7 +125,7 @@ A partial native pair, stale authority hash, non-reproducible equivalence result
 
 ## Still not production release
 
-Equivalence PASS authorizes native placement/routing work only. The `EVT_ROUTING_LOCKED` board/mount/connector datum constrains that layout but does not authorize manufacturing. Production remains blocked until the native-PcbDoc-bound final mechanical review (including enclosure/STEP fit and connector access), fabricator stack/impedance binding, native Altium DRC, return-path/SI review, DFM and manufacturing release checks all pass.
+Equivalence PASS authorizes native placement/routing work only. The `EVT_ROUTING_LOCKED` board/mount/connector datum and EVT routing-stack lock constrain that layout but do not authorize manufacturing. Production remains blocked until the native-PcbDoc-bound final mechanical review (including enclosure/STEP fit and connector access), selected-fabricator stack/impedance binding with final field-solver/control evidence, native Altium DRC, return-path/SI review, DFM and manufacturing release checks all pass.
 
 ## Production lifecycle CI
 

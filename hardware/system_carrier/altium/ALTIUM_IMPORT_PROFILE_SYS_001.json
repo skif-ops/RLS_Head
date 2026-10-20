@@ -41,7 +41,8 @@
     "rules_equivalence",
     "stackup_equivalence",
     "script_runtime_execution_receipt",
-    "native_pcb_audit"
+    "native_pcb_audit",
+    "evt_routing_stack_lock"
   ],
   "contracts": [
     "BOM_SYS_CARRIER_LAYOUT_004.csv",
@@ -55,6 +56,7 @@
     "altium/ALTIUM_BOARD_MECHANICAL_SYS_001.csv",
     "altium/ALTIUM_PLACEMENT_COORD_SYS_002.csv",
     "altium/ALTIUM_ROUTING_SEQUENCE_SYS_001.csv",
+    "altium/ALTIUM_EVT_ROUTING_STACK_LOCK_SYS_001.json",
     "altium/ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv"
   ],
   "import_package_manifest_required": true,

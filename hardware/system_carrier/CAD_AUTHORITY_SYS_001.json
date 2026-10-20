@@ -36,6 +36,7 @@
     "hardware/system_carrier/altium/ALTIUM_ROUTING_SEQUENCE_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_EVT_STACKUP_SYS_002.csv",
+    "hardware/system_carrier/altium/ALTIUM_EVT_ROUTING_STACK_LOCK_SYS_001.json",
     "hardware/system_carrier/altium/ALTIUM_IMPEDANCE_START_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_POWER_WIDTH_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_DIFF_PAIRS_SYS_001.csv",
@@ -78,7 +79,10 @@
     "status": "EVT_CALCULATED",
     "production_binding_required": true,
     "gnss_rf_50r": "0.36 mm top microstrip over provisional 0.18 mm L1-L2 dielectric",
-    "eth_mdi_100r": "0.26 mm width / 0.20 mm gap top differential microstrip over provisional 0.18 mm L1-L2 dielectric"
+    "eth_mdi_100r": "0.26 mm width / 0.20 mm gap top differential microstrip over provisional 0.18 mm L1-L2 dielectric",
+    "routing_stack_status": "EVT_ROUTING_LOCKED",
+    "routing_stack_validator": "tools/altium_evt_routing_stack_gate.py",
+    "production_stack_locked": false
   },
   "evt_power_width_model": {
     "status": "EVT_CALCULATED",
@@ -100,6 +104,8 @@
     "routing_authority_requires": "ALTIUM_EQUIVALENCE_GATE PASS",
     "production_authority_separate": true,
     "evt_mechanical_datum_required": true,
-    "evt_mechanical_datum_status": "EVT_ROUTING_DATUM_LOCKED"
+    "evt_mechanical_datum_status": "EVT_ROUTING_DATUM_LOCKED",
+    "evt_routing_stack_required": true,
+    "evt_routing_stack_status": "EVT_ROUTING_LOCKED"
   }
 }
