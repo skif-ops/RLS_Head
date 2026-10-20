@@ -19,6 +19,7 @@ from tools.altium_native_hierarchy_validate import validate as validate_hierarch
 from tools.altium_native_import_receipt import build_receipt
 from tools.altium_native_netlist_validate import validate as validate_netlist
 from tools.altium_no_mmwave_review_validate import validate as validate_no_mmwave
+from tools.altium_script_runtime_receipt import validate as validate_script_runtime
 
 
 SCHEMA = "ALTIUM-NATIVE-TRANSITION-001"
@@ -56,6 +57,8 @@ PATHS = {
     "netlist_result": EQUIV_REL / "netlist_validation_result.json",
     "hierarchy_export": EQUIV_REL / "hierarchy_export.csv",
     "hierarchy_result": EQUIV_REL / "hierarchy_validation_result.json",
+    "script_runtime_receipt": EQUIV_REL / "script_runtime_receipt.json",
+    "script_runtime_result": EQUIV_REL / "script_runtime_result.json",
     "no_mmwave_review": EQUIV_REL / "no_mmwave_review.json",
     "no_mmwave_result": EQUIV_REL / "no_mmwave_review_result.json",
     "manifest_template": EQUIV_REL / "manifest.template.json",
@@ -605,6 +608,37 @@ def run_transition(
             generated=generated,
             stage_results=stage_results,
             errors=hierarchy.get("errors", []),
+        )
+
+    if not _absolute(root, "script_runtime_receipt").is_file():
+        return _result(
+            status="WAITING_SCRIPT_RUNTIME_RECEIPT",
+            next_action="RECORD_ALTIUM_SCRIPT_RUNTIME_RECEIPT",
+            generated=generated,
+            stage_results=stage_results,
+            missing=["script_runtime_receipt"],
+        )
+
+    script_runtime = validate_script_runtime(
+        receipt_json=_absolute(root, "script_runtime_receipt"),
+        repository_root=root,
+    )
+    _write_json(
+        _absolute(root, "script_runtime_result"),
+        script_runtime,
+    )
+    generated.append(PATHS["script_runtime_result"].as_posix())
+    stage_results["script_runtime"] = script_runtime
+    if script_runtime.get("status") != "PASS":
+        return _result(
+            status="BLOCKED_SCRIPT_RUNTIME_RECEIPT",
+            next_action="FIX_ALTIUM_SCRIPT_RUNTIME_EVIDENCE",
+            generated=generated,
+            stage_results=stage_results,
+            errors=(
+                list(script_runtime.get("errors", []))
+                + list(script_runtime.get("reason_codes", []))
+            ),
         )
 
     if not _absolute(root, "no_mmwave_review").is_file():
