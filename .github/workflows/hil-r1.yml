@@ -457,6 +457,29 @@ jobs:
           print("Altium provisional power-width model PASS")
           PY
 
+      - name: Validate EVT power routing lock
+        run: |
+          python -m tools.altium_evt_power_routing_gate \
+            hardware/system_carrier \
+            --output altium_evt_power_routing_gate.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path("altium_evt_power_routing_gate.json").read_text()
+          )
+          assert data["schema"] == "ALTIUM-EVT-POWER-ROUTING-GATE-001"
+          assert data["status"] == "PASS"
+          assert data["errors"] == []
+          assert data["evt_power_routing_locked"] is True
+          assert data["production_power_geometry_locked"] is False
+          assert data["production_review_required"] is True
+          assert data["copper_um"] == 35.0
+          assert data["allowed_temp_rise_c"] == 10.0
+          print("EVT power routing lock PASS")
+          PY
+
       - name: Validate Altium rule scopes and differential pairs
         run: |
           python -m tools.altium_rule_scope_gate \
@@ -1080,6 +1103,28 @@ jobs:
           print("Altium power-width evidence READY")
           PY
 
+      - name: Validate EVT power routing lock for import
+        run: |
+          python -m tools.altium_evt_power_routing_gate \
+            hardware/system_carrier \
+            --output build-cad/system_carrier/altium_evt_power_routing_gate.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/"
+                  "altium_evt_power_routing_gate.json"
+              ).read_text()
+          )
+          assert data["status"] == "PASS"
+          assert data["evt_power_routing_locked"] is True
+          assert data["production_power_geometry_locked"] is False
+          assert data["production_review_required"] is True
+          print("EVT power routing evidence READY")
+          PY
+
       - name: Validate Altium rule scopes for import
         run: |
           python -m tools.altium_rule_scope_gate \
@@ -1361,6 +1406,7 @@ jobs:
           assert data["impedance_gate_included"] is True
           assert data["evt_routing_stack_gate_included"] is True
           assert data["power_width_gate_included"] is True
+          assert data["evt_power_routing_gate_included"] is True
           assert data["rule_scope_gate_included"] is True
           assert data["room_gate_included"] is True
           assert data["routing_readiness_included"] is True

@@ -14,6 +14,9 @@ from tools.altium_evt_routing_stack_gate import (
 )
 from tools.altium_impedance_gate import validate as validate_impedance
 from tools.altium_placement_gate import validate as validate_placement
+from tools.altium_evt_power_routing_gate import (
+    validate as validate_evt_power_routing,
+)
 from tools.altium_power_width_gate import validate as validate_power_width
 from tools.altium_room_gate import validate as validate_rooms
 from tools.altium_rule_scope_gate import validate as validate_rule_scope
@@ -52,6 +55,7 @@ def validate(
         "impedance": validate_impedance(system),
         "evt_routing_stack": validate_evt_routing_stack(system),
         "power_width": validate_power_width(system),
+        "evt_power_routing": validate_evt_power_routing(system),
         "rule_scope": validate_rule_scope(system),
     }
 

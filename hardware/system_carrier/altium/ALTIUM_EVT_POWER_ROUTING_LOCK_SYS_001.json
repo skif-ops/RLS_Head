@@ -1,0 +1,52 @@
+{
+  "schema": "ALTIUM-EVT-POWER-ROUTING-LOCK-001",
+  "board_id": "EVT-SYS-CARRIER",
+  "hardware_revision": "A",
+  "status": "EVT_ROUTING_LOCKED",
+  "method": "IPC-2221_EXTERNAL_TRACE_SCREEN",
+  "copper_um": 35,
+  "allowed_temp_rise_c": 10,
+  "nets": {
+    "VIN_RAW": {
+      "current_a": 5,
+      "min_neck_width_mm": 3,
+      "rule_id": "RV-006"
+    },
+    "VIN_PROTECTED": {
+      "current_a": 5,
+      "min_neck_width_mm": 3,
+      "rule_id": "RV-023"
+    },
+    "RADAR_12V": {
+      "current_a": 3.18,
+      "min_neck_width_mm": 1.5,
+      "rule_id": "RV-007"
+    },
+    "3V3_TRUNK": {
+      "current_a": 3,
+      "min_neck_width_mm": 1.5,
+      "rule_id": "RV-008"
+    }
+  },
+  "locked_sources": [
+    "hardware/system_carrier/altium/ALTIUM_POWER_WIDTH_SYS_001.csv",
+    "hardware/system_carrier/altium/ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv",
+    "hardware/system_carrier/POWER_BUDGET_SYS_001.csv"
+  ],
+  "routing_policy": {
+    "prefer_polygons_or_pours": true,
+    "selected_widths_are_minimum_necks": true,
+    "local_pin_neckdown_allowed_only_when_required": true
+  },
+  "production": {
+    "final_copper_weight_review_required": true,
+    "final_stack_review_required": true,
+    "thermal_review_required": true,
+    "production_power_geometry_locked": false
+  },
+  "notes": [
+    "This contract locks only the EVT routing minimum power geometry.",
+    "Source widths remain calculation-derived and do not replace final manufacturing copper/thermal review.",
+    "Production release remains blocked until final copper weight, stack and thermal evidence are reviewed."
+  ]
+}

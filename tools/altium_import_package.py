@@ -221,6 +221,7 @@ def build(
         "ALTIUM_EVT_ROUTING_STACK_LOCK_SYS_001.json",
         "ALTIUM_IMPEDANCE_START_SYS_001.csv",
         "ALTIUM_POWER_WIDTH_SYS_001.csv",
+        "ALTIUM_EVT_POWER_ROUTING_LOCK_SYS_001.json",
         "ALTIUM_DIFF_PAIRS_SYS_001.csv",
         "ALTIUM_RULE_QUERY_SYS_001.csv",
         "ALTIUM_ROOMS_SYS_001.csv",
@@ -264,6 +265,7 @@ def build(
         "altium_impedance_gate.json",
         "altium_evt_routing_stack_gate.json",
         "altium_power_width_gate.json",
+        "altium_evt_power_routing_gate.json",
         "altium_rule_scope_gate.json",
         "altium_room_gate.json",
         "altium_script_api_compatibility.json",
@@ -361,6 +363,12 @@ def build(
         "power_width_gate_included": any(
             item["path"].endswith(
                 "evidence/altium_power_width_gate.json"
+            )
+            for item in records
+        ),
+        "evt_power_routing_gate_included": any(
+            item["path"].endswith(
+                "evidence/altium_evt_power_routing_gate.json"
             )
             for item in records
         ),

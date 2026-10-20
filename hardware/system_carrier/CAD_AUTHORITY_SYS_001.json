@@ -39,6 +39,7 @@
     "hardware/system_carrier/altium/ALTIUM_EVT_ROUTING_STACK_LOCK_SYS_001.json",
     "hardware/system_carrier/altium/ALTIUM_IMPEDANCE_START_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_POWER_WIDTH_SYS_001.csv",
+    "hardware/system_carrier/altium/ALTIUM_EVT_POWER_ROUTING_LOCK_SYS_001.json",
     "hardware/system_carrier/altium/ALTIUM_DIFF_PAIRS_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_RULE_QUERY_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_ROOMS_SYS_001.csv"
@@ -89,7 +90,10 @@
     "method": "IPC-2221 external trace screening",
     "copper_um": 35,
     "allowed_temp_rise_c": 10,
-    "production_review_required": true
+    "production_review_required": true,
+    "routing_power_status": "EVT_ROUTING_LOCKED",
+    "routing_power_validator": "tools/altium_evt_power_routing_gate.py",
+    "production_power_geometry_locked": false
   },
   "altium_rule_query_contract": {
     "status": "READY_TO_INSTANTIATE_AFTER_NATIVE_IMPORT",
@@ -106,6 +110,8 @@
     "evt_mechanical_datum_required": true,
     "evt_mechanical_datum_status": "EVT_ROUTING_DATUM_LOCKED",
     "evt_routing_stack_required": true,
-    "evt_routing_stack_status": "EVT_ROUTING_LOCKED"
+    "evt_routing_stack_status": "EVT_ROUTING_LOCKED",
+    "evt_power_routing_required": true,
+    "evt_power_routing_status": "EVT_ROUTING_LOCKED"
   }
 }
