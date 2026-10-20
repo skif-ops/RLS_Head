@@ -1212,6 +1212,28 @@ jobs:
           )
           PY
 
+      - name: Reconcile tracked Altium authority
+        run: |
+          python -m tools.altium_authority_reconcile \
+            --repository-root . \
+            --output build-cad/system_carrier/altium_authority_reconcile.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/"
+                  "altium_authority_reconcile.json"
+              ).read_text()
+          )
+          assert data["schema"] == "ALTIUM-AUTHORITY-RECONCILE-001"
+          assert data["status"] == "UNCHANGED", data
+          assert data["actions"] == []
+          assert data["applied"] is False
+          print("Altium tracked authority reconciliation:", data["status"])
+          PY
+
       - name: Build Altium import package
         run: |
           python -m tools.altium_import_package \
