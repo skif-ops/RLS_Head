@@ -21,4 +21,5 @@ RV-019,ETH_MDI,evt_trace_width,0.26,mm,EVT_CALCULATED,Initial 100R differential 
 RV-020,ETH_MDI,evt_pair_gap,0.20,mm,EVT_CALCULATED,Initial 100R differential geometry over provisional L2 reference
 RV-021,GNSS_RF,evt_trace_width,0.36,mm,EVT_CALCULATED,Initial 50R microstrip geometry over provisional L2 reference
 RV-022,STACKUP,L1_L2_dielectric,0.18,mm,EVT_PROVISIONAL,Nominal FR-4 prepreg separation used for initial impedance estimates
-RV-023,VIN_PROTECTED,min_neck_width,3.00,mm,EVT_CALCULATED,Upstream split rail sized for 5A screen; prefer polygon/pour\nRV-024,POWER_EXTERNAL,screen_temp_rise,10,C,EVT_CALCULATED,Common conservative screening assumption for provisional power widths\n
+RV-023,VIN_PROTECTED,min_neck_width,3.00,mm,EVT_CALCULATED,Upstream split rail sized for 5A screen; prefer polygon/pour
+RV-024,POWER_EXTERNAL,screen_temp_rise,10,C,EVT_CALCULATED,Common conservative screening assumption for provisional power widths
