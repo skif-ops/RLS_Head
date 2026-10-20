@@ -27,11 +27,12 @@
     "rule_query_contract_ready": true,
     "differential_pairs_defined": true,
     "placement_rooms_ready": true,
-    "repository_routing_prerequisites_ready": true
+    "repository_routing_prerequisites_ready": true,
+    "evt_mechanical_routing_datums_locked": true
   },
   "blockers": [
     "Native Altium import/save of SchDoc/PcbDoc has not yet been executed in Altium Designer.",
-    "Board outline, mounting-hole geometry and connector mechanical datums are not yet frozen.",
+    "EVT routing datums are locked; final enclosure/STEP fit and production mechanical freeze remain required before production release.",
     "Fabricator field-solver/dielectric stack binding is still required before production release; EVT routing start values are calculated."
   ],
   "next_required_phase": "NATIVE_ALTIUM_IMPORT_AND_EQUIVALENCE",
@@ -75,6 +76,8 @@
       "native/EVT_SYS_CARRIER.SchDoc",
       "native/EVT_SYS_CARRIER.PcbDoc",
       "ALTIUM_EQUIVALENCE_GATE PASS"
-    ]
+    ],
+    "evt_mechanical_routing_datums_locked": true,
+    "production_mechanical_freeze_required": true
   }
 }
