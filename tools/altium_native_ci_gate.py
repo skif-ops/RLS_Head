@@ -77,6 +77,54 @@ def _tracked_production_surfaces(root: Path) -> dict[str, bool] | None:
     }
 
 
+def _tracked_reequivalence_required(root: Path) -> bool:
+    paths = {
+        "native_status": root / NATIVE_STATUS_REL,
+        "implementation_status": root / IMPLEMENTATION_STATUS_REL,
+        "cad_authority": root / CAD_AUTHORITY_REL,
+    }
+    if not all(path.is_file() for path in paths.values()):
+        return False
+
+    try:
+        native_status = read_json(paths["native_status"])
+        implementation = read_json(paths["implementation_status"])
+        authority = read_json(paths["cad_authority"])
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        return False
+
+    altium = implementation.get("altium")
+    if not isinstance(altium, dict):
+        return False
+    routing = implementation.get("routing_readiness")
+    if not isinstance(routing, dict):
+        return False
+    authority_routing = authority.get("routing_readiness_gate")
+    if not isinstance(authority_routing, dict):
+        return False
+
+    return (
+        native_status.get("equivalence_gate_status") == "STALE"
+        and native_status.get("layout_authority") == "NOT_AUTHORIZED"
+        and native_status.get("production_authority") == "NOT_AUTHORIZED"
+        and implementation.get("current_phase") == "EQUIVALENCE_STALE"
+        and altium.get("native_schdoc") is True
+        and altium.get("native_pcbdoc") is True
+        and altium.get("equivalence_gate") is False
+        and altium.get("production_release_authorized") is False
+        and routing.get("expected_status") == "STALE_EQUIVALENCE"
+        and routing.get("routing_authorized") is False
+        and authority.get("native_document_status")
+        == "NATIVE_EQUIVALENCE_STALE"
+        and authority.get("pcb_layout_authority") == "NOT_AUTHORIZED"
+        and authority.get("pcb_design_phase")
+        == "ALTIUM_REEQUIVALENCE_REQUIRED"
+        and authority.get("production_release_authorized") is False
+        and authority_routing.get("current_expected_status")
+        == "STALE_EQUIVALENCE"
+    )
+
+
 def evaluate(
     *,
     repository_root: str | Path = ".",
@@ -166,6 +214,54 @@ def evaluate(
             "production_authorized": False,
             "notes": [
                 "SchDoc and PcbDoc must enter the repository as a complete native pair."
+            ],
+        }
+
+
+    if _tracked_reequivalence_required(root):
+        if routing is not None:
+            if routing.get("status") != "STALE_EQUIVALENCE":
+                errors.append(
+                    "reequivalence_routing_status:"
+                    + str(routing.get("status"))
+                )
+            if routing.get("routing_authorized") is not False:
+                errors.append("reequivalence_routing_authorized")
+            if routing.get("production_authorized") is not False:
+                errors.append("reequivalence_production_authorized")
+
+        status = "PASS" if not errors else "FAIL"
+        return {
+            "schema": SCHEMA,
+            "status": status,
+            "phase": "REEQUIVALENCE_REQUIRED",
+            "errors": sorted(set(errors)),
+            "warnings": sorted(set(warnings)),
+            "native_schdoc_present": True,
+            "native_pcbdoc_present": True,
+            "production_result_present": (
+                (root / PRODUCTION_RESULT_REL).is_file()
+            ),
+            "handoff_status": handoff.get("status"),
+            "routing_status": (
+                routing.get("status")
+                if isinstance(routing, dict)
+                else None
+            ),
+            "equivalence_status": "STALE",
+            "production_release_status": None,
+            "routing_authorized": False,
+            "production_authorized": False,
+            "notes": [
+                (
+                    "REEQUIVALENCE_REQUIRED is a safe revoked state: native "
+                    "documents may be committed for rework, but neither routing "
+                    "nor production authority is active."
+                ),
+                (
+                    "A fresh ALTIUM_EQUIVALENCE_GATE PASS is required before "
+                    "routing can resume."
+                ),
             ],
         }
 
