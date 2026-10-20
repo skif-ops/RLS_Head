@@ -1712,6 +1712,25 @@ def add_child_hierarchy_labels(
             end=label_position,
         )
 
+        # Altium's KiCad importer preserves these child ports, but its
+        # project netlist can leave a same-named local one-pin net separate
+        # from the port wire. A local label at the wire's pin end bridges
+        # the seven endpoints observed in the CI581 native netlist probe.
+        altium_port_bridge_endpoints = {
+            ("U1", "23", "3V3"),
+            ("U1", "31", "NRST"),
+            ("U1", "166", "BOOT0"),
+            ("U6", "4", "SYS_EFUSE_FLT"),
+            ("U7", "4", "RADAR_EFUSE_FLT"),
+            ("U3", "5", "ETH_50M"),
+            ("U3", "15", "ETH_NRST"),
+        }
+        if (reference, pin_number, net_name) in altium_port_bridge_endpoints:
+            sch.add_label(
+                net_name,
+                position=(position.x, position.y),
+            )
+
         shape = {
             "input": HierarchicalLabelShape.INPUT,
             "output": HierarchicalLabelShape.OUTPUT,

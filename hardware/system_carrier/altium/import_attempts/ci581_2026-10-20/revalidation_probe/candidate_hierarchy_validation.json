@@ -1,0 +1,10 @@
+{
+  "connection_count": 66,
+  "errors": [],
+  "notes": [
+    "PASS means every authoritative hierarchy contract row matches both the native root sheet pin and the native child hierarchical label. kicad-cli ERC remains the electrical authority."
+  ],
+  "schema": "SYSTEM-CARRIER-HIERARCHY-CAD-001",
+  "status": "PASS",
+  "validated_connection_count": 66
+}
