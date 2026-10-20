@@ -652,11 +652,13 @@ def _manifest(tmp_path: Path) -> Path:
             hierarchy_validation_content,
         ),
         "script_runtime_receipt": (
-            "equivalence/script_runtime_receipt.json",
+            "hardware/system_carrier/altium/equivalence/"
+            "script_runtime_receipt.json",
             runtime_receipt_content,
         ),
         "script_runtime_result": (
-            "equivalence/script_runtime_result.json",
+            "hardware/system_carrier/altium/equivalence/"
+            "script_runtime_result.json",
             runtime_result_content,
         ),
         "no_mmwave_review": (
@@ -1281,3 +1283,33 @@ def test_changed_script_project_invalidates_runtime_evidence(tmp_path):
     assert result["status"] == "INVALID"
     assert "script_runtime_result_not_reproducible" in result["errors"]
     assert "script_runtime_hash:script_project" in result["errors"]
+
+
+
+def test_noncanonical_runtime_receipt_path_invalidates_gate(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    item = next(
+        artifact
+        for artifact in data["artifacts"]
+        if artifact["id"] == "script_runtime_receipt"
+    )
+    canonical = tmp_path / item["path"]
+    alternate = tmp_path / "equivalence/ALT_runtime_receipt.json"
+    alternate.parent.mkdir(parents=True, exist_ok=True)
+    alternate.write_bytes(canonical.read_bytes())
+
+    item["path"] = "equivalence/ALT_runtime_receipt.json"
+    item["sha256"] = hashlib.sha256(
+        alternate.read_bytes()
+    ).hexdigest()
+    manifest.write_text(
+        json.dumps(data, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert "canonical_path:script_runtime_receipt" in result["errors"]
