@@ -38,6 +38,7 @@ PATHS = {
         EQUIV_REL / "import_native_file_preflight.json"
     ),
     "package_manifest": EQUIV_REL / "import_package_manifest.json",
+    "package_verification": EQUIV_REL / "import_package_verification.json",
     "import_log": EQUIV_REL / "import_log.txt",
     "import_receipt": EQUIV_REL / "import_receipt.json",
     "compile_report_raw": EQUIV_REL / "compile_report_raw.txt",
@@ -345,12 +346,14 @@ def run_transition(
 
     missing_provenance = _missing(
         root,
-        ("package_manifest", "import_log"),
+        ("package_manifest", "package_verification", "import_log"),
     )
     if missing_provenance:
         return _result(
             status="WAITING_IMPORT_PROVENANCE",
-            next_action="COPY_IMPORT_PACKAGE_MANIFEST_AND_IMPORT_LOG",
+            next_action=(
+                "COPY_VERIFIED_IMPORT_PACKAGE_PROVENANCE_AND_IMPORT_LOG"
+            ),
             generated=generated,
             stage_results=stage_results,
             missing=missing_provenance,
@@ -388,6 +391,7 @@ def run_transition(
         receipt = build_receipt(
             repository_root=root,
             package_manifest=_absolute(root, "package_manifest"),
+            package_verification=_absolute(root, "package_verification"),
             import_preflight=_absolute(
                 root,
                 "import_native_file_preflight",
