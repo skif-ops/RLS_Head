@@ -371,6 +371,96 @@ def _manifest(tmp_path: Path) -> Path:
         sort_keys=True,
     ).encode()
 
+    pcb_audit_script_content = b"Procedure ExportNativeAudit; Begin End;\n"
+    hierarchy_audit_script_content = (
+        b"Procedure ExportNativeHierarchy; Begin End;\n"
+    )
+    api_contract_content = (
+        b'{"schema":"ALTIUM-SCRIPT-API-COMPAT-001"}\n'
+    )
+
+    pcb_audit_script_path = (
+        tmp_path
+        / "hardware/system_carrier/altium/scripts/"
+        "EVT_SYS_CARRIER_Audit.pas"
+    )
+    hierarchy_audit_script_path = (
+        tmp_path
+        / "hardware/system_carrier/altium/scripts/"
+        "EVT_SYS_CARRIER_Hierarchy_Audit.pas"
+    )
+    api_contract_path = (
+        tmp_path
+        / "hardware/system_carrier/altium/"
+        "ALTIUM_SCRIPT_API_COMPAT_SYS_001.json"
+    )
+    pcb_audit_script_hash = _write(
+        pcb_audit_script_path,
+        pcb_audit_script_content,
+    )
+    hierarchy_audit_script_hash = _write(
+        hierarchy_audit_script_path,
+        hierarchy_audit_script_content,
+    )
+    api_contract_hash = _write(
+        api_contract_path,
+        api_contract_content,
+    )
+
+    runtime_input_hashes = {
+        "schematic": native_hashes["schematic"],
+        "pcb": native_hashes["pcb"],
+        "pcb_audit_script": pcb_audit_script_hash,
+        "hierarchy_audit_script": hierarchy_audit_script_hash,
+        "api_contract": api_contract_hash,
+    }
+    runtime_output_hashes = {
+        **raw_hashes,
+        "hierarchy_export": hierarchy_export_hash,
+    }
+    runtime_receipt_content = json.dumps(
+        {
+            "schema": "ALTIUM-SCRIPT-RUNTIME-RECEIPT-001",
+            "status": "PASS",
+            "board_id": "EVT-SYS-CARRIER",
+            "altium_version": "26.0.1",
+            "operator": "Synthetic CI",
+            "procedures": {
+                "ExportNativeAudit": {
+                    "status": "PASS",
+                    "runtime_errors": 0,
+                    "runtime_warnings": 0,
+                },
+                "ExportNativeHierarchy": {
+                    "status": "PASS",
+                    "runtime_errors": 0,
+                    "runtime_warnings": 0,
+                },
+            },
+            "input_sha256": runtime_input_hashes,
+            "output_sha256": runtime_output_hashes,
+        },
+        sort_keys=True,
+    ).encode()
+    runtime_receipt_hash = hashlib.sha256(
+        runtime_receipt_content
+    ).hexdigest()
+    runtime_result_content = json.dumps(
+        {
+            "schema": "ALTIUM-SCRIPT-RUNTIME-RESULT-001",
+            "status": "PASS",
+            "errors": [],
+            "reason_codes": [],
+            "runtime_validated": True,
+            "altium_version": "26.0.1",
+            "operator": "Synthetic CI",
+            "input_sha256": runtime_input_hashes,
+            "output_sha256": runtime_output_hashes,
+            "receipt_sha256": runtime_receipt_hash,
+        },
+        sort_keys=True,
+    ).encode()
+
     no_mmwave_review_content = json.dumps(
         {
             "schema": "ALTIUM-NO-MMWAVE-REVIEW-001",
@@ -515,6 +605,14 @@ def _manifest(tmp_path: Path) -> Path:
             "equivalence/hierarchy_validation_result.json",
             hierarchy_validation_content,
         ),
+        "script_runtime_receipt": (
+            "equivalence/script_runtime_receipt.json",
+            runtime_receipt_content,
+        ),
+        "script_runtime_result": (
+            "equivalence/script_runtime_result.json",
+            runtime_result_content,
+        ),
         "no_mmwave_review": (
             "equivalence/no_mmwave_review.json",
             no_mmwave_review_content,
@@ -598,6 +696,8 @@ def test_synthetic_altium_equivalence_fixture_is_test_ready(tmp_path):
     assert result["compile"]["errors"] == 0
     assert result["compile"]["warnings"] == 0
     assert result["native_audit"]["status"] == "PASS"
+    assert result["script_runtime"]["status"] == "PASS"
+    assert result["script_runtime"]["runtime_validated"] is True
     assert all(
         value == "PASS"
         for value in result["checks"].values()
@@ -1040,3 +1140,29 @@ def test_final_native_preflight_must_match_prerouting_pcb(tmp_path):
 
     assert result["status"] == "INVALID"
     assert "native_file_preflight_hash:pcb" in result["errors"]
+
+
+
+def test_changed_runtime_export_invalidates_equivalence_gate(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    output_item = next(
+        item
+        for item in data["artifacts"]
+        if item["id"] == "hierarchy_export"
+    )
+    output_path = tmp_path / output_item["path"]
+    output_path.write_bytes(b"CHANGED_AFTER_RUNTIME_RECEIPT")
+    output_item["sha256"] = hashlib.sha256(
+        output_path.read_bytes()
+    ).hexdigest()
+    manifest.write_text(
+        json.dumps(data, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert "script_runtime_hash:hierarchy_export" in result["errors"]
