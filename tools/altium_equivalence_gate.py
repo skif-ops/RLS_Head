@@ -7,6 +7,9 @@ from pathlib import Path
 
 from tools.altium_compile_evidence import validate as validate_compile_evidence
 from tools.altium_native_file_preflight import validate as validate_native_files
+from tools.altium_script_runtime_receipt import (
+    validate as validate_script_runtime_receipt,
+)
 
 
 MANIFEST_SCHEMA = "ALTIUM-EQUIVALENCE-MANIFEST-001"
@@ -842,7 +845,9 @@ def validate_manifest(
                         )
 
     script_runtime = None
+    script_runtime_rerun = None
     script_runtime_path = resolved.get("script_runtime_result")
+    script_runtime_receipt_path = resolved.get("script_runtime_receipt")
     if script_runtime_path is not None:
         try:
             script_runtime = json.loads(
@@ -851,6 +856,39 @@ def validate_manifest(
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:
             errors.append(f"script_runtime_parse:{exc}")
         else:
+            if script_runtime_receipt_path is None:
+                errors.append("script_runtime_receipt_missing")
+            else:
+                try:
+                    script_runtime_rerun = (
+                        validate_script_runtime_receipt(
+                            receipt_json=script_runtime_receipt_path,
+                            repository_root=root,
+                        )
+                    )
+                except (
+                    OSError,
+                    UnicodeDecodeError,
+                    json.JSONDecodeError,
+                    ValueError,
+                ) as exc:
+                    errors.append(
+                        f"script_runtime_rerun:{exc}"
+                    )
+                else:
+                    if script_runtime_rerun != script_runtime:
+                        errors.append(
+                            "script_runtime_result_not_reproducible"
+                        )
+                    if (
+                        script_runtime_rerun.get("status") != "PASS"
+                        or script_runtime_rerun.get(
+                            "runtime_validated"
+                        )
+                        is not True
+                    ):
+                        reasons.append("SCRIPT_RUNTIME_RERUN")
+
             if (
                 script_runtime.get("schema")
                 != "ALTIUM-SCRIPT-RUNTIME-RESULT-001"
@@ -1073,6 +1111,7 @@ def validate_manifest(
         "hierarchy_validation": hierarchy_validation,
         "no_mmwave_validation": no_mmwave_validation,
         "script_runtime": script_runtime,
+        "script_runtime_rerun": script_runtime_rerun,
         "compile": compile_result,
         "compile_validation": compile_validation,
         "native_audit": native_audit,
