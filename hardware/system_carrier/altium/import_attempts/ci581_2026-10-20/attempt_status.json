@@ -1,0 +1,176 @@
+{
+  "blocking_reasons": [
+    "Altium Automatic compilation reports 54 errors and 169 warnings, including power/signal net collisions.",
+    "The executed ECO maps endpoints from distinct KiCad nets into Altium 3V3 and RADAR_12V and omits 188 endpoints belonging to multi-endpoint KiCad nets.",
+    "Locked EVT mechanical datum, routing stack and power routing contracts have not been instantiated in the native PCB.",
+    "Native audit, BOM, netlist, hierarchy, no-mmWave and ALTIUM_EQUIVALENCE_GATE have not passed."
+  ],
+  "board_id": "EVT-SYS-CARRIER",
+  "compile_observation": {
+    "errors": 54,
+    "scope": "Automatic",
+    "validated_status": "FAIL",
+    "warnings": 169
+  },
+  "date": "2026-10-20",
+  "disposition": "EQUIVALENCE_BLOCKED_AFTER_CI581_ECO",
+  "eco_endpoint_comparison": {
+    "eco_assigned_unique_endpoints": 147,
+    "kicad_endpoints": 483,
+    "merged_altium_nets": [
+      "3V3",
+      "RADAR_12V"
+    ],
+    "status": "FAIL",
+    "unassigned_multi_endpoint_count": 188
+  },
+  "eco_observation": {
+    "components": 92,
+    "nets": 48,
+    "pin_assignment_records": 148
+  },
+  "files": {
+    "README.md": {
+      "sha256": "df7872f3855461fb3012677e305492b6a9b97e254d1054cabd302d4088f22513",
+      "size": 2567
+    },
+    "attempt_import_receipt.json": {
+      "sha256": "84508cae86d7ee60ab453c97815cb825fcc6426e7e426c586d7f6a558acfb6de",
+      "size": 1958
+    },
+    "compile_automatic.txt": {
+      "sha256": "04c0d660a10a0422e4918f0ee963634d6c3d6eab07fae32df639231cab8c3ce6",
+      "size": 33491
+    },
+    "current_source_binding.json": {
+      "sha256": "67ec6ff4f734250fb62f81cfbc0140499943b6f8093a08f491a10ab216dd7d7f",
+      "size": 23448
+    },
+    "eco_endpoint_comparison.json": {
+      "sha256": "87efe24e50101f1ebd8fa0a13ff241b977f3bb0cbdd5cbafb5fd36a0c40f3a27",
+      "size": 16575
+    },
+    "eco_initial.log": {
+      "sha256": "d9b73d0e42704fd2023cdc1c717d8a6ec65194e2deaafbd399cdc05e1212bf6a",
+      "size": 43498
+    },
+    "kicad_netlist_baseline.csv": {
+      "sha256": "ee72dab91135fcd2ae90121bbee743e67b785c3e9ff96213f3274c7beff3f8db",
+      "size": 10938
+    },
+    "local_symbol_import.log": {
+      "sha256": "d0cf3a2d5314b268085536d890b2c6b95b372e2a0835e6d4eae6996677820023",
+      "size": 919
+    },
+    "native_file_preflight.json": {
+      "sha256": "57dbc0fd40f69197fc28d01921ecff27d7578bcd689dc8a0c50abb6b2257e9c9",
+      "size": 1149
+    },
+    "native_snapshot/10_POWER_INPUT.SchDoc": {
+      "sha256": "d2e25ae6c5f995dc05717cb2eb535c2fbb8a94e8cdca9c8076976776b211df22",
+      "size": 126464
+    },
+    "native_snapshot/20_MCU_CORE.SchDoc": {
+      "sha256": "480b18f74724fbf4af43b566cd6092edb654607e1669d8ef6d9c5701941717f9",
+      "size": 266240
+    },
+    "native_snapshot/30_TIME_GNSS.SchDoc": {
+      "sha256": "0bfde5ce5e81ee3710eaaeb1d14cbab20ce5b313772a4ad767b89219c9b8c61a",
+      "size": 78848
+    },
+    "native_snapshot/40_IMU.SchDoc": {
+      "sha256": "b8fea69b4a69d0f2bc0676b3a7ed94bee7c217e5efde72d03dd11e1c7099c108",
+      "size": 45056
+    },
+    "native_snapshot/50_RADAR_IO_CAN.SchDoc": {
+      "sha256": "54711a358951708c0f7b7e678034c246dd4be08c7fa97e5d9650d4472a668b0e",
+      "size": 60928
+    },
+    "native_snapshot/60_ETHERNET.SchDoc": {
+      "sha256": "6e60ce7503ded3fe4f4c76f35ecb9d3cfc27cf629710eb76927ae8f04834aeca",
+      "size": 140288
+    },
+    "native_snapshot/70_DEBUG_BOOT.SchDoc": {
+      "sha256": "060d7bb31a5bb9c7b663f9f667a8b9a592080f57fe759467b725df4932f5f17d",
+      "size": 28160
+    },
+    "native_snapshot/EVT_SYS_CARRIER.PcbDoc": {
+      "sha256": "c4457c03d5d55b616fc2b492a7a060d5942ad957e6a91d42a35b845076a4eb44",
+      "size": 1634304
+    },
+    "native_snapshot/EVT_SYS_CARRIER.PrjPcb": {
+      "sha256": "8c9f8e772d97b0e849cb970bf3f4ba8be0a07a3706e084936c648eb406a10a64",
+      "size": 34969
+    },
+    "native_snapshot/EVT_SYS_CARRIER.SchDoc": {
+      "sha256": "8c476dbcc5bfb41ed3d25de02e24362f1567d987f075a0c06b7eeb38e8806c42",
+      "size": 55808
+    },
+    "native_snapshot/EVT_SYS_CARRIER.SchLib": {
+      "sha256": "7b72b28ab90765d18e7730e6299324ac29ba6b070983bb690f606d110dc22a39",
+      "size": 131584
+    },
+    "native_snapshot/SystemCarrier_Import.PcbLib": {
+      "sha256": "c785699322b9d1ac4a216b4a3e7ff1db297ff77dd30adc47c1cde43c5677ae4c",
+      "size": 547840
+    },
+    "native_snapshot/SystemCarrier_Local.SchLib": {
+      "sha256": "0ef9963b0de202fece606aeaf9f3890beb7b96c228b2676f4055fb0a6238562f",
+      "size": 41472
+    },
+    "orientation_probe/compile_automatic.txt": {
+      "sha256": "940225cafbb74ef91ffa9808792b0b7ba02978ae10d31fcaf75d15d5a1ca8517",
+      "size": 25519
+    },
+    "orientation_probe/kicad_erc_triage.json": {
+      "sha256": "c8b7bf240d5f2b781c5a2075a8cfea3305d55c5234063b7994a0ea075cc6d454",
+      "size": 359
+    },
+    "orientation_probe/kicad_netlist_baseline_result.json": {
+      "sha256": "2948a722f2368b4895981823219348ef8000cc2d1f00fb5b6689e2d8cec84d76",
+      "size": 656
+    },
+    "package_manifest.json": {
+      "sha256": "72529567e6fd953631f263a1e4551fbbe5f1ff0159ba68182fc6afff3e2bc431",
+      "size": 31812
+    },
+    "package_verification.json": {
+      "sha256": "664807b6ca0e4e6e5330a7915b75554737012f92678cb1e9571468c40b1b49c6",
+      "size": 21119
+    },
+    "schematic_import.log": {
+      "sha256": "43874e90a1faab517ab6d89151ac38cf84e7ea84e35be767e64d10224759166d",
+      "size": 151767
+    }
+  },
+  "native_equivalence_gate": "NOT_RUN",
+  "native_snapshot": {
+    "pcb_component_count": 92,
+    "pcb_net_count": 48,
+    "pcb_pad_count": 525,
+    "pcb_track_primitive_count": 1054,
+    "schdoc_count": 8
+  },
+  "orientation_probe": {
+    "altium_compile_errors": 50,
+    "altium_compile_warnings": 141,
+    "generator_change_committed": false,
+    "kicad_erc_violations": 0,
+    "kicad_netlist_endpoint_count": 483,
+    "qualified_package": false,
+    "result": "INSUFFICIENT"
+  },
+  "production_authority": "NOT_AUTHORIZED",
+  "qualified_package": {
+    "artifact_id": 12262810614,
+    "current_source_binding": "PASS",
+    "digest": "sha256:fe322748504c7077c131871abb7182ebf96a06ca40d059d6c5cfedd1f4ebc811",
+    "name": "system-carrier-altium-import",
+    "package_file_count": 112,
+    "package_verification": "PASS",
+    "source_bindings_checked": 52,
+    "source_commit": "b4caea651f593d01a5b61d1316a83598dacf147a"
+  },
+  "routing_authority": "NOT_AUTHORIZED",
+  "schema": "ALTIUM-NATIVE-IMPORT-ATTEMPT-216-002"
+}
