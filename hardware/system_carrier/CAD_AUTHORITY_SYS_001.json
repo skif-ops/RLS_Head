@@ -98,6 +98,8 @@
     "validator": "tools/altium_routing_readiness.py",
     "current_expected_status": "READY_FOR_NATIVE_IMPORT",
     "routing_authority_requires": "ALTIUM_EQUIVALENCE_GATE PASS",
-    "production_authority_separate": true
+    "production_authority_separate": true,
+    "evt_mechanical_datum_required": true,
+    "evt_mechanical_datum_status": "EVT_ROUTING_DATUM_LOCKED"
   }
 }
