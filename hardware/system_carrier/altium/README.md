@@ -57,13 +57,13 @@ Before native import, verify the extracted CI artifact with `tools.altium_import
 
 ## EVT pre-layout baseline
 
-The current placement baseline uses a **100 x 80 x 1.6 mm** rectangular board envelope with four M3 NPTH mounting holes. This is marked `EVT_PROVISIONAL`: it is sufficient to begin native Altium placement after the equivalence gate, but it is not a production mechanical freeze.
+The current placement baseline uses a **100 x 80 x 1.6 mm** board envelope with R3 corners and four M3 NPTH mounting holes. The board outline, corner radius, mounting pattern and primary edge-connector datums are `EVT_ROUTING_LOCKED`: they are the fixed mechanical coordinate baseline for native EVT placement/routing. This is deliberately **not** a production mechanical freeze; enclosure/STEP fit and final connector access remain part of the native-PcbDoc-bound production mechanical review.
 
 Authoritative pre-layout inputs:
 
 - `../BOM_SYS_CARRIER_LAYOUT_004.csv` — one row per physical/PCB-only reference;
 - `../FOOTPRINT_ASSIGNMENT_SYS_002.csv` — complete footprint assignment;
-- `ALTIUM_BOARD_MECHANICAL_SYS_001.csv` — provisional outline, holes and keepouts;
+- `ALTIUM_BOARD_MECHANICAL_SYS_001.csv` — EVT-routing-locked outline/mounting datums plus routing keepouts;
 - `ALTIUM_PLACEMENT_COORD_SYS_002.csv` — hard placement anchors and local placement directives;
 - `ALTIUM_ROUTING_SEQUENCE_SYS_001.csv` — required routing order;
 - `ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv` — numerical EVT defaults.
@@ -84,4 +84,4 @@ For routing preparation, `ALTIUM_EVT_STACKUP_SYS_002.csv` defines a provisional 
 
 ## Routing readiness gate
 
-`ALTIUM_ROOMS_SYS_001.csv` defines seven provisional placement rooms aligned with the existing functional zones. `tools/altium_routing_readiness.py` consolidates the CAD-policy, pre-layout, placement, room, impedance, power-width and native-rule-scope gates. With the current repository state it is expected to report `READY_FOR_NATIVE_IMPORT`, not `READY_FOR_ROUTING`. Native routing authority is granted only after real Altium `SchDoc` / `PcbDoc` files exist and the Altium equivalence gate passes. If the electrical SchDoc later changes, revoke-only reconciliation moves the project to `EQUIVALENCE_STALE`; that is a safe CI-valid rework phase with routing/production authority disabled until a fresh equivalence PASS. After that PASS, the approved SchDoc remains the electrical baseline while PcbDoc is allowed to evolve through placement/routing; CI does not replay the pre-routing PCB hash gate against a legitimately routed board.
+`ALTIUM_ROOMS_SYS_001.csv` defines seven provisional placement rooms aligned with the existing functional zones. `tools/altium_evt_mechanical_datum_gate.py` separately freezes only the EVT routing coordinate datum (board envelope, mounting pattern and primary edge connectors) while keeping production mechanics explicitly unfrozen. `tools/altium_routing_readiness.py` consolidates the CAD-policy, pre-layout, placement, EVT mechanical-datum, room, impedance, power-width and native-rule-scope gates. With the current repository state it is expected to report `READY_FOR_NATIVE_IMPORT`, not `READY_FOR_ROUTING`. Native routing authority is granted only after real Altium `SchDoc` / `PcbDoc` files exist and the Altium equivalence gate passes. If the electrical SchDoc later changes, revoke-only reconciliation moves the project to `EQUIVALENCE_STALE`; that is a safe CI-valid rework phase with routing/production authority disabled until a fresh equivalence PASS. After that PASS, the approved SchDoc remains the electrical baseline while PcbDoc is allowed to evolve through placement/routing; CI does not replay the pre-routing PCB hash gate against a legitimately routed board.
