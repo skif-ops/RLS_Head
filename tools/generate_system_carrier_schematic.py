@@ -756,7 +756,7 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "U5_PG", "U5", "4")
     add_pin_label(sch, "U5_PG", "R5P", "1")
     add_pin_label(sch, "3V3", "R5P", "2")
-    for pin in ("5","6","15","16","EP"):
+    for pin in ("5","6","15","16","17"):
         if sch.get_component_pin_position("U5", pin) is not None:
             add_pin_label(sch, "GND", "U5", pin)
     for pin in ("7","8"):
@@ -1238,8 +1238,8 @@ def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
     # Transceiver local power and exposed-pad ground.
     add_pin_label_stub(sch, "3V3", "C40", "1")
     add_pin_label_stub(sch, "GND", "C40", "2")
-    if sch.get_component_pin_position("U4", "EP") is not None:
-        add_pin_label_stub(sch, "GND", "U4", "EP")
+    if sch.get_component_pin_position("U4", "9") is not None:
+        add_pin_label_stub(sch, "GND", "U4", "9")
 
     # Deterministic normal mode defaults.
     sch.add_wire_between_pins("U4", "8", "R41", "1")
@@ -1862,6 +1862,7 @@ def build(output_dir: Path) -> dict:
     )
 
     main = ksa.create_schematic(PROJECT_NAME)
+    main.set_paper_size("A2")
     parent_uuid = main.uuid
     placeholders: list[dict] = []
     mcu_unused_gpio_no_connect_count = 0
@@ -1981,6 +1982,7 @@ def build(output_dir: Path) -> dict:
 
     for name, filename in SHEETS:
         child = ksa.create_schematic(PROJECT_NAME)
+        child.set_paper_size("A2")
         child.set_hierarchy_context(parent_uuid, sheet_uuids[name])
 
         sheet_hierarchy_rows = hierarchy_rows_for_sheet(
