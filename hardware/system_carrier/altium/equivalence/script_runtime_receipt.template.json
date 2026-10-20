@@ -1,0 +1,38 @@
+{
+  "schema": "ALTIUM-SCRIPT-RUNTIME-RECEIPT-001",
+  "status": "PENDING",
+  "board_id": "EVT-SYS-CARRIER",
+  "altium_version": "<ALTIUM_VERSION>",
+  "operator": "<OPERATOR>",
+  "procedures": {
+    "ExportNativeAudit": {
+      "status": "PENDING",
+      "runtime_errors": null,
+      "runtime_warnings": null
+    },
+    "ExportNativeHierarchy": {
+      "status": "PENDING",
+      "runtime_errors": null,
+      "runtime_warnings": null
+    }
+  },
+  "input_sha256": {
+    "schematic": "<SHA256>",
+    "pcb": "<SHA256>",
+    "pcb_audit_script": "<SHA256>",
+    "hierarchy_audit_script": "<SHA256>",
+    "api_contract": "<SHA256>"
+  },
+  "output_sha256": {
+    "component_inventory": "<SHA256>",
+    "net_inventory": "<SHA256>",
+    "rule_inventory": "<SHA256>",
+    "pad_net_inventory": "<SHA256>",
+    "layer_stack_inventory": "<SHA256>",
+    "hierarchy_export": "<SHA256>"
+  },
+  "notes": [
+    "Set PASS only after both exporter procedures compile and run successfully in the target Altium Designer installation.",
+    "Hashes must be captured from the exact pre-routing native documents, scripts, compatibility contract and generated CSV outputs used for equivalence."
+  ]
+}
