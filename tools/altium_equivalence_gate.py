@@ -919,7 +919,7 @@ def validate_manifest(
                 errors.append("script_runtime_input_sha256")
                 runtime_inputs = {}
 
-            for artifact_id in ("schematic", "pcb"):
+            for artifact_id in ("project", "schematic", "pcb"):
                 actual = str(
                     integrity.get(artifact_id, {}).get(
                         "sha256_actual",
@@ -948,6 +948,10 @@ def validate_manifest(
                 "api_contract": (
                     "hardware/system_carrier/altium/"
                     "ALTIUM_SCRIPT_API_COMPAT_SYS_001.json"
+                ),
+                "script_project": (
+                    "hardware/system_carrier/altium/scripts/"
+                    "EVT_SYS_CARRIER_Audit.PrjScr"
                 ),
             }
             for artifact_id, relative in runtime_source_paths.items():

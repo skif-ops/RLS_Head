@@ -26,7 +26,7 @@ The gate consumes:
 - footprint assignment result generated from the native component inventory;
 - read-only native PCB audit inventories (components, nets, rules, pad-to-net connectivity and copper layer stack), each SHA-256-bound in the equivalence manifest;
 - validated native audit result `equivalence/native_audit_result.json`, containing SHA-256 hashes of all five raw inventory CSV inputs;
-- explicit Altium Designer runtime receipt `equivalence/script_runtime_receipt.json` plus validated `equivalence/script_runtime_result.json`, SHA-256-bound to the exact pre-routing native documents, both read-only audit scripts, `ALTIUM_SCRIPT_API_COMPAT_SYS_001.json` and all six generated audit/hierarchy CSV outputs; the authority gate independently reruns the runtime-receipt validator and requires the committed result to be exactly reproducible;
+- explicit Altium Designer runtime receipt `equivalence/script_runtime_receipt.json` plus validated `equivalence/script_runtime_result.json`, SHA-256-bound to the exact `EVT_SYS_CARRIER.PrjPcb`, pre-routing native documents, `EVT_SYS_CARRIER_Audit.PrjScr`, both read-only audit scripts, `ALTIUM_SCRIPT_API_COMPAT_SYS_001.json` and all six generated audit/hierarchy CSV outputs; the authority gate independently reruns the runtime-receipt validator and requires the committed result to be exactly reproducible;
 - completed equivalence manifest.
 
 Use `hardware/system_carrier/altium/equivalence/manifest.template.json` as the starting manifest. The gate independently re-runs the CFB/OLE preflight against the exact committed `SchDoc/PcbDoc`; a forged PASS JSON cannot substitute for valid native containers.

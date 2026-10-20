@@ -10,6 +10,7 @@ SCHEMA = "ALTIUM-SCRIPT-RUNTIME-RESULT-001"
 RECEIPT_SCHEMA = "ALTIUM-SCRIPT-RUNTIME-RECEIPT-001"
 
 CANONICAL = {
+    "project": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
     "schematic": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
     "pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
     "pcb_audit_script": (
@@ -23,6 +24,10 @@ CANONICAL = {
     "api_contract": (
         "hardware/system_carrier/altium/"
         "ALTIUM_SCRIPT_API_COMPAT_SYS_001.json"
+    ),
+    "script_project": (
+        "hardware/system_carrier/altium/scripts/"
+        "EVT_SYS_CARRIER_Audit.PrjScr"
     ),
 }
 
