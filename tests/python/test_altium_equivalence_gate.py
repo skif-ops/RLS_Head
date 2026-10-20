@@ -1313,3 +1313,33 @@ def test_noncanonical_runtime_receipt_path_invalidates_gate(tmp_path):
 
     assert result["status"] == "INVALID"
     assert "canonical_path:script_runtime_receipt" in result["errors"]
+
+
+
+def test_noncanonical_runtime_result_path_invalidates_gate(tmp_path):
+    manifest = _manifest(tmp_path)
+    data = json.loads(manifest.read_text())
+
+    item = next(
+        artifact
+        for artifact in data["artifacts"]
+        if artifact["id"] == "script_runtime_result"
+    )
+    canonical = tmp_path / item["path"]
+    alternate = tmp_path / "equivalence/ALT_runtime_result.json"
+    alternate.parent.mkdir(parents=True, exist_ok=True)
+    alternate.write_bytes(canonical.read_bytes())
+
+    item["path"] = "equivalence/ALT_runtime_result.json"
+    item["sha256"] = hashlib.sha256(
+        alternate.read_bytes()
+    ).hexdigest()
+    manifest.write_text(
+        json.dumps(data, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    result = validate_manifest(manifest, tmp_path)
+
+    assert result["status"] == "INVALID"
+    assert "canonical_path:script_runtime_result" in result["errors"]
