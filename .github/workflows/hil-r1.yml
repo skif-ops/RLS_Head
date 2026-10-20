@@ -1249,6 +1249,7 @@ jobs:
           )
           assert data["schema"] == "ALTIUM-IMPORT-PACKAGE-001"
           assert data["status"] == "READY_FOR_ALTIUM_IMPORT"
+          assert data["path_mode"] == "PACKAGE_ROOT_RELATIVE"
           assert data["target_cad"] == "Altium Designer"
           assert data["preserve_kicad"] is True
           assert data["production_contracts_included"] is True
@@ -1267,9 +1268,43 @@ jobs:
           assert data["script_runtime_receipt_template_included"] is True
           assert data["kicad_netlist_baseline_included"] is True
           assert data["file_count"] >= 48
+          assert all(
+              not Path(item["path"]).is_absolute()
+              and ".." not in Path(item["path"]).parts
+              and not item["path"].startswith("build-cad/")
+              for item in data["files"]
+          )
           print(
               "Altium import package READY:",
               data["file_count"],
+              "files",
+          )
+          PY
+
+      - name: Verify Altium import package hashes
+        run: |
+          python -m tools.altium_import_package_verify \
+            --package-root build-cad/altium_import \
+            --output build-cad/altium_import/package_verification.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/altium_import/package_verification.json"
+              ).read_text()
+          )
+          assert data["schema"] == "ALTIUM-IMPORT-PACKAGE-VERIFY-001"
+          assert data["status"] == "PASS", data
+          assert data["errors"] == []
+          assert (
+              data["verified_file_count"]
+              == data["expected_file_count"]
+          )
+          print(
+              "Altium import package verification PASS:",
+              data["verified_file_count"],
               "files",
           )
           PY
