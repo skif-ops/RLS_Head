@@ -416,6 +416,29 @@ jobs:
           print("Altium provisional impedance model PASS")
           PY
 
+      - name: Validate EVT routing stack lock
+        run: |
+          python -m tools.altium_evt_routing_stack_gate \
+            hardware/system_carrier \
+            --output altium_evt_routing_stack_gate.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path("altium_evt_routing_stack_gate.json").read_text()
+          )
+          assert data["schema"] == "ALTIUM-EVT-ROUTING-STACK-GATE-001"
+          assert data["status"] == "PASS"
+          assert data["errors"] == []
+          assert data["evt_routing_stack_locked"] is True
+          assert data["production_stack_locked"] is False
+          assert data["production_binding_required"] is True
+          assert data["field_solver_required"] is True
+          assert data["stack_total_mm"] == 1.6
+          print("EVT routing stack lock PASS")
+          PY
+
       - name: Validate Altium provisional power widths
         run: |
           python -m tools.altium_power_width_gate \
@@ -1016,6 +1039,28 @@ jobs:
           print("Altium impedance evidence READY")
           PY
 
+      - name: Validate EVT routing stack lock for import
+        run: |
+          python -m tools.altium_evt_routing_stack_gate \
+            hardware/system_carrier \
+            --output build-cad/system_carrier/altium_evt_routing_stack_gate.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/"
+                  "altium_evt_routing_stack_gate.json"
+              ).read_text()
+          )
+          assert data["status"] == "PASS"
+          assert data["evt_routing_stack_locked"] is True
+          assert data["production_stack_locked"] is False
+          assert data["production_binding_required"] is True
+          print("EVT routing stack evidence READY")
+          PY
+
       - name: Validate Altium power widths for import
         run: |
           python -m tools.altium_power_width_gate \
@@ -1314,6 +1359,7 @@ jobs:
           assert data["placement_gate_included"] is True
           assert data["evt_mechanical_datum_gate_included"] is True
           assert data["impedance_gate_included"] is True
+          assert data["evt_routing_stack_gate_included"] is True
           assert data["power_width_gate_included"] is True
           assert data["rule_scope_gate_included"] is True
           assert data["room_gate_included"] is True
