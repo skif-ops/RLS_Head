@@ -264,7 +264,7 @@ def validate_manifest(
             if not isinstance(import_artifacts, dict):
                 errors.append("import_native_preflight_artifacts")
             else:
-                for artifact_id in ("project", "schematic", "pcb"):
+                for artifact_id in ("schematic", "pcb"):
                     record = import_artifacts.get(artifact_id)
                     if not isinstance(record, dict):
                         errors.append(
@@ -919,7 +919,7 @@ def validate_manifest(
                 errors.append("script_runtime_input_sha256")
                 runtime_inputs = {}
 
-            for artifact_id in ("schematic", "pcb"):
+            for artifact_id in ("project", "schematic", "pcb"):
                 actual = str(
                     integrity.get(artifact_id, {}).get(
                         "sha256_actual",
