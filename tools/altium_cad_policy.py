@@ -187,7 +187,237 @@ def _native_status_coherence(
     status_data: dict,
 ) -> list[str]:
     errors: list[str] = []
+    phase = str(status_data.get("current_phase", ""))
+    native_import = str(
+        native_status_doc.get("native_import_status", "")
+    )
+    equivalence = str(
+        native_status_doc.get("equivalence_gate_status", "")
+    )
+    layout = str(
+        native_status_doc.get("layout_authority", "")
+    )
+    production = str(
+        native_status_doc.get("production_authority", "")
+    )
 
+    if phase == "IMPORT_PREPARED":
+        expected = (
+            "WAITING_NATIVE_ALTIUM_IMPORT",
+            "NOT_RUN",
+            "NOT_AUTHORIZED",
+            "NOT_AUTHORIZED",
+        )
+    elif phase == "READY_FOR_ROUTING":
+        expected = (
+            "NATIVE_FILES_READY",
+            "PASS",
+            "AUTHORIZED",
+            "NOT_AUTHORIZED",
+        )
+    elif phase == "PRODUCTION_RELEASED":
+        expected = (
+            "NATIVE_FILES_READY",
+            "PASS",
+            "AUTHORIZED",
+            "AUTHORIZED",
+        )
+    elif phase == "EQUIVALENCE_STALE":
+        expected = (
+            "NATIVE_FILES_READY",
+            "STALE",
+            "NOT_AUTHORIZED",
+            "NOT_AUTHORIZED",
+        )
+    else:
+        return ["native_lifecycle_phase"]
+
+    allowed_import = (
+        {expected[0]}
+        if expected[0] == "WAITING_NATIVE_ALTIUM_IMPORT"
+        else {"IMPORTED", "PASS", "NATIVE_FILES_READY"}
+    )
+    if native_import not in allowed_import:
+        errors.append("native_import_status")
+    if equivalence != expected[1]:
+        errors.append("native_equivalence_status")
+    if layout != expected[2]:
+        errors.append("native_layout_authority")
+    if production != expected[3]:
+        errors.append("native_production_authority")
+    return errors
+
+def validate(root: str | Path) -> dict:
+    root = Path(root)
+    errors: list[str] = []
+    warnings: list[str] = []
+
+    authority_path = root / "CAD_AUTHORITY_SYS_001.json"
+    import_path = root / "altium" / "ALTIUM_IMPORT_PROFILE_SYS_001.json"
+    project_path = root / "altium" / "EVT_SYS_CARRIER.PrjPcb"
+    stack_path = root / "altium" / "ALTIUM_LAYER_STACK_SYS_001.csv"
+    rules_path = root / "altium" / "ALTIUM_RULES_SYS_001.csv"
+    net_classes_path = root / "altium" / "ALTIUM_NET_CLASSES_SYS_001.csv"
+    placement_path = root / "altium" / "ALTIUM_PLACEMENT_PLAN_SYS_001.csv"
+    board_mechanical_path = root / "altium" / "ALTIUM_BOARD_MECHANICAL_SYS_001.csv"
+    placement_coord_path = root / "altium" / "ALTIUM_PLACEMENT_COORD_SYS_002.csv"
+    routing_sequence_path = root / "altium" / "ALTIUM_ROUTING_SEQUENCE_SYS_001.csv"
+    prelayout_values_path = root / "altium" / "ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv"
+    layout_bom_path = root / "BOM_SYS_CARRIER_LAYOUT_004.csv"
+    full_footprint_path = root / "FOOTPRINT_ASSIGNMENT_SYS_002.csv"
+    equivalence_checks_path = root / "altium" / "ALTIUM_EQUIVALENCE_CHECKS_SYS_001.csv"
+    native_status_path = root / "altium" / "ALTIUM_NATIVE_STATUS_SYS_001.json"
+    equivalence_template_path = root / "altium" / "equivalence" / "manifest.template.json"
+    outjob_contract_path = root / "altium" / "ALTIUM_OUTJOB_CONTRACT_SYS_001.csv"
+    release_checklist_path = root / "altium" / "ALTIUM_RELEASE_CHECKLIST_SYS_001.csv"
+    board_planning_path = root / "altium" / "ALTIUM_BOARD_PLANNING_SYS_001.csv"
+    dfm_profile_path = root / "altium" / "ALTIUM_DFM_PROFILE_SYS_001.csv"
+    evt_stack_path = root / "altium" / "ALTIUM_EVT_STACKUP_SYS_002.csv"
+    impedance_start_path = root / "altium" / "ALTIUM_IMPEDANCE_START_SYS_001.csv"
+    power_width_path = root / "altium" / "ALTIUM_POWER_WIDTH_SYS_001.csv"
+    diff_pair_path = root / "altium" / "ALTIUM_DIFF_PAIRS_SYS_001.csv"
+    rule_query_path = root / "altium" / "ALTIUM_RULE_QUERY_SYS_001.csv"
+    rooms_path = root / "altium" / "ALTIUM_ROOMS_SYS_001.csv"
+    implementation_path = root / "altium" / "ALTIUM_IMPLEMENTATION_SEQUENCE_SYS_001.csv"
+    status_path = root / "altium" / "ALTIUM_STATUS_SYS_001.json"
+    source_rules_path = root / "PCB_LAYOUT_CONSTRAINTS_SYS_001.csv"
+
+    for path in (
+        authority_path,
+        import_path,
+        project_path,
+        stack_path,
+        rules_path,
+        net_classes_path,
+        placement_path,
+        board_mechanical_path,
+        placement_coord_path,
+        routing_sequence_path,
+        prelayout_values_path,
+        layout_bom_path,
+        full_footprint_path,
+        equivalence_checks_path,
+        native_status_path,
+        status_path,
+        equivalence_template_path,
+        source_rules_path,
+    ):
+        if not path.is_file():
+            errors.append(f"missing:{path.name}")
+
+    if errors:
+        return {
+            "schema": SCHEMA,
+            "status": "FAIL",
+            "errors": sorted(errors),
+            "warnings": warnings,
+        }
+
+    authority = json.loads(authority_path.read_text(encoding="utf-8"))
+    profile = json.loads(import_path.read_text(encoding="utf-8"))
+
+    if authority.get("status") != "ALTIUM_PRIMARY":
+        errors.append("authority_status")
+    if authority.get("primary_cad") != "Altium Designer":
+        errors.append("primary_cad")
+    if authority.get("preserve_kicad") is not True:
+        errors.append("preserve_kicad")
+    if authority.get("delete_kicad_sources") is not False:
+        errors.append("delete_kicad_sources")
+    if authority.get("equivalence_gate_required") is not True:
+        errors.append("equivalence_gate_required")
+
+    project_text = project_path.read_text(encoding="utf-8-sig")
+    if "[Design]" not in project_text:
+        errors.append("prjpcb_design_section")
+    if "DefaultConfiguration=Sources" not in project_text:
+        errors.append("prjpcb_sources_configuration")
+
+    if profile.get("target_cad") != "Altium Designer":
+        errors.append("import_target_cad")
+    if profile.get("preserve_source_files") is not True:
+        errors.append("import_preserve_source")
+
+    expected = {
+        "compile_zero_errors",
+        "compile_zero_warnings",
+        "bom_designator_mpn_equivalence",
+        "pinmap_equivalence",
+        "connector_pinout_equivalence",
+        "netlist_equivalence",
+        "footprint_equivalence",
+        "hierarchy_equivalence",
+        "rules_equivalence",
+        "stackup_equivalence",
+        "no_76_81GHz_rf_on_system_carrier",
+        "native_pcb_audit",
+    }
+    actual = set(profile.get("post_import_checks", []))
+    if not expected.issubset(actual):
+        errors.append("post_import_checks")
+
+    source_ids = _csv_ids(source_rules_path, "rule_id")
+    mapped_ids = _csv_ids(rules_path, "source_rule_id")
+    if source_ids != mapped_ids:
+        errors.append(
+            "altium_rule_mapping:"
+            f"missing={sorted(source_ids - mapped_ids)}:"
+            f"extra={sorted(mapped_ids - source_ids)}"
+        )
+
+    net_class_ids = _csv_ids(net_classes_path, "class_id")
+    placement_ids = _csv_ids(placement_path, "zone_id")
+    equivalence_ids = _csv_ids(equivalence_checks_path, "check_id")
+    layout_bom_refs = _csv_ids(layout_bom_path, "ref")
+    full_footprint_refs = _csv_ids(full_footprint_path, "ref")
+    prelayout_rule_ids = _csv_ids(prelayout_values_path, "rule_id")
+    if len(net_class_ids) < 8:
+        errors.append("net_class_count")
+    if len(placement_ids) < 7:
+        errors.append("placement_zone_count")
+    if len(equivalence_ids) != 11:
+        errors.append("equivalence_check_count")
+    if layout_bom_refs != full_footprint_refs:
+        errors.append(
+            "layout_bom_footprint_ref_set"
+        )
+    if len(prelayout_rule_ids) < 18:
+        errors.append("prelayout_rule_count")
+
+    with board_mechanical_path.open(
+        "r",
+        encoding="utf-8",
+        newline="",
+    ) as handle:
+        mechanical_rows = list(csv.DictReader(handle))
+    outline = [
+        row
+        for row in mechanical_rows
+        if str(row.get("kind", "")).strip() == "BOARD"
+        and str(row.get("id", "")).strip() == "OUTLINE"
+    ]
+    if len(outline) != 1:
+        errors.append("mechanical_outline")
+    else:
+        if str(outline[0].get("status", "")).strip() != "EVT_PROVISIONAL":
+            warnings.append("mechanical_outline_status")
+
+    status_data = json.loads(
+        status_path.read_text(encoding="utf-8")
+    )
+    if (
+        status_data.get("schema")
+        != "ALTIUM-PCB-IMPLEMENTATION-STATUS-001"
+    ):
+        errors.append("altium_status_schema")
+
+    native_status_doc = json.loads(
+        native_status_path.read_text(encoding="utf-8")
+    )
+    if native_status_doc.get("primary_cad") != "Altium Designer":
+        errors.append("native_status_primary_cad")
+    if native_status_doc.get("review_a_status") != "PASS":
+        errors.append("native_status_review_a")
     errors.extend(
         _native_status_coherence(
             native_status_doc,
@@ -265,10 +495,15 @@ def _native_status_coherence(
             errors.append("l2_ground_role")
 
     native_status = str(authority.get("native_document_status", ""))
+    phase = str(status_data.get("current_phase", ""))
     expected_native_status = (
-        "NATIVE_EQUIVALENCE_PASS"
-        if native_schdoc and native_pcbdoc
-        else "PENDING_ALTIUM_IMPORT"
+        "NATIVE_EQUIVALENCE_STALE"
+        if phase == "EQUIVALENCE_STALE"
+        else (
+            "NATIVE_EQUIVALENCE_PASS"
+            if native_schdoc and native_pcbdoc
+            else "PENDING_ALTIUM_IMPORT"
+        )
     )
     if native_status != expected_native_status:
         warnings.append(f"native_document_status:{native_status}")
