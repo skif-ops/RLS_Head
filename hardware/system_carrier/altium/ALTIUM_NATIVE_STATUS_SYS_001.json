@@ -17,6 +17,7 @@
     "equivalence/native_file_preflight.json",
     "equivalence/import_native_file_preflight.json",
     "equivalence/import_package_manifest.json",
+    "equivalence/import_package_verification.json",
     "equivalence/import_receipt.json",
     "equivalence/import_log.txt",
     "equivalence/compile_report_raw.txt",
