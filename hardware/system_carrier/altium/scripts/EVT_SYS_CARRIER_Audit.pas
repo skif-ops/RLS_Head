@@ -209,7 +209,7 @@ Begin
                 Begin
                     Rpt.Add(
                         IntToStr(OrderNo) + ',' +
-                        CsvQuote(Layer2String(LayerObj.LayerID))
+                        CsvQuote(LayerObj.Name)
                     );
                     Inc(OrderNo);
                 End;
@@ -222,7 +222,7 @@ Begin
                 Begin
                     Rpt.Add(
                         IntToStr(OrderNo) + ',' +
-                        CsvQuote(Layer2String(LayerObj.LayerID))
+                        CsvQuote(LayerObj.Name)
                     );
                     Inc(OrderNo);
                 End;

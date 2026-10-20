@@ -33,8 +33,13 @@ in the next qualified import.
 `native_file_preflight.json` passes the CFB/OLE container checks on the exact
 saved SchDoc/PcbDoc hashes. The Import Wizard did not leave an exportable raw
 wizard log for this run, so this is an **attempt record**, not the canonical
-`import_receipt.json`. The mechanical datum, routing stack, power rules,
-read-only native audit, BOM, PCB pad-net inventory, hierarchy, no-mmWave review
-and `ALTIUM_EQUIVALENCE_GATE` remain incomplete. The canonical native pair is
+`import_receipt.json`. After the import, the repository audit scripts were run
+against the saved native documents. `native_audit_diagnostic/` retains the five
+Altium PCB inventories, 66 hierarchy port rows, and the two validator results.
+Both validators report `FAIL`: the board still has a two-layer stack and lacks
+the locked rules, two exposed-pad GND assignments, and named nets on several
+hierarchy anchors. These diagnostics are not an equivalence pass. The
+mechanical datum, routing stack, power rules, BOM, no-mmWave review and
+`ALTIUM_EQUIVALENCE_GATE` remain incomplete. The canonical native pair is
 not committed, `READY_FOR_ROUTING` is not claimed, and production authority
 remains `NOT_AUTHORIZED`.
