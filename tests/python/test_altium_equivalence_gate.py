@@ -241,6 +241,17 @@ def _manifest(tmp_path: Path) -> Path:
             "source_cad": "KiCad 9 retained verification baseline",
             "target_cad": "Altium Designer",
             "preserve_kicad": True,
+            "current_source_binding_required": True,
+            "source_binding_count": 1,
+            "source_bindings": [
+                {
+                    "package_path": package_file["path"],
+                    "repository_path": (
+                        "hardware/system_carrier/"
+                        "BOM_SYS_CARRIER_LAYOUT_004.csv"
+                    ),
+                }
+            ],
             "file_count": 1,
             "files": [package_file],
         },
@@ -262,6 +273,7 @@ def _manifest(tmp_path: Path) -> Path:
             "expected_file_count": 1,
             "verified_file_count": 1,
             "verified_files": [package_file],
+            "source_binding_count": 1,
             "errors": [],
         },
         sort_keys=True,
@@ -293,6 +305,16 @@ def _manifest(tmp_path: Path) -> Path:
                     "import_package_verification.json"
                 ),
                 "sha256": package_verification_hash,
+            },
+            "import_source_binding": {
+                "schema": "ALTIUM-IMPORT-SOURCE-BINDING-001",
+                "status": "PASS",
+                "errors": [],
+                "package_manifest_sha256": package_hash,
+                "source_commit": source_commit,
+                "expected_count": 1,
+                "checked_count": 1,
+                "bindings": [],
             },
             "import_native_file_preflight": {
                 "path": (
