@@ -104,17 +104,44 @@ def reconcile(
             "production_authority_effective": False,
         }
 
-    tracked_layout = (
-        native_status.get("layout_authority") == "AUTHORIZED"
-        or authority.get("pcb_layout_authority") == "ALTIUM_AUTHORIZED"
+    routing_state = implementation.get("routing_readiness")
+    if not isinstance(routing_state, dict):
+        routing_state = {}
+    altium_state = implementation.get("altium")
+    if not isinstance(altium_state, dict):
+        altium_state = {}
+
+    layout_surfaces = {
+        "native_status": (
+            native_status.get("layout_authority") == "AUTHORIZED"
+        ),
+        "implementation_status": (
+            routing_state.get("routing_authorized") is True
+        ),
+        "cad_authority": (
+            authority.get("pcb_layout_authority")
+            == "ALTIUM_AUTHORIZED"
+        ),
+    }
+    production_surfaces = {
+        "native_status": (
+            native_status.get("production_authority") == "AUTHORIZED"
+        ),
+        "implementation_status": (
+            altium_state.get("production_release_authorized") is True
+        ),
+        "cad_authority": (
+            authority.get("production_release_authorized") is True
+        ),
+    }
+
+    tracked_layout = any(layout_surfaces.values())
+    tracked_production = any(production_surfaces.values())
+    layout_surface_consistent = (
+        len(set(layout_surfaces.values())) == 1
     )
-    tracked_production = (
-        native_status.get("production_authority") == "AUTHORIZED"
-        or implementation.get("altium", {}).get(
-            "production_release_authorized"
-        )
-        is True
-        or authority.get("production_release_authorized") is True
+    production_surface_consistent = (
+        len(set(production_surfaces.values())) == 1
     )
 
     equivalence_valid = False
@@ -196,8 +223,15 @@ def reconcile(
                     else "STALE_OR_INVALID_PRODUCTION_RELEASE"
                 )
 
-    layout_revoked = tracked_layout and not equivalence_valid
-    production_revoked = tracked_production and not production_valid
+    layout_revoked = tracked_layout and (
+        not equivalence_valid
+        or not layout_surface_consistent
+    )
+    production_revoked = tracked_production and (
+        not production_valid
+        or not production_surface_consistent
+        or layout_revoked
+    )
 
     if layout_revoked:
         actions.append("REVOKE_LAYOUT_AUTHORITY")
@@ -281,6 +315,10 @@ def reconcile(
         "applied": bool(apply and actions),
         "tracked_layout_authority": tracked_layout,
         "tracked_production_authority": tracked_production,
+        "layout_authority_surfaces": layout_surfaces,
+        "production_authority_surfaces": production_surfaces,
+        "layout_surface_consistent": layout_surface_consistent,
+        "production_surface_consistent": production_surface_consistent,
         "layout_authority_effective": (
             tracked_layout and equivalence_valid
         ),
@@ -305,6 +343,11 @@ def reconcile(
             (
                 "Use --apply only to synchronize tracked JSON after stale "
                 "authority is detected."
+            ),
+            (
+                "If tracked authority surfaces disagree, fail-closed "
+                "reconciliation revokes authority rather than granting the "
+                "missing surface."
             ),
         ],
     }
