@@ -41,6 +41,8 @@ All future Gerber/ODB++/IPC-2581, NC drill, pick-and-place, assembly drawings, f
 
 Use `--force-recheck` only for a deliberate full re-equivalence; without that flag, an already-valid lifecycle is preserved rather than rebuilt.
 
+If the import receipt has not yet been created, `import_native_file_preflight.json` must already exist from the immediate Import Wizard output. Otherwise the driver stops at `WAITING_IMPORT_SNAPSHOT_CAPTURE` instead of retrospectively declaring the current files to be the import snapshot.
+
 The driver does not synthesize `.SchDoc` / `.PcbDoc`, does not replace native Altium compile/audit exports and does not auto-sign the no-mmWave human review. Native compile evidence is accepted only as `compile_report.json` generated/validated against the archived raw compile/ERC report and SHA-256-bound to the exact project and native schematic; a bare zero-count JSON is not sufficient.
 
 ## Native equivalence gate

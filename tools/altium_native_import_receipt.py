@@ -33,6 +33,7 @@ def build_receipt(
     *,
     repository_root: str | Path,
     package_manifest: str | Path,
+    import_preflight: str | Path,
     altium_version: str,
     importer_version: str,
 ) -> dict:
@@ -40,6 +41,10 @@ def build_receipt(
     package_path = Path(package_manifest)
     if not package_path.is_absolute():
         package_path = root / package_path
+
+    preflight_path = Path(import_preflight)
+    if not preflight_path.is_absolute():
+        preflight_path = root / preflight_path
 
     errors: list[str] = []
 
@@ -78,6 +83,25 @@ def build_receipt(
     if not importer_version:
         errors.append("importer_version")
 
+    import_preflight = None
+    if not preflight_path.is_file():
+        errors.append("missing_import_native_file_preflight")
+    else:
+        try:
+            import_preflight = json.loads(
+                preflight_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"import_preflight_parse:{exc}")
+        else:
+            if (
+                import_preflight.get("schema")
+                != "ALTIUM-NATIVE-FILE-PREFLIGHT-001"
+            ):
+                errors.append("import_preflight_schema")
+            if import_preflight.get("status") != "PASS":
+                errors.append("import_preflight_status")
+
     artifacts: dict[str, dict] = {}
     for artifact_id, relative in NATIVE_ARTIFACTS.items():
         path = root / relative
@@ -90,6 +114,34 @@ def build_receipt(
             "sha256": sha256_file(path),
         }
 
+    if isinstance(import_preflight, dict):
+        preflight_artifacts = import_preflight.get("artifacts")
+        if not isinstance(preflight_artifacts, dict):
+            errors.append("import_preflight_artifacts")
+        else:
+            for artifact_id in ("schematic", "pcb"):
+                record = preflight_artifacts.get(artifact_id)
+                current = artifacts.get(artifact_id)
+                if not isinstance(record, dict):
+                    errors.append(
+                        f"import_preflight_record:{artifact_id}"
+                    )
+                    continue
+                if not isinstance(current, dict):
+                    continue
+                claimed_path = str(record.get("path", "")).strip()
+                claimed_hash = str(
+                    record.get("sha256", "")
+                ).strip().lower()
+                if claimed_path != current["path"]:
+                    errors.append(
+                        f"import_preflight_path:{artifact_id}"
+                    )
+                if claimed_hash != current["sha256"]:
+                    errors.append(
+                        f"import_preflight_hash:{artifact_id}"
+                    )
+
     package_record = None
     if package_path.is_file():
         try:
@@ -101,6 +153,19 @@ def build_receipt(
                 "path": package_relative,
                 "size": package_path.stat().st_size,
                 "sha256": sha256_file(package_path),
+            }
+
+    preflight_record = None
+    if preflight_path.is_file():
+        try:
+            preflight_relative = _repo_relative(root, preflight_path)
+        except ValueError:
+            errors.append("import_preflight_outside_repository")
+        else:
+            preflight_record = {
+                "path": preflight_relative,
+                "size": preflight_path.stat().st_size,
+                "sha256": sha256_file(preflight_path),
             }
 
     status = "PASS" if not errors else "FAIL"
@@ -117,6 +182,7 @@ def build_receipt(
         "altium_version": altium_version,
         "importer_version": importer_version,
         "import_package_manifest": package_record,
+        "import_native_file_preflight": preflight_record,
         "native_artifacts": artifacts,
         "errors": sorted(set(errors)),
         "layout_authority": "NOT_AUTHORIZED",
@@ -140,6 +206,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repository-root", default=".")
     parser.add_argument("--package-manifest", required=True)
+    parser.add_argument("--import-preflight", required=True)
     parser.add_argument("--altium-version", required=True)
     parser.add_argument("--importer-version", required=True)
     parser.add_argument("--output", required=True)
@@ -148,6 +215,7 @@ def main() -> int:
     result = build_receipt(
         repository_root=args.repository_root,
         package_manifest=args.package_manifest,
+        import_preflight=args.import_preflight,
         altium_version=args.altium_version,
         importer_version=args.importer_version,
     )

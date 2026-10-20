@@ -45,6 +45,29 @@ def test_native_transition_waits_for_real_altium_import(tmp_path):
     assert result["routing_authorized"] is False
 
 
+
+
+def test_native_transition_requires_import_snapshot_before_receipt(
+    tmp_path,
+):
+    for key in ("project", "package_manifest", "import_log"):
+        _write(_path(tmp_path, key))
+    _write(_path(tmp_path, "schematic"), _cfb_stub())
+    _write(_path(tmp_path, "pcb"), _cfb_stub())
+
+    result = transition.run_transition(
+        repository_root=tmp_path,
+        altium_version="26.0.1",
+        importer_version="KiCad Importer 26.0.1",
+    )
+
+    assert result["status"] == "WAITING_IMPORT_SNAPSHOT_CAPTURE"
+    assert result["next_action"] == (
+        "CREATE_IMPORT_NATIVE_FILE_PREFLIGHT_BEFORE_RECEIPT"
+    )
+    assert result["missing_inputs"] == ["import_native_file_preflight"]
+    assert not _path(tmp_path, "import_receipt").exists()
+
 def test_native_transition_stops_at_compile_report_after_provenance(tmp_path):
     for key in ("project", "package_manifest", "import_log"):
         _write(_path(tmp_path, key))
@@ -75,6 +98,7 @@ def test_native_transition_full_pass_syncs_routing_authority(
 ):
     for key in (
         "project",
+        "import_native_file_preflight",
         "package_manifest",
         "import_log",
         "bom_export",

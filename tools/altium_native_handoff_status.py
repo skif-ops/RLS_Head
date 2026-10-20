@@ -15,6 +15,7 @@ REQUIRED = {
     "schematic": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
     "pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
     "native_file_preflight": "hardware/system_carrier/altium/equivalence/native_file_preflight.json",
+    "import_native_file_preflight": "hardware/system_carrier/altium/equivalence/import_native_file_preflight.json",
     "import_package_manifest": "hardware/system_carrier/altium/equivalence/import_package_manifest.json",
     "import_receipt": "hardware/system_carrier/altium/equivalence/import_receipt.json",
     "import_log": "hardware/system_carrier/altium/equivalence/import_log.txt",
@@ -76,7 +77,8 @@ def evaluate(repository_root: str | Path = ".") -> dict:
         evidence["native_file_preflight"]["present"]
     )
     provenance_ready = (
-        evidence["import_package_manifest"]["present"]
+        evidence["import_native_file_preflight"]["present"]
+        and evidence["import_package_manifest"]["present"]
         and evidence["import_receipt"]["present"]
         and evidence["import_log"]["present"]
     )
