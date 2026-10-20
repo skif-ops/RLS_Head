@@ -131,6 +131,73 @@ def verify(
             }
         )
 
+    if payload:
+        if payload.get("current_source_binding_required") is not True:
+            errors.append("current_source_binding_not_required")
+
+        bindings = payload.get("source_bindings")
+        if not isinstance(bindings, list):
+            errors.append("source_bindings")
+            bindings = []
+
+        if payload.get("source_binding_count") != len(bindings):
+            errors.append("source_binding_count")
+        if not bindings:
+            errors.append("source_bindings_empty")
+
+        manifest_file_paths = {
+            str(item.get("path", "")).strip().replace("\\", "/")
+            for item in files
+            if isinstance(item, dict)
+        }
+        binding_package_paths: set[str] = set()
+        binding_repository_paths: set[str] = set()
+
+        for index, item in enumerate(bindings):
+            if not isinstance(item, dict):
+                errors.append(f"source_binding_record:{index}")
+                continue
+
+            package_path = str(
+                item.get("package_path", "")
+            ).strip().replace("\\", "/")
+            repository_path = str(
+                item.get("repository_path", "")
+            ).strip().replace("\\", "/")
+
+            package_rel = Path(package_path)
+            repository_rel = Path(repository_path)
+
+            if (
+                not package_path
+                or package_rel.is_absolute()
+                or ".." in package_rel.parts
+            ):
+                errors.append(f"source_binding_package_path:{index}")
+                continue
+            if (
+                not repository_path
+                or repository_rel.is_absolute()
+                or ".." in repository_rel.parts
+            ):
+                errors.append(f"source_binding_repository_path:{index}")
+                continue
+            if package_path not in manifest_file_paths:
+                errors.append(
+                    f"source_binding_missing_package_file:{package_path}"
+                )
+            if package_path in binding_package_paths:
+                errors.append(
+                    f"source_binding_duplicate_package:{package_path}"
+                )
+            if repository_path in binding_repository_paths:
+                errors.append(
+                    "source_binding_duplicate_repository:"
+                    + repository_path
+                )
+            binding_package_paths.add(package_path)
+            binding_repository_paths.add(repository_path)
+
     manifest_hash = sha256_file(manifest) if manifest.is_file() else ""
     status = "PASS" if not errors else "FAIL"
 
@@ -147,6 +214,11 @@ def verify(
         "expected_file_count": len(files),
         "verified_file_count": len(verified_files),
         "verified_files": verified_files,
+        "source_binding_count": (
+            payload.get("source_binding_count")
+            if isinstance(payload, dict)
+            else None
+        ),
         "errors": sorted(set(errors)),
         "notes": [
             (
