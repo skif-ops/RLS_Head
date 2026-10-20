@@ -1,0 +1,50 @@
+{
+  "approved_prerouting_pcb_sha256": "",
+  "approved_schematic_sha256": "",
+  "current_pcb_sha256": "fc60db7b952662ba36dc55ba0669ed68d6d53f338c50410d5939925de07a8f66",
+  "current_schematic_sha256": "482884c8b8c568e45c5cd25ec63afa60650c51a65b71fb449882954933d684fc",
+  "equivalence_status": null,
+  "errors": [
+    "cad_authority_hash:native_schematic_sha256",
+    "cad_authority_layout_authority",
+    "cad_authority_native_status",
+    "cad_authority_routing_status",
+    "implementation_equivalence_gate",
+    "implementation_expected_routing_status",
+    "implementation_native_pcbdoc",
+    "implementation_native_schdoc",
+    "implementation_phase",
+    "implementation_routing_authorized",
+    "missing:equivalence_result",
+    "missing:manifest",
+    "native_equivalence_status",
+    "native_import_status",
+    "native_layout_authority",
+    "native_status_hash:native_schematic_sha256",
+    "post_import_handoff_status:WAITING_NATIVE_FILE_PREFLIGHT"
+  ],
+  "handoff_status": "WAITING_NATIVE_FILE_PREFLIGHT",
+  "layout_evolved_since_equivalence": false,
+  "native_pcbdoc_present": true,
+  "native_schdoc_present": true,
+  "notes": [
+    "POST_EQUIVALENCE keeps the equivalence-approved SchDoc fixed. The PcbDoc may evolve after layout authority; the full pre-routing equivalence gate is replayed only while PcbDoc still matches its approved pre-routing hash.",
+    "POST_PRODUCTION additionally requires a reproducible production-release PASS and synchronized production authority."
+  ],
+  "phase": "POST_EQUIVALENCE",
+  "production_authority_surfaces": {
+    "cad_authority": false,
+    "implementation_status": false,
+    "native_status": false
+  },
+  "production_authorized": false,
+  "production_release_status": null,
+  "production_result_active": false,
+  "production_result_pass": false,
+  "production_result_present": false,
+  "routing_authorized": false,
+  "routing_status": null,
+  "schema": "ALTIUM-NATIVE-CI-GATE-001",
+  "status": "FAIL",
+  "warnings": []
+}
