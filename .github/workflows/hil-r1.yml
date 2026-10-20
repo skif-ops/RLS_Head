@@ -328,7 +328,7 @@ jobs:
           assert data["release_checklist_count"] == 18
           assert data["board_planning_count"] == 8
           assert data["dfm_profile_count"] == 10
-          assert data["implementation_step_count"] == 14
+          assert data["implementation_step_count"] == 15
           assert data["impedance_model_count"] == 2
           assert data["power_width_model_count"] == 4
           assert data["diff_pair_count"] == 3
