@@ -1,3 +1,10 @@
+# Package source-binding compares working-tree bytes with Linux CI outputs.
+.github/workflows/hil-r1.yml text eol=lf
+hardware/system_carrier/** text=auto eol=lf
+tools/generate_system_carrier_schematic.py text eol=lf
+tools/generate_system_carrier_symbols.py text eol=lf
+tools/kicad_netlist_baseline.py text eol=lf
+
 # Native Altium binary containers: never apply text conversion or textual merge/diff.
 *.SchDoc binary
 *.PcbDoc binary
@@ -11,5 +18,5 @@
 *.intlib binary
 
 # Altium project files are INI-style text.
-*.PrjPcb text
-*.prjpcb text
+*.PrjPcb text eol=lf
+*.prjpcb text eol=lf
