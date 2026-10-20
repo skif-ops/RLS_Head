@@ -587,7 +587,6 @@ def evaluate(
         "warnings": sorted(set(warnings)),
         "native_schdoc_present": True,
         "native_pcbdoc_present": True,
-        "production_result_present": production_result_present,
         "approved_schematic_sha256": approved_schematic_hash,
         "approved_prerouting_pcb_sha256": approved_pcb_hash,
         "current_schematic_sha256": current_schematic_hash,
@@ -613,6 +612,7 @@ def evaluate(
         ),
         "production_result_present": production_result_present,
         "production_result_pass": production_result_pass,
+        "production_result_active": production_released,
         "production_authority_surfaces": production_authority_surfaces,
         "routing_authorized": (
             status == "PASS"
