@@ -1049,6 +1049,33 @@ jobs:
           print("Altium room evidence READY")
           PY
 
+      - name: Validate Altium DelphiScript API compatibility
+        run: |
+          python -m tools.altium_script_api_compatibility \
+            --contract hardware/system_carrier/altium/ALTIUM_SCRIPT_API_COMPAT_SYS_001.json \
+            --repository-root . \
+            --output build-cad/system_carrier/altium_script_api_compatibility.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/"
+                  "altium_script_api_compatibility.json"
+              ).read_text()
+          )
+          assert data["schema"] == "ALTIUM-SCRIPT-API-COMPAT-RESULT-001"
+          assert data["status"] == "PASS"
+          assert data["runtime_validation_required"] is True
+          assert data["runtime_gate_status"] == "REQUIRED_IN_ALTIUM_DESIGNER"
+          assert data["documented_symbol_count"] > 0
+          print(
+              "Altium DelphiScript static API compatibility PASS; "
+              "runtime validation still required"
+          )
+          PY
+
       - name: Evaluate Altium routing readiness
         run: |
           python -m tools.altium_routing_readiness \
@@ -1210,11 +1237,14 @@ jobs:
           assert data["rule_scope_gate_included"] is True
           assert data["room_gate_included"] is True
           assert data["routing_readiness_included"] is True
+          assert data["script_api_contract_included"] is True
+          assert data["script_api_static_evidence_included"] is True
+          assert data["script_runtime_validation_required"] is True
           assert data["native_audit_script_included"] is True
           assert data["native_handoff_runbook_included"] is True
           assert data["equivalence_manifest_template_included"] is True
           assert data["kicad_netlist_baseline_included"] is True
-          assert data["file_count"] >= 45
+          assert data["file_count"] >= 47
           print(
               "Altium import package READY:",
               data["file_count"],
