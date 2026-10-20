@@ -87,6 +87,7 @@ def test_routing_readiness_remains_valid_after_production_release(
         "validate_impedance",
         "validate_evt_routing_stack",
         "validate_power_width",
+        "validate_evt_power_routing",
         "validate_rule_scope",
     ):
         monkeypatch.setattr(
@@ -197,6 +198,7 @@ def test_routing_readiness_detects_stale_production_release(
         "validate_impedance",
         "validate_evt_routing_stack",
         "validate_power_width",
+        "validate_evt_power_routing",
         "validate_rule_scope",
     ):
         monkeypatch.setattr(
@@ -321,6 +323,7 @@ def test_routing_readiness_detects_stale_equivalence_after_schematic_change(
         "validate_impedance",
         "validate_evt_routing_stack",
         "validate_power_width",
+        "validate_evt_power_routing",
         "validate_rule_scope",
     ):
         monkeypatch.setattr(
@@ -420,6 +423,7 @@ def test_routing_readiness_blocks_partial_authority_sync(
         "validate_impedance",
         "validate_evt_routing_stack",
         "validate_power_width",
+        "validate_evt_power_routing",
         "validate_rule_scope",
     ):
         monkeypatch.setattr(
@@ -519,6 +523,7 @@ def test_routing_readiness_blocks_gate_result_hash_disagreement(
         "validate_impedance",
         "validate_evt_routing_stack",
         "validate_power_width",
+        "validate_evt_power_routing",
         "validate_rule_scope",
     ):
         monkeypatch.setattr(
@@ -620,6 +625,7 @@ def test_routing_readiness_blocks_tampered_equivalence_result(
         "validate_impedance",
         "validate_evt_routing_stack",
         "validate_power_width",
+        "validate_evt_power_routing",
         "validate_rule_scope",
     ):
         monkeypatch.setattr(
