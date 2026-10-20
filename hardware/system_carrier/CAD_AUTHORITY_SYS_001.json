@@ -51,7 +51,7 @@
   "prelayout_gate": {
     "validator": "tools/carrier_prelayout_validate.py",
     "required_before_native_import_package": true,
-    "mechanical_status": "EVT_PROVISIONAL",
+    "mechanical_status": "EVT_ROUTING_DATUM_LOCKED",
     "board_envelope_mm": [
       100,
       80,
