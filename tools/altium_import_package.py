@@ -213,6 +213,7 @@ def build(
     evidence_files = [
         "prelayout_validation.json",
         "altium_placement_gate.json",
+        "altium_evt_mechanical_datum_gate.json",
         "altium_impedance_gate.json",
         "altium_power_width_gate.json",
         "altium_rule_scope_gate.json",
@@ -279,6 +280,12 @@ def build(
         "placement_gate_included": any(
             item["path"].endswith(
                 "evidence/altium_placement_gate.json"
+            )
+            for item in records
+        ),
+        "evt_mechanical_datum_gate_included": any(
+            item["path"].endswith(
+                "evidence/altium_evt_mechanical_datum_gate.json"
             )
             for item in records
         ),

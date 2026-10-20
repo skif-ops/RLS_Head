@@ -374,6 +374,29 @@ jobs:
           print("Altium placement geometry PASS")
           PY
 
+      - name: Validate EVT mechanical routing datums
+        run: |
+          python -m tools.altium_evt_mechanical_datum_gate \
+            hardware/system_carrier \
+            --output altium_evt_mechanical_datum_gate.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path("altium_evt_mechanical_datum_gate.json").read_text()
+          )
+          assert data["schema"] == (
+              "ALTIUM-EVT-MECHANICAL-DATUM-GATE-001"
+          )
+          assert data["status"] == "PASS"
+          assert data["errors"] == []
+          assert data["evt_routing_datums_locked"] is True
+          assert data["production_mechanical_freeze"] is False
+          assert data["minimum_mount_hole_edge_ligament_mm"] >= 3.0
+          print("EVT mechanical routing datums PASS")
+          PY
+
       - name: Validate Altium provisional impedance model
         run: |
           python -m tools.altium_impedance_gate \
@@ -953,6 +976,27 @@ jobs:
           print("Altium placement geometry evidence READY")
           PY
 
+      - name: Validate EVT mechanical routing datums for import
+        run: |
+          python -m tools.altium_evt_mechanical_datum_gate \
+            hardware/system_carrier \
+            --output build-cad/system_carrier/altium_evt_mechanical_datum_gate.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/"
+                  "altium_evt_mechanical_datum_gate.json"
+              ).read_text()
+          )
+          assert data["status"] == "PASS"
+          assert data["evt_routing_datums_locked"] is True
+          assert data["production_mechanical_freeze"] is False
+          print("EVT mechanical routing datum evidence READY")
+          PY
+
       - name: Validate Altium impedance model for import
         run: |
           python -m tools.altium_impedance_gate \
@@ -1254,6 +1298,7 @@ jobs:
           assert data["preserve_kicad"] is True
           assert data["production_contracts_included"] is True
           assert data["placement_gate_included"] is True
+          assert data["evt_mechanical_datum_gate_included"] is True
           assert data["impedance_gate_included"] is True
           assert data["power_width_gate_included"] is True
           assert data["rule_scope_gate_included"] is True

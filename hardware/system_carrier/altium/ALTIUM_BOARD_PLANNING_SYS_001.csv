@@ -1,6 +1,6 @@
 plan_id,domain,constraint,criticality,notes
-PLAN-001,BOARD,Keep board outline unset until enclosure and mounting-hole geometry is frozen,P0,Do not invent mechanics
-PLAN-002,CONNECTORS,Place external connectors only after mechanical datum and enclosure edge are frozen,P0,J1 J4 J5 J6 J8 J10 need edge/access constraints
+PLAN-001,BOARD,Use the repository 100x80 R3 EVT routing datum and four locked M3 mounting holes; do not change without explicit mechanical ECO,P0,Production enclosure/STEP freeze remains separate
+PLAN-002,CONNECTORS,Use locked EVT edge datums for J1 J4 J5 J6 J8 J10 during native layout,P0,Final enclosure/harness connector access is verified again in production mechanical review
 PLAN-003,POWER,Reserve contiguous placement area for U6 U5 U7 and bulk/decoupling network,P0,Minimize 12V and switch-current loops
 PLAN-004,GNSS,Reserve quiet board-edge RF corridor for J8-D8-U8,P0,Keep away from switch node clocks and digital buses
 PLAN-005,ETHERNET,Reserve board-edge Ethernet corridor U3-D3-J6,P0,Keep MDI routing short and direct

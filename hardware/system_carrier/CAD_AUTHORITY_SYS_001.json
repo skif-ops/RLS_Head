@@ -51,12 +51,16 @@
   "prelayout_gate": {
     "validator": "tools/carrier_prelayout_validate.py",
     "required_before_native_import_package": true,
-    "mechanical_status": "EVT_PROVISIONAL",
+    "mechanical_status": "EVT_ROUTING_DATUM_LOCKED",
     "board_envelope_mm": [
       100,
       80,
       1.6
-    ]
+    ],
+    "evt_mechanical_routing_datums_locked": true,
+    "evt_mechanical_datum_validator": "tools/altium_evt_mechanical_datum_gate.py",
+    "production_mechanical_freeze": false,
+    "production_mechanical_review_required": true
   },
   "altium_production_contracts": [
     "hardware/system_carrier/altium/ALTIUM_OUTJOB_CONTRACT_SYS_001.csv",
@@ -94,6 +98,8 @@
     "validator": "tools/altium_routing_readiness.py",
     "current_expected_status": "READY_FOR_NATIVE_IMPORT",
     "routing_authority_requires": "ALTIUM_EQUIVALENCE_GATE PASS",
-    "production_authority_separate": true
+    "production_authority_separate": true,
+    "evt_mechanical_datum_required": true,
+    "evt_mechanical_datum_status": "EVT_ROUTING_DATUM_LOCKED"
   }
 }

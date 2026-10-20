@@ -399,8 +399,11 @@ def validate(root: str | Path) -> dict:
     if len(outline) != 1:
         errors.append("mechanical_outline")
     else:
-        if str(outline[0].get("status", "")).strip() != "EVT_PROVISIONAL":
-            warnings.append("mechanical_outline_status")
+        if (
+            str(outline[0].get("status", "")).strip()
+            != "EVT_ROUTING_LOCKED"
+        ):
+            errors.append("mechanical_outline_not_evt_routing_locked")
 
     status_data = json.loads(
         status_path.read_text(encoding="utf-8")
