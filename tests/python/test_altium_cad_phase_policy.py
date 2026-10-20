@@ -6,6 +6,7 @@ from tools.altium_cad_policy import _phase_coherence
 def test_phase_coherence_accepts_pre_import_state(tmp_path: Path):
     authority = {
         "native_document_status": "PENDING_ALTIUM_IMPORT",
+        "pcb_layout_authority": "ALTIUM_AFTER_EQUIVALENCE_GATE",
         "production_release_authorized": False,
         "routing_readiness_gate": {
             "current_expected_status": "READY_FOR_NATIVE_IMPORT",
@@ -15,6 +16,10 @@ def test_phase_coherence_accepts_pre_import_state(tmp_path: Path):
         "current_phase": "IMPORT_PREPARED",
         "altium": {
             "production_release_authorized": False,
+        },
+        "routing_readiness": {
+            "expected_status": "READY_FOR_NATIVE_IMPORT",
+            "routing_authorized": False,
         },
     }
 
@@ -50,6 +55,10 @@ def test_phase_coherence_accepts_post_equivalence_state(tmp_path: Path):
             "native_pcbdoc": True,
             "equivalence_gate": True,
             "production_release_authorized": False,
+        },
+        "routing_readiness": {
+            "expected_status": "READY_FOR_ROUTING",
+            "routing_authorized": True,
         },
     }
 
@@ -88,6 +97,10 @@ def test_phase_coherence_rejects_native_pair_with_pre_import_status(
             "equivalence_gate": False,
             "production_release_authorized": False,
         },
+        "routing_readiness": {
+            "expected_status": "READY_FOR_NATIVE_IMPORT",
+            "routing_authorized": False,
+        },
     }
 
     errors, _, _ = _phase_coherence(
@@ -99,10 +112,6 @@ def test_phase_coherence_rejects_native_pair_with_pre_import_status(
     assert "altium_status_phase" in errors
     assert "altium_status_native_schdoc" in errors
     assert "altium_status_native_pcbdoc" in errors
-    assert "altium_status_equivalence_gate" in errors
-    assert "authority_native_document_status" in errors
-    assert "authority_layout_authority" in errors
-    assert "authority_routing_status" in errors
 
 
 
@@ -130,6 +139,10 @@ def test_phase_coherence_accepts_production_released_state(tmp_path: Path):
             "placement_started": True,
             "routing_started": True,
             "production_release_authorized": True,
+        },
+        "routing_readiness": {
+            "expected_status": "READY_FOR_ROUTING",
+            "routing_authorized": True,
         },
     }
 

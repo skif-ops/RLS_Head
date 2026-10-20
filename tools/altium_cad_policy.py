@@ -46,6 +46,11 @@ def _phase_coherence(
         errors.append("altium_status_payload")
         altium_status = {}
 
+    routing_status = status_data.get("routing_readiness", {})
+    if not isinstance(routing_status, dict):
+        errors.append("altium_routing_payload")
+        routing_status = {}
+
     implementation_production = (
         altium_status.get("production_release_authorized") is True
     )
@@ -55,6 +60,11 @@ def _phase_coherence(
     if implementation_production != authority_production:
         errors.append("production_authority_mismatch")
 
+    routing_authority = authority.get("routing_readiness_gate", {})
+    if not isinstance(routing_authority, dict):
+        errors.append("authority_routing_payload")
+        routing_authority = {}
+
     if not native_schdoc and not native_pcbdoc:
         if current_phase != "IMPORT_PREPARED":
             errors.append("altium_status_phase")
@@ -62,47 +72,180 @@ def _phase_coherence(
             errors.append("premature_production_release")
         if authority.get("native_document_status") != "PENDING_ALTIUM_IMPORT":
             errors.append("authority_native_document_status")
-        routing_authority = authority.get("routing_readiness_gate", {})
         if (
-            not isinstance(routing_authority, dict)
-            or routing_authority.get("current_expected_status")
+            authority.get("pcb_layout_authority")
+            != "ALTIUM_AFTER_EQUIVALENCE_GATE"
+        ):
+            errors.append("authority_layout_authority")
+        if (
+            routing_authority.get("current_expected_status")
             != "READY_FOR_NATIVE_IMPORT"
         ):
             errors.append("authority_routing_status")
-    elif native_schdoc and native_pcbdoc:
-        for field in (
-            "native_schdoc",
-            "native_pcbdoc",
-            "equivalence_gate",
+        if routing_status.get("routing_authorized") is not False:
+            errors.append("altium_routing_authorized")
+        if (
+            routing_status.get("expected_status")
+            != "READY_FOR_NATIVE_IMPORT"
         ):
+            errors.append("altium_routing_status")
+
+    elif native_schdoc and native_pcbdoc:
+        for field in ("native_schdoc", "native_pcbdoc"):
             if altium_status.get(field) is not True:
                 errors.append(f"altium_status_{field}")
-        if authority.get("native_document_status") != "NATIVE_EQUIVALENCE_PASS":
-            errors.append("authority_native_document_status")
-        if authority.get("pcb_layout_authority") != "ALTIUM_AUTHORIZED":
-            errors.append("authority_layout_authority")
-        routing_authority = authority.get("routing_readiness_gate", {})
-        if (
-            not isinstance(routing_authority, dict)
-            or routing_authority.get("current_expected_status")
-            != "READY_FOR_ROUTING"
-        ):
-            errors.append("authority_routing_status")
 
-        if implementation_production and authority_production:
-            if current_phase != "PRODUCTION_RELEASED":
-                errors.append("altium_status_phase")
-            if authority.get("pcb_design_phase") != "PRODUCTION_RELEASED":
+        if current_phase == "EQUIVALENCE_STALE":
+            if altium_status.get("equivalence_gate") is not False:
+                errors.append("altium_status_equivalence_gate")
+            if implementation_production or authority_production:
+                errors.append("stale_production_authority")
+            if (
+                authority.get("native_document_status")
+                != "NATIVE_EQUIVALENCE_STALE"
+            ):
+                errors.append("authority_native_document_status")
+            if authority.get("pcb_layout_authority") != "NOT_AUTHORIZED":
+                errors.append("authority_layout_authority")
+            if (
+                authority.get("pcb_design_phase")
+                != "ALTIUM_REEQUIVALENCE_REQUIRED"
+            ):
                 errors.append("authority_design_phase")
-            for field in ("placement_started", "routing_started"):
-                if altium_status.get(field) is not True:
-                    errors.append(f"altium_status_{field}")
+            if (
+                routing_authority.get("current_expected_status")
+                != "STALE_EQUIVALENCE"
+            ):
+                errors.append("authority_routing_status")
+            if routing_status.get("routing_authorized") is not False:
+                errors.append("altium_routing_authorized")
+            if (
+                routing_status.get("expected_status")
+                != "STALE_EQUIVALENCE"
+            ):
+                errors.append("altium_routing_status")
+
+        elif current_phase in {
+            "READY_FOR_ROUTING",
+            "PRODUCTION_RELEASED",
+        }:
+            if altium_status.get("equivalence_gate") is not True:
+                errors.append("altium_status_equivalence_gate")
+            if (
+                authority.get("native_document_status")
+                != "NATIVE_EQUIVALENCE_PASS"
+            ):
+                errors.append("authority_native_document_status")
+            if (
+                authority.get("pcb_layout_authority")
+                != "ALTIUM_AUTHORIZED"
+            ):
+                errors.append("authority_layout_authority")
+            if (
+                routing_authority.get("current_expected_status")
+                != "READY_FOR_ROUTING"
+            ):
+                errors.append("authority_routing_status")
+            if routing_status.get("routing_authorized") is not True:
+                errors.append("altium_routing_authorized")
+            if (
+                routing_status.get("expected_status")
+                != "READY_FOR_ROUTING"
+            ):
+                errors.append("altium_routing_status")
+
+            if current_phase == "PRODUCTION_RELEASED":
+                if not (
+                    implementation_production
+                    and authority_production
+                ):
+                    errors.append("production_authority_missing")
+                if (
+                    authority.get("pcb_design_phase")
+                    != "PRODUCTION_RELEASED"
+                ):
+                    errors.append("authority_design_phase")
+                for field in ("placement_started", "routing_started"):
+                    if altium_status.get(field) is not True:
+                        errors.append(f"altium_status_{field}")
+            else:
+                if implementation_production or authority_production:
+                    errors.append("premature_production_release")
+                if (
+                    authority.get("pcb_design_phase")
+                    == "PRODUCTION_RELEASED"
+                ):
+                    errors.append("authority_design_phase")
         else:
-            if current_phase != "READY_FOR_ROUTING":
-                errors.append("altium_status_phase")
+            errors.append("altium_status_phase")
 
     return errors, native_schdoc, native_pcbdoc
 
+
+def _native_status_coherence(
+    native_status_doc: dict,
+    status_data: dict,
+) -> list[str]:
+    errors: list[str] = []
+    phase = str(status_data.get("current_phase", ""))
+    native_import = str(
+        native_status_doc.get("native_import_status", "")
+    )
+    equivalence = str(
+        native_status_doc.get("equivalence_gate_status", "")
+    )
+    layout = str(
+        native_status_doc.get("layout_authority", "")
+    )
+    production = str(
+        native_status_doc.get("production_authority", "")
+    )
+
+    if phase == "IMPORT_PREPARED":
+        expected = (
+            "WAITING_NATIVE_ALTIUM_IMPORT",
+            "NOT_RUN",
+            "NOT_AUTHORIZED",
+            "NOT_AUTHORIZED",
+        )
+    elif phase == "READY_FOR_ROUTING":
+        expected = (
+            "NATIVE_FILES_READY",
+            "PASS",
+            "AUTHORIZED",
+            "NOT_AUTHORIZED",
+        )
+    elif phase == "PRODUCTION_RELEASED":
+        expected = (
+            "NATIVE_FILES_READY",
+            "PASS",
+            "AUTHORIZED",
+            "AUTHORIZED",
+        )
+    elif phase == "EQUIVALENCE_STALE":
+        expected = (
+            "NATIVE_FILES_READY",
+            "STALE",
+            "NOT_AUTHORIZED",
+            "NOT_AUTHORIZED",
+        )
+    else:
+        return ["native_lifecycle_phase"]
+
+    allowed_import = (
+        {expected[0]}
+        if expected[0] == "WAITING_NATIVE_ALTIUM_IMPORT"
+        else {"IMPORTED", "PASS", "NATIVE_FILES_READY"}
+    )
+    if native_import not in allowed_import:
+        errors.append("native_import_status")
+    if equivalence != expected[1]:
+        errors.append("native_equivalence_status")
+    if layout != expected[2]:
+        errors.append("native_layout_authority")
+    if production != expected[3]:
+        errors.append("native_production_authority")
+    return errors
 
 def validate(root: str | Path) -> dict:
     root = Path(root)
@@ -155,6 +298,7 @@ def validate(root: str | Path) -> dict:
         full_footprint_path,
         equivalence_checks_path,
         native_status_path,
+        status_path,
         equivalence_template_path,
         source_rules_path,
     ):
@@ -258,6 +402,15 @@ def validate(root: str | Path) -> dict:
         if str(outline[0].get("status", "")).strip() != "EVT_PROVISIONAL":
             warnings.append("mechanical_outline_status")
 
+    status_data = json.loads(
+        status_path.read_text(encoding="utf-8")
+    )
+    if (
+        status_data.get("schema")
+        != "ALTIUM-PCB-IMPLEMENTATION-STATUS-001"
+    ):
+        errors.append("altium_status_schema")
+
     native_status_doc = json.loads(
         native_status_path.read_text(encoding="utf-8")
     )
@@ -265,16 +418,12 @@ def validate(root: str | Path) -> dict:
         errors.append("native_status_primary_cad")
     if native_status_doc.get("review_a_status") != "PASS":
         errors.append("native_status_review_a")
-    if (
-        native_status_doc.get("native_import_status")
-        != "WAITING_NATIVE_ALTIUM_IMPORT"
-    ):
-        warnings.append("native_import_status_changed")
-    if (
-        native_status_doc.get("layout_authority")
-        != "NOT_AUTHORIZED"
-    ):
-        errors.append("layout_authority_before_equivalence")
+    errors.extend(
+        _native_status_coherence(
+            native_status_doc,
+            status_data,
+        )
+    )
 
     equivalence_template = json.loads(
         equivalence_template_path.read_text(encoding="utf-8")
@@ -317,10 +466,6 @@ def validate(root: str | Path) -> dict:
     if len(room_ids) != 7:
         errors.append("room_count")
 
-    status_data = json.loads(status_path.read_text(encoding="utf-8"))
-    if status_data.get("schema") != "ALTIUM-PCB-IMPLEMENTATION-STATUS-001":
-        errors.append("altium_status_schema")
-
     phase_errors, native_schdoc, native_pcbdoc = _phase_coherence(
         root,
         authority,
@@ -350,10 +495,15 @@ def validate(root: str | Path) -> dict:
             errors.append("l2_ground_role")
 
     native_status = str(authority.get("native_document_status", ""))
+    phase = str(status_data.get("current_phase", ""))
     expected_native_status = (
-        "NATIVE_EQUIVALENCE_PASS"
-        if native_schdoc and native_pcbdoc
-        else "PENDING_ALTIUM_IMPORT"
+        "NATIVE_EQUIVALENCE_STALE"
+        if phase == "EQUIVALENCE_STALE"
+        else (
+            "NATIVE_EQUIVALENCE_PASS"
+            if native_schdoc and native_pcbdoc
+            else "PENDING_ALTIUM_IMPORT"
+        )
     )
     if native_status != expected_native_status:
         warnings.append(f"native_document_status:{native_status}")

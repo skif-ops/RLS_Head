@@ -342,35 +342,15 @@ jobs:
               "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
           ).is_file()
           assert native_sch == native_pcb
-          production_result_path = Path(
-              "hardware/system_carrier/altium/release/"
-              "production_release_result.json"
-          )
-          production_released = False
-          if production_result_path.is_file():
-              production_result = json.loads(
-                  production_result_path.read_text()
-              )
-              production_released = (
-                  production_result.get("schema")
-                  == "ALTIUM-PRODUCTION-RELEASE-RESULT-001"
-                  and production_result.get("status") == "PASS"
-                  and production_result.get("layout_authority")
-                  == "AUTHORIZED"
-                  and production_result.get("production_authority")
-                  == "AUTHORIZED"
-              )
-          expected_phase = (
-              "PRODUCTION_RELEASED"
-              if production_released
-              else (
-                  "READY_FOR_ROUTING"
-                  if native_sch
-                  else "IMPORT_PREPARED"
-              )
-          )
-          assert data["altium_phase"] == expected_phase
-          print("Altium primary CAD policy PASS:", expected_phase)
+          assert data["altium_phase"] in {
+              "IMPORT_PREPARED",
+              "READY_FOR_ROUTING",
+              "PRODUCTION_RELEASED",
+              "EQUIVALENCE_STALE",
+          }
+          if not native_sch:
+              assert data["altium_phase"] == "IMPORT_PREPARED"
+          print("Altium primary CAD policy PASS:", data["altium_phase"])
           PY
 
       - name: Validate Altium placement geometry
@@ -1120,7 +1100,21 @@ jobs:
           assert data["production_authorized"] is production_released
           assert data["errors"] == []
           assert data["failed_checks"] == []
-          if native_sch:
+          tracked_phase = json.loads(
+              Path(
+                  "hardware/system_carrier/altium/"
+                  "ALTIUM_STATUS_SYS_001.json"
+              ).read_text()
+          ).get("current_phase")
+          if native_sch and tracked_phase == "EQUIVALENCE_STALE":
+              assert data["status"] == "STALE_EQUIVALENCE"
+              assert data["routing_authorized"] is False
+              assert data["production_authorized"] is False
+              assert (
+                  data["next_action"]
+                  == "RERUN_NATIVE_ALTIUM_EQUIVALENCE_GATE"
+              )
+          elif native_sch:
               assert data["status"] == "READY_FOR_ROUTING"
               assert data["routing_authorized"] is True
               expected_action = (
@@ -1193,6 +1187,7 @@ jobs:
               "PRE_IMPORT",
               "POST_EQUIVALENCE",
               "POST_PRODUCTION",
+              "REEQUIVALENCE_REQUIRED",
           }
           if data["phase"] == "PRE_IMPORT":
               assert data["routing_authorized"] is False
@@ -1201,6 +1196,10 @@ jobs:
               assert data["routing_authorized"] is True
               assert data["production_authorized"] is False
               assert data["equivalence_status"] == "PASS"
+          elif data["phase"] == "REEQUIVALENCE_REQUIRED":
+              assert data["routing_authorized"] is False
+              assert data["production_authorized"] is False
+              assert data["equivalence_status"] == "STALE"
           else:
               assert data["routing_authorized"] is True
               assert data["production_authorized"] is True

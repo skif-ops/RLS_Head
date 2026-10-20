@@ -10,16 +10,16 @@ def test_workflow_does_not_treat_release_result_presence_as_authority():
 
     assert text.count(
         "production_result_path = Path("
-    ) == 2
+    ) == 1
     assert text.count(
         'production_result.get("status") == "PASS"'
-    ) == 2
+    ) == 1
     assert text.count(
         'production_result.get("production_authority")'
-    ) == 2
+    ) == 1
     assert text.count(
         '== "AUTHORIZED"'
-    ) >= 4
+    ) >= 2
 
     forbidden = (
         'production_released = Path(\n'
