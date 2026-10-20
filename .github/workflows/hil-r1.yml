@@ -1340,6 +1340,35 @@ jobs:
           )
           PY
 
+      - name: Validate Altium import source bindings
+        run: |
+          python -m tools.altium_import_source_binding \
+            --package-manifest build-cad/altium_import/manifest.json \
+            --repository-root . \
+            --output build-cad/system_carrier/altium_import_source_binding.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/"
+                  "altium_import_source_binding.json"
+              ).read_text()
+          )
+          assert data["schema"] == "ALTIUM-IMPORT-SOURCE-BINDING-001"
+          assert data["status"] == "PASS", data
+          assert data["errors"] == []
+          assert data["expected_count"] > 0
+          assert data["checked_count"] == data["expected_count"]
+          assert all(item["match"] is True for item in data["bindings"])
+          print(
+              "Altium import source binding PASS:",
+              data["checked_count"],
+              "bound source files",
+          )
+          PY
+
       - name: Verify Altium import package hashes
         run: |
           python -m tools.altium_import_package_verify \
