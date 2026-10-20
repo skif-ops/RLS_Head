@@ -157,6 +157,15 @@ def build(
             system / "altium" / "equivalence" / "compile_report.template.json",
             output / "handoff" / "compile_report.template.json",
         ),
+        (
+            system
+            / "altium"
+            / "equivalence"
+            / "script_runtime_receipt.template.json",
+            output
+            / "handoff"
+            / "script_runtime_receipt.template.json",
+        ),
     ]
     for source_path, target_path in handoff_files:
         records.append(
@@ -326,6 +335,12 @@ def build(
         "compile_evidence_template_included": any(
             item["path"].endswith(
                 "handoff/compile_report.template.json"
+            )
+            for item in records
+        ),
+        "script_runtime_receipt_template_included": any(
+            item["path"].endswith(
+                "handoff/script_runtime_receipt.template.json"
             )
             for item in records
         ),
