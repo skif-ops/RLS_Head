@@ -592,3 +592,14 @@ def test_layout_authority_sync_rejects_native_change_after_gate(tmp_path):
     )
     assert native_status["layout_authority"] == "NOT_AUTHORIZED"
     assert native_status["production_authority"] == "NOT_AUTHORIZED"
+
+
+
+def test_status_sync_failure_never_reports_routing_authorized():
+    source = Path(transition.__file__).read_text(encoding="utf-8")
+    marker = 'status="PASS_STATUS_SYNC_FAILED"'
+    start = source.index(marker)
+    block = source[start : start + 500]
+
+    assert "routing_authorized=False" in block
+    assert "routing_authorized=True" not in block
