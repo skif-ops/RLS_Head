@@ -56,7 +56,11 @@
       100,
       80,
       1.6
-    ]
+    ],
+    "evt_mechanical_routing_datums_locked": true,
+    "evt_mechanical_datum_validator": "tools/altium_evt_mechanical_datum_gate.py",
+    "production_mechanical_freeze": false,
+    "production_mechanical_review_required": true
   },
   "altium_production_contracts": [
     "hardware/system_carrier/altium/ALTIUM_OUTJOB_CONTRACT_SYS_001.csv",
