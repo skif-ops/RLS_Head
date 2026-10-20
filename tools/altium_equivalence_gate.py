@@ -37,6 +37,8 @@ REQUIRED_ARTIFACTS = {
     "layer_stack_inventory",
     "hierarchy_export",
     "hierarchy_validation_result",
+    "script_runtime_receipt",
+    "script_runtime_result",
     "no_mmwave_review",
     "no_mmwave_review_result",
     "native_audit_result",
@@ -839,6 +841,124 @@ def validate_manifest(
                             f"no_mmwave_review_hash:{artifact_id}"
                         )
 
+    script_runtime = None
+    script_runtime_path = resolved.get("script_runtime_result")
+    if script_runtime_path is not None:
+        try:
+            script_runtime = json.loads(
+                script_runtime_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"script_runtime_parse:{exc}")
+        else:
+            if (
+                script_runtime.get("schema")
+                != "ALTIUM-SCRIPT-RUNTIME-RESULT-001"
+            ):
+                errors.append("script_runtime_schema")
+            if (
+                script_runtime.get("status") != "PASS"
+                or script_runtime.get("runtime_validated") is not True
+            ):
+                reasons.append("SCRIPT_RUNTIME")
+
+            actual_receipt = str(
+                integrity.get("script_runtime_receipt", {}).get(
+                    "sha256_actual",
+                    "",
+                )
+            ).lower()
+            if (
+                str(
+                    script_runtime.get("receipt_sha256", "")
+                ).lower()
+                != actual_receipt
+            ):
+                errors.append("script_runtime_hash:receipt")
+
+            runtime_inputs = script_runtime.get("input_sha256")
+            if not isinstance(runtime_inputs, dict):
+                errors.append("script_runtime_input_sha256")
+                runtime_inputs = {}
+
+            for artifact_id in ("schematic", "pcb"):
+                actual = str(
+                    integrity.get(artifact_id, {}).get(
+                        "sha256_actual",
+                        "",
+                    )
+                ).lower()
+                if (
+                    str(
+                        runtime_inputs.get(artifact_id, "")
+                    ).lower()
+                    != actual
+                ):
+                    errors.append(
+                        f"script_runtime_hash:{artifact_id}"
+                    )
+
+            runtime_source_paths = {
+                "pcb_audit_script": (
+                    "hardware/system_carrier/altium/scripts/"
+                    "EVT_SYS_CARRIER_Audit.pas"
+                ),
+                "hierarchy_audit_script": (
+                    "hardware/system_carrier/altium/scripts/"
+                    "EVT_SYS_CARRIER_Hierarchy_Audit.pas"
+                ),
+                "api_contract": (
+                    "hardware/system_carrier/altium/"
+                    "ALTIUM_SCRIPT_API_COMPAT_SYS_001.json"
+                ),
+            }
+            for artifact_id, relative in runtime_source_paths.items():
+                path = root / relative
+                if not path.is_file():
+                    errors.append(
+                        f"script_runtime_source_missing:{artifact_id}"
+                    )
+                    continue
+                actual = sha256_file(path)
+                if (
+                    str(
+                        runtime_inputs.get(artifact_id, "")
+                    ).lower()
+                    != actual
+                ):
+                    errors.append(
+                        f"script_runtime_hash:{artifact_id}"
+                    )
+
+            runtime_outputs = script_runtime.get("output_sha256")
+            if not isinstance(runtime_outputs, dict):
+                errors.append("script_runtime_output_sha256")
+                runtime_outputs = {}
+
+            for artifact_id in (
+                "component_inventory",
+                "net_inventory",
+                "rule_inventory",
+                "pad_net_inventory",
+                "layer_stack_inventory",
+                "hierarchy_export",
+            ):
+                actual = str(
+                    integrity.get(artifact_id, {}).get(
+                        "sha256_actual",
+                        "",
+                    )
+                ).lower()
+                if (
+                    str(
+                        runtime_outputs.get(artifact_id, "")
+                    ).lower()
+                    != actual
+                ):
+                    errors.append(
+                        f"script_runtime_hash:{artifact_id}"
+                    )
+
     native_audit = None
     native_audit_path = resolved.get("native_audit_result")
     if native_audit_path is not None:
@@ -952,6 +1072,7 @@ def validate_manifest(
         "footprint_validation": footprint_validation,
         "hierarchy_validation": hierarchy_validation,
         "no_mmwave_validation": no_mmwave_validation,
+        "script_runtime": script_runtime,
         "compile": compile_result,
         "compile_validation": compile_validation,
         "native_audit": native_audit,
