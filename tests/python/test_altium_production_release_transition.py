@@ -411,3 +411,67 @@ def test_production_transition_blocks_if_schematic_changes_after_gate(
         _path(tmp_path, "native_status").read_text(encoding="utf-8")
     )
     assert native_status["production_authority"] == "NOT_AUTHORIZED"
+
+
+
+def test_production_authority_sync_rejects_changed_release_result(tmp_path):
+    _write(_path(tmp_path, "native_schematic"), b"FINAL_NATIVE_SCH")
+    _write(_path(tmp_path, "native_pcb"), b"FINAL_NATIVE_PCB")
+
+    for key, payload in (
+        (
+            "native_status",
+            {
+                "schema": "ALTIUM-NATIVE-STATUS-SYS-001",
+                "production_authority": "NOT_AUTHORIZED",
+            },
+        ),
+        (
+            "implementation_status",
+            {
+                "schema": "ALTIUM-PCB-IMPLEMENTATION-STATUS-001",
+                "current_phase": "READY_FOR_ROUTING",
+                "altium": {},
+                "routing_readiness": {},
+            },
+        ),
+        (
+            "cad_authority",
+            {
+                "schema": "SYSTEM-CARRIER-CAD-AUTHORITY-001",
+                "production_release_authorized": False,
+                "routing_readiness_gate": {},
+            },
+        ),
+    ):
+        _write_json(_path(tmp_path, key), payload)
+
+    release_result = {
+        "schema": "ALTIUM-PRODUCTION-RELEASE-RESULT-001",
+        "status": "PASS",
+        "layout_authority": "AUTHORIZED",
+        "production_authority": "AUTHORIZED",
+    }
+    tampered = {
+        **release_result,
+        "reason_codes": ["TAMPERED_AFTER_GATE_PASS"],
+    }
+    _write_json(_path(tmp_path, "release_result"), tampered)
+
+    try:
+        transition._sync_production_authority(
+            tmp_path,
+            release_result,
+        )
+    except ValueError as exc:
+        assert (
+            "production release result changed after gate PASS"
+            in str(exc)
+        )
+    else:
+        raise AssertionError("expected production-result TOCTOU rejection")
+
+    native_status = json.loads(
+        _path(tmp_path, "native_status").read_text(encoding="utf-8")
+    )
+    assert native_status["production_authority"] == "NOT_AUTHORIZED"
