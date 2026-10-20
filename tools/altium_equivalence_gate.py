@@ -72,6 +72,14 @@ CANONICAL_ARTIFACT_PATHS = {
         "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc"
     ),
     "pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+    "script_runtime_receipt": (
+        "hardware/system_carrier/altium/equivalence/"
+        "script_runtime_receipt.json"
+    ),
+    "script_runtime_result": (
+        "hardware/system_carrier/altium/equivalence/"
+        "script_runtime_result.json"
+    ),
 }
 
 IMPORT_SNAPSHOT_PATHS = {
