@@ -22,6 +22,7 @@ REQUIRED_ARTIFACTS = {
     "native_file_preflight",
     "import_native_file_preflight",
     "import_package_manifest",
+    "import_package_verification",
     "import_receipt",
     "import_log",
     "compile_report_raw",
@@ -72,6 +73,10 @@ CANONICAL_ARTIFACT_PATHS = {
         "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc"
     ),
     "pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+    "import_package_verification": (
+        "hardware/system_carrier/altium/equivalence/"
+        "import_package_verification.json"
+    ),
     "script_runtime_receipt": (
         "hardware/system_carrier/altium/equivalence/"
         "script_runtime_receipt.json"
@@ -250,6 +255,98 @@ def validate_manifest(
             if import_package.get("status") != "READY_FOR_ALTIUM_IMPORT":
                 errors.append("import_package_status")
 
+    import_package_verification = None
+    package_verification_path = resolved.get("import_package_verification")
+    if package_verification_path is not None:
+        try:
+            import_package_verification = json.loads(
+                package_verification_path.read_text(encoding="utf-8")
+            )
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            errors.append(f"import_package_verification_parse:{exc}")
+        else:
+            if (
+                import_package_verification.get("schema")
+                != "ALTIUM-IMPORT-PACKAGE-VERIFY-001"
+            ):
+                errors.append("import_package_verification_schema")
+            if import_package_verification.get("status") != "PASS":
+                errors.append("import_package_verification_status")
+            if import_package_verification.get("errors") not in ([], None):
+                errors.append("import_package_verification_errors")
+
+            verification_manifest = import_package_verification.get(
+                "package_manifest"
+            )
+            if not isinstance(verification_manifest, dict):
+                errors.append(
+                    "import_package_verification_manifest_record"
+                )
+            elif package_path is not None and package_path.is_file():
+                recorded_hash = str(
+                    verification_manifest.get("sha256", "")
+                ).strip().lower()
+                if recorded_hash != sha256_file(package_path):
+                    errors.append(
+                        "import_package_verification_manifest_hash"
+                    )
+
+            if isinstance(import_package, dict):
+                verified_source = str(
+                    import_package_verification.get("source_commit", "")
+                ).strip().lower()
+                package_source = str(
+                    import_package.get("source_commit", "")
+                ).strip().lower()
+                if not verified_source or verified_source != package_source:
+                    errors.append(
+                        "import_package_verification_source_commit"
+                    )
+
+                package_files = import_package.get("files", [])
+                verified_files = import_package_verification.get(
+                    "verified_files", []
+                )
+                if not isinstance(package_files, list):
+                    errors.append("import_package_files")
+                    package_files = []
+                if not isinstance(verified_files, list):
+                    errors.append(
+                        "import_package_verification_verified_files"
+                    )
+                    verified_files = []
+
+                def file_map(items: list[dict]) -> dict[str, tuple[str, int]]:
+                    result: dict[str, tuple[str, int]] = {}
+                    for item in items:
+                        if not isinstance(item, dict):
+                            continue
+                        path = str(item.get("path", "")).replace("\\", "/")
+                        digest = str(item.get("sha256", "")).lower()
+                        size = item.get("size")
+                        if path and isinstance(size, int):
+                            result[path] = (digest, size)
+                    return result
+
+                if file_map(package_files) != file_map(verified_files):
+                    errors.append(
+                        "import_package_verification_file_inventory"
+                    )
+
+                expected_count = import_package_verification.get(
+                    "expected_file_count"
+                )
+                verified_count = import_package_verification.get(
+                    "verified_file_count"
+                )
+                if (
+                    expected_count != import_package.get("file_count")
+                    or verified_count != expected_count
+                ):
+                    errors.append(
+                        "import_package_verification_file_count"
+                    )
+
     import_native_preflight = None
     import_preflight_path = resolved.get("import_native_file_preflight")
     if import_preflight_path is not None:
@@ -357,6 +454,27 @@ def validate_manifest(
                 if not actual or claimed != actual:
                     errors.append(
                         "import_receipt_hash:import_package_manifest"
+                    )
+
+            verification_record = import_receipt.get(
+                "import_package_verification"
+            )
+            if not isinstance(verification_record, dict):
+                errors.append(
+                    "import_receipt_package_verification_record"
+                )
+            else:
+                claimed = str(
+                    verification_record.get("sha256", "")
+                ).lower()
+                actual = str(
+                    integrity.get(
+                        "import_package_verification", {}
+                    ).get("sha256_actual", "")
+                ).lower()
+                if not actual or claimed != actual:
+                    errors.append(
+                        "import_receipt_hash:import_package_verification"
                     )
 
             native_records = import_receipt.get("native_artifacts")
@@ -698,7 +816,7 @@ def validate_manifest(
                     for item in package_files
                     if isinstance(item, dict)
                     and str(item.get("path", "")).replace("\\", "/").endswith(
-                        "/evidence/kicad_netlist_baseline.csv"
+                        "evidence/kicad_netlist_baseline.csv"
                     )
                 }
                 if (

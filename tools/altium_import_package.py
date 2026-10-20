@@ -237,14 +237,25 @@ def build(
             )
         )
 
+    package_records: list[dict] = []
+    for item in records:
+        record = dict(item)
+        record["path"] = (
+            Path(record["path"])
+            .relative_to(output)
+            .as_posix()
+        )
+        package_records.append(record)
+
     records = sorted(
-        records,
+        package_records,
         key=lambda item: item["path"],
     )
 
     manifest = {
         "schema": SCHEMA,
         "status": "READY_FOR_ALTIUM_IMPORT",
+        "path_mode": "PACKAGE_ROOT_RELATIVE",
         "board_id": authority["board_id"],
         "hardware_revision": authority[
             "hardware_revision"

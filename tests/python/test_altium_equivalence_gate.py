@@ -225,29 +225,50 @@ def _manifest(tmp_path: Path) -> Path:
     )
     baseline_hash = hashlib.sha256(baseline_content).hexdigest()
 
+    package_file = {
+        "path": "evidence/kicad_netlist_baseline.csv",
+        "sha256": baseline_hash,
+        "size": len(baseline_content),
+    }
     package_content = json.dumps(
         {
             "schema": "ALTIUM-IMPORT-PACKAGE-001",
             "status": "READY_FOR_ALTIUM_IMPORT",
+            "path_mode": "PACKAGE_ROOT_RELATIVE",
             "board_id": "EVT-SYS-CARRIER",
             "hardware_revision": "A",
             "source_commit": source_commit,
             "source_cad": "KiCad 9 retained verification baseline",
             "target_cad": "Altium Designer",
             "preserve_kicad": True,
-            "files": [
-                {
-                    "path": (
-                        "build-cad/altium_import/evidence/"
-                        "kicad_netlist_baseline.csv"
-                    ),
-                    "sha256": baseline_hash,
-                }
-            ],
+            "file_count": 1,
+            "files": [package_file],
         },
         sort_keys=True,
     ).encode()
     package_hash = hashlib.sha256(package_content).hexdigest()
+
+    package_verification_content = json.dumps(
+        {
+            "schema": "ALTIUM-IMPORT-PACKAGE-VERIFY-001",
+            "status": "PASS",
+            "board_id": "EVT-SYS-CARRIER",
+            "hardware_revision": "A",
+            "source_commit": source_commit,
+            "package_manifest": {
+                "path": "manifest.json",
+                "sha256": package_hash,
+            },
+            "expected_file_count": 1,
+            "verified_file_count": 1,
+            "verified_files": [package_file],
+            "errors": [],
+        },
+        sort_keys=True,
+    ).encode()
+    package_verification_hash = hashlib.sha256(
+        package_verification_content
+    ).hexdigest()
 
     receipt_content = json.dumps(
         {
@@ -265,6 +286,13 @@ def _manifest(tmp_path: Path) -> Path:
             "import_package_manifest": {
                 "path": "equivalence/import_package_manifest.json",
                 "sha256": package_hash,
+            },
+            "import_package_verification": {
+                "path": (
+                    "hardware/system_carrier/altium/equivalence/"
+                    "import_package_verification.json"
+                ),
+                "sha256": package_verification_hash,
             },
             "import_native_file_preflight": {
                 "path": (
@@ -598,6 +626,13 @@ def _manifest(tmp_path: Path) -> Path:
         "import_package_manifest": (
             "equivalence/import_package_manifest.json",
             package_content,
+        ),
+        "import_package_verification": (
+            (
+                "hardware/system_carrier/altium/equivalence/"
+                "import_package_verification.json"
+            ),
+            package_verification_content,
         ),
         "import_receipt": (
             "equivalence/import_receipt.json",

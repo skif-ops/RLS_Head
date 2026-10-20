@@ -11,6 +11,14 @@ The repository must report:
 - Altium routing readiness: `READY_FOR_NATIVE_IMPORT`;
 - production authority: NOT_AUTHORIZED.
 
+## Verify the downloaded CI import package
+
+Before opening any import source in Altium Designer, verify the exact extracted `system-carrier-altium-import` artifact from CI:
+
+`python -m tools.altium_import_package_verify --package-root "<EXTRACTED_PACKAGE_ROOT>" --output hardware/system_carrier/altium/equivalence/import_package_verification.json`
+
+Require `PASS`. The package manifest uses package-root-relative paths, so verification is independent of the CI runner's temporary `build-cad` path. The verifier checks every manifest-listed file for path safety, size and SHA-256. Keep the generated canonical `import_package_verification.json`; the later import receipt and equivalence gate require it and bind it to the exact copied package manifest. A package that fails verification must not be imported.
+
 ## Native import
 
 1. Open Altium Designer.
@@ -32,12 +40,12 @@ The repository must report:
 10. Save/export the KiCad Import Wizard log as:
    `hardware/system_carrier/altium/equivalence/import_log.txt`.
 11. Generate the provenance receipt immediately after import, recording the actual Altium Designer and KiCad Importer versions:
-    `python -m tools.altium_native_import_receipt --repository-root . --package-manifest hardware/system_carrier/altium/equivalence/import_package_manifest.json --import-preflight hardware/system_carrier/altium/equivalence/import_native_file_preflight.json --altium-version "<ALTIUM_VERSION>" --importer-version "<IMPORTER_VERSION>" --output hardware/system_carrier/altium/equivalence/import_receipt.json`.
+    `python -m tools.altium_native_import_receipt --repository-root . --package-manifest hardware/system_carrier/altium/equivalence/import_package_manifest.json --package-verification hardware/system_carrier/altium/equivalence/import_package_verification.json --import-preflight hardware/system_carrier/altium/equivalence/import_native_file_preflight.json --altium-version "<ALTIUM_VERSION>" --importer-version "<IMPORTER_VERSION>" --output hardware/system_carrier/altium/equivalence/import_receipt.json`.
 12. Require the command to return `PASS`. The receipt is the immutable `POST_IMPORT_NATIVE_SNAPSHOT`: its SchDoc/PcbDoc hashes describe the immediate import outputs and are not regenerated merely because approved pre-routing stack/rule preparation later changes the native files. Do not delete or overwrite the retained KiCad source.
 
 ## Recommended orchestrated transition
 
-After the native `SchDoc` / `PcbDoc`, immutable import-time `import_native_file_preflight.json`, import-package manifest and Import Wizard log are available, use the repository driver:
+After the native `SchDoc` / `PcbDoc`, immutable import-time `import_native_file_preflight.json`, verified import-package evidence (`import_package_manifest.json` + `import_package_verification.json`) and Import Wizard log are available, use the repository driver:
 
 `python -m tools.altium_native_transition --repository-root . --altium-version "<ALTIUM_VERSION>" --importer-version "<IMPORTER_VERSION>" --output hardware/system_carrier/altium/equivalence/native_transition_result.json`
 
