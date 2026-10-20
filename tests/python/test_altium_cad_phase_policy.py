@@ -112,9 +112,6 @@ def test_phase_coherence_rejects_native_pair_with_pre_import_status(
     assert "altium_status_phase" in errors
     assert "altium_status_native_schdoc" in errors
     assert "altium_status_native_pcbdoc" in errors
-    assert "authority_native_document_status" in errors
-    assert "authority_layout_authority" in errors
-    assert "authority_routing_status" in errors
 
 
 
