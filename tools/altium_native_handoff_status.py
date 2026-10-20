@@ -17,6 +17,7 @@ REQUIRED = {
     "native_file_preflight": "hardware/system_carrier/altium/equivalence/native_file_preflight.json",
     "import_native_file_preflight": "hardware/system_carrier/altium/equivalence/import_native_file_preflight.json",
     "import_package_manifest": "hardware/system_carrier/altium/equivalence/import_package_manifest.json",
+    "import_package_verification": "hardware/system_carrier/altium/equivalence/import_package_verification.json",
     "import_receipt": "hardware/system_carrier/altium/equivalence/import_receipt.json",
     "import_log": "hardware/system_carrier/altium/equivalence/import_log.txt",
     "compile_report_raw": "hardware/system_carrier/altium/equivalence/compile_report_raw.txt",
@@ -81,6 +82,7 @@ def evaluate(repository_root: str | Path = ".") -> dict:
     provenance_ready = (
         evidence["import_native_file_preflight"]["present"]
         and evidence["import_package_manifest"]["present"]
+        and evidence["import_package_verification"]["present"]
         and evidence["import_receipt"]["present"]
         and evidence["import_log"]["present"]
     )
