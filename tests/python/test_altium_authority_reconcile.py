@@ -186,6 +186,12 @@ def test_reconcile_never_grants_authority(tmp_path):
     native["layout_authority"] = "NOT_AUTHORIZED"
     _write_json(native_path, native)
 
+    implementation_path = tmp_path / PATHS["implementation_status"]
+    implementation = json.loads(implementation_path.read_text())
+    implementation["routing_readiness"]["routing_authorized"] = False
+    implementation["altium"]["equivalence_gate"] = False
+    _write_json(implementation_path, implementation)
+
     authority_path = tmp_path / PATHS["cad_authority"]
     authority = json.loads(authority_path.read_text())
     authority["pcb_layout_authority"] = "NOT_AUTHORIZED"
@@ -196,6 +202,81 @@ def test_reconcile_never_grants_authority(tmp_path):
     assert result["status"] == "UNCHANGED"
     assert result["tracked_layout_authority"] is False
     assert result["layout_authority_effective"] is False
+    assert result["layout_surface_consistent"] is True
 
     native_after = json.loads(native_path.read_text())
     assert native_after["layout_authority"] == "NOT_AUTHORIZED"
+
+
+def test_reconcile_revokes_inconsistent_layout_surfaces(tmp_path):
+    _setup_authorized(tmp_path, production=False)
+
+    implementation_path = tmp_path / PATHS["implementation_status"]
+    implementation = json.loads(implementation_path.read_text())
+    implementation["routing_readiness"]["routing_authorized"] = False
+    _write_json(implementation_path, implementation)
+
+    dry = reconcile(repository_root=tmp_path)
+
+    assert dry["status"] == "REVOCATION_REQUIRED"
+    assert dry["layout_surface_consistent"] is False
+    assert dry["actions"] == [
+        "REVOKE_LAYOUT_AUTHORITY",
+        "REVOKE_PRODUCTION_AUTHORITY",
+    ]
+    assert dry["layout_authority_surfaces"] == {
+        "native_status": True,
+        "implementation_status": False,
+        "cad_authority": True,
+    }
+
+    result = reconcile(repository_root=tmp_path, apply=True)
+    assert result["status"] == "REVOKED"
+
+    native = json.loads(
+        (tmp_path / PATHS["native_status"]).read_text()
+    )
+    implementation = json.loads(
+        (tmp_path / PATHS["implementation_status"]).read_text()
+    )
+    authority = json.loads(
+        (tmp_path / PATHS["cad_authority"]).read_text()
+    )
+    assert native["layout_authority"] == "NOT_AUTHORIZED"
+    assert implementation["routing_readiness"]["routing_authorized"] is False
+    assert authority["pcb_layout_authority"] == "NOT_AUTHORIZED"
+
+
+def test_reconcile_revokes_inconsistent_production_surfaces(tmp_path):
+    _setup_authorized(tmp_path, production=True)
+
+    implementation_path = tmp_path / PATHS["implementation_status"]
+    implementation = json.loads(implementation_path.read_text())
+    implementation["altium"]["production_release_authorized"] = False
+    _write_json(implementation_path, implementation)
+
+    dry = reconcile(repository_root=tmp_path)
+
+    assert dry["status"] == "REVOCATION_REQUIRED"
+    assert dry["layout_surface_consistent"] is True
+    assert dry["production_surface_consistent"] is False
+    assert dry["actions"] == ["REVOKE_PRODUCTION_AUTHORITY"]
+    assert dry["production_authority_surfaces"] == {
+        "native_status": True,
+        "implementation_status": False,
+        "cad_authority": True,
+    }
+
+    result = reconcile(repository_root=tmp_path, apply=True)
+    assert result["status"] == "REVOKED"
+
+    native = json.loads(
+        (tmp_path / PATHS["native_status"]).read_text()
+    )
+    authority = json.loads(
+        (tmp_path / PATHS["cad_authority"]).read_text()
+    )
+    assert native["layout_authority"] == "AUTHORIZED"
+    assert native["production_authority"] == "NOT_AUTHORIZED"
+    assert authority["pcb_layout_authority"] == "ALTIUM_AUTHORIZED"
+    assert authority["production_release_authorized"] is False
