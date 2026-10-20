@@ -27,6 +27,12 @@ Use Altium Designer with the KiCad Importer extension:
 
 Do not delete any KiCad source, generated KiCad library or footprint used to establish the electrical baseline. KiCad is retained as an independent verification and recovery path.
 
+## DelphiScript API compatibility
+
+`ALTIUM_SCRIPT_API_COMPAT_SYS_001.json` is the repository contract for the read-only PCB and hierarchy audit scripts. `tools/altium_script_api_compatibility.py` statically verifies required API symbols, expected outputs and the absence of known mutation APIs. CI includes the resulting evidence in the Altium import package.
+
+Static compatibility is intentionally not treated as proof of execution. The target Altium Designer installation must still run both exporter procedures successfully; this runtime check remains external until the real native project exists.
+
 ## Native CI phase gate
 
 The repository CI accepts three deliberate lifecycle states: `PRE_IMPORT` while no native `SchDoc/PcbDoc` pair exists, `POST_EQUIVALENCE` after both exist and equivalence has passed, and `POST_PRODUCTION` after the production-release gate passes. `tools/altium_native_ci_gate.py` revalidates the committed equivalence/release results and tracked SHA-bound authority state, preventing native CAD or manufacturing-release PRs from bypassing the gated lifecycle. `tools.altium_routing_readiness` independently requires three-file authority consensus across `ALTIUM_NATIVE_STATUS_SYS_001.json`, `ALTIUM_STATUS_SYS_001.json` and `CAD_AUTHORITY_SYS_001.json`, so a partial tracked-status write fails closed. It also verifies that the consensus gate-result hashes match the canonical committed PASS authority-result JSON files.

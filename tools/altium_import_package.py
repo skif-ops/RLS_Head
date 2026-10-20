@@ -191,6 +191,7 @@ def build(
         "ALTIUM_ROOMS_SYS_001.csv",
         "ALTIUM_IMPLEMENTATION_SEQUENCE_SYS_001.csv",
         "ALTIUM_STATUS_SYS_001.json",
+        "ALTIUM_SCRIPT_API_COMPAT_SYS_001.json",
         "README.md",
     ]:
         records.append(
@@ -207,6 +208,7 @@ def build(
         "altium_power_width_gate.json",
         "altium_rule_scope_gate.json",
         "altium_room_gate.json",
+        "altium_script_api_compatibility.json",
         "altium_routing_readiness.json",
         "erc.json",
         "erc_triage.json",
@@ -290,6 +292,19 @@ def build(
             )
             for item in records
         ),
+        "script_api_contract_included": any(
+            item["path"].endswith(
+                "altium_target/ALTIUM_SCRIPT_API_COMPAT_SYS_001.json"
+            )
+            for item in records
+        ),
+        "script_api_static_evidence_included": any(
+            item["path"].endswith(
+                "evidence/altium_script_api_compatibility.json"
+            )
+            for item in records
+        ),
+        "script_runtime_validation_required": True,
         "native_audit_script_included": any(
             item["path"].endswith(
                 "altium_target/scripts/EVT_SYS_CARRIER_Audit.pas"
@@ -332,6 +347,11 @@ def build(
             (
                 "Native SchDoc/PcbDoc become PCB implementation "
                 "authority only after the equivalence gate."
+            ),
+            (
+                "DelphiScript API compatibility is statically checked in CI; "
+                "actual exporter execution remains a required Altium Designer "
+                "runtime validation."
             ),
         ],
     }

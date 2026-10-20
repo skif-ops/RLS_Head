@@ -51,6 +51,16 @@ When an external Altium action is still required, it stops with an explicit stat
 
 The detailed manual sequence below remains the authoritative fallback and audit trail.
 
+## DelphiScript API compatibility gate
+
+Before relying on the native audit exporters, run the repository static compatibility check:
+
+`python -m tools.altium_script_api_compatibility --contract hardware/system_carrier/altium/ALTIUM_SCRIPT_API_COMPAT_SYS_001.json --repository-root . --output hardware/system_carrier/altium/equivalence/script_api_compatibility.json`
+
+Require `PASS`. The contract records the Altium PCB, schematic and Workspace Manager API symbols used by the two read-only exporters and rejects known mutation APIs. Symbols marked `DOCUMENTED` are mapped to the official Altium Developer references; symbols marked `RUNTIME_VERIFY` still require first-run validation on the target Altium Designer installation.
+
+A static PASS does **not** replace runtime validation. On the target Altium Designer version, both `ExportNativeAudit` and `ExportNativeHierarchy` must compile/run without script error, generate all expected CSV files and leave native CAD objects unchanged. The repository validators then consume those generated files.
+
 ## Native project checks
 
 Before routing:
