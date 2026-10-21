@@ -54,9 +54,14 @@ these 77 exact MPN mismatches. The CI587 KiCad source supplied MPN fields for
 only 15 designators. The generator has now been changed to serialize the
 authoritative BOM MPN for all 92 designators and to set the MCU sheet to A1.
 A local KiCad 10 probe generated a parseable eight-sheet scaffold with 92/92
-MPN fields and zero ERC violations; this does not qualify a new CI import
-package or repair the already imported Altium project. CI #592 failed while
-installing KiCad 9 because Launchpad returned HTTP 503 for PPA packages.
+MPN fields and zero ERC violations. Its 483-endpoint netlist baseline is
+byte-identical to the CI587 retained baseline (SHA-256
+`7882e48a47a904e4fa075aa09a44e9628915f9291d5411d5f98896391e435ca8`).
+This does not qualify a new CI import package or repair the already imported
+Altium project. CI #592 failed while installing KiCad 9 because Launchpad
+returned HTTP 503 for PPA packages. CI #593 failed on the PPA translation
+index, and CI #595 failed on the PPA InRelease index. No new qualified
+artifact has been produced.
 Complete keepout/connector datum, no-mmWave review, canonical import receipt
 and full `ALTIUM_EQUIVALENCE_GATE` PASS remain absent.
 Routing authority remains `NOT_AUTHORIZED`. Production authority remains
