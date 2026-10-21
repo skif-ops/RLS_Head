@@ -770,7 +770,7 @@ jobs:
       - name: Install KiCad 9 and schematic generator
         run: |
           kicad_version="$(kicad-cli version)"
-          [[ "$kicad_version" == 9.* ]] || { echo "KiCad 9 required, got $kicad_version" >&2; exit 1; }
+          case "$kicad_version" in 9.*) ;; *) echo "KiCad 9 required, got $kicad_version" >&2; exit 1 ;; esac
           python -m pip install --upgrade "kicad-sch-api==0.5.6"
           echo "$kicad_version"
 
