@@ -25,19 +25,38 @@ and duplicate net names. Five errors concern floating unused Ethernet
 pins, and one concerns a `RADAR_12V` power-pin/output-port conflict.
 The complete Altium message exports are retained in `evidence/`. Altium
 subsequently raised an access violation in `WorkspaceManager.DLL`; the
-project was saved, closed, and reopened. The native BOM window opened, but
-no BOM export from this attempt was saved.
+project was saved, closed, and reopened. A second access violation dialog
+was closed before the native BOM window could be used.
+
+The native BOM window displayed 62 grouped line items. Its CSV export is
+preserved as `evidence/native_bom_export.csv` with repository LF line endings. The native BOM
+validator found all 92 designators but returned `FAIL`: Altium's default
+Comment/Footprint grouping merged C13, C15, C20, C40, C62, C64, C65 and C80
+into a row with both `100nF_6.3V_X7R` and `100nF_16V_X7R` in its MPN cell.
+The exact validator output is `evidence/native_bom_result.json`. The BOM
+export's MPN column was enabled before export. An attempted change to the
+grouping did not produce a verified corrected export. Altium's Excel export
+also failed because Microsoft Excel is not installed; CSV export succeeded.
+
+The native project Protel netlist is preserved as
+`evidence/schematic_protel_netlist.NET`. Its diagnostic comparison against
+the qualified CI599 KiCad baseline reports `PASS`: 67 connected groups,
+335 assigned pins, zero missing connected pins, zero extra pins, zero
+merges and zero splits. The 148 intentionally unconnected KiCad pins are
+absent from Protel netlists. This does not clear the native compiler's
+21 errors or verify the attached older PCB.
 
 The serialized SchDocs contain 92 physical component designators with 92
 nonempty MPN parameters. Their values match the 92 rows of
 `BOM_SYS_CARRIER_LAYOUT_004.csv` exactly. The diagnostic extracts Altium
 CFB `FileHeader` records, matching `RECORD=34` designators and `RECORD=41`
 MPN parameters by owner index; eight KiCad power flags are excluded. This
-proves parameter import, not the required native BOM export. The CFB
+proves parameter import, while the native BOM export still fails exact
+designator-to-MPN validation. The CFB
 preflight passes only the nontrivial native-file format check and does not
 establish electrical equivalence.
 
-The CI599 PCB ECO, native netlist and hierarchy comparison, full rule and
+The CI599 PCB ECO, PCB pad-net and hierarchy comparison, full rule and
 stack audit against the new schematics, placement, no-mmWave review, and
 `ALTIUM_EQUIVALENCE_GATE` PASS remain outstanding. The canonical
 `altium/native/` files and `import_receipt.json` have not been promoted.
