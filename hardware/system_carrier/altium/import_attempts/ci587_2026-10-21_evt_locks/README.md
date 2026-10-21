@@ -32,6 +32,12 @@ members are present, but this remains a native review item. The saved native
 file preflight, 67-group physical netlist comparison and hierarchy validation
 also pass. These subset results do not authorize routing.
 
+The native PCB view and `equivalence_diagnostic/component_inventory.csv` show
+that all 92 components remain outside the 0–100 × 0–80 mm board outline. Their
+X coordinates range from 7,075 to 15,010 mil; the board ends at 3,937 mil.
+The contracted placement plan has not been applied. The board is therefore
+not ready for routing even though its mechanical and rule inventories pass.
+
 The original native schematic compile reported 6 errors and 155 warnings in
 `../ci587_2026-10-20/compile_messages.txt`. The imported MCU sheet was A2
 landscape, while 97 of its net labels and ports reached 19,400 mil in Y and
