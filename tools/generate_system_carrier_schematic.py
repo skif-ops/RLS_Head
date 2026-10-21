@@ -304,6 +304,21 @@ def load_assigned_mcu_gpio(pinmap_path: Path) -> set[str]:
         }
 
 
+def load_bom_mpn(bom_path: Path) -> dict[str, str]:
+    with bom_path.open("r", encoding="utf-8-sig", newline="") as handle:
+        rows = csv.DictReader(handle)
+        if rows.fieldnames is None:
+            raise ValueError("BOM_SYS_CARRIER_LAYOUT_004.csv missing header")
+        result: dict[str, str] = {}
+        for row in rows:
+            reference = str(row.get("ref", "")).strip()
+            mpn = str(row.get("value_or_mpn", "")).strip()
+            if not reference or not mpn or reference in result:
+                raise ValueError(f"Invalid BOM reference or MPN: {reference}")
+            result[reference] = mpn
+    return result
+
+
 def validate_mcu_pinmap_against_symbol(
     sch,
     pinmap_rows: list[dict[str, str]],
@@ -1820,6 +1835,12 @@ def build(output_dir: Path) -> dict:
         / "system_carrier"
         / "FOOTPRINT_ASSIGNMENT_SYS_002.csv"
     )
+    bom_mpn = load_bom_mpn(
+        repo_root
+        / "hardware"
+        / "system_carrier"
+        / "BOM_SYS_CARRIER_LAYOUT_004.csv"
+    )
     footprint_staging = stage_import_footprints(
         output_dir, footprint_assignments
     )
@@ -1971,7 +1992,7 @@ def build(output_dir: Path) -> dict:
 
     for name, filename in SHEETS:
         child = ksa.create_schematic(PROJECT_NAME)
-        child.set_paper_size("A2")
+        child.set_paper_size("A1" if name == "MCU_CORE" else "A2")
         child.set_hierarchy_context(parent_uuid, sheet_uuids[name])
 
         sheet_hierarchy_rows = hierarchy_rows_for_sheet(
@@ -2048,6 +2069,16 @@ def build(output_dir: Path) -> dict:
                 raise ValueError(f"Missing footprint contract: {reference}")
             if reference in assigned_footprint_refs:
                 raise ValueError(f"Duplicate schematic reference: {reference}")
+            expected_mpn = bom_mpn.get(reference)
+            if expected_mpn is None:
+                raise ValueError(f"Missing BOM reference: {reference}")
+            imported_mpn = component.get_property("MPN", "")
+            if imported_mpn and imported_mpn != expected_mpn:
+                raise ValueError(
+                    f"BOM MPN mismatch: {reference}:"
+                    f"{imported_mpn}!={expected_mpn}"
+                )
+            component.set_property("MPN", expected_mpn)
             component.footprint = footprint_assignments[reference]
             assigned_footprint_refs.add(reference)
 
@@ -2066,6 +2097,12 @@ def build(output_dir: Path) -> dict:
         raise ValueError(
             "Footprint assignments absent from schematic: "
             + ", ".join(sorted(missing_footprint_refs))
+        )
+    missing_bom_refs = set(bom_mpn) - assigned_footprint_refs
+    if missing_bom_refs:
+        raise ValueError(
+            "BOM references absent from schematic: "
+            + ", ".join(sorted(missing_bom_refs))
         )
 
     (output_dir / f"{PROJECT_NAME}.kicad_pro").write_text(

@@ -768,7 +768,7 @@ jobs:
         run: |
           sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
           sudo apt-get -o Acquire::Retries=3 -o APT::Update::Error-Mode=any update
-          sudo apt-get install -y --install-recommends kicad
+          sudo apt-get -o Acquire::Retries=5 install -y --no-install-recommends kicad kicad-symbols kicad-footprints
           kicad_version="$(kicad-cli version)"
           [[ "$kicad_version" == 9.* ]] || { echo "KiCad 9 required, got $kicad_version" >&2; exit 1; }
           python -m pip install --upgrade "kicad-sch-api==0.5.6"
