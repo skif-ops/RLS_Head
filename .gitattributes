@@ -1,6 +1,7 @@
 # Package source-binding compares working-tree bytes with Linux CI outputs.
 .github/workflows/hil-r1.yml text eol=lf
 hardware/system_carrier/** text=auto eol=lf
+hardware/system_carrier/altium/import_attempts/ci587_2026-10-21_evt_locks/equivalence_diagnostic/* -text
 tools/generate_system_carrier_schematic.py text eol=lf
 tools/generate_system_carrier_symbols.py text eol=lf
 tools/kicad_netlist_baseline.py text eol=lf
