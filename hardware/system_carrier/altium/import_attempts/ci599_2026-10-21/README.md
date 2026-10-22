@@ -35,6 +35,30 @@ subsequently raised an access violation in `WorkspaceManager.DLL`; the
 project was saved, closed, and reopened. A second access violation dialog
 was closed before the native BOM window could be used.
 
+On 2026-10-22, the saved CI599 project was reopened in Altium 26.10.1 and
+validated again with its persisted Global net-identifier scope. The fresh
+result was six errors and 155 warnings; the earlier root-sheet `3V3`
+merge errors did not recur. That report is
+`evidence/compile_revalidation_2026-10-22.txt`. Ninety-seven warnings
+were off-sheet objects on `20_MCU_CORE.SchDoc`. Their coordinates reached
+26,300 mil in Y, beyond the imported A1 sheet. The sheet format was
+changed in Altium to standard A0 landscape and the genuine SchDoc was
+saved into `native_snapshot/`. A second validation reported six errors,
+58 warnings and no off-sheet warnings in
+`evidence/compile_after_page_a0_2026-10-22.txt`. No electrical error was
+waived. A message-driven attempt to place a specific No ERC marker landed
+away from the intended NC pin and was undone; the diagnostic snapshot
+contains no such new marker.
+
+The post-change Protel netlist in
+`evidence/schematic_protel_netlist_after_page_a0.NET` is byte-identical
+to the earlier CI599 Protel netlist. The fresh comparison against the
+qualified KiCad baseline remains PASS with 67 connected groups, 335
+connected pins, and no merges or splits. Its result is
+`evidence/schematic_netlist_after_page_a0_comparison.json`. Current-source
+binding was rechecked and remains PASS for all 55 files in
+`evidence/current_source_binding_2026-10-22.json`.
+
 The native BOM window initially displayed 62 grouped line items. Its CSV
 export is preserved as `evidence/native_bom_export.csv` with repository LF
 line endings. The validator found all 92 designators but returned `FAIL`:
@@ -83,8 +107,9 @@ designator-to-MPN validation. The CFB
 preflight passes only the nontrivial native-file format check and does not
 establish electrical equivalence.
 
-Native compile repair, placement of all 92 components inside the board,
-no-mmWave review, complete equivalence evidence and
+Native compile repair (currently six errors and 58 warnings),
+placement of all 92 components inside the board, no-mmWave review,
+complete equivalence evidence and
 `ALTIUM_EQUIVALENCE_GATE` PASS remain outstanding. The canonical
 `altium/native/` files and `import_receipt.json` have not been promoted.
 The local handoff evaluator still reports `WAITING_NATIVE_IMPORT`. Routing
