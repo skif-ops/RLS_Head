@@ -45,10 +45,34 @@ were off-sheet objects on `20_MCU_CORE.SchDoc`. Their coordinates reached
 changed in Altium to standard A0 landscape and the genuine SchDoc was
 saved into `native_snapshot/`. A second validation reported six errors,
 58 warnings and no off-sheet warnings in
-`evidence/compile_after_page_a0_2026-10-22.txt`. No electrical error was
-waived. A message-driven attempt to place a specific No ERC marker landed
-away from the intended NC pin and was undone; the diagnostic snapshot
-contains no such new marker.
+`evidence/compile_after_page_a0_2026-10-22.txt`. The A0 change did not
+waive an electrical error. A message-driven attempt to place a specific
+No ERC marker landed away from the intended NC pin and was undone; the
+diagnostic snapshot contains no marker from that attempt.
+
+The remaining five Ethernet errors were on intentionally unconnected
+pins: D3-6, D3-7, D3-9 and D3-10 are `NC_ALLOWED` in the auxiliary pin
+contract, and J6-7 is `unconnected-(J6-NC-Pad7)` in the qualified KiCad
+baseline. In Altium, specific No ERC directives were placed at exactly
+those five native pin endpoints. Each suppresses only the floating-input,
+no-driver and unconnected-pin checks at its own node. A sixth specific
+directive at U7-6 suppresses only the Power Pin to Output Port connection
+pair: the contracted eFuse `OUT` pin supplies the `RADAR_12V` output port.
+The saved genuine `10_POWER_INPUT.SchDoc` and `60_ETHERNET.SchDoc` in
+`native_snapshot/` contain these directives. Their positions and bounded
+suppression settings were checked in the Altium CFB records. The exact
+records and file hashes are in
+`evidence/targeted_noerc_records_2026-10-22.txt`.
+
+After these six directives, Altium Validate reported **zero errors and 48
+warnings** with `Compile successful, no errors found`. The raw report is
+`evidence/compile_after_targeted_noerc_2026-10-22.txt`. The warnings
+comprise 34 pin/port or sheet-entry connection-matrix cases, eight nets
+without a driving source, and six floating net labels. The refreshed
+project Protel netlist is byte-identical to the earlier CI599 export
+(SHA-256 `123e2f84a3923375627bc5a81b8065aa30b2cb817f28de20abe3ed963fae6c25`).
+The compile evidence still fails the native gate's zero-warning requirement;
+none of these warning classes has been globally disabled.
 
 The post-change Protel netlist in
 `evidence/schematic_protel_netlist_after_page_a0.NET` is byte-identical
@@ -107,7 +131,7 @@ designator-to-MPN validation. The CFB
 preflight passes only the nontrivial native-file format check and does not
 establish electrical equivalence.
 
-Native compile repair (currently six errors and 58 warnings),
+Native compile repair (currently zero errors and 48 warnings),
 placement of all 92 components inside the board, no-mmWave review,
 complete equivalence evidence and
 `ALTIUM_EQUIVALENCE_GATE` PASS remain outstanding. The canonical
