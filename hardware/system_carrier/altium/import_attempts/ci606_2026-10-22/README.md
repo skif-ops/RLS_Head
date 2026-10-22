@@ -28,6 +28,12 @@ remains empty because `ALTIUM_EQUIVALENCE_GATE` has not passed.
   the native netlist validator against the CI606 KiCad baseline. This checks
   the carried PCB against the new source baseline; it is not a fresh export
   from the CI606 Altium project or a schematic equivalence PASS.
+- The current repository EVT mechanical, routing-stack and power-routing
+  contract gates each pass. Revalidating the CI599 native audit inventories
+  against the current contracts also passes. Because the PCB bytes are
+  unchanged, these checks apply to the carried PCB geometry and rules, but
+  are inherited diagnostics rather than a fresh CI606 exporter runtime.
+  All 92 component origins remain outside the 100 × 80 mm board outline.
 
 ## Page layout in saved native SchDocs
 
@@ -60,6 +66,12 @@ on `60_ETHERNET`; one is a power-pin/output-port conflict on `RADAR_12V` in
 `10_POWER_INPUT`. The warnings include pin/port direction conflicts, floating
 net labels, nets without driving sources and the same five unconnected pins.
 The 65 messages are retained in `evidence/compile_messages_2026-10-22.txt`.
+The four D3 pins are explicitly `NC_ALLOWED` in
+`AUX_SYMBOL_PIN_CONTRACT_SYS_001.csv`; the CI606 KiCad baseline also marks
+those pins and J6-7 unconnected. Connecting them merely to clear Altium ERC
+would violate that intent. A proposed pin-specific No ERC adaptation was
+rejected by automatic approval review because it could hide real violations;
+the trial edit was discarded without changing the saved native snapshot.
 
 These findings require a native ECO and a fresh compile. BOM, netlist,
 hierarchy, no-mmWave review, full native audit and semantic equivalence are
