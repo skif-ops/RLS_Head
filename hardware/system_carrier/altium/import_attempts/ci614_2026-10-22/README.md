@@ -44,16 +44,26 @@ Routing and production authority remain `NOT_AUTHORIZED`.
   `evidence/ci614_schematic_netlist_probe.json` passes comparison with the
   CI614 KiCad baseline: no missing connected pins, extra pins, merged groups,
   or split groups.
+- The read-only `ExportNativeAudit` procedure ran on the CI614 project's
+  carried PcbDoc. All ten fresh inventories are in `evidence/native_audit/`.
+  Native PCB, pin map, four-layer stack, mechanical, pair/class, and rule
+  checks pass. The fresh footprint check covers all 92 components, and the
+  connector check covers 22 native pads; both pass.
+- After loading all seven child SchDocs, `ExportNativeHierarchy` produced 66
+  native port rows. The hierarchy validator passes all 66 rows against the
+  contract and the fresh pad/net inventory.
 
 ## Gate state
 
 The 49 compile warnings remain, including pin and port direction conflicts,
 floating net labels, nets without driving sources, and one sheet-entry
 direction conflict. The zero-warning equivalence prerequisite is therefore
-not met. Fresh CI614 BOM, hierarchy, PCB audit, no-mmWave review, and
-hash-bound exporter runtime receipts are also outstanding. The unchanged
-PCB inherits the prior mechanical, routing-stack, and power-routing
-diagnostics, but this is not a fresh CI614 native audit.
+not met. Fresh CI614 BOM, no-mmWave human review, and hash-bound exporter
+runtime receipts are also outstanding. The carried PCB has fresh audit
+evidence, but all 92 component origins remain outside the board outline and
+placement/routing are unfinished. The source layout still has crowded labels
+near J1 and several vertical passive components, so the visual fix also
+remains incomplete.
 
 `ALTIUM_EQUIVALENCE_GATE` was not run. The canonical `altium/native/` pair
 remains unpopulated. `READY_FOR_ROUTING=false`; routing authority and
