@@ -34,6 +34,10 @@ remains empty because `ALTIUM_EQUIVALENCE_GATE` has not passed.
   unchanged, these checks apply to the carried PCB geometry and rules, but
   are inherited diagnostics rather than a fresh CI606 exporter runtime.
   All 92 component origins remain outside the 100 × 80 mm board outline.
+- Re-running BOM, footprint, connector and hierarchy validators with CI599
+  native exports against the current contracts passes. These checks document
+  the unchanged baseline and do not substitute for new CI606 Altium exports
+  or the required exporter runtime receipt.
 
 ## Page layout in saved native SchDocs
 
@@ -57,6 +61,10 @@ The root hierarchy now uses most of its page. MCU is inside the A3 page.
 Small child circuits remain sparse, especially IMU and DEBUG_BOOT, but are
 near the page center rather than clustered in the upper-left corner. The
 saved native coordinates confirm the layout change independently of zoom.
+The CI606 `20_MCU_CORE.SchDoc` was also reopened from the imported project in
+Altium and inspected with the complete A3 drawing frame visible. The MCU and
+supporting circuitry are inside the frame; the substantial blank area on the
+left agrees with the 53% page-width measurement above.
 
 ## Native compile and gate state
 
@@ -73,8 +81,8 @@ would violate that intent. A proposed pin-specific No ERC adaptation was
 rejected by automatic approval review because it could hide real violations;
 the trial edit was discarded without changing the saved native snapshot.
 
-These findings require a native ECO and a fresh compile. BOM, netlist,
-hierarchy, no-mmWave review, full native audit and semantic equivalence are
-not complete for this import. `ALTIUM_EQUIVALENCE_GATE` has not been run.
+These findings require a native ECO and a fresh compile. Fresh CI606 BOM,
+netlist, hierarchy and audit exports, no-mmWave review and semantic
+equivalence are not complete. `ALTIUM_EQUIVALENCE_GATE` has not been run.
 `READY_FOR_ROUTING=false`, routing authority `NOT_AUTHORIZED`, and production
 authority `NOT_AUTHORIZED`.
