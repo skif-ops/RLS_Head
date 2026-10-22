@@ -136,7 +136,8 @@ def _symbol_text(
 
     pitch = 2.54
     half_height = max(10.16, (row_count + 1) * pitch / 2)
-    half_width = 10.16
+    # Power ICs need space for pin names on both sides of the body.
+    half_width = 20.32 if name in {"TPS259470ARPWR", "TPS62132RGTR"} else 10.16
 
     lines: list[str] = []
     lines.append(

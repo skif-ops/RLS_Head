@@ -426,13 +426,30 @@ def add_pin_label(
     reference: str,
     pin_number: str,
 ) -> None:
-    if sch.get_component_pin_position(
+    pin = sch.get_component_pin_position(
         reference,
         pin_number,
-    ) is None:
+    )
+    if pin is None:
         raise ValueError(
             f"missing pin:{reference}:{pin_number}"
         )
+
+    # These power labels need room outside their symbol bodies.
+    if reference in {"D1", "U5", "U6", "U7"}:
+        component = sch.components.get(reference)
+        dx = pin.x - component.position.x
+        dy = pin.y - component.position.y
+        if abs(dx) >= abs(dy):
+            end = (pin.x + (10.16 if dx >= 0 else -10.16), pin.y)
+            justify_h = "left" if dx >= 0 else "right"
+        else:
+            end = (pin.x, pin.y + (10.16 if dy >= 0 else -10.16))
+            justify_h = "left"
+        sch.wires.add(start=(pin.x, pin.y), end=end)
+        sch.labels.add(net_name, end, justify_h=justify_h)
+        sch._sync_labels_to_data()
+        return
 
     sch.add_label(
         net_name,
@@ -619,13 +636,12 @@ def add_tps25947_dvdt_labels(
     if component is None:
         raise ValueError(f"missing component:{reference}")
 
-    dvdt_pin = (
-        component.position.x - 12.70,
-        component.position.y,
-    )
+    dvdt_pin = sch.get_component_pin_position(reference, "7")
+    if dvdt_pin is None:
+        raise ValueError(f"missing pin:{reference}:7")
     sch.add_label(
         net_name,
-        position=dvdt_pin,
+        position=(dvdt_pin.x, dvdt_pin.y),
     )
 
     cap_pin = sch.get_component_pin_position(
@@ -650,10 +666,10 @@ def add_tps25947_ground_label(
     if component is None:
         raise ValueError(f"missing component:{reference}")
 
-    pin = (
-        component.position.x + 12.70,
-        component.position.y,
-    )
+    ground_pin = sch.get_component_pin_position(reference, "8")
+    if ground_pin is None:
+        raise ValueError(f"missing pin:{reference}:8")
+    pin = (ground_pin.x, ground_pin.y)
     end = (
         pin[0] + 1.27,
         pin[1],
@@ -669,50 +685,53 @@ def add_tps25947_ground_label(
 
 
 def populate_power(sch, placeholders: list[dict]) -> None:
+    def power_pos(x_grid: int, y_grid: int) -> tuple[float, float]:
+        return (32.0 + (x_grid - 18) * 3.9, 42.0 + (y_grid - 18) * 3.5)
+
     sch.add_text(
         "POWER_INPUT — Rev A authoritative capture\n"
         "TPS259470A protection + fixed 3.3V TPS62132",
-        position=pos(20, 10),
+        position=(70.0, 20.0),
         size=1.27,
     )
 
-    sch.components.add("Connector_Generic:Conn_01x02", "J1", "12V_IN", pos(18, 24))
-    sch.components.add("Device:D_TVS", "D1", "SMAJ15CA", pos(26, 18))
-    add_local_symbol(sch, "U6", "TPS259470ARPWR", "TPS259470ARPWR_SYS", pos(43, 24), placeholders)
-    add_local_symbol(sch, "U5", "TPS62132RGTR", "TPS62132RGTR_3V3", pos(60, 24), placeholders)
-    add_local_symbol(sch, "U7", "TPS259470ARPWR", "TPS259470ARPWR_RADAR", pos(43, 42), placeholders)
+    sch.components.add("Connector_Generic:Conn_01x02", "J1", "12V_IN", power_pos(18, 24))
+    sch.components.add("Device:D_TVS", "D1", "SMAJ15CA", power_pos(26, 18))
+    add_local_symbol(sch, "U6", "TPS259470ARPWR", "TPS259470ARPWR_SYS", power_pos(39, 24), placeholders)
+    add_local_symbol(sch, "U5", "TPS62132RGTR", "TPS62132RGTR_3V3", power_pos(64, 17), placeholders)
+    add_local_symbol(sch, "U7", "TPS259470ARPWR", "TPS259470ARPWR_RADAR", power_pos(39, 42), placeholders)
 
-    sch.components.add("Device:L", "L1", "2.2uH", pos(72, 24))
-    sch.components.add("Device:C", "C1", "10uF/25V", pos(55, 36))
-    sch.components.add("Device:C", "C2", "22uF/6.3V", pos(76, 36))
-    sch.components.add("Device:C", "C3", "3.3nF", pos(64, 36))
-    sch.components.add("Device:C", "C4", "100nF/25V", pos(58, 40))
-    sch.components.add("Device:R", "R1", "665R 1%", pos(39, 34))
-    sch.components.add("Device:R", "R2", "1.05k 1%", pos(39, 52))
-    sch.components.add("Device:R", "R5P", "100k 1% PG_PU", pos(68, 34))
-    sch.components.add("Device:R", "R6F", "10k 1% FLT_PU", pos(48, 34))
-    sch.components.add("Device:R", "R7F", "10k 1% FLT_PU", pos(48, 52))
+    sch.components.add("Device:L", "L1", "2.2uH", power_pos(78, 17))
+    sch.components.add("Device:C", "C1", "10uF/25V", power_pos(55, 36))
+    sch.components.add("Device:C", "C2", "22uF/6.3V", power_pos(76, 36))
+    sch.components.add("Device:C", "C3", "3.3nF", power_pos(64, 36))
+    sch.components.add("Device:C", "C4", "100nF/25V", power_pos(58, 40))
+    sch.components.add("Device:R", "R1", "665R 1%", power_pos(39, 34))
+    sch.components.add("Device:R", "R2", "1.05k 1%", power_pos(39, 52))
+    sch.components.add("Device:R", "R5P", "100k 1% PG_PU", power_pos(68, 34))
+    sch.components.add("Device:R", "R6F", "10k 1% FLT_PU", power_pos(48, 34))
+    sch.components.add("Device:R", "R7F", "10k 1% FLT_PU", power_pos(48, 52))
 
     for ref, value, p in [
-        ("R61", "470k 1%", pos(25, 30)), ("R62", "36.0k 1%", pos(29, 34)), ("R63", "41.2k 1%", pos(33, 38)),
-        ("R71", "470k 1%", pos(25, 48)), ("R72", "16.9k 1%", pos(29, 52)), ("R73", "43.7k 1%", pos(33, 56)),
+        ("R61", "470k 1%", power_pos(25, 26)), ("R62", "36.0k 1%", power_pos(29, 30)), ("R63", "41.2k 1%", power_pos(33, 34)),
+        ("R71", "470k 1%", power_pos(25, 48)), ("R72", "16.9k 1%", power_pos(29, 52)), ("R73", "43.7k 1%", power_pos(33, 56)),
     ]:
         sch.components.add("Device:R", ref, value, p)
 
-    sch.components.add("Device:C", "C6D", "3.3nF", pos(43, 36))
-    sch.components.add("Device:C", "C7D", "3.3nF", pos(43, 54))
+    sch.components.add("Device:C", "C6D", "3.3nF", power_pos(43, 36))
+    sch.components.add("Device:C", "C7D", "3.3nF", power_pos(43, 54))
     sch.components.add(
         "power:PWR_FLAG",
         "#FLG0201",
         "PWR_FLAG",
-        pos(20, 28),
+        power_pos(20, 28),
     )
     add_pin_label(sch, "VIN_RAW", "#FLG0201", "1")
     sch.components.add(
         "power:PWR_FLAG",
         "#FLG0202",
         "PWR_FLAG",
-        pos(15, 70),
+        (30.0, 190.0),
     )
     add_pin_label(sch, "GND", "#FLG0202", "1")
 
@@ -1717,7 +1736,7 @@ def add_child_hierarchy_labels(
             raise ValueError(f"hierarchy component missing:{reference}")
         dx = position.x - component.position.x
         dy = position.y - component.position.y
-        stub = 1.27
+        stub = 25.4 if reference in {"U6", "U7"} else 1.27
         if abs(dx) >= abs(dy):
             label_position = (
                 position.x + (stub if dx >= 0 else -stub),
@@ -2073,6 +2092,11 @@ def build(output_dir: Path) -> dict:
 
         for component in child.components:
             reference = component.reference
+            capture_status = component.get_property("Capture_Status")
+            if capture_status:
+                component.add_property(
+                    "Capture_Status", capture_status, hidden=True
+                )
             if component.get_property("hierarchy_path"):
                 component.add_property(
                     "hierarchy_path",

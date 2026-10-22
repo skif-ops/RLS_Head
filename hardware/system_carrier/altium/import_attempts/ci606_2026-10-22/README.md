@@ -137,3 +137,8 @@ The no-mmWave human review, canonical import and exporter runtime receipts,
 zero-warning native compile, and full semantic equivalence are incomplete.
 `ALTIUM_EQUIVALENCE_GATE` has not been run. `READY_FOR_ROUTING=false`,
 routing authority `NOT_AUTHORIZED`, and production authority `NOT_AUTHORIZED`.
+
+The subsequent POWER_INPUT page correction and its source preview are recorded
+in [evidence/layout_review](evidence/layout_review/README.md). That source
+change requires a new qualified package and native import; this CI606 attempt
+remains diagnostic.
