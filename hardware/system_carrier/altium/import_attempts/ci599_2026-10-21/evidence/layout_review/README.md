@@ -51,3 +51,7 @@ current-source binding fails on `tools/generate_system_carrier_schematic.py`.
 A new qualified CI import package, native reimport, compile, audit and full
 `ALTIUM_EQUIVALENCE_GATE` PASS are required before promotion. Routing and
 production authority remain `NOT_AUTHORIZED`.
+
+The qualified CI606 reimport and native page measurements are recorded in
+[the CI606 diagnostic attempt](../../../ci606_2026-10-22/README.md). Its initial
+native compile still has six errors and 59 warnings, so it remains diagnostic.
