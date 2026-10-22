@@ -38,6 +38,22 @@ remains empty because `ALTIUM_EQUIVALENCE_GATE` has not passed.
   native exports against the current contracts passes. These checks document
   the unchanged baseline and do not substitute for new CI606 Altium exports
   or the required exporter runtime receipt.
+- A fresh BOM exported from the CI606 Altium project as CSV contains 92
+  individual designators and their MPN values. The native BOM validator
+  passes all 92 designator-to-MPN comparisons. The report and result are in
+  `evidence/ci606_native_bom_ungrouped_mpn.csv` and
+  `evidence/ci606_native_bom_ungrouped_mpn_validation.json`.
+- Altium's `Report Project Hierarchy` generated
+  `evidence/ci606_project_hierarchy.REP`, listing the root and all seven
+  child sheets. This is structural evidence only; the hierarchy equivalence
+  validator still requires a fresh native anchor/net export.
+- Altium's project Protel netlist was exported to
+  `evidence/ci606_schematic_protel.NET`. Conversion to endpoint CSV and
+  comparison with the CI606 KiCad baseline passes: 335 connected endpoints
+  in 67 identical connectivity groups. The converted inventory and validator
+  result are `evidence/ci606_schematic_netlist.csv` and
+  `evidence/ci606_schematic_netlist_validation.json`. This establishes fresh
+  schematic connectivity, not a new export of PCB pads or a clean compile.
 
 ## Page layout in saved native SchDocs
 
@@ -81,8 +97,8 @@ would violate that intent. A proposed pin-specific No ERC adaptation was
 rejected by automatic approval review because it could hide real violations;
 the trial edit was discarded without changing the saved native snapshot.
 
-These findings require a native ECO and a fresh compile. Fresh CI606 BOM,
-netlist, hierarchy and audit exports, no-mmWave review and semantic
+These findings require a native ECO and a fresh compile. Fresh CI606 PCB
+pad/net, hierarchy anchor/net and audit exports, no-mmWave review and semantic
 equivalence are not complete. `ALTIUM_EQUIVALENCE_GATE` has not been run.
 `READY_FOR_ROUTING=false`, routing authority `NOT_AUTHORIZED`, and production
 authority `NOT_AUTHORIZED`.
