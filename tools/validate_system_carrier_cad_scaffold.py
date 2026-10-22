@@ -22,6 +22,11 @@ EXPECTED_CHILDREN = {
     "70_DEBUG_BOOT.kicad_sch",
 }
 
+EXPECTED_PAPER_SIZE = {
+    "EVT_SYS_CARRIER.kicad_sch": "A2",
+    "20_MCU_CORE.kicad_sch": "A3",
+}
+
 
 def validate(root: Path) -> dict:
     manifest_path = root / "cad_scaffold_manifest.json"
@@ -173,12 +178,18 @@ def validate(root: Path) -> dict:
             )
         else:
             parsed.append(path.name)
-            if path.name == "20_MCU_CORE.kicad_sch" and (
-                '(paper "A1")' not in path.read_text(encoding="utf-8")
+            expected_paper = EXPECTED_PAPER_SIZE.get(path.name, "A4")
+            if (
+                f'(paper "{expected_paper}")'
+                not in path.read_text(encoding="utf-8")
             ):
-                errors.append("mcu_sheet_paper_size")
+                errors.append(f"paper_size:{path.name}")
             for component in schematic.components:
                 reference = component.reference
+                if component.get_property("hierarchy_path") and (
+                    "hierarchy_path" not in component.hidden_properties
+                ):
+                    errors.append(f"visible_hierarchy_path:{reference}")
                 if reference.startswith("#FLG"):
                     continue
                 if reference in found_footprint_refs:
@@ -199,6 +210,8 @@ def validate(root: Path) -> dict:
                     errors.append(f"bom_mpn_mismatch:{reference}")
                 else:
                     verified_mpn_refs.add(reference)
+                if "MPN" not in component.hidden_properties:
+                    errors.append(f"visible_mpn:{reference}")
 
     for reference in sorted(set(footprint_assignments) - found_footprint_refs):
         errors.append(f"missing_footprint_reference:{reference}")
