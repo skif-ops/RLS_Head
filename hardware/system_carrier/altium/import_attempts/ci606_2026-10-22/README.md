@@ -45,15 +45,28 @@ remains empty because `ALTIUM_EQUIVALENCE_GATE` has not passed.
   `evidence/ci606_native_bom_ungrouped_mpn_validation.json`.
 - Altium's `Report Project Hierarchy` generated
   `evidence/ci606_project_hierarchy.REP`, listing the root and all seven
-  child sheets. This is structural evidence only; the hierarchy equivalence
-  validator still requires a fresh native anchor/net export.
+  child sheets. This is structural evidence only.
 - Altium's project Protel netlist was exported to
   `evidence/ci606_schematic_protel.NET`. Conversion to endpoint CSV and
   comparison with the CI606 KiCad baseline passes: 335 connected endpoints
   in 67 identical connectivity groups. The converted inventory and validator
   result are `evidence/ci606_schematic_netlist.csv` and
-  `evidence/ci606_schematic_netlist_validation.json`. This establishes fresh
-  schematic connectivity, not a new export of PCB pads or a clean compile.
+  `evidence/ci606_schematic_netlist_validation.json`. Schematic connectivity
+  is checked separately from PCB pad connectivity and does not establish a
+  clean compile.
+- The read-only `ExportNativeAudit` procedure ran against the active CI606
+  PcbDoc. The PcbDoc hash matched this diagnostic snapshot. Ten fresh CSV
+  inventories are in `evidence/native_audit/`; native PCB audit, PCB netlist,
+  footprint and connector validators all pass. This is a new exporter run on
+  the unchanged carried PCB, whose placement still lies outside the board.
+- The read-only `ExportNativeHierarchy` procedure initially found only 27
+  rows because several child sheets were not loaded in Altium. After all
+  seven child SchDocs were opened, its fresh export contained all 66 port
+  rows and the hierarchy validator passed against the fresh PCB pad/net
+  inventory. See `evidence/ci606_native_hierarchy_export.csv` and
+  `evidence/ci606_native_hierarchy_validation.json`. The exporter procedures
+  completed in Altium 26.10.1 Trial, but the canonical hash-bound runtime
+  receipt remains outstanding until the native pair is promoted.
 
 ## Page layout in saved native SchDocs
 
@@ -97,8 +110,8 @@ would violate that intent. A proposed pin-specific No ERC adaptation was
 rejected by automatic approval review because it could hide real violations;
 the trial edit was discarded without changing the saved native snapshot.
 
-These findings require a native ECO and a fresh compile. Fresh CI606 PCB
-pad/net, hierarchy anchor/net and audit exports, no-mmWave review and semantic
+These findings require a native ECO and a fresh compile. The no-mmWave
+review, canonical import and exporter runtime receipts, and full semantic
 equivalence are not complete. `ALTIUM_EQUIVALENCE_GATE` has not been run.
 `READY_FOR_ROUTING=false`, routing authority `NOT_AUTHORIZED`, and production
 authority `NOT_AUTHORIZED`.

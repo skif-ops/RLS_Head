@@ -1,0 +1,22 @@
+{
+  "aggregate_logical_pin_count": 1,
+  "checked_native_pad_count": 22,
+  "errors": [],
+  "input_sha256": {
+    "connector_native_map": "c6adf75d170f0eaa1f6f6731d7ec529c1a7216687b48bfac0544424eb7576ef4",
+    "connector_pinout_contract": "28afa65cd63f52fe09f3a4b0bc3325d62bb87b5d33c0708aefc42226894b45ee",
+    "pad_net_inventory": "d5f4e0655e4263e2a2a284989314f38c0d47302bb68d50fed9f46b37108873ad"
+  },
+  "logical_connector_pin_count": 19,
+  "native_map_row_count": 22,
+  "notes": [
+    "The native mapping bridges logical harness connector names to actual System Carrier PCB designators and pad numbers.",
+    "J_ETH MDI is an aggregate contract mapped to the four PHY-side MagJack pair pads."
+  ],
+  "schema": "ALTIUM-NATIVE-CONNECTOR-RESULT-001",
+  "status": "PASS",
+  "verified_checks": {
+    "connector_pinout_equivalence": "PASS"
+  },
+  "warnings": []
+}
