@@ -110,8 +110,30 @@ would violate that intent. A proposed pin-specific No ERC adaptation was
 rejected by automatic approval review because it could hide real violations;
 the trial edit was discarded without changing the saved native snapshot.
 
-These findings require a native ECO and a fresh compile. The no-mmWave
-review, canonical import and exporter runtime receipts, and full semantic
-equivalence are not complete. `ALTIUM_EQUIVALENCE_GATE` has not been run.
-`READY_FOR_ROUTING=false`, routing authority `NOT_AUTHORIZED`, and production
-authority `NOT_AUTHORIZED`.
+The diagnostic native ECO corrected those six imported pin electrical types
+without adding nets or No ERC directives. U7-6 is now Output; D3-6/7/9/10
+and J6-7 are now Passive and remain unconnected. The audit from the loaded
+Altium project is `evidence/ci606_pin_types_after_eco.csv`. The two edited
+SchDocs were saved in Altium and copied into `native_snapshot/`; both pass
+the native file preflight. The PCB remains byte-identical to the previously
+audited snapshot. The standalone script project is
+`../../scripts/EVT_SYS_CARRIER_PinType_ECO.PrjScr`; the package-bound audit
+script project was restored to its original bytes.
+
+After clearing the Messages panel and compiling the exact CI606 project,
+Altium reported **zero errors and 49 warnings**. The full export is
+`evidence/compile_messages_after_pin_eco_all.txt`. The warnings comprise
+32 pin/port direction conflicts, 10 nets without driving sources, six
+floating net labels and one sheet-entry direction conflict. Altium reported
+`Compile successful, no errors found`, but the equivalence compile prerequisite
+requires zero warnings. The corrected schematic Protel netlist was exported
+again. Its 335-endpoint CSV is byte-identical to the pre-ECO inventory and
+again passes comparison with all 67 KiCad connectivity groups; see
+`evidence/ci606_schematic_netlist_after_pin_eco_validation.json`. Current-source
+binding was rechecked after restoring the package-bound script project and
+passes all 55 of 55 files.
+
+The no-mmWave human review, canonical import and exporter runtime receipts,
+zero-warning native compile, and full semantic equivalence are incomplete.
+`ALTIUM_EQUIVALENCE_GATE` has not been run. `READY_FOR_ROUTING=false`,
+routing authority `NOT_AUTHORIZED`, and production authority `NOT_AUTHORIZED`.
