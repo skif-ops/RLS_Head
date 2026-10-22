@@ -139,3 +139,11 @@ complete equivalence evidence and
 The local handoff evaluator still reports `WAITING_NATIVE_IMPORT`. Routing
 authority and production authority remain `NOT_AUTHORIZED`;
 `READY_FOR_ROUTING` is false, and issue #216 remains open.
+
+The 2026-10-22 page-layout review in `evidence/layout_review/` confirms that
+all eight CI599 source/imported schematic pages concentrate functional
+content near the upper-left, and that the MCU symbol extends beyond its
+original A1 source page. A generator layout ECO was locally rendered and
+passed KiCad ERC and exact netlist comparison, but it changes a bound source.
+CI599 current-source binding therefore now fails. This diagnostic native
+snapshot must not be promoted; requalification and native reimport are next.

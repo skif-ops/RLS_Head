@@ -33,6 +33,9 @@ SHEETS = [
     ("DEBUG_BOOT", "70_DEBUG_BOOT.kicad_sch"),
 ]
 
+# Move symbols and their pin-derived labels together when sizing child pages.
+SHEET_ORIGIN_MM = (0.0, 0.0)
+
 PLACEHOLDER_LIB = "Connector_Generic:Conn_01x08"
 
 SYMBOL_LIBRARIES = {
@@ -518,7 +521,10 @@ def add_labels_by_pin_name(
 
 
 def pos(x_grid: int, y_grid: int) -> tuple[float, float]:
-    return (1.27 * x_grid, 1.27 * y_grid)
+    return (
+        1.27 * x_grid + SHEET_ORIGIN_MM[0],
+        1.27 * y_grid + SHEET_ORIGIN_MM[1],
+    )
 
 
 def add_local_symbol(
@@ -812,7 +818,7 @@ def populate_mcu(
             "MCU_ST_STM32H7:STM32H753IITx",
             "U1",
             "STM32H753IIT6",
-            pos(52, 35),
+            pos(161, 79),
             footprint="Package_QFP:LQFP-176_24x24mm_P0.5mm",
             MPN="STM32H753IIT6",
         )
@@ -821,7 +827,7 @@ def populate_mcu(
             sch,
             "U1",
             "STM32H753IIT6",
-            pos(52, 35),
+            pos(161, 79),
             placeholders,
         )
 
@@ -1762,6 +1768,7 @@ def add_child_hierarchy_labels(
 
 
 def build(output_dir: Path) -> dict:
+    global SHEET_ORIGIN_MM
     output_dir.mkdir(parents=True, exist_ok=True)
 
     repo_root = Path(__file__).resolve().parents[1]
@@ -1887,13 +1894,13 @@ def build(output_dir: Path) -> dict:
     ] = {}
 
     for index, (name, filename) in enumerate(SHEETS):
-        col = index % 2
-        row = index // 2
+        col = index % 3
+        row = index // 3
         sheet_position = (
-            30.48 + 101.6 * col,
-            25.4 + 50.8 * row,
+            55.88 + 180.34 * col,
+            45.72 + 110.49 * row,
         )
-        sheet_size = (88.9, 38.1)
+        sheet_size = (119.38, 64.77)
 
         sheet_uuid = main.sheets.add_sheet(
             name=name,
@@ -1985,15 +1992,18 @@ def build(output_dir: Path) -> dict:
         "EVT System Carrier\n"
         "External radar front-end: TI AWR2944PEVM\n"
         "Carrier contains no 76–81 GHz RF routing",
-        position=pos(18, 8),
+        position=(55.88, 20.32),
         size=1.27,
     )
     main.save(str(output_dir / f"{PROJECT_NAME}.kicad_sch"))
 
     for name, filename in SHEETS:
         child = ksa.create_schematic(PROJECT_NAME)
-        child.set_paper_size("A1" if name == "MCU_CORE" else "A2")
+        child.set_paper_size("A3" if name == "MCU_CORE" else "A4")
         child.set_hierarchy_context(parent_uuid, sheet_uuids[name])
+        SHEET_ORIGIN_MM = (
+            (30.48, 40.64) if name == "MCU_CORE" else (80.01, 49.53)
+        )
 
         sheet_hierarchy_rows = hierarchy_rows_for_sheet(
             hierarchy_rows,
@@ -2063,6 +2073,12 @@ def build(output_dir: Path) -> dict:
 
         for component in child.components:
             reference = component.reference
+            if component.get_property("hierarchy_path"):
+                component.add_property(
+                    "hierarchy_path",
+                    component.get_property("hierarchy_path"),
+                    hidden=True,
+                )
             if reference.startswith("#FLG"):
                 continue
             if reference not in footprint_assignments:
@@ -2078,7 +2094,7 @@ def build(output_dir: Path) -> dict:
                     f"BOM MPN mismatch: {reference}:"
                     f"{imported_mpn}!={expected_mpn}"
                 )
-            component.set_property("MPN", expected_mpn)
+            component.add_property("MPN", expected_mpn, hidden=True)
             component.footprint = footprint_assignments[reference]
             assigned_footprint_refs.add(reference)
 
