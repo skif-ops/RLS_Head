@@ -24,6 +24,10 @@ remains empty because `ALTIUM_EQUIVALENCE_GATE` has not passed.
   the CI599 audited snapshot and linked to the imported project. Its SHA-256
   is `f0c6f30b5a65c0eede9ac934c9d318be639f018fb15165f85cb1130926c08c9a`.
   The native pair passes the CFB/OLE file preflight.
+- The CI599 pad/net inventory, from the byte-identical carried PCB, passes
+  the native netlist validator against the CI606 KiCad baseline. This checks
+  the carried PCB against the new source baseline; it is not a fresh export
+  from the CI606 Altium project or a schematic equivalence PASS.
 
 ## Page layout in saved native SchDocs
 

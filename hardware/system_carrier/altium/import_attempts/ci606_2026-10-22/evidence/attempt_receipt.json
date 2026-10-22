@@ -15,6 +15,7 @@
   "native_pcb_sha256": "f0c6f30b5a65c0eede9ac934c9d318be639f018fb15165f85cb1130926c08c9a",
   "native_pcb_provenance": "Byte-for-byte copy of CI599 audited diagnostic PcbDoc, linked to CI606 imported schematic project",
   "native_file_preflight": "PASS: genuine CFB/OLE schematic and PCB",
+  "inherited_pcb_netlist_validation": "PASS: CI599 audited pad/net inventory against CI606 KiCad baseline; diagnostic only",
   "native_compile": "FAIL: 6 errors, 59 warnings",
   "altium_equivalence_gate": "NOT_RUN",
   "ready_for_routing": false,
