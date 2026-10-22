@@ -23,6 +23,8 @@
   "footprint_equivalence": "PASS: 92 native component footprints",
   "connector_pinout_equivalence": "PASS: 22 native connector pads",
   "hierarchy_equivalence": "PASS: 66 native port rows",
+  "bom_designator_mpn_equivalence": "PASS: 92 exact designator and MPN matches from ungrouped native BOM",
+  "native_bom_export_sha256": "bb9ae52d3826707d673c7fc43ce1e1856c942b8ed46bdea8566d23d2ac69f063",
   "altium_equivalence_gate": "NOT_RUN",
   "ready_for_routing": false,
   "routing_authority": "NOT_AUTHORIZED",

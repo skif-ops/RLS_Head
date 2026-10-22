@@ -47,13 +47,18 @@ production authority remain `NOT_AUTHORIZED`.
   mechanical, pair/class, and rule validation. Footprint validation passed for
   all 92 components; connector validation passed for 22 pads. The hierarchy
   export passed all 66 native child-sheet port rows against the contract.
+- A fresh Altium BOM export with one row per component passed exact designator
+  and MPN comparison for all 92 parts. The default grouped export combined
+  eight capacitors with different MPNs, so its first validation failed. Both
+  raw exports and results are retained in `evidence/`; the ungrouped export is
+  `ci616_native_bom.csv` and its validation is `ci616_native_bom_validation.json`.
 - The saved root SchDoc and PcbDoc passed native file preflight.
 
 ## Gate state
 
 The 49 compile warnings violate the zero-warning equivalence prerequisite.
-Fresh CI616 BOM validation, no-mmWave human review, and hash-bound exporter
-runtime receipts are still outstanding. `ALTIUM_EQUIVALENCE_GATE` was not run.
+No-mmWave human review and hash-bound exporter runtime receipts are still
+outstanding. `ALTIUM_EQUIVALENCE_GATE` was not run.
 The canonical `altium/native/` pair remains unpopulated.
 `READY_FOR_ROUTING=false`; routing and production authority remain
 `NOT_AUTHORIZED`. Issue #216 remains open.
