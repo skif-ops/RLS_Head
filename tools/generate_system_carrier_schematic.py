@@ -435,6 +435,25 @@ def add_pin_label(
             f"missing pin:{reference}:{pin_number}"
         )
 
+    # Vertical power parts need label stubs clear of their values.
+    if reference in {
+        "R61", "R62", "R63", "R71", "R72", "R73", "R1", "R2",
+        "R5P", "R6F", "R7F", "C1", "C2", "C3", "C4", "L1",
+    }:
+        component = sch.components.get(reference)
+        direction = -1.0 if pin.y < component.position.y else 1.0
+        end = (pin.x, pin.y + direction * 5.08)
+        sch.wires.add(start=(pin.x, pin.y), end=end)
+        sch.add_label(net_name, position=end)
+        return
+
+    if reference == "J1":
+        end = (pin.x - 7.62, pin.y)
+        sch.wires.add(start=(pin.x, pin.y), end=end)
+        sch.labels.add(net_name, end, justify_h="right")
+        sch._sync_labels_to_data()
+        return
+
     # These power labels need room outside their symbol bodies.
     if reference in {"D1", "U5", "U6", "U7"}:
         component = sch.components.get(reference)
@@ -636,13 +655,7 @@ def add_tps25947_dvdt_labels(
     if component is None:
         raise ValueError(f"missing component:{reference}")
 
-    dvdt_pin = sch.get_component_pin_position(reference, "7")
-    if dvdt_pin is None:
-        raise ValueError(f"missing pin:{reference}:7")
-    sch.add_label(
-        net_name,
-        position=(dvdt_pin.x, dvdt_pin.y),
-    )
+    add_pin_label(sch, net_name, reference, "7")
 
     cap_pin = sch.get_component_pin_position(
         capacitor_reference,
@@ -695,7 +708,7 @@ def populate_power(sch, placeholders: list[dict]) -> None:
         size=1.27,
     )
 
-    sch.components.add("Connector_Generic:Conn_01x02", "J1", "12V_IN", power_pos(18, 24))
+    sch.components.add("Connector_Generic:Conn_01x02", "J1", "12V_IN", power_pos(22, 24))
     sch.components.add("Device:D_TVS", "D1", "SMAJ15CA", power_pos(26, 18))
     add_local_symbol(sch, "U6", "TPS259470ARPWR", "TPS259470ARPWR_SYS", power_pos(39, 24), placeholders)
     add_local_symbol(sch, "U5", "TPS62132RGTR", "TPS62132RGTR_3V3", power_pos(64, 17), placeholders)
@@ -1736,7 +1749,12 @@ def add_child_hierarchy_labels(
             raise ValueError(f"hierarchy component missing:{reference}")
         dx = position.x - component.position.x
         dy = position.y - component.position.y
-        stub = 25.4 if reference in {"U6", "U7"} else 1.27
+        if reference in {"U6", "U7"}:
+            stub = 25.4
+        elif reference == "J1":
+            stub = 12.7
+        else:
+            stub = 1.27
         if abs(dx) >= abs(dy):
             label_position = (
                 position.x + (stub if dx >= 0 else -stub),
@@ -1755,10 +1773,11 @@ def add_child_hierarchy_labels(
         # Keep the imported PCB net name bound to the hierarchy contract.
         # Ports alone can compile to generic NetU1_* names when Altium is
         # configured to avoid using port names as global net identifiers.
-        sch.add_label(
-            net_name,
-            position=(position.x, position.y),
+        net_label_position = (
+            (position.x - 6.35, position.y)
+            if reference == "J1" else (position.x, position.y)
         )
+        sch.add_label(net_name, position=net_label_position)
 
         shape = {
             "input": HierarchicalLabelShape.INPUT,

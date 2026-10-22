@@ -61,9 +61,10 @@ direction conflict. The zero-warning equivalence prerequisite is therefore
 not met. Fresh CI614 BOM, no-mmWave human review, and hash-bound exporter
 runtime receipts are also outstanding. The carried PCB has fresh audit
 evidence, but all 92 component origins remain outside the board outline and
-placement/routing are unfinished. The source layout still has crowded labels
-near J1 and several vertical passive components, so the visual fix also
-remains incomplete.
+placement/routing are unfinished. The CI614 source had crowded labels near
+J1 and several vertical passive components. A subsequent
+[source layout pass](../../layout_review/power_input_2026-10-22/README.md)
+addresses these in the generator but requires a new qualified native import.
 
 `ALTIUM_EQUIVALENCE_GATE` was not run. The canonical `altium/native/` pair
 remains unpopulated. `READY_FOR_ROUTING=false`; routing authority and
