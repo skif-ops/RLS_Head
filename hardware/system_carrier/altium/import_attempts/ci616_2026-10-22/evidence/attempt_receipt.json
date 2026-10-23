@@ -10,17 +10,22 @@
   "artifact_id": 12436698327,
   "artifact_zip_sha256": "fcc8ace1b363b76a82a6099d36adef92fca3570a1425e12ae4cfb1dc950ddcd7",
   "package_verification": "PASS: 117/117 files",
-  "current_source_binding": "PASS: 57/57 files",
+  "current_source_binding": "PASS: 57/57 files at CI616 import; current recheck after audit exporter change FAIL: 56/57 files",
+  "current_source_binding_recheck_evidence": "ci616_current_source_binding_after_exporter_change.json",
   "altium_version": "26.10.1 Trial",
   "import_wizard_result": "COMPLETED",
   "native_schematic_count": 8,
-  "native_pcb_provenance": "Byte-identical carry-forward of CI606 audited diagnostic PcbDoc",
+  "native_pcb_provenance": "CI606 audited diagnostic PcbDoc carried forward, then 22 contracted hard-anchor component origins placed and saved in Altium",
   "native_project": "native_snapshot/EVT_SYS_CARRIER_CI616.PrjPcb",
   "native_compile": "SUCCESS_WITH_WARNINGS: 0 errors, 12 warnings",
   "diagnostic_update_date": "2026-10-23",
   "flag_label_cleanup": "Six imported KiCad PWR_FLAG components and their six floating net labels removed from three native SchDocs; revalidated in Altium",
   "direction_pin_eco": "26 native pin electrical types aligned to fixed function direction contracts: 23 MCU and 3 Ethernet PHY pins; zero connectivity changes",
   "direction_pin_diff_evidence": "ci616_direction_pin_diff.json",
+  "placement_anchor_eco_evidence": "ci616_placement_anchor_eco.pas",
+  "placement_anchor_diff_evidence": "ci616_placement_anchor_diff.json",
+  "placement_hard_anchor_count": 22,
+  "placement_remaining_outside_origin_count": 70,
   "native_compile_evidence": "ci616_native_compile_after_direction_eco.txt",
   "schematic_protel_netlist_evidence": "ci616_schematic_protel_after_direction_eco.NET",
   "schematic_netlist_probe_evidence": "ci616_schematic_netlist_after_direction_eco_probe.json",
@@ -80,7 +85,7 @@
     {
       "name": "EVT_SYS_CARRIER.PcbDoc",
       "bytes": 1674752,
-      "sha256": "f0c6f30b5a65c0eede9ac934c9d318be639f018fb15165f85cb1130926c08c9a"
+      "sha256": "853a1d37f848be8dce328e63070ad795c2d77a669ebe053431f70d6cf6d97da2"
     },
     {
       "name": "EVT_SYS_CARRIER.SchDoc",

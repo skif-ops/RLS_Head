@@ -6,9 +6,9 @@
   "expected_layer_stack_count": 4,
   "input_sha256": {
     "class_inventory": "e8ac2b28fe12d96657c899053049a4271589bf9752cdfa26a2066530521d1084",
-    "component_inventory": "fb462ec58348928fd6f1ad25f555afddcbb30e5b001fd876be43075a317e9003",
+    "component_inventory": "e35e60d9bd74f9dbce12b09aaa3e5562acb93d5d2ea69caed4fe3ee95150b26d",
     "diff_pair_inventory": "3e1d1b755d770d65fa75eb2a7909834fcaf2da920592a7b7529a791e4e76f2d0",
-    "layer_stack_detail": "ebc29a9c697b473aebd5190ad1d7ce241a2ef45850c408b581fec31153912d9a",
+    "layer_stack_detail": "2fd7c02d5033959285473fd16dc6cd37593a3c7e1c75b96ee7aa8a323984718d",
     "layer_stack_inventory": "cbdf4c20e487668a5b1e67abfa8e4d3bcd8dc4015688fc52b0e1d6e9cfa662ec",
     "mechanical_inventory": "1ba0cb6c4beceab12bc46a7ae1b24da22f320f63e2bbc7781ce6df5df319413d",
     "net_inventory": "8e66f63a7b8d8d9fc073c7e05f28db63b24ad5552bd243b70a0da54da2e08fcf",

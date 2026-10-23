@@ -20,6 +20,11 @@ Begin
         Result := 'false';
 End;
 
+Function InvariantFloat(Value : Double) : String;
+Begin
+    Result := StringReplace(FloatToStr(Value), ',', '.', rfReplaceAll);
+End;
+
 Function RuleKindToString(ARuleKind : TRuleKind) : String;
 Begin
     Result := IntToStr(Ord(ARuleKind));
@@ -73,8 +78,8 @@ Begin
         Rpt.Add(
             CsvQuote(Component.SourceDesignator) + ',' +
             CsvQuote(Component.Pattern) + ',' +
-            FloatToStr(CoordToMils(Component.X)) + ',' +
-            FloatToStr(CoordToMils(Component.Y))
+            InvariantFloat(CoordToMils(Component.X)) + ',' +
+            InvariantFloat(CoordToMils(Component.Y))
         );
         Component := Iterator.NextPCBObject;
     End;
@@ -427,7 +432,7 @@ Begin
                 If LayerObj.Dielectric <> Nil Then
                 Begin
                     DielectricHeight := IntToStr(LayerObj.Dielectric.DielectricHeight);
-                    DielectricEr := FloatToStr(LayerObj.Dielectric.DielectricConstant);
+                    DielectricEr := InvariantFloat(LayerObj.Dielectric.DielectricConstant);
                 End;
                 Rpt.Add(CsvQuote(LayerObj.Name) + ',' +
                     IntToStr(LayerObj.CopperThickness) + ',' +
