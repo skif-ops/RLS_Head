@@ -14,7 +14,7 @@
     "native_pcbdoc": true,
     "native_schdoc": true,
     "placement_rooms_ready": true,
-    "placement_started": false,
+    "placement_started": true,
     "power_width_start_values_ready": true,
     "primary_cad": true,
     "production_release_authorized": false,
