@@ -1,4 +1,4 @@
-# CI616 native Altium import diagnostic, 2026-10-22
+# CI616 native Altium import diagnostic, updated 2026-10-23
 
 This snapshot records the Altium import after the second readability pass on
 `10_POWER_INPUT`. It is diagnostic evidence for issue #216. Routing and
@@ -36,13 +36,22 @@ production authority remain `NOT_AUTHORIZED`.
 - A targeted Altium ECO changed U7-6 from Power to Output and D3-6/7/9/10 plus
   J6-7 from Input to Passive. Before and after pin inventories show exactly
   these six changes.
-- `Validate PCB Project` completed with zero errors and 49 warnings. The saved
-  message list is `evidence/ci616_native_compile_after_eco.txt`. The warnings
-  include IO pin/port direction conflicts, six floating net labels, and ten
-  nets without a driving source. No warnings were suppressed.
-- The project Protel netlist has 335 assigned pins in 67 connected groups.
-  Comparison with the CI616 KiCad baseline passed with no missing connected
-  pins, extra pins, merged groups, or split groups.
+- The initial `Validate PCB Project` completed with zero errors and 49 warnings.
+  Six floating labels were attached to six imported KiCad `PWR_FLAG` symbols
+  in `10_POWER_INPUT`, `20_MCU_CORE`, and `30_TIME_GNSS`. The exact six pairs
+  were removed in Altium, and those three SchDocs were saved. The cleanup
+  script is retained as `evidence/ci616_flag_label_cleanup.pas`.
+- The subsequent Altium validation completed with zero errors and 43 warnings.
+  Its full message list is `evidence/ci616_native_compile_after_flag_cleanup.txt`.
+  The remaining warnings comprise 32 IO pin/port or pin direction conflicts,
+  ten nets without a driving source, and one BOOT0 sheet-entry direction
+  conflict. No warnings were suppressed. The original 49-warning report is
+  retained as `evidence/ci616_native_compile_after_eco.txt`.
+- A fresh Altium Protel netlist after cleanup has 335 assigned pins in 67
+  connected groups. `evidence/ci616_schematic_netlist_after_flag_cleanup_probe.json`
+  records PASS against the CI616 KiCad baseline: no missing or extra connected
+  pins, merged groups, or split groups. The raw export is
+  `evidence/ci616_schematic_protel_after_flag_cleanup.NET`.
 - Fresh read-only native PCB audit inventories passed PCB, pin map, stack,
   mechanical, pair/class, and rule validation. Footprint validation passed for
   all 92 components; connector validation passed for 22 pads. The hierarchy
@@ -56,7 +65,7 @@ production authority remain `NOT_AUTHORIZED`.
 
 ## Gate state
 
-The 49 compile warnings violate the zero-warning equivalence prerequisite.
+The 43 compile warnings violate the zero-warning equivalence prerequisite.
 No-mmWave human review and hash-bound exporter runtime receipts are still
 outstanding. `ALTIUM_EQUIVALENCE_GATE` was not run.
 The canonical `altium/native/` pair remains unpopulated.

@@ -16,7 +16,12 @@
   "native_schematic_count": 8,
   "native_pcb_provenance": "Byte-identical carry-forward of CI606 audited diagnostic PcbDoc",
   "native_project": "native_snapshot/EVT_SYS_CARRIER_CI616.PrjPcb",
-  "native_compile": "SUCCESS_WITH_WARNINGS: 0 errors, 49 warnings",
+  "native_compile": "SUCCESS_WITH_WARNINGS: 0 errors, 43 warnings",
+  "diagnostic_update_date": "2026-10-23",
+  "flag_label_cleanup": "Six imported KiCad PWR_FLAG components and their six floating net labels removed from three native SchDocs; revalidated in Altium",
+  "native_compile_evidence": "ci616_native_compile_after_flag_cleanup.txt",
+  "schematic_protel_netlist_evidence": "ci616_schematic_protel_after_flag_cleanup.NET",
+  "schematic_netlist_probe_evidence": "ci616_schematic_netlist_after_flag_cleanup_probe.json",
   "schematic_protel_netlist": "PASS: 335 assigned pins, 67 connectivity groups, no missing connected pins, merges or splits",
   "pin_type_eco": "U7-6 Power to Output; D3-6/7/9/10 and J6-7 Input to Passive",
   "native_pcb_audit": "PASS",
@@ -32,18 +37,18 @@
   "native_files": [
     {
       "name": "10_POWER_INPUT.SchDoc",
-      "bytes": 140800,
-      "sha256": "762f1422bfecc6e29b613ac4caf4142449ba2dd4e21db8c0de10ad5b71c05440"
+      "bytes": 136192,
+      "sha256": "05443e2f6c0324aeb6bfaab69bd43cfcf3f29978db7e0cda76b9df0a8bfd35d6"
     },
     {
       "name": "20_MCU_CORE.SchDoc",
-      "bytes": 278528,
-      "sha256": "70f7af74f66ea75e7c9cba2253faa90e4e2f4b95934f838d9382a300ef295d62"
+      "bytes": 276480,
+      "sha256": "c77fb89141108ad756d05701cf7935a956ce9a2c441f42f0f61a817df076463a"
     },
     {
       "name": "30_TIME_GNSS.SchDoc",
-      "bytes": 80896,
-      "sha256": "2b9fc1f9fa6f3edfb8a21a2c5a45867ff2363d91de080b62081ea11bd8968815"
+      "bytes": 77312,
+      "sha256": "697a4aafa2b5b31720db1411564c74fac48c911f2bfcc83d6e921fab80502a52"
     },
     {
       "name": "40_IMU.SchDoc",
