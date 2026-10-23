@@ -822,6 +822,14 @@ def test_synthetic_altium_equivalence_fixture_is_test_ready(tmp_path):
     assert result["script_runtime"]["status"] == "PASS"
     assert result["script_runtime"]["runtime_validated"] is True
     assert result["script_runtime_rerun"] == result["script_runtime"]
+    assert result["native_file_preflight_rerun"]["artifacts"][
+        "schematic"
+    ]["path"] == (
+        "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc"
+    )
+    assert result["native_file_preflight_rerun"]["artifacts"]["pcb"][
+        "path"
+    ] == "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
     assert all(
         value == "PASS"
         for value in result["checks"].values()

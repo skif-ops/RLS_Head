@@ -46,7 +46,7 @@
   "board_id": "EVT-SYS-CARRIER",
   "delete_kicad_sources": false,
   "equivalence_gate_required": true,
-  "equivalence_result_sha256": "6434cf45e8d3a47ab343ea8e78b5840e92c9144b259c36b903ddf00c7e92f34b",
+  "equivalence_result_sha256": "8ce9ff56594f22626783c2db16b5d8183425b0ab96ebe9e14a6ac013ab96f61d",
   "evt_impedance_model": {
     "eth_mdi_100r": "0.26 mm width / 0.20 mm gap top differential microstrip over provisional 0.18 mm L1-L2 dielectric",
     "gnss_rf_50r": "0.36 mm top microstrip over provisional 0.18 mm L1-L2 dielectric",

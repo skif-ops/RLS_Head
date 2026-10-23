@@ -12,7 +12,7 @@
   "connector_pinout_equivalence": "PASS",
   "current_source_binding": "PASS: 57/57 files at import",
   "date": "2026-10-23",
-  "equivalence_result_sha256": "6434cf45e8d3a47ab343ea8e78b5840e92c9144b259c36b903ddf00c7e92f34b",
+  "equivalence_result_sha256": "8ce9ff56594f22626783c2db16b5d8183425b0ab96ebe9e14a6ac013ab96f61d",
   "footprint_equivalence": "PASS: 92 components",
   "hierarchy_equivalence": "PASS: 66 native child-sheet port rows",
   "import_wizard_result": "COMPLETED",

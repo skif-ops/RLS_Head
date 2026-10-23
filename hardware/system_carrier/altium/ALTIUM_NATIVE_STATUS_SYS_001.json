@@ -4,7 +4,7 @@
   "electrical_baseline_erc_warnings": 0,
   "equivalence_gate_status": "PASS",
   "equivalence_result": "hardware/system_carrier/altium/equivalence/altium_equivalence_result.json",
-  "equivalence_result_sha256": "6434cf45e8d3a47ab343ea8e78b5840e92c9144b259c36b903ddf00c7e92f34b",
+  "equivalence_result_sha256": "8ce9ff56594f22626783c2db16b5d8183425b0ab96ebe9e14a6ac013ab96f61d",
   "hardware_revision": "A",
   "layout_authority": "AUTHORIZED",
   "native_import_status": "NATIVE_FILES_READY",

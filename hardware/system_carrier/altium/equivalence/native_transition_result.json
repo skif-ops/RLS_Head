@@ -2033,7 +2033,7 @@
           "pcb": {
             "cfb_major_version": 3,
             "errors": [],
-            "path": "C:/Users/skifn/.codex/.chatgpt-projects/g-p-6a9feb917c48819182ec25e1ef55310c/RLS_Head-git/hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+            "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
             "sector_shift": 9,
             "sector_size": 512,
             "sha256": "fa321c98678931940b536031b03bc2ddf1a504156a5a62b9b8ebeddeb12ac0ab",
@@ -2043,7 +2043,7 @@
           "schematic": {
             "cfb_major_version": 3,
             "errors": [],
-            "path": "C:/Users/skifn/.codex/.chatgpt-projects/g-p-6a9feb917c48819182ec25e1ef55310c/RLS_Head-git/hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
+            "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
             "sector_shift": 9,
             "sector_size": 512,
             "sha256": "5941fb8d9a36092d06f2ff164514ed53c41ccc44a18829ca7ce8cf2aac1cd10d",
