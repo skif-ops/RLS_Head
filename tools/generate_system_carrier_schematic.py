@@ -35,6 +35,18 @@ SHEETS = [
 
 # Move symbols and their pin-derived labels together when sizing child pages.
 SHEET_ORIGIN_MM = (0.0, 0.0)
+SHEET_GRID_SCALE = (1.0, 1.0)
+CURRENT_SHEET_NAME = ""
+
+CHILD_PAGE_LAYOUT = {
+    "POWER_INPUT": ("A4", (80.01, 49.53), (1.0, 1.0)),
+    "MCU_CORE": ("A3", (30.48, 40.64), (1.0, 1.0)),
+    "TIME_GNSS": ("A4", (20.32, 15.24), (1.8, 1.7)),
+    "IMU": ("A4", (20.32, 15.24), (2.0, 1.7)),
+    "RADAR_IO_CAN": ("A4", (20.32, 15.24), (1.8, 1.8)),
+    "ETHERNET": ("A4", (20.32, 10.16), (1.9, 1.55)),
+    "DEBUG_BOOT": ("A4", (20.32, 15.24), (2.0, 1.7)),
+}
 
 PLACEHOLDER_LIB = "Connector_Generic:Conn_01x08"
 
@@ -470,10 +482,44 @@ def add_pin_label(
         sch._sync_labels_to_data()
         return
 
-    sch.add_label(
-        net_name,
-        pin=(reference, pin_number),
+    if CURRENT_SHEET_NAME == "MCU_CORE":
+        add_oriented_label_at_pin(sch, net_name, reference, pin_number)
+    elif CURRENT_SHEET_NAME == "POWER_INPUT" or reference == "U8":
+        sch.add_label(net_name, pin=(reference, pin_number))
+    else:
+        add_pin_label_stub(sch, net_name, reference, pin_number, stub=5.08)
+
+
+def add_oriented_label_at_pin(
+    sch, net_name: str, reference: str, pin_number: str
+) -> None:
+    component = sch.components.get(reference)
+    pin = sch.get_component_pin_position(reference, pin_number)
+    if component is None or pin is None:
+        raise ValueError(f"missing pin:{reference}:{pin_number}")
+    definition = next(
+        (item for item in component.pins if str(item.number) == pin_number),
+        None,
     )
+    if definition is None:
+        raise ValueError(f"missing pin definition:{reference}:{pin_number}")
+    horizontal = (definition.rotation + component.rotation) % 180 == 0
+    direction = (
+        1.0 if pin.x >= component.position.x else -1.0
+    ) if horizontal else (
+        1.0 if pin.y >= component.position.y else -1.0
+    )
+    sch.labels.add(
+        net_name,
+        (pin.x, pin.y),
+        rotation=0 if horizontal else 90,
+        justify_h=(
+            "left" if direction > 0 else "right"
+        ) if horizontal else (
+            "right" if direction > 0 else "left"
+        ),
+    )
+    sch._sync_labels_to_data()
 
 
 def add_pin_label_stub(
@@ -482,7 +528,7 @@ def add_pin_label_stub(
     reference: str,
     pin_number: str,
     *,
-    stub: float = 1.27,
+    stub: float = 5.08,
 ) -> None:
     pin = sch.get_component_pin_position(
         reference,
@@ -499,31 +545,37 @@ def add_pin_label_stub(
             f"missing component:{reference}"
         )
 
-    center = component.position
-    dx = pin.x - center.x
-    dy = pin.y - center.y
+    pin_definition = next(
+        (item for item in component.pins if str(item.number) == pin_number),
+        None,
+    )
+    if pin_definition is None:
+        raise ValueError(f"missing pin definition:{reference}:{pin_number}")
 
-    if abs(dx) >= abs(dy):
-        direction = 1.0 if dx >= 0 else -1.0
+    horizontal = (pin_definition.rotation + component.rotation) % 180 == 0
+    if horizontal:
+        direction = 1.0 if pin.x >= component.position.x else -1.0
         end = (
             pin.x + direction * stub,
             pin.y,
         )
+        rotation = 0
+        justify_h = "left" if direction > 0 else "right"
     else:
-        direction = 1.0 if dy >= 0 else -1.0
+        direction = 1.0 if pin.y >= component.position.y else -1.0
         end = (
             pin.x,
             pin.y + direction * stub,
         )
+        rotation = 90
+        justify_h = "left" if direction < 0 else "right"
 
     sch.wires.add(
         start=(pin.x, pin.y),
         end=end,
     )
-    sch.add_label(
-        net_name,
-        position=end,
-    )
+    sch.labels.add(net_name, end, rotation=rotation, justify_h=justify_h)
+    sch._sync_labels_to_data()
 
 
 def add_labels_by_pin_name(
@@ -558,8 +610,8 @@ def add_labels_by_pin_name(
 
 def pos(x_grid: int, y_grid: int) -> tuple[float, float]:
     return (
-        1.27 * x_grid + SHEET_ORIGIN_MM[0],
-        1.27 * y_grid + SHEET_ORIGIN_MM[1],
+        1.27 * x_grid * SHEET_GRID_SCALE[0] + SHEET_ORIGIN_MM[0],
+        1.27 * y_grid * SHEET_GRID_SCALE[1] + SHEET_ORIGIN_MM[1],
     )
 
 
@@ -850,7 +902,7 @@ def populate_mcu(
             "MCU_ST_STM32H7:STM32H753IITx",
             "U1",
             "STM32H753IIT6",
-            pos(161, 79),
+            pos(180, 87),
             footprint="Package_QFP:LQFP-176_24x24mm_P0.5mm",
             MPN="STM32H753IIT6",
         )
@@ -859,34 +911,34 @@ def populate_mcu(
             sch,
             "U1",
             "STM32H753IIT6",
-            pos(161, 79),
+            pos(180, 87),
             placeholders,
         )
 
-    sch.components.add("Device:C", "C10", "2.2uF", pos(27, 25))
-    sch.components.add("Device:C", "C11", "2.2uF", pos(27, 33))
-    sch.components.add("Device:C", "C12", "4.7uF", pos(27, 41))
-    sch.components.add("Device:C", "C13", "100nF", pos(83, 26))
-    sch.components.add("Device:R", "R10", "10k 1%", pos(83, 38))
+    sch.components.add("Device:C", "C10", "2.2uF", pos(25, 75))
+    sch.components.add("Device:C", "C11", "2.2uF", pos(25, 90))
+    sch.components.add("Device:C", "C12", "4.7uF", pos(25, 105))
+    sch.components.add("Device:C", "C13", "100nF", pos(80, 50))
+    sch.components.add("Device:R", "R10", "10k 1%", pos(80, 80))
     sch.components.add(
         "Connector_Generic:Conn_01x06",
         "J10",
         "TC2030_SWD",
-        pos(83, 52),
+        pos(80, 100),
     )
     add_local_symbol(
         sch,
         "Y1",
         "ECS-2520S33-250-FN-TR",
         "ECS-2520S33-250-FN-TR",
-        pos(25, 12),
+        pos(30, 25),
         placeholders,
     )
     sch.components.add(
         "Device:C",
         "C15",
         "100nF",
-        pos(34, 12),
+        pos(45, 55),
     )
 
     # One 100nF capacitor per STM32 VDD pin, plus USB supply and NRST filter.
@@ -896,8 +948,8 @@ def populate_mcu(
     )
     for index, pin_number in enumerate(vdd_pins):
         ref = f"C{100 + index}"
-        x = 92 if index < 7 else 100
-        y = 16 + 4 * (index % 7)
+        x = 100 if index < 7 else 120
+        y = 20 + 8 * (index % 7)
         sch.components.add(
             "Device:C",
             ref,
@@ -912,7 +964,7 @@ def populate_mcu(
         "Device:C",
         "C114",
         "100nF VDD33_USB",
-        pos(92, 48),
+        pos(100, 85),
         Decouples_U1_Pin="114",
     )
     add_pin_label(sch, "3V3", "C114", "1")
@@ -922,7 +974,7 @@ def populate_mcu(
         "Device:C",
         "C115",
         "100nF NRST",
-        pos(100, 48),
+        pos(120, 85),
         Filters_U1_Pin="31",
     )
     add_pin_label(sch, "NRST", "C115", "1")
@@ -931,14 +983,14 @@ def populate_mcu(
         "Connector:TestPoint",
         "TP1",
         "DEBUG_TX",
-        pos(88, 58),
+        pos(100, 105),
         footprint="TestPoint:TestPoint_Pad_D1.0mm",
     )
     tp2 = sch.components.add(
         "Connector:TestPoint",
         "TP2",
         "DEBUG_RX",
-        pos(88, 62),
+        pos(120, 105),
         footprint="TestPoint:TestPoint_Pad_D1.0mm",
     )
     tp1.in_bom = False
@@ -954,26 +1006,26 @@ def populate_mcu(
         "Device:L_Ferrite",
         "FB1",
         "BLM18BD601SH1",
-        pos(30, 18),
+        pos(65, 35),
         MPN="BLM18BD601SH1",
     )
     sch.components.add(
         "Device:C",
         "C14",
         "1uF",
-        pos(36, 22),
+        pos(65, 65),
     )
     sch.components.add(
         "power:PWR_FLAG",
         "#FLG0101",
         "PWR_FLAG",
-        pos(22, 18),
+        pos(45, 110),
     )
     sch.components.add(
         "power:PWR_FLAG",
         "#FLG0103",
         "PWR_FLAG",
-        pos(40, 18),
+        pos(75, 110),
     )
 
     # Bind every assigned MCU signal directly to the authoritative net name.
@@ -1136,24 +1188,24 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
         MPN="ESD0P2RF-02LS",
     )
     sch.components.add("Connector_Generic:Conn_01x02", "J8", "GNSS_UFL", pos(86, 28))
-    sch.components.add("Device:C", "C80", "100nF", pos(36, 42))
-    sch.components.add("Device:C", "C81", "10uF", pos(42, 42))
+    sch.components.add("Device:C", "C80", "100nF", pos(18, 42))
+    sch.components.add("Device:C", "C81", "10uF", pos(30, 42))
     sch.components.add("Device:L", "L80", "27nH DNP_OPTION", pos(72, 42))
     sch.components.add("Device:R", "R80", "10R 0.25W DNP_OPTION", pos(64, 48))
     sch.components.add("Device:C", "C82", "100nF DNP_OPTION", pos(78, 48))
-    sch.components.add("Device:R", "R81", "100k 1% VUSB_PD", pos(57, 48))
-    sch.components.add("Device:R", "R82", "0R V_BCKP", pos(57, 53))
+    sch.components.add("Device:R", "R81", "100k 1% VUSB_PD", pos(22, 50))
+    sch.components.add("Device:R", "R82", "0R V_BCKP", pos(42, 62))
     sch.components.add(
         "power:PWR_FLAG",
         "#FLG0301",
         "PWR_FLAG",
-        pos(64, 53),
+        pos(50, 66),
     )
     sch.components.add(
         "power:PWR_FLAG",
         "#FLG0302",
         "PWR_FLAG",
-        pos(64, 48),
+        pos(35, 50),
     )
 
     # Main supply decoupling.
@@ -1190,7 +1242,7 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
     add_pin_label_stub(sch, "GND", "R81", "2")
 
     # Internal straps intentionally left open by contract.
-    for pin in ("2", "8"):
+    for pin in ("2", "4", "8"):
         p = sch.get_component_pin_position("U8", pin)
         if p is not None:
             sch.no_connects.add(position=(p.x, p.y))
@@ -1216,7 +1268,7 @@ def populate_time_gnss(sch, placeholders: list[dict]) -> None:
     sch.add_text(
         "R82 ties V_BCKP to 3V3 for EVT. R81 pulls unused V_USB to GND.\n"
         "L80/R80/C82 implement the optional active-antenna VCC_RF bias-T.",
-        position=pos(18, 62),
+        position=pos(18, 78),
         size=1.0,
     )
 
@@ -1278,15 +1330,15 @@ def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
     )
     add_local_symbol(
         sch, "D4", "ESD2CANFD24DBZRQ1", "ESD2CANFD24-Q1",
-        pos(68, 30), placeholders
+        pos(86, 30), placeholders
     )
 
-    sch.components.add("Connector_Generic:Conn_01x06", "J4", "RADAR_IO", pos(86, 32))
-    sch.components.add("Connector_Generic:Conn_01x02", "J5", "RADAR_PWR", pos(86, 50))
-    sch.components.add("Device:R", "R40", "120R 1% DNP_DEFAULT", pos(70, 45))
+    sch.components.add("Connector_Generic:Conn_01x06", "J4", "RADAR_IO", pos(108, 32))
+    sch.components.add("Connector_Generic:Conn_01x02", "J5", "RADAR_PWR", pos(108, 50))
+    sch.components.add("Device:R", "R40", "120R", pos(72, 53))
     sch.components.add("Device:C", "C40", "100nF", pos(42, 42))
-    sch.components.add("Device:R", "R41", "10k 1% STB_PD", pos(52, 46))
-    sch.components.add("Device:R", "R42", "10k 1% SHDN_PD", pos(59, 46))
+    sch.components.add("Device:R", "R41", "10k", pos(52, 46))
+    sch.components.add("Device:R", "R42", "10k", pos(59, 46))
 
     # Transceiver local power and exposed-pad ground.
     add_pin_label_stub(sch, "3V3", "C40", "1")
@@ -1295,9 +1347,11 @@ def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
         add_pin_label_stub(sch, "GND", "U4", "9")
 
     # Deterministic normal mode defaults.
-    sch.add_wire_between_pins("U4", "8", "R41", "1")
+    add_pin_label_stub(sch, "STB_PD", "U4", "8")
+    add_pin_label_stub(sch, "STB_PD", "R41", "1")
     add_pin_label_stub(sch, "GND", "R41", "2")
-    sch.add_wire_between_pins("U4", "5", "R42", "1")
+    add_pin_label_stub(sch, "SHDN_PD", "U4", "5")
+    add_pin_label_stub(sch, "SHDN_PD", "R42", "1")
     add_pin_label_stub(sch, "GND", "R42", "2")
 
     # CAN bus and ESD.
@@ -1324,8 +1378,8 @@ def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
     add_pin_label_stub(sch, "GND", "J5", "2")
 
     sch.add_text(
-        "R40 is DNP by default and populated only when the carrier is the CAN endpoint.\n"
-        "R41/R42 force normal mode defaults. J4 pin6 remains NC by Rev.A contract.",
+        "R40 120R 1% is DNP by default; populate only at the CAN endpoint.\n"
+        "R41/R42 10k 1% force normal mode. J4 pin6 remains NC by Rev.A contract.",
         position=pos(18, 62),
         size=1.0,
     )
@@ -1344,7 +1398,7 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
             "Interface_Ethernet:LAN8742A",
             "U3",
             "LAN8742Ai-CZ-TR",
-            pos(48, 31),
+            pos(56, 31),
             MPN="LAN8742Ai-CZ-TR",
         )
     except Exception:
@@ -1352,7 +1406,7 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
             sch,
             "U3",
             "LAN8742Ai-CZ-TR",
-            pos(48, 31),
+            pos(56, 31),
             placeholders,
         )
 
@@ -1361,7 +1415,7 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
         "Y2",
         "ECS-2520S33-500-FN-TR",
         "ECS-2520S33-500-FN-TR",
-        pos(28, 22),
+        pos(18, 26),
         placeholders,
     )
     add_local_symbol(
@@ -1369,41 +1423,44 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
         "D3",
         "TPD4E05U06DQAR",
         "TPD4E05U06DQAR",
-        pos(72, 40),
+        pos(80, 40),
         placeholders,
     )
     sch.components.add(
         "Connector:RJ45_Bel_SI-60062-F",
         "J6",
         "SI-60182-F",
-        pos(88, 31),
+        pos(96, 31),
         footprint="Connector_RJ:RJ45_Bel_SI-60062-F",
         MPN="SI-60182-F",
         Compatibility_Basis="Bel_SI-60182-F_vs_SI-60062-F_verified",
     )
 
     sch.components.add("Device:R", "R600", "12.1k 1%", pos(42, 45))
-    for ref, y in [("R601", 42), ("R602", 52), ("R603", 62), ("R604", 72)]:
-        sch.components.add("Device:R", ref, "49.9R 1%", pos(68, y))
+    for ref, x, y in [
+        ("R601", 18, 40), ("R602", 18, 58),
+        ("R603", 30, 40), ("R604", 30, 58),
+    ]:
+        sch.components.add("Device:R", ref, "49.9R", pos(x, y))
 
-    sch.components.add("Device:C", "C60", "1uF", pos(50, 45))
-    sch.components.add("Device:C", "C61", "470pF C0G", pos(56, 45))
-    sch.components.add("Device:C", "C62", "100nF", pos(36, 45), Decouples_U3_Pin="1")
-    sch.components.add("Device:C", "C63", "22nF C0G", pos(82, 54))
-    sch.components.add("Device:C", "C64", "100nF", pos(38, 48), Decouples_U3_Pin="9")
-    sch.components.add("Device:C", "C65", "100nF", pos(40, 51), Decouples_U3_Pin="19")
-    sch.components.add("Device:R", "R605", "10k 1% NRST_PD", pos(58, 51))
+    sch.components.add("Device:C", "C60", "1uF", pos(48, 61))
+    sch.components.add("Device:C", "C61", "470pF C0G", pos(58, 61))
+    sch.components.add("Device:C", "C62", "100nF", pos(39, 61), Decouples_U3_Pin="1")
+    sch.components.add("Device:C", "C63", "22nF C0G", pos(81, 62))
+    sch.components.add("Device:C", "C64", "100nF", pos(67, 61), Decouples_U3_Pin="9")
+    sch.components.add("Device:C", "C65", "100nF", pos(75, 61), Decouples_U3_Pin="19")
+    sch.components.add("Device:R", "R605", "10k", pos(36, 70))
     sch.components.add(
         "power:PWR_FLAG",
         "#FLG0601",
         "PWR_FLAG",
-        pos(54, 45),
+        pos(53, 68),
     )
     sch.components.add(
         "power:PWR_FLAG",
         "#FLG0602",
         "PWR_FLAG",
-        pos(94, 50),
+        pos(91, 68),
     )
 
     # LAN8742 power and mandatory local bias/support network.
@@ -1412,11 +1469,16 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
     if sch.get_component_pin_position("U3", "25") is not None:
         add_pin_label_stub(sch, "GND", "U3", "25")
 
-    sch.add_wire_between_pins("U3", "24", "R600", "1")
+    add_pin_label_stub(sch, "ETH_RBIAS_LOCAL", "U3", "24")
+    add_pin_label_stub(sch, "ETH_RBIAS_LOCAL", "R600", "1")
     add_pin_label_stub(sch, "GND", "R600", "2")
 
-    sch.add_wire_between_pins("U3", "6", "C60", "1")
-    sch.add_wire_between_pins("C60", "1", "#FLG0601", "1")
+    for reference, pin_number in (
+        ("U3", "6"), ("C60", "1"), ("#FLG0601", "1")
+    ):
+        add_pin_label_stub(
+            sch, "ETH_VDDCR_LOCAL", reference, pin_number
+        )
     add_pin_label_stub(sch, "GND", "C60", "2")
 
     # Local 3V3 decoupling / analog filter caps.
@@ -1515,8 +1577,10 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
 
     # SI-60182-F P8 is the external Bob-Smith/EMI return and SH is
     # the panel/shield domain. Tie both to the external chassis net.
-    sch.add_wire_between_pins("J6", "8", "J6", "SH")
-    sch.add_wire_between_pins("J6", "8", "#FLG0602", "1")
+    for reference, pin_number in (
+        ("J6", "8"), ("J6", "SH"), ("#FLG0602", "1")
+    ):
+        add_pin_label_stub(sch, "ETH_SHIELD_LOCAL", reference, pin_number)
 
     # LEDs are not used in Rev.A firmware/harness; leave them explicit NC.
     for pin in ("L1", "L2", "L3", "L4"):
@@ -1525,10 +1589,10 @@ def populate_ethernet(sch, placeholders: list[dict]) -> None:
             sch.no_connects.add(position=(p.x, p.y))
 
     sch.add_text(
-        "R60 = PHY RBIAS. R61-R64 = 49.9R MDI terminations to 3V3.\n"
+        "R600 = PHY RBIAS. R601-R604 = 49.9R 1% MDI terminations to 3V3.\n"
         "C60 = VDDCR. C63 = 22nF center-tap AC shunt.\n"
         "MagJack LED/shield service pins remain unresolved until the exact SI-60182-F drawing is bound.",
-        position=pos(18, 64),
+        position=pos(18, 88),
         size=1.0,
     )
 
@@ -1547,13 +1611,13 @@ def populate_debug_boot(sch, placeholders: list[dict]) -> None:
         "Switch:SW_Push",
         "SW1",
         "NRST",
-        pos(52, 30),
+        pos(35, 30),
     )
     sch.components.add(
         "Device:R",
         "R70",
-        "0R DNP_BOOT_OVERRIDE",
-        pos(52, 42),
+        "0R",
+        pos(80, 48),
     )
 
     sch.add_text(
@@ -1747,24 +1811,62 @@ def add_child_hierarchy_labels(
         component = sch.components.get(reference)
         if component is None:
             raise ValueError(f"hierarchy component missing:{reference}")
-        dx = position.x - component.position.x
-        dy = position.y - component.position.y
-        if reference in {"U6", "U7"}:
-            stub = 25.4
-        elif reference == "J1":
-            stub = 12.7
-        else:
-            stub = 1.27
-        if abs(dx) >= abs(dy):
-            label_position = (
-                position.x + (stub if dx >= 0 else -stub),
-                position.y,
+        legacy_layout = CURRENT_SHEET_NAME in {"POWER_INPUT", "MCU_CORE"}
+        if legacy_layout:
+            dx = position.x - component.position.x
+            dy = position.y - component.position.y
+            stub = 25.4 if reference in {"U6", "U7"} else (
+                12.7 if reference == "J1" else 1.27
             )
+            if CURRENT_SHEET_NAME == "MCU_CORE":
+                definition = next(
+                    (pin for pin in component.pins if str(pin.number) == pin_number),
+                    None,
+                )
+                if definition is None:
+                    raise ValueError(
+                        f"missing hierarchy pin:{reference}:{pin_number}"
+                    )
+                horizontal = (
+                    definition.rotation + component.rotation
+                ) % 180 == 0
+                if horizontal:
+                    stub = 25.4
+            else:
+                horizontal = abs(dx) >= abs(dy)
+            if horizontal:
+                label_position = (
+                    position.x + (stub if dx >= 0 else -stub),
+                    position.y,
+                )
+            else:
+                label_position = (
+                    position.x,
+                    position.y + (stub if dy >= 0 else -stub),
+                )
         else:
-            label_position = (
-                position.x,
-                position.y + (stub if dy >= 0 else -stub),
+            pin_definition = next(
+                (pin for pin in component.pins if str(pin.number) == pin_number),
+                None,
             )
+            if pin_definition is None:
+                raise ValueError(f"missing hierarchy pin:{reference}:{pin_number}")
+            horizontal = (pin_definition.rotation + component.rotation) % 180 == 0
+            direction = (
+                1.0 if position.x >= component.position.x else -1.0
+            ) if horizontal else (
+                1.0 if position.y >= component.position.y else -1.0
+            )
+            stub = (
+                40.64 if reference == "U2" and horizontal
+                else 40.64 if reference in {"U8", "U3"} and horizontal and direction < 0
+                else 35.56 if reference in {"U4", "J4", "J5"} and horizontal and direction < 0
+                else 20.32
+            )
+            if horizontal:
+                label_position = (position.x + direction * stub, position.y)
+            else:
+                label_position = (position.x, position.y + direction * stub)
         sch.wires.add(
             start=(position.x, position.y),
             end=label_position,
@@ -1773,11 +1875,33 @@ def add_child_hierarchy_labels(
         # Keep the imported PCB net name bound to the hierarchy contract.
         # Ports alone can compile to generic NetU1_* names when Altium is
         # configured to avoid using port names as global net identifiers.
-        net_label_position = (
-            (position.x - 6.35, position.y)
-            if reference == "J1" else (position.x, position.y)
-        )
-        sch.add_label(net_name, position=net_label_position)
+        if legacy_layout:
+            net_label_position = (
+                (position.x - 6.35, position.y)
+                if reference == "J1" else (position.x, position.y)
+            )
+            if CURRENT_SHEET_NAME == "MCU_CORE":
+                add_oriented_label_at_pin(
+                    sch, net_name, reference, pin_number
+                )
+            else:
+                sch.add_label(net_name, position=net_label_position)
+        else:
+            net_label_position = (
+                (position.x + direction * 5.08, position.y)
+                if horizontal else (position.x, position.y + direction * 5.08)
+            )
+            sch.labels.add(
+                net_name,
+                net_label_position,
+                rotation=0 if horizontal else 90,
+                justify_h=(
+                    "left" if direction > 0 else "right"
+                ) if horizontal else (
+                    "right" if direction > 0 else "left"
+                ),
+            )
+            sch._sync_labels_to_data()
 
         shape = {
             "input": HierarchicalLabelShape.INPUT,
@@ -1806,7 +1930,7 @@ def add_child_hierarchy_labels(
 
 
 def build(output_dir: Path) -> dict:
-    global SHEET_ORIGIN_MM
+    global SHEET_ORIGIN_MM, SHEET_GRID_SCALE, CURRENT_SHEET_NAME
     output_dir.mkdir(parents=True, exist_ok=True)
 
     repo_root = Path(__file__).resolve().parents[1]
@@ -2036,12 +2160,11 @@ def build(output_dir: Path) -> dict:
     main.save(str(output_dir / f"{PROJECT_NAME}.kicad_sch"))
 
     for name, filename in SHEETS:
+        CURRENT_SHEET_NAME = name
         child = ksa.create_schematic(PROJECT_NAME)
-        child.set_paper_size("A3" if name == "MCU_CORE" else "A4")
+        paper_size, SHEET_ORIGIN_MM, SHEET_GRID_SCALE = CHILD_PAGE_LAYOUT[name]
+        child.set_paper_size(paper_size)
         child.set_hierarchy_context(parent_uuid, sheet_uuids[name])
-        SHEET_ORIGIN_MM = (
-            (30.48, 40.64) if name == "MCU_CORE" else (80.01, 49.53)
-        )
 
         sheet_hierarchy_rows = hierarchy_rows_for_sheet(
             hierarchy_rows,
@@ -2111,6 +2234,17 @@ def build(output_dir: Path) -> dict:
 
         for component in child.components:
             reference = component.reference
+            for property_name in tuple(component.properties):
+                if property_name in {
+                    "Reference", "Value", "Footprint",
+                    "Datasheet", "Description",
+                } or property_name.startswith("__"):
+                    continue
+                component.add_property(
+                    property_name,
+                    component.get_property(property_name, ""),
+                    hidden=True,
+                )
             capture_status = component.get_property("Capture_Status")
             if capture_status:
                 component.add_property(
