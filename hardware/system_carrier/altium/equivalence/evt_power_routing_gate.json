@@ -1,0 +1,49 @@
+{
+  "allowed_temp_rise_c": 10.0,
+  "copper_um": 35.0,
+  "errors": [],
+  "evt_power_routing_locked": true,
+  "models": [
+    {
+      "calculated_min_width_mm": 2.766,
+      "current_a": 5.0,
+      "margin_mm": 0.234,
+      "model_id": "PWR-001",
+      "net_or_class": "VIN_RAW",
+      "selected_width_mm": 3.0
+    },
+    {
+      "calculated_min_width_mm": 2.766,
+      "current_a": 5.0,
+      "margin_mm": 0.234,
+      "model_id": "PWR-002",
+      "net_or_class": "VIN_PROTECTED",
+      "selected_width_mm": 3.0
+    },
+    {
+      "calculated_min_width_mm": 1.481,
+      "current_a": 3.18,
+      "margin_mm": 0.019,
+      "model_id": "PWR-003",
+      "net_or_class": "RADAR_12V",
+      "selected_width_mm": 1.5
+    },
+    {
+      "calculated_min_width_mm": 1.367,
+      "current_a": 3.0,
+      "margin_mm": 0.133,
+      "model_id": "PWR-004",
+      "net_or_class": "3V3_TRUNK",
+      "selected_width_mm": 1.5
+    }
+  ],
+  "notes": [
+    "PASS locks only the EVT routing minimum power neck geometry and screening assumptions.",
+    "Production release still requires final copper weight, stack and thermal review; this gate does not authorize manufacturing."
+  ],
+  "production_power_geometry_locked": false,
+  "production_review_required": true,
+  "schema": "ALTIUM-EVT-POWER-ROUTING-GATE-001",
+  "status": "PASS",
+  "warnings": []
+}

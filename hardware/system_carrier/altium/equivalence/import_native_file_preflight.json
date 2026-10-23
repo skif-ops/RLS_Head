@@ -1,0 +1,33 @@
+{
+  "artifacts": {
+    "pcb": {
+      "cfb_major_version": 3,
+      "errors": [],
+      "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+      "sector_shift": 9,
+      "sector_size": 512,
+      "sha256": "853a1d37f848be8dce328e63070ad795c2d77a669ebe053431f70d6cf6d97da2",
+      "size": 1674752,
+      "status": "PASS"
+    },
+    "schematic": {
+      "cfb_major_version": 3,
+      "errors": [],
+      "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
+      "sector_shift": 9,
+      "sector_size": 512,
+      "sha256": "26b6b3ab119ea476d2710c42856dc07ea1bf326bd558ae19c186bcc88e71adfc",
+      "size": 64512,
+      "status": "PASS"
+    }
+  },
+  "errors": [],
+  "layout_authority": "NOT_AUTHORIZED",
+  "notes": [
+    "PASS proves that the native Altium documents are non-trivial Microsoft Compound File Binary containers with valid CFB header geometry; it does not prove electrical equivalence.",
+    "Electrical/layout authority remains controlled by ALTIUM_EQUIVALENCE_GATE."
+  ],
+  "production_authority": "NOT_AUTHORIZED",
+  "schema": "ALTIUM-NATIVE-FILE-PREFLIGHT-001",
+  "status": "PASS"
+}

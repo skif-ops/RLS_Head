@@ -1,0 +1,88 @@
+{
+  "altium_equivalence_gate": "PASS",
+  "altium_version": "26.10.1 Trial",
+  "artifact_id": 12496479601,
+  "artifact_name": "system-carrier-altium-import",
+  "artifact_zip_sha256": "f3dfc3293be5845a40e420e30507a7486c99c26a01285332b941225df7ffc514",
+  "board_id": "EVT-SYS-CARRIER",
+  "bom_designator_mpn_equivalence": "PASS: 92 exact designator and MPN matches",
+  "bom_export_provenance": "Current native Altium BOM preview was reviewed; the canonical CSV is the unchanged CI616 ungrouped native BOM export, revalidated against the same 92-designator source contract.",
+  "branch": "issue-216-footprint-binding",
+  "ci_run_id": 39943400259,
+  "connector_pinout_equivalence": "PASS",
+  "current_source_binding": "PASS: 57/57 files at import",
+  "date": "2026-10-23",
+  "equivalence_result_sha256": "6434cf45e8d3a47ab343ea8e78b5840e92c9144b259c36b903ddf00c7e92f34b",
+  "footprint_equivalence": "PASS: 92 components",
+  "hierarchy_equivalence": "PASS: 66 native child-sheet port rows",
+  "import_wizard_result": "COMPLETED",
+  "native_compile": "PASS: 0 errors, 0 warnings",
+  "native_compile_timestamp": "2026-10-23 19:44:32 Europe/Moscow",
+  "native_files": [
+    {
+      "bytes": 136704,
+      "name": "10_POWER_INPUT.SchDoc",
+      "sha256": "424d3f757178e630a777640b7db71cb609116f652f3f5f392ced655a718b2672"
+    },
+    {
+      "bytes": 275968,
+      "name": "20_MCU_CORE.SchDoc",
+      "sha256": "f2288f8193f132fa2aaa2eccf8f1cdff8605b3d1ca90a94192bbd45cc32544a5"
+    },
+    {
+      "bytes": 78336,
+      "name": "30_TIME_GNSS.SchDoc",
+      "sha256": "be2c4fad8e7562b1b4a668e8adb7525493e00365ffd1f1a95a8ee78fd216d669"
+    },
+    {
+      "bytes": 47616,
+      "name": "40_IMU.SchDoc",
+      "sha256": "f246681218f63726675e986625370627a95bbf286eca66a116fc5820d02c7dad"
+    },
+    {
+      "bytes": 65536,
+      "name": "50_RADAR_IO_CAN.SchDoc",
+      "sha256": "b01f094dfa9634b8c2a9700bd9c7c4c2300bc7cd24e9cf6d7c3e4754200d4187"
+    },
+    {
+      "bytes": 149504,
+      "name": "60_ETHERNET.SchDoc",
+      "sha256": "cf36759af37790f777d387cb85b9f23bc1c398ec03b43b2f3a5757e70c7b3d6b"
+    },
+    {
+      "bytes": 29184,
+      "name": "70_DEBUG_BOOT.SchDoc",
+      "sha256": "b7b2a53eaaf767e465998253d507c7cd0ee4966e3bd155dc06378276fd4e08d1"
+    },
+    {
+      "bytes": 1674752,
+      "name": "EVT_SYS_CARRIER.PcbDoc",
+      "sha256": "fa321c98678931940b536031b03bc2ddf1a504156a5a62b9b8ebeddeb12ac0ab"
+    },
+    {
+      "bytes": 64512,
+      "name": "EVT_SYS_CARRIER.SchDoc",
+      "sha256": "5941fb8d9a36092d06f2ff164514ed53c41ccc44a18829ca7ce8cf2aac1cd10d"
+    },
+    {
+      "bytes": 131584,
+      "name": "EVT_SYS_CARRIER.SchLib",
+      "sha256": "4bee791bc6740820ad648a309dfedde3c335f95db5e6259a4fb0d63d6b987ce9"
+    },
+    {
+      "bytes": 41472,
+      "name": "SystemCarrier_Local.SchLib",
+      "sha256": "432f8bbacb0c92b1b109b99290c69554173d855e1b7218297832054d83e00e74"
+    }
+  ],
+  "native_pcb_audit": "PASS",
+  "netlist_equivalence": "PASS",
+  "no_mmwave_review": "PASS",
+  "package_verification": "PASS: 117/117 files",
+  "production_authority": "NOT_AUTHORIZED",
+  "ready_for_routing": true,
+  "routing_authority": "AUTHORIZED",
+  "schema": "ALTIUM-IMPORT-ATTEMPT-DIAGNOSTIC-001",
+  "script_runtime_receipt": "PASS",
+  "source_commit": "0584de2d096457135073493c1f97d3f506f5d54a"
+}

@@ -11,6 +11,61 @@ Begin
     Result := '"' + S + '"';
 End;
 
+Function IsCanonicalNativePath(APath : String) : Boolean;
+Var
+    P : String;
+Begin
+    P := LowerCase(APath);
+    Result :=
+        (Pos('\hardware\system_carrier\altium\native\', P) > 0) And
+        (Pos('\build\', P) = 0);
+End;
+
+Function FindCarrierProject : IProject;
+Var
+    WS        : IWorkspace;
+    Candidate : IProject;
+    Doc       : IDocument;
+    I         : Integer;
+    J         : Integer;
+Begin
+    Result := Nil;
+    WS := GetWorkspace;
+    If WS = Nil Then Exit;
+
+    Candidate := WS.DM_FocusedProject;
+    If Candidate <> Nil Then
+        If ExtractFileName(Candidate.DM_ProjectFullPath) = 'EVT_SYS_CARRIER.PrjPcb' Then
+            If IsCanonicalNativePath(Candidate.DM_ProjectFullPath) Then
+                For J := 0 To Candidate.DM_LogicalDocumentCount - 1 Do
+                Begin
+                    Doc := Candidate.DM_LogicalDocuments(J);
+                    If Doc = Nil Then Continue;
+                    If Doc.DM_DocumentKind <> 'SCH' Then Continue;
+                    If Not IsCanonicalNativePath(Doc.DM_FullPath) Then Continue;
+                    Result := Candidate;
+                    Exit;
+                End;
+
+    For I := 0 To WS.DM_ProjectCount - 1 Do
+    Begin
+        Candidate := WS.DM_Projects(I);
+        If Candidate = Nil Then Continue;
+        If ExtractFileName(Candidate.DM_ProjectFullPath) <> 'EVT_SYS_CARRIER.PrjPcb' Then Continue;
+        If Not IsCanonicalNativePath(Candidate.DM_ProjectFullPath) Then Continue;
+
+        For J := 0 To Candidate.DM_LogicalDocumentCount - 1 Do
+        Begin
+            Doc := Candidate.DM_LogicalDocuments(J);
+            If Doc = Nil Then Continue;
+            If Doc.DM_DocumentKind <> 'SCH' Then Continue;
+            If Not IsCanonicalNativePath(Doc.DM_FullPath) Then Continue;
+            Result := Candidate;
+            Exit;
+        End;
+    End;
+End;
+
 Function PortIOToString(AIO : TPortIO) : String;
 Begin
     Case AIO Of
@@ -43,6 +98,7 @@ Var
     WS         : IWorkspace;
     Project    : IProject;
     Doc        : IDocument;
+    ServerDoc  : IServerDocument;
     SchDoc     : ISch_Document;
     Iterator   : ISch_Iterator;
     Port       : ISch_Port;
@@ -60,9 +116,10 @@ Begin
     End;
 
     Project := WS.DM_FocusedProject;
+    Project := FindCarrierProject;
     If Project = Nil Then
     Begin
-        ShowMessage('EVT System Carrier hierarchy audit: no focused project.');
+        ShowMessage('EVT System Carrier hierarchy audit: canonical native project not found.');
         Exit;
     End;
 
@@ -80,6 +137,9 @@ Begin
         If Doc = Nil Then
             Continue;
 
+        If Not IsCanonicalNativePath(Doc.DM_FullPath) Then
+            Continue;
+
         If Doc.DM_DocumentKind <> 'SCH' Then
             Continue;
 
@@ -91,6 +151,15 @@ Begin
             BasePath := ExtractFilePath(Doc.DM_FullPath) + '..\equivalence\';
 
         SchDoc := SchServer.GetSchDocumentByPath(Doc.DM_FullPath);
+        If SchDoc = Nil Then
+        Begin
+            ServerDoc := Client.OpenDocument('SCH', Doc.DM_FullPath);
+            If ServerDoc <> Nil Then
+            Begin
+                Client.ShowDocument(ServerDoc);
+                SchDoc := SchServer.GetSchDocumentByPath(Doc.DM_FullPath);
+            End;
+        End;
         If SchDoc = Nil Then
             Continue;
 

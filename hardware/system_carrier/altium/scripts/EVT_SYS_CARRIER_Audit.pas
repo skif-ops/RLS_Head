@@ -25,6 +25,80 @@ Begin
     Result := StringReplace(FloatToStr(Value), ',', '.', rfReplaceAll);
 End;
 
+Function IsCanonicalNativePath(APath : String) : Boolean;
+Var
+    P : String;
+Begin
+    P := LowerCase(APath);
+    Result :=
+        (Pos('\hardware\system_carrier\altium\native\', P) > 0) And
+        (Pos('\build\', P) = 0);
+End;
+
+Function FindCarrierProject : IProject;
+Var
+    WS        : IWorkspace;
+    Candidate : IProject;
+    Doc       : IDocument;
+    I         : Integer;
+    J         : Integer;
+Begin
+    Result := Nil;
+    WS := GetWorkspace;
+    If WS = Nil Then Exit;
+
+    For I := 0 To WS.DM_ProjectCount - 1 Do
+    Begin
+        Candidate := WS.DM_Projects(I);
+        If Candidate = Nil Then Continue;
+        If ExtractFileName(Candidate.DM_ProjectFullPath) <> 'EVT_SYS_CARRIER.PrjPcb' Then Continue;
+        If Not IsCanonicalNativePath(Candidate.DM_ProjectFullPath) Then Continue;
+
+        For J := 0 To Candidate.DM_LogicalDocumentCount - 1 Do
+        Begin
+            Doc := Candidate.DM_LogicalDocuments(J);
+            If Doc = Nil Then Continue;
+            If UpperCase(ExtractFileExt(Doc.DM_FullPath)) <> '.PCBDOC' Then Continue;
+            If Not IsCanonicalNativePath(Doc.DM_FullPath) Then Continue;
+            Result := Candidate;
+            Exit;
+        End;
+    End;
+End;
+
+Function ResolveNativeBoard : IPCB_Board;
+Var
+    Project   : IProject;
+    Doc       : IDocument;
+    PcbDoc    : IServerDocument;
+    I         : Integer;
+Begin
+    Result := PCBServer.GetCurrentPCBBoard;
+    If Result <> Nil Then
+        If IsCanonicalNativePath(Result.FileName) Then Exit;
+    Result := Nil;
+
+    Project := FindCarrierProject;
+    If Project = Nil Then Exit;
+
+    For I := 0 To Project.DM_LogicalDocumentCount - 1 Do
+    Begin
+        Doc := Project.DM_LogicalDocuments(I);
+        If Doc = Nil Then Continue;
+        If UpperCase(ExtractFileExt(Doc.DM_FullPath)) <> '.PCBDOC' Then Continue;
+        If Not IsCanonicalNativePath(Doc.DM_FullPath) Then Continue;
+
+        Result := PCBServer.GetPCBBoardByPath(Doc.DM_FullPath);
+        If Result <> Nil Then Exit;
+
+        PcbDoc := Client.OpenDocument('PCB', Doc.DM_FullPath);
+        If PcbDoc = Nil Then Continue;
+        Client.ShowDocument(PcbDoc);
+        Result := PCBServer.GetPCBBoardByPath(Doc.DM_FullPath);
+        Exit;
+    End;
+End;
+
 Function RuleKindToString(ARuleKind : TRuleKind) : String;
 Begin
     Result := IntToStr(Ord(ARuleKind));
@@ -251,6 +325,7 @@ Begin
 
     Board.BoardIterator_Destroy(Iterator);
     Rpt.SaveToFile(BasePath + 'pad_net_inventory.csv');
+    Rpt.SaveToFile(BasePath + 'netlist_export.csv');
     Rpt.Free;
 End;
 
@@ -448,7 +523,7 @@ Var
     Board    : IPCB_Board;
     BasePath : String;
 Begin
-    Board := PCBServer.GetCurrentPCBBoard;
+    Board := ResolveNativeBoard;
     If Board = Nil Then
     Begin
         ShowMessage('EVT System Carrier audit: no active PCB document.');
@@ -462,7 +537,7 @@ Begin
         Exit;
     End;
 
-    BasePath := ExtractFilePath(Board.FileName) + 'equivalence\';
+    BasePath := ExtractFilePath(Board.FileName) + '..\equivalence\';
     ForceDirectories(BasePath);
 
     ExportComponents(Board, BasePath);
