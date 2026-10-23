@@ -47,11 +47,25 @@ production authority remain `NOT_AUTHORIZED`.
   ten nets without a driving source, and one BOOT0 sheet-entry direction
   conflict. No warnings were suppressed. The original 49-warning report is
   retained as `evidence/ci616_native_compile_after_eco.txt`.
-- A fresh Altium Protel netlist after cleanup has 335 assigned pins in 67
-  connected groups. `evidence/ci616_schematic_netlist_after_flag_cleanup_probe.json`
-  records PASS against the CI616 KiCad baseline: no missing or extra connected
-  pins, merged groups, or split groups. The raw export is
-  `evidence/ci616_schematic_protel_after_flag_cleanup.NET`.
+- A second guarded Altium ECO aligned 23 STM32 pins and three Ethernet PHY
+  pins with their fixed-function input/output contracts. Every target pin was
+  uniquely present and initially I/O. The saved SchDocs differ from the prior
+  snapshot in exactly those 26 pin electrical types; all other pin fields and
+  pin identities match. See `evidence/ci616_direction_pin_eco.pas` and
+  `evidence/ci616_direction_pin_diff.json`, which binds the before and after
+  files by SHA-256. The before snapshot is commit `46dd15a`.
+- The fresh validation after this ECO completed with zero errors and 12
+  warnings: eleven nets without a driving source and one BOOT0 sheet-entry
+  direction conflict. `evidence/ci616_native_compile_after_direction_eco.txt`
+  is the full raw Altium report. No warnings were suppressed. The new
+  RADAR_REF no-driver warning appeared when U1-79 became an input as required
+  by `PINMAP_SYS_001.csv`; its source is external through J4.
+- The fresh Altium Protel netlist is byte-identical to the export before the
+  direction ECO. It has 335 assigned pins in 67 connected groups and again
+  passes comparison with the CI616 KiCad baseline with no missing or extra
+  connected pins, merged groups, or split groups. The raw export and result
+  are `evidence/ci616_schematic_protel_after_direction_eco.NET` and
+  `evidence/ci616_schematic_netlist_after_direction_eco_probe.json`.
 - Fresh read-only native PCB audit inventories passed PCB, pin map, stack,
   mechanical, pair/class, and rule validation. Footprint validation passed for
   all 92 components; connector validation passed for 22 pads. The hierarchy
@@ -65,7 +79,7 @@ production authority remain `NOT_AUTHORIZED`.
 
 ## Gate state
 
-The 43 compile warnings violate the zero-warning equivalence prerequisite.
+The 12 compile warnings violate the zero-warning equivalence prerequisite.
 No-mmWave human review and hash-bound exporter runtime receipts are still
 outstanding. `ALTIUM_EQUIVALENCE_GATE` was not run.
 The canonical `altium/native/` pair remains unpopulated.

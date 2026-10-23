@@ -16,12 +16,14 @@
   "native_schematic_count": 8,
   "native_pcb_provenance": "Byte-identical carry-forward of CI606 audited diagnostic PcbDoc",
   "native_project": "native_snapshot/EVT_SYS_CARRIER_CI616.PrjPcb",
-  "native_compile": "SUCCESS_WITH_WARNINGS: 0 errors, 43 warnings",
+  "native_compile": "SUCCESS_WITH_WARNINGS: 0 errors, 12 warnings",
   "diagnostic_update_date": "2026-10-23",
   "flag_label_cleanup": "Six imported KiCad PWR_FLAG components and their six floating net labels removed from three native SchDocs; revalidated in Altium",
-  "native_compile_evidence": "ci616_native_compile_after_flag_cleanup.txt",
-  "schematic_protel_netlist_evidence": "ci616_schematic_protel_after_flag_cleanup.NET",
-  "schematic_netlist_probe_evidence": "ci616_schematic_netlist_after_flag_cleanup_probe.json",
+  "direction_pin_eco": "26 native pin electrical types aligned to fixed function direction contracts: 23 MCU and 3 Ethernet PHY pins; zero connectivity changes",
+  "direction_pin_diff_evidence": "ci616_direction_pin_diff.json",
+  "native_compile_evidence": "ci616_native_compile_after_direction_eco.txt",
+  "schematic_protel_netlist_evidence": "ci616_schematic_protel_after_direction_eco.NET",
+  "schematic_netlist_probe_evidence": "ci616_schematic_netlist_after_direction_eco_probe.json",
   "schematic_protel_netlist": "PASS: 335 assigned pins, 67 connectivity groups, no missing connected pins, merges or splits",
   "pin_type_eco": "U7-6 Power to Output; D3-6/7/9/10 and J6-7 Input to Passive",
   "native_pcb_audit": "PASS",
@@ -43,7 +45,7 @@
     {
       "name": "20_MCU_CORE.SchDoc",
       "bytes": 276480,
-      "sha256": "c77fb89141108ad756d05701cf7935a956ce9a2c441f42f0f61a817df076463a"
+      "sha256": "3e9cdd2efa3e06a29d0b4f3caec27d532e767a783495b2dc7882e6af3e013e8c"
     },
     {
       "name": "30_TIME_GNSS.SchDoc",
@@ -63,7 +65,7 @@
     {
       "name": "60_ETHERNET.SchDoc",
       "bytes": 146944,
-      "sha256": "7d71ce1ad394af7df90ebda4c94d3ab0377ce1e5dc7ed91c05ebf1a110d12161"
+      "sha256": "9dc91851cc0791867311f5734676ea2e3e0baa31f06d90e9f59b63ad062bee60"
     },
     {
       "name": "70_DEBUG_BOOT.SchDoc",
