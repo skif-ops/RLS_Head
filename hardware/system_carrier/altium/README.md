@@ -95,3 +95,12 @@ Shorting Copper enabled. The result retained the 77 documented placement
 baseline markers and added no power-routing violation. Continued native
 routing is authorized under the existing equivalence PASS. Production release
 remains `NOT_AUTHORIZED`.
+
+## GNSS RF Routing Review A
+
+The GNSS RF corridor from J8-1 through D8-1 and L80-2 to U8-11 is recorded in
+`routing/GNSS_ROUTING_REVIEW_A.md`. Altium routed four top-layer segments at
+0.36 mm width over the L2 GND reference plane, with a total length of 28.543 mm
+and no vias. Native DRC retained the 77 documented baseline markers and added
+no GNSS-route violation. Continued native routing is authorized under the
+existing equivalence PASS. Production release remains `NOT_AUTHORIZED`.
