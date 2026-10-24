@@ -104,3 +104,15 @@ The GNSS RF corridor from J8-1 through D8-1 and L80-2 to U8-11 is recorded in
 and no vias. Native DRC retained the 77 documented baseline markers and added
 no GNSS-route violation. Continued native routing is authorized under the
 existing equivalence PASS. Production release remains `NOT_AUTHORIZED`.
+
+## Ethernet MDI Routing Review A
+
+The four MDI nets from U3 through the termination and D3 ESD branches to J6
+are recorded in `routing/ETHERNET_ROUTING_REVIEW_A.md`. The primary parallel
+corridors use the locked 0.26 mm width and 0.20 mm pair gap. Native topology
+evidence confirms every U3, R601-R604, D3 and J6 terminal, while main-path
+skew is 0.040881 mm for TX and 0.000024 mm for RX. Native DRC retained the 77
+documented baseline markers and added no Ethernet-route violation. Bottom
+Layer escape segments and asymmetric main-path transitions remain explicit
+production SI cleanup items. Continued native routing is authorized under the
+existing equivalence PASS. Production release remains `NOT_AUTHORIZED`.
