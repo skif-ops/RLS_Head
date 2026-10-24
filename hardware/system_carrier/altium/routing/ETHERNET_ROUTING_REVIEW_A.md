@@ -81,6 +81,7 @@ EVT review does not accept the current transitions as production SI signoff.
 - Routing authority: `AUTHORIZED`
 - Production authority: `NOT_AUTHORIZED`
 
-The next implementation step is PCB-A09, routing `GNSS_PPS`, `RADAR_REF` and
-`IMU_DRDY` with quiet return paths and no parallel coupling to the Ethernet
-MDI corridor.
+PCB-A09 is complete: `GNSS_PPS`, `RADAR_REF` and `IMU_DRDY` are routed with
+the required quiet clearance from the Ethernet MDI corridor. The next
+implementation step is PCB-A10, routing RMII, CAN, IMU SPI, SWD and the
+remaining control nets.

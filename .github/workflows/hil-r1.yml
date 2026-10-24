@@ -1313,6 +1313,42 @@ jobs:
           print("Altium connection integrity:", data["status"])
           PY
 
+      - name: Validate Altium timing routing
+        run: |
+          python -m tools.altium_timing_routing_gate \
+            --system-root hardware/system_carrier \
+            --output build-cad/system_carrier/altium_timing_routing.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/"
+                  "altium_timing_routing.json"
+              ).read_text()
+          )
+          native_pcb = Path(
+              "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+          ).is_file()
+          assert data["schema"] == "ALTIUM-TIMING-ROUTING-GATE-001"
+          assert data["production_authority"] == "NOT_AUTHORIZED"
+          if native_pcb:
+              assert data["status"] == "PASS"
+              assert data["summary_binding"] == "PASS"
+              assert data["drc"]["route_induced_markers"] == 0
+              assert all(
+                  route["connected"]
+                  and route["layers"] == [1]
+                  and route["via_count"] == 0
+                  and route["quiet_clearance_mm"] >= 1.0
+                  for route in data["routes"].values()
+              )
+          else:
+              assert data["status"] == "NOT_APPLICABLE"
+          print("Altium timing routing:", data["status"])
+          PY
+
       - name: Evaluate native Altium handoff status
         run: |
           python -m tools.altium_native_handoff_status \

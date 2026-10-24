@@ -1,7 +1,7 @@
 Altium Designer 26.10.1 Native Design Rule Check Summary
 PCB File : C:\Users\skifn\.codex\.chatgpt-projects\g-p-6a9feb917c48819182ec25e1ef55310c\RLS_Head-git\hardware\system_carrier\altium\native\EVT_SYS_CARRIER.PcbDoc
 Date     : 24.10.2026
-Time     : 20:28:45
+Time     : 21:26:20
 Elapsed  : 00:00:01
 Warnings : 0
 
@@ -39,4 +39,4 @@ Processing Rule : Component Clearance Constraint ( Horizontal Gap = 10mil, Verti
 Rule Violations :55
 
 Violations Detected : 119
-Capture Note : Counts transcribed from the native Altium Design Rule Verification Report for the canonical PcbDoc immediately after the 20:28:45 run. This compact record is retained because the report viewer did not persist its generated HTML file.
+Capture Note : Counts transcribed from the native Altium Design Rule Verification Report for the canonical PcbDoc immediately after the 21:26:20 run. This compact record is retained because the report viewer did not persist its generated HTML file.

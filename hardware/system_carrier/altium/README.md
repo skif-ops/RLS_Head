@@ -138,3 +138,20 @@ change.
 mechanical datum, pad/net baseline and native PcbDoc by SHA-256 in the committed
 receipt. CI rejects a changed PcbDoc or stale audit evidence. This gate permits
 continued EVT routing only. Production authority remains `NOT_AUTHORIZED`.
+
+## Timing Routing Review A
+
+PCB-A09 is recorded in `routing/TIMING_ROUTING_REVIEW_A.md`. The native board
+contains connected Top Layer routes for `GNSS_PPS`, `IMU_DRDY` and
+`RADAR_REF`, all at 0.20 mm width and with no vias. The shortest measured
+edge clearance from these routes to `BUCK_SW` and the Ethernet MDI nets is
+9.519854 mm. Native DRC retained the 119-marker connection-integrity
+baseline and added no timing-route marker.
+
+`tools.altium_timing_routing_gate` rebuilds the route graph from the native
+geometry export, checks both required endpoints for every net, verifies the
+layer, width, segment and via contracts, enforces at least 1.0 mm clearance
+from `BUCK_SW` and the Ethernet MDI corridor, and binds the board, audit,
+scripts, DRC and review render by SHA-256. Continued native routing remains
+authorized under the existing equivalence PASS. Production release remains
+`NOT_AUTHORIZED`.
