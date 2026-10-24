@@ -1,0 +1,14 @@
+------------------------------------------------------------
+Design Hierarchy Report for EVT_SYS_CARRIER.PrjPcb
+-- 22.10.2026
+-- 14:20:07
+------------------------------------------------------------
+
+EVT_SYS_CARRIER               SCH        (EVT_SYS_CARRIER.SchDoc)
+    DEBUG_BOOT                SCH        (70_DEBUG_BOOT.SchDoc)
+    ETHERNET                  SCH        (60_ETHERNET.SchDoc)
+    IMU                       SCH        (40_IMU.SchDoc)
+    MCU_CORE                  SCH        (20_MCU_CORE.SchDoc)
+    POWER_INPUT               SCH        (10_POWER_INPUT.SchDoc)
+    RADAR_IO_CAN              SCH        (50_RADAR_IO_CAN.SchDoc)
+    TIME_GNSS                 SCH        (30_TIME_GNSS.SchDoc)

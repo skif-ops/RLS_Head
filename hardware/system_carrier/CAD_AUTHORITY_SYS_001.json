@@ -1,28 +1,4 @@
 {
-  "schema": "SYSTEM-CARRIER-CAD-AUTHORITY-001",
-  "status": "ALTIUM_PRIMARY",
-  "board_id": "EVT-SYS-CARRIER",
-  "hardware_revision": "A",
-  "primary_cad": "Altium Designer",
-  "primary_project": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
-  "expected_native_documents": [
-    "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
-    "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
-  ],
-  "native_document_status": "PENDING_ALTIUM_IMPORT",
-  "verification_cad": "KiCad 9",
-  "verification_baseline_commit": "f23476e94428295f080b526143dc114f68883635",
-  "verification_erc_errors": 0,
-  "verification_erc_warnings": 0,
-  "preserve_kicad": true,
-  "delete_kicad_sources": false,
-  "equivalence_gate_required": true,
-  "pcb_layout_authority": "ALTIUM_AFTER_EQUIVALENCE_GATE",
-  "notes": [
-    "KiCad electrical sources remain permanently retained.",
-    "Native SchDoc/PcbDoc must be produced by Altium Designer, not fabricated by extension-only placeholder files.",
-    "All new PCB implementation work targets Altium Designer."
-  ],
   "altium_design_contracts": [
     "hardware/system_carrier/altium/ALTIUM_LAYER_STACK_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_RULES_SYS_001.csv",
@@ -45,73 +21,100 @@
     "hardware/system_carrier/altium/ALTIUM_ROOMS_SYS_001.csv"
   ],
   "altium_equivalence_gate": {
-    "validator": "tools/altium_equivalence_gate.py",
-    "template": "hardware/system_carrier/altium/equivalence/manifest.template.json",
+    "required_before_layout_authority": true,
     "status_file": "hardware/system_carrier/altium/ALTIUM_NATIVE_STATUS_SYS_001.json",
-    "required_before_layout_authority": true
+    "template": "hardware/system_carrier/altium/equivalence/manifest.template.json",
+    "validator": "tools/altium_equivalence_gate.py"
   },
-  "prelayout_gate": {
-    "validator": "tools/carrier_prelayout_validate.py",
-    "required_before_native_import_package": true,
-    "mechanical_status": "EVT_ROUTING_DATUM_LOCKED",
-    "board_envelope_mm": [
-      100,
-      80,
-      1.6
-    ],
-    "evt_mechanical_routing_datums_locked": true,
-    "evt_mechanical_datum_validator": "tools/altium_evt_mechanical_datum_gate.py",
-    "production_mechanical_freeze": false,
-    "production_mechanical_review_required": true
-  },
+  "altium_implementation_files": [
+    "hardware/system_carrier/altium/ALTIUM_IMPLEMENTATION_SEQUENCE_SYS_001.csv",
+    "hardware/system_carrier/altium/ALTIUM_STATUS_SYS_001.json"
+  ],
   "altium_production_contracts": [
     "hardware/system_carrier/altium/ALTIUM_OUTJOB_CONTRACT_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_RELEASE_CHECKLIST_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_BOARD_PLANNING_SYS_001.csv",
     "hardware/system_carrier/altium/ALTIUM_DFM_PROFILE_SYS_001.csv"
   ],
-  "pcb_design_phase": "ALTIUM_BOARD_PLANNING",
-  "production_release_authorized": false,
-  "altium_implementation_files": [
-    "hardware/system_carrier/altium/ALTIUM_IMPLEMENTATION_SEQUENCE_SYS_001.csv",
-    "hardware/system_carrier/altium/ALTIUM_STATUS_SYS_001.json"
-  ],
+  "altium_rule_query_contract": {
+    "differential_pair_count": 3,
+    "production_drc_required": true,
+    "query_language": "Altium PCB Query Language",
+    "rule_count": 10,
+    "status": "NATIVE_EQUIVALENCE_PASS"
+  },
+  "board_id": "EVT-SYS-CARRIER",
+  "delete_kicad_sources": false,
+  "equivalence_gate_required": true,
+  "equivalence_result_sha256": "8ce9ff56594f22626783c2db16b5d8183425b0ab96ebe9e14a6ac013ab96f61d",
   "evt_impedance_model": {
-    "status": "EVT_CALCULATED",
-    "production_binding_required": true,
-    "gnss_rf_50r": "0.36 mm top microstrip over provisional 0.18 mm L1-L2 dielectric",
     "eth_mdi_100r": "0.26 mm width / 0.20 mm gap top differential microstrip over provisional 0.18 mm L1-L2 dielectric",
+    "gnss_rf_50r": "0.36 mm top microstrip over provisional 0.18 mm L1-L2 dielectric",
+    "production_binding_required": true,
+    "production_stack_locked": false,
     "routing_stack_status": "EVT_ROUTING_LOCKED",
     "routing_stack_validator": "tools/altium_evt_routing_stack_gate.py",
-    "production_stack_locked": false
+    "status": "EVT_CALCULATED"
   },
   "evt_power_width_model": {
-    "status": "EVT_CALCULATED",
-    "method": "IPC-2221 external trace screening",
-    "copper_um": 35,
     "allowed_temp_rise_c": 10,
+    "copper_um": 35,
+    "method": "IPC-2221 external trace screening",
+    "production_power_geometry_locked": false,
     "production_review_required": true,
     "routing_power_status": "EVT_ROUTING_LOCKED",
     "routing_power_validator": "tools/altium_evt_power_routing_gate.py",
-    "production_power_geometry_locked": false
+    "status": "EVT_CALCULATED"
   },
-  "altium_rule_query_contract": {
-    "status": "READY_TO_INSTANTIATE_AFTER_NATIVE_IMPORT",
-    "rule_count": 10,
-    "differential_pair_count": 3,
-    "query_language": "Altium PCB Query Language",
-    "production_drc_required": true
+  "expected_native_documents": [
+    "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
+    "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+  ],
+  "hardware_revision": "A",
+  "native_document_status": "NATIVE_EQUIVALENCE_PASS",
+  "native_pcb_sha256": "fa321c98678931940b536031b03bc2ddf1a504156a5a62b9b8ebeddeb12ac0ab",
+  "native_schematic_sha256": "5941fb8d9a36092d06f2ff164514ed53c41ccc44a18829ca7ce8cf2aac1cd10d",
+  "notes": [
+    "KiCad electrical sources remain permanently retained.",
+    "Native SchDoc/PcbDoc must be produced by Altium Designer, not fabricated by extension-only placeholder files.",
+    "All new PCB implementation work targets Altium Designer."
+  ],
+  "pcb_design_phase": "ALTIUM_NATIVE_ROUTING",
+  "pcb_layout_authority": "ALTIUM_AUTHORIZED",
+  "prelayout_gate": {
+    "board_envelope_mm": [
+      100,
+      80,
+      1.6
+    ],
+    "evt_mechanical_datum_validator": "tools/altium_evt_mechanical_datum_gate.py",
+    "evt_mechanical_routing_datums_locked": true,
+    "mechanical_status": "EVT_ROUTING_DATUM_LOCKED",
+    "production_mechanical_freeze": false,
+    "production_mechanical_review_required": true,
+    "required_before_native_import_package": true,
+    "validator": "tools/carrier_prelayout_validate.py"
   },
+  "preserve_kicad": true,
+  "primary_cad": "Altium Designer",
+  "primary_project": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
+  "production_release_authorized": false,
   "routing_readiness_gate": {
-    "validator": "tools/altium_routing_readiness.py",
-    "current_expected_status": "READY_FOR_NATIVE_IMPORT",
-    "routing_authority_requires": "ALTIUM_EQUIVALENCE_GATE PASS",
-    "production_authority_separate": true,
+    "current_expected_status": "READY_FOR_ROUTING",
     "evt_mechanical_datum_required": true,
     "evt_mechanical_datum_status": "EVT_ROUTING_DATUM_LOCKED",
+    "evt_power_routing_required": true,
+    "evt_power_routing_status": "EVT_ROUTING_LOCKED",
     "evt_routing_stack_required": true,
     "evt_routing_stack_status": "EVT_ROUTING_LOCKED",
-    "evt_power_routing_required": true,
-    "evt_power_routing_status": "EVT_ROUTING_LOCKED"
-  }
+    "production_authority_separate": true,
+    "routing_authority_requires": "ALTIUM_EQUIVALENCE_GATE PASS",
+    "validator": "tools/altium_routing_readiness.py"
+  },
+  "schema": "SYSTEM-CARRIER-CAD-AUTHORITY-001",
+  "status": "ALTIUM_PRIMARY",
+  "verification_baseline_commit": "f23476e94428295f080b526143dc114f68883635",
+  "verification_cad": "KiCad 9",
+  "verification_erc_errors": 0,
+  "verification_erc_warnings": 0
 }

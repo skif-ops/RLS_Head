@@ -1,0 +1,16 @@
+CI599 targeted No ERC native CFB extract, 2026-10-22
+Coordinates are Altium FileHeader units (10 mil).
+
+60_ETHERNET.SchDoc SHA-256 8c352c1ccb5efefb6403e510219758ea9ad23d526cc9081fe003863d617342f3
+specific_directive_count=5
+|RECORD=22|IndexInSheet=191|OwnerPartId=-1|Location.X=410|Location.Y=1460|Color=255|Orientation=1|Symbol=Thin Cross|IsActive=T|SuppressAll=F|ErrorKindSetToSuppress=Nets with no driving source,Nets containing floating input pins|ConnectionPairsToSuppress=PNI_UNC|UniqueID=WATMYMMA
+|RECORD=22|IndexInSheet=192|OwnerPartId=-1|Location.X=310|Location.Y=1450|Color=255|Orientation=1|Symbol=Thin Cross|IsActive=T|SuppressAll=F|ErrorKindSetToSuppress=Nets with no driving source,Nets containing floating input pins|ConnectionPairsToSuppress=PNI_UNC|UniqueID=MFSQQHBY
+|RECORD=22|IndexInSheet=193|OwnerPartId=-1|Location.X=310|Location.Y=1440|Color=255|Orientation=1|Symbol=Thin Cross|IsActive=T|SuppressAll=F|ErrorKindSetToSuppress=Nets with no driving source,Nets containing floating input pins|ConnectionPairsToSuppress=PNI_UNC|UniqueID=KWZWVIBK
+|RECORD=22|IndexInSheet=194|OwnerPartId=-1|Location.X=410|Location.Y=1440|Color=255|Orientation=1|Symbol=Thin Cross|IsActive=T|SuppressAll=F|ErrorKindSetToSuppress=Nets with no driving source,Nets containing floating input pins|ConnectionPairsToSuppress=PNI_UNC|UniqueID=BZACZVRH
+|RECORD=22|IndexInSheet=195|OwnerPartId=-1|Location.X=520|Location.Y=1495|Color=255|Orientation=1|Symbol=Thin Cross|IsActive=T|SuppressAll=F|ErrorKindSetToSuppress=Nets with no driving source,Nets containing floating input pins|ConnectionPairsToSuppress=PNI_UNC|UniqueID=FTRMNDLS
+
+10_POWER_INPUT.SchDoc SHA-256 afd6e307cbebc67f912d5284703de6ce3b9f8b87b8ba1c1bb92b71fdecab40c7
+specific_directive_count=1
+|RECORD=22|IndexInSheet=147|OwnerPartId=-1|Location.X=265|Location.Y=1450|Color=255|Orientation=1|Symbol=Thin Cross|IsActive=T|SuppressAll=F|ConnectionPairsToSuppress=PNR_PTO|UniqueID=XGJVHYKM
+
+status=PASS

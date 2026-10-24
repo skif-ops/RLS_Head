@@ -1,0 +1,6 @@
+Altium Designer 26.10.1 native project compile
+Project: EVT_SYS_CARRIER.PrjPcb
+Timestamp: 2026-10-23 19:44:32 Europe/Moscow
+[Info] EVT_SYS_CARRIER.PrjPcb Compiler Compile successful, no errors found.
+Errors: 0
+Warnings: 0

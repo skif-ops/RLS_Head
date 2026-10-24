@@ -1,0 +1,25 @@
+{
+  "evidence_refs": [
+    "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+    "hardware/system_carrier/altium/equivalence/component_inventory.csv",
+    "hardware/system_carrier/altium/equivalence/net_inventory.csv",
+    "hardware/system_carrier/altium/equivalence/pad_net_inventory.csv",
+    "hardware/system_carrier/altium/equivalence/mechanical_inventory.csv"
+  ],
+  "input_sha256": {
+    "component_inventory": "e35e60d9bd74f9dbce12b09aaa3e5562acb93d5d2ea69caed4fe3ee95150b26d",
+    "net_inventory": "8e66f63a7b8d8d9fc073c7e05f28db63b24ad5552bd243b70a0da54da2e08fcf",
+    "pcb": "fa321c98678931940b536031b03bc2ddf1a504156a5a62b9b8ebeddeb12ac0ab"
+  },
+  "no_76_81ghz_antenna": true,
+  "no_76_81ghz_components": true,
+  "no_76_81ghz_nets": true,
+  "no_76_81ghz_routing": true,
+  "notes": [
+    "Reviewed the exact canonical pre-routing native PcbDoc in Altium Designer 26.10.1 together with the native component and net inventories.",
+    "The System Carrier contains radar power, control and interface connectivity only; no intentional 76-81 GHz components, nets, routing or antenna geometry are present."
+  ],
+  "reviewer": "Codex computer use operator on user-authorized workstation",
+  "schema": "ALTIUM-NO-MMWAVE-REVIEW-001",
+  "status": "PASS"
+}

@@ -84,4 +84,74 @@ For routing preparation, `ALTIUM_EVT_STACKUP_SYS_002.csv` defines the provisiona
 
 ## Routing readiness gate
 
-`ALTIUM_ROOMS_SYS_001.csv` defines seven provisional placement rooms aligned with the existing functional zones. `tools/altium_evt_mechanical_datum_gate.py` freezes only the EVT routing coordinate datum (board envelope, mounting pattern and primary edge connectors) while keeping production mechanics explicitly unfrozen. `tools/altium_evt_routing_stack_gate.py` similarly locks only the EVT routing stack/impedance baseline while leaving production fabricator binding explicitly open. `tools/altium_evt_power_routing_gate.py` locks only the EVT minimum power-neck geometry while leaving final copper/thermal review open. `tools/altium_routing_readiness.py` consolidates the CAD-policy, pre-layout, placement, EVT mechanical-datum, room, impedance, EVT routing-stack, power-width, EVT power-routing and native-rule-scope gates. With the current repository state it is expected to report `READY_FOR_NATIVE_IMPORT`, not `READY_FOR_ROUTING`. Native routing authority is granted only after real Altium `SchDoc` / `PcbDoc` files exist and the Altium equivalence gate passes. If the electrical SchDoc later changes, revoke-only reconciliation moves the project to `EQUIVALENCE_STALE`; that is a safe CI-valid rework phase with routing/production authority disabled until a fresh equivalence PASS. After that PASS, the approved SchDoc remains the electrical baseline while PcbDoc is allowed to evolve through placement/routing; CI does not replay the pre-routing PCB hash gate against a legitimately routed board.
+`ALTIUM_ROOMS_SYS_001.csv` defines seven provisional placement rooms aligned with the existing functional zones. `tools/altium_evt_mechanical_datum_gate.py` freezes only the EVT routing coordinate datum (board envelope, mounting pattern and primary edge connectors) while keeping production mechanics explicitly unfrozen. `tools/altium_evt_routing_stack_gate.py` similarly locks only the EVT routing stack/impedance baseline while leaving production fabricator binding explicitly open. `tools/altium_evt_power_routing_gate.py` locks only the EVT minimum power-neck geometry while leaving final copper/thermal review open. `tools/altium_routing_readiness.py` consolidates the CAD-policy, pre-layout, placement, EVT mechanical-datum, room, impedance, EVT routing-stack, power-width, EVT power-routing and native-rule-scope gates. The native files and equivalence evidence now pass this gate with `READY_FOR_ROUTING`. Placement Review A is recorded in `placement/PLACEMENT_REVIEW_A.md`; production authority remains separate and is not authorized. If the electrical SchDoc later changes, revoke-only reconciliation moves the project to `EQUIVALENCE_STALE`; that is a safe CI-valid rework phase with routing/production authority disabled until a fresh equivalence PASS. After that PASS, the approved SchDoc remains the electrical baseline while PcbDoc is allowed to evolve through placement/routing; CI does not replay the pre-routing PCB hash gate against a legitimately routed board.
+
+## Power Routing Review A
+
+The refined 92-component placement and the first native power-routing pass are
+recorded in `routing/POWER_ROUTING_REVIEW_A.md`. Altium placed 67 power copper
+fills and 23 vias, exported the routed geometry, and repeated DRC with Verify
+Shorting Copper enabled. The result retained the 77 documented placement
+baseline markers and added no power-routing violation. Continued native
+routing is authorized under the existing equivalence PASS. Production release
+remains `NOT_AUTHORIZED`.
+
+## GNSS RF Routing Review A
+
+The GNSS RF corridor from J8-1 through D8-1 and L80-2 to U8-11 is recorded in
+`routing/GNSS_ROUTING_REVIEW_A.md`. Altium routed four top-layer segments at
+0.36 mm width over the L2 GND reference plane, with a total length of 28.543 mm
+and no vias. Native DRC retained the 77 documented baseline markers and added
+no GNSS-route violation. Continued native routing is authorized under the
+existing equivalence PASS. Production release remains `NOT_AUTHORIZED`.
+
+## Ethernet MDI Routing Review A
+
+The four MDI nets from U3 through the termination and D3 ESD branches to J6
+are recorded in `routing/ETHERNET_ROUTING_REVIEW_A.md`. The primary parallel
+corridors use the locked 0.26 mm width and 0.20 mm pair gap. Native topology
+evidence confirms every U3, R601-R604, D3 and J6 terminal, while main-path
+skew is 0.040881 mm for TX and 0.000024 mm for RX. Native DRC retained the 77
+documented baseline markers and added no Ethernet-route violation. Bottom
+Layer escape segments and asymmetric main-path transitions remain explicit
+production SI cleanup items. Continued native routing is authorized under the
+existing equivalence PASS. Production release remains `NOT_AUTHORIZED`.
+
+## Connection integrity gate
+
+Every change to the native `EVT_SYS_CARRIER.PcbDoc` requires a fresh run of
+`EVT_SYS_CARRIER_ConnectionAudit.PrjScr` and a native Altium DRC report for the
+same canonical board. The resulting `routing/connection_audit` evidence is
+checked against the 100 x 80 mm outline and the equivalence pad-to-net
+baseline. All pads, vias and copper primitives must remain inside the board,
+all routed copper must belong to a net, and the Un-Routed Net, Routing Topology
+and Net Antennae DRC counts must remain zero.
+
+The imported J4, J5, J6 and SW1 child pads are stored by Altium as free pads
+after their native placement transform. The gate reconciles each such pad to
+the equivalence baseline by pad name, net and nearest component origin, and
+fails on an unmatched, distant or ambiguous owner. The receipt records the
+inferred owner counts so this import limitation cannot hide a connection
+change.
+
+`tools.altium_connection_integrity_gate` binds the audit CSV files, DRC report,
+mechanical datum, pad/net baseline and native PcbDoc by SHA-256 in the committed
+receipt. CI rejects a changed PcbDoc or stale audit evidence. This gate permits
+continued EVT routing only. Production authority remains `NOT_AUTHORIZED`.
+
+## Timing Routing Review A
+
+PCB-A09 is recorded in `routing/TIMING_ROUTING_REVIEW_A.md`. The native board
+contains connected Top Layer routes for `GNSS_PPS`, `IMU_DRDY` and
+`RADAR_REF`, all at 0.20 mm width and with no vias. The shortest measured
+edge clearance from these routes to `BUCK_SW` and the Ethernet MDI nets is
+9.519854 mm. Native DRC retained the 119-marker connection-integrity
+baseline and added no timing-route marker.
+
+`tools.altium_timing_routing_gate` rebuilds the route graph from the native
+geometry export, checks both required endpoints for every net, verifies the
+layer, width, segment and via contracts, enforces at least 1.0 mm clearance
+from `BUCK_SW` and the Ethernet MDI corridor, and binds the board, audit,
+scripts, DRC and review render by SHA-256. Continued native routing remains
+authorized under the existing equivalence PASS. Production release remains
+`NOT_AUTHORIZED`.

@@ -825,6 +825,15 @@ def validate_manifest(
             schematic=schematic_path,
             pcb=pcb_path,
         )
+        rerun_artifacts = native_file_preflight_rerun.get("artifacts")
+        if isinstance(rerun_artifacts, dict):
+            for artifact_id in ("schematic", "pcb"):
+                record = rerun_artifacts.get(artifact_id)
+                manifest_record = artifacts.get(artifact_id)
+                if isinstance(record, dict) and isinstance(
+                    manifest_record, dict
+                ):
+                    record["path"] = str(manifest_record.get("path", ""))
         if native_file_preflight_rerun.get("status") != "PASS":
             for item in native_file_preflight_rerun.get("errors", []):
                 errors.append(f"native_file_rerun:{item}")

@@ -1,92 +1,85 @@
 {
-  "schema": "ALTIUM-PCB-IMPLEMENTATION-STATUS-001",
-  "board_id": "EVT-SYS-CARRIER",
-  "hardware_revision": "A",
-  "current_phase": "IMPORT_PREPARED",
-  "electrical_baseline": {
-    "source": "KiCad 9 retained verification baseline",
-    "erc_errors": 0,
-    "erc_warnings": 0,
-    "source_commit": "f23476e94428295f080b526143dc114f68883635"
-  },
   "altium": {
-    "primary_cad": true,
-    "project_shell_ready": true,
-    "import_package_ready": true,
-    "native_schdoc": false,
-    "native_pcbdoc": false,
-    "equivalence_gate": false,
     "board_outline_frozen": false,
-    "fabricator_stack_bound": false,
-    "placement_started": false,
-    "routing_started": false,
-    "production_release_authorized": false,
-    "evt_stackup_provisional": true,
-    "impedance_start_values_ready": true,
-    "power_width_start_values_ready": true,
-    "rule_query_contract_ready": true,
     "differential_pairs_defined": true,
-    "placement_rooms_ready": true,
-    "repository_routing_prerequisites_ready": true,
+    "equivalence_gate": true,
     "evt_mechanical_routing_datums_locked": true,
+    "evt_power_routing_locked": true,
     "evt_routing_stack_locked": true,
-    "evt_power_routing_locked": true
+    "evt_stackup_provisional": true,
+    "fabricator_stack_bound": false,
+    "impedance_start_values_ready": true,
+    "import_package_ready": true,
+    "native_pcb_sha256": "fa321c98678931940b536031b03bc2ddf1a504156a5a62b9b8ebeddeb12ac0ab",
+    "native_pcbdoc": true,
+    "native_schdoc": true,
+    "placement_rooms_ready": true,
+    "placement_started": true,
+    "power_width_start_values_ready": true,
+    "primary_cad": true,
+    "production_release_authorized": false,
+    "project_shell_ready": true,
+    "repository_routing_prerequisites_ready": true,
+    "routing_started": true,
+    "rule_query_contract_ready": true
   },
   "blockers": [
-    "Native Altium import/save of SchDoc/PcbDoc has not yet been executed in Altium Designer.",
     "EVT routing datums are locked; final enclosure/STEP fit and production mechanical freeze remain required before production release.",
     "Fabricator field-solver/dielectric stack binding is still required before production release; EVT routing start values are calculated."
   ],
-  "next_required_phase": "NATIVE_ALTIUM_IMPORT_AND_EQUIVALENCE",
+  "board_id": "EVT-SYS-CARRIER",
+  "current_phase": "READY_FOR_ROUTING",
+  "electrical_baseline": {
+    "erc_errors": 0,
+    "erc_warnings": 0,
+    "source": "KiCad 9 retained verification baseline",
+    "source_commit": "f23476e94428295f080b526143dc114f68883635"
+  },
+  "hardware_revision": "A",
   "impedance_start": {
-    "gnss_rf": {
-      "target_ohm": 50,
-      "trace_width_mm": 0.36,
-      "reference": "L2 GND"
-    },
     "eth_mdi": {
-      "target_ohm": 100,
-      "trace_width_mm": 0.26,
       "pair_gap_mm": 0.2,
-      "reference": "L2 GND"
+      "reference": "L2 GND",
+      "target_ohm": 100,
+      "trace_width_mm": 0.26
+    },
+    "gnss_rf": {
+      "reference": "L2 GND",
+      "target_ohm": 50,
+      "trace_width_mm": 0.36
     },
     "production_binding_required": true
   },
+  "next_required_phase": "NATIVE_ALTIUM_PLACEMENT_AND_ROUTING",
   "power_width_start": {
-    "method": "IPC-2221 external-trace screening",
-    "copper_um": 35,
     "allowed_temp_rise_c": 10,
+    "copper_um": 35,
+    "method": "IPC-2221 external-trace screening",
+    "production_review_required": true,
     "values_mm": {
-      "VIN_RAW": 3,
-      "VIN_PROTECTED": 3,
+      "3V3_TRUNK": 1.5,
       "RADAR_12V": 1.5,
-      "3V3_TRUNK": 1.5
-    },
-    "production_review_required": true
-  },
-  "rule_query_status": {
-    "rules": 10,
-    "differential_pairs": 3,
-    "differential_pair_classes": 2,
-    "native_instantiation_required": true,
-    "native_drc_required": true
+      "VIN_PROTECTED": 3,
+      "VIN_RAW": 3
+    }
   },
   "routing_readiness": {
-    "expected_status": "READY_FOR_NATIVE_IMPORT",
-    "routing_authorized": false,
-    "required_to_authorize": [
-      "ALTIUM_EVT_POWER_ROUTING_GATE PASS",
-      "ALTIUM_EVT_ROUTING_STACK_GATE PASS",
-      "ALTIUM_EVT_MECHANICAL_DATUM_GATE PASS",
-      "native/EVT_SYS_CARRIER.SchDoc",
-      "native/EVT_SYS_CARRIER.PcbDoc",
-      "ALTIUM_EQUIVALENCE_GATE PASS"
-    ],
     "evt_mechanical_routing_datums_locked": true,
-    "production_mechanical_freeze_required": true,
-    "evt_routing_stack_locked": true,
-    "production_fabricator_binding_required": true,
     "evt_power_routing_locked": true,
-    "production_power_review_required": true
-  }
+    "evt_routing_stack_locked": true,
+    "expected_status": "READY_FOR_ROUTING",
+    "production_fabricator_binding_required": true,
+    "production_mechanical_freeze_required": true,
+    "production_power_review_required": true,
+    "required_to_authorize": [],
+    "routing_authorized": true
+  },
+  "rule_query_status": {
+    "differential_pair_classes": 2,
+    "differential_pairs": 3,
+    "native_drc_required": true,
+    "native_instantiation_required": true,
+    "rules": 10
+  },
+  "schema": "ALTIUM-PCB-IMPLEMENTATION-STATUS-001"
 }

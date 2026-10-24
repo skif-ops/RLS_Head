@@ -1,0 +1,15 @@
+{
+  "added_component_count": 92,
+  "added_net_count": 67,
+  "duplicate_pin_across_nets": {},
+  "extra_pins": [],
+  "merged_nets": [],
+  "missing_connected_pins": [
+    "U4-EP:/GND",
+    "U5-EP:/GND"
+  ],
+  "pin_assignment_records": 337,
+  "schema": "ALTIUM-ECO-LOG-PROBE-001",
+  "status": "FAIL",
+  "unique_assigned_pins": 333
+}

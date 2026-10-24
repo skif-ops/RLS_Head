@@ -1,0 +1,14 @@
+KiCad Import Wizard completed in Altium Designer 26.10.1 Trial on 2026-10-23.
+Qualified GitHub Actions run: 39943400259 (CI #623).
+Artifact: system-carrier-altium-import, artifact id 12496479601.
+Artifact ZIP SHA-256: f3dfc3293be5845a40e420e30507a7486c99c26a01285332b941225df7ffc514.
+Imported source: package/kicad_source/EVT_SYS_CARRIER.kicad_pro plus root and seven child schematics.
+Imported local symbol library: package/kicad_source/SystemCarrier_Local.kicad_sym.
+Wizard output: eight genuine SchDoc files, project and two SchLib files.
+No kicad_pcb source was present, so the wizard did not create a PcbDoc.
+The immediate native PCB companion is the CI616 audited diagnostic PcbDoc carried forward byte-for-byte.
+Carried PcbDoc SHA-256: 853a1d37f848be8dce328e63070ad795c2d77a669ebe053431f70d6cf6d97da2.
+The carried PCB must be updated from the CI623 schematic through Altium ECO before equivalence.
+Initial Altium Messages accessibility capture: import_attempts/ci623_2026-10-23/evidence/initial_messages_accessibility.txt.
+Routing authority: NOT_AUTHORIZED.
+Production authority: NOT_AUTHORIZED.

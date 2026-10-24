@@ -2,7 +2,7 @@ ref,mpn,package_code,footprint_source,footprint_id,status,verification_basis,not
 U1,STM32H753IIT6,LQFP176,KICAD_STOCK,Package_QFP:LQFP-176_24x24mm_P0.5mm,LOCKED,ST package and existing authoritative contract,Existing Rev.A lock
 U2,ICM-42688-P,LGA14,PROJECT_LOCAL,SystemCarrier_Local:ICM-42688-P_LGA14_2.5x3mm_P0.5mm,LOCKED,TDK DS-000347 package dimensions plus AN-000393 LGA land-pattern rule,0.475x0.25mm lands P0.5mm with 0.05mm solder-mask expansion
 U3,LAN8742Ai-CZ-TR,SQFN24_EP,KICAD_STOCK,Package_DFN_QFN:QFN-24-1EP_4x4mm_P0.5mm_EP2.6x2.6mm,LOCKED,Microchip 4x4mm P0.5mm center pad 2.6x2.6mm matches KiCad stock footprint,Stock symbol and footprint independently verified
-U4,TCAN3404DRBRQ1,DRB0008A,KICAD_STOCK,Package_SON:Texas_DRB0008A,LOCKED,TI DRB package code plus existing KiCad manufacturer footprint,Verify courtyard against assembly rules
+U4,TCAN3404DRBRQ1,DRB0008A,KICAD_STOCK,Package_DFN_QFN:Texas_DRB0008A,LOCKED,TI DRB package code plus existing KiCad manufacturer footprint,Verify courtyard against assembly rules
 U5,TPS62132RGTR,RGT0016,KICAD_STOCK,Package_DFN_QFN:VQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm,LOCKED,TI RGT0016C 3x3mm P0.5mm EP1.68x1.68mm matches KiCad stock footprint,Use non-via variant for baseline; thermal via decision remains PCB-level
 U6,TPS259470ARPWR,RPW0010A,PROJECT_LOCAL,SystemCarrier_Local:TPS259470A_RPW0010A_VQFN-HR-10_2x2mm_P0.475mm,LOCKED,TI RPW0010A package/land-pattern drawing cross-checked with KiCad MR 4677,Shared verified local footprint
 U7,TPS259470ARPWR,RPW0010A,PROJECT_LOCAL,SystemCarrier_Local:TPS259470A_RPW0010A_VQFN-HR-10_2x2mm_P0.475mm,LOCKED,TI RPW0010A package/land-pattern drawing cross-checked with KiCad MR 4677,Same verified local footprint as U6

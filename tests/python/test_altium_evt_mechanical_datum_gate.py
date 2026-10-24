@@ -18,7 +18,7 @@ PLACEMENT = """ref,x_mm,y_mm,edge,side,zone,lock_level,status,notes
 J1,5,14,LEFT,TOP,ZONE_PWR,HARD,EVT_ROUTING_LOCKED,test
 J4,95,30,RIGHT,TOP,ZONE_CAN,HARD,EVT_ROUTING_LOCKED,test
 J5,95,14,RIGHT,TOP,ZONE_PWR,HARD,EVT_ROUTING_LOCKED,test
-J6,96,60,RIGHT,TOP,ZONE_ETH,HARD,EVT_ROUTING_LOCKED,test
+J6,94.75,60,RIGHT,TOP,ZONE_ETH,HARD,EVT_ROUTING_LOCKED,test
 J8,5,66,LEFT,TOP,ZONE_GNSS,HARD,EVT_ROUTING_LOCKED,test
 J10,50,5,BOTTOM,TOP,ZONE_DEBUG,HARD,EVT_ROUTING_LOCKED,test
 """
@@ -61,7 +61,7 @@ def test_evt_mechanical_datum_gate_passes_locked_baseline(tmp_path):
 
 def test_evt_mechanical_datum_gate_rejects_shifted_connector(tmp_path):
     shifted = PLACEMENT.replace(
-        "J6,96,60,RIGHT",
+        "J6,94.75,60,RIGHT",
         "J6,92,60,RIGHT",
     )
     _write_fixture(tmp_path, placement=shifted)

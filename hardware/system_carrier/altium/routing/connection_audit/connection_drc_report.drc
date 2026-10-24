@@ -1,0 +1,42 @@
+Altium Designer 26.10.1 Native Design Rule Check Summary
+PCB File : C:\Users\skifn\.codex\.chatgpt-projects\g-p-6a9feb917c48819182ec25e1ef55310c\RLS_Head-git\hardware\system_carrier\altium\native\EVT_SYS_CARRIER.PcbDoc
+Date     : 24.10.2026
+Time     : 21:26:20
+Elapsed  : 00:00:01
+Warnings : 0
+
+Processing Rule : Clearance Constraint (Gap=7.874mil) (All),(All)
+Rule Violations :27
+
+Processing Rule : Clearance Constraint (Gap=10mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=39.37mil) (InNetClass('NC_TIMING')),(InNet('BUCK_SW'))
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=7.874mil) (InDifferentialPairClass('DP_ETH_MDI')),(Not InDifferentialPairClass('DP_ETH_MDI'))
+Rule Violations :27
+
+Processing Rule : Un-Routed Net Constraint ( (All) )
+Rule Violations :0
+
+Processing Rule : Routing Topology Rule(Topology=Shortest) (All)
+Rule Violations :0
+
+Processing Rule : Power Plane Connect Rule(Relief Connect )(Expansion=20mil) (Conductor Width=10mil) (Air Gap=10mil) (Entries=4) (All)
+Rule Violations :0
+
+Processing Rule : Hole Size Constraint (Min=1mil) (Max=100mil) (All)
+Rule Violations :9
+
+Processing Rule : Hole To Hole Clearance (Gap=10mil) (All),(All)
+Rule Violations :1
+
+Processing Rule : Net Antennae (Tolerance=0mil) (All)
+Rule Violations :0
+
+Processing Rule : Component Clearance Constraint ( Horizontal Gap = 10mil, Vertical Gap = 10mil ) (All),(All)
+Rule Violations :55
+
+Violations Detected : 119
+Capture Note : Counts transcribed from the native Altium Design Rule Verification Report for the canonical PcbDoc immediately after the 21:26:20 run. This compact record is retained because the report viewer did not persist its generated HTML file.

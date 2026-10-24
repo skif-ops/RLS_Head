@@ -1,0 +1,22 @@
+{
+  "baseline_connectivity_group_count": 67,
+  "baseline_endpoint_count": 333,
+  "errors": [],
+  "input_sha256": {
+    "kicad_netlist_baseline": "7b8b244a2076791f27b5ee991cafc34c87d86d5240e0c985b1ad792d581161ae",
+    "pad_net_inventory": "8bb0000090712de5b4950e5a1c89f0fb8f11192744b97c9dd7fe38226c7bc556"
+  },
+  "native_connectivity_group_count": 67,
+  "native_endpoint_count": 333,
+  "notes": [
+    "KiCad's synthetic unconnected-(...) pins are excluded.",
+    "Connectivity is compared as endpoint partitions, so equivalence does not depend on internal net naming.",
+    "Named P0/P1 net preservation remains independently checked by the native audit."
+  ],
+  "schema": "ALTIUM-NATIVE-NETLIST-RESULT-001",
+  "status": "PASS",
+  "verified_checks": {
+    "netlist_equivalence": "PASS"
+  },
+  "warnings": []
+}

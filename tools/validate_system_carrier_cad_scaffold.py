@@ -6,6 +6,11 @@ from pathlib import Path
 
 import kicad_sch_api as ksa
 
+from tools.generate_system_carrier_schematic import (
+    load_bom_mpn,
+    load_footprint_assignments,
+)
+
 
 EXPECTED_CHILDREN = {
     "10_POWER_INPUT.kicad_sch",
@@ -17,6 +22,11 @@ EXPECTED_CHILDREN = {
     "70_DEBUG_BOOT.kicad_sch",
 }
 
+EXPECTED_PAPER_SIZE = {
+    "EVT_SYS_CARRIER.kicad_sch": "A2",
+    "20_MCU_CORE.kicad_sch": "A3",
+}
+
 
 def validate(root: Path) -> dict:
     manifest_path = root / "cad_scaffold_manifest.json"
@@ -26,6 +36,25 @@ def validate(root: Path) -> dict:
 
     errors: list[str] = []
     parsed: list[str] = []
+    footprint_assignments = load_footprint_assignments(
+        Path(__file__).resolve().parents[1]
+        / "hardware"
+        / "system_carrier"
+        / "FOOTPRINT_ASSIGNMENT_SYS_002.csv"
+    )
+    bom_mpn = load_bom_mpn(
+        Path(__file__).resolve().parents[1]
+        / "hardware"
+        / "system_carrier"
+        / "BOM_SYS_CARRIER_LAYOUT_004.csv"
+    )
+    found_footprint_refs: set[str] = set()
+    verified_mpn_refs: set[str] = set()
+
+    if manifest.get("footprint_assignment_count") != len(
+        footprint_assignments
+    ):
+        errors.append("footprint_assignment_count")
 
     if manifest.get("schema") != "SYSTEM-CARRIER-CAD-SCAFFOLD-001":
         errors.append("manifest_schema")
@@ -142,19 +171,60 @@ def validate(root: Path) -> dict:
             errors.append(f"missing:{path.name}")
             continue
         try:
-            ksa.load_schematic(str(path))
+            schematic = ksa.load_schematic(str(path))
         except Exception as exc:
             errors.append(
                 f"parse:{path.name}:{type(exc).__name__}"
             )
         else:
             parsed.append(path.name)
+            expected_paper = EXPECTED_PAPER_SIZE.get(path.name, "A4")
+            if (
+                f'(paper "{expected_paper}")'
+                not in path.read_text(encoding="utf-8")
+            ):
+                errors.append(f"paper_size:{path.name}")
+            for component in schematic.components:
+                reference = component.reference
+                if component.get_property("hierarchy_path") and (
+                    "hierarchy_path" not in component.hidden_properties
+                ):
+                    errors.append(f"visible_hierarchy_path:{reference}")
+                if reference.startswith("#FLG"):
+                    continue
+                if reference in found_footprint_refs:
+                    errors.append(f"duplicate_reference:{reference}")
+                found_footprint_refs.add(reference)
+                expected = footprint_assignments.get(reference)
+                if expected is None:
+                    errors.append(f"uncontracted_reference:{reference}")
+                elif component.footprint != expected:
+                    errors.append(f"footprint_mismatch:{reference}")
+                expected_mpn = bom_mpn.get(reference)
+                actual_mpn = component.get_property("MPN", "")
+                if isinstance(actual_mpn, dict):
+                    actual_mpn = actual_mpn.get("value", "")
+                if expected_mpn is None:
+                    errors.append(f"missing_bom_reference:{reference}")
+                elif actual_mpn != expected_mpn:
+                    errors.append(f"bom_mpn_mismatch:{reference}")
+                else:
+                    verified_mpn_refs.add(reference)
+                if "MPN" not in component.hidden_properties:
+                    errors.append(f"visible_mpn:{reference}")
+
+    for reference in sorted(set(footprint_assignments) - found_footprint_refs):
+        errors.append(f"missing_footprint_reference:{reference}")
+    for reference in sorted(set(bom_mpn) - found_footprint_refs):
+        errors.append(f"missing_bom_reference:{reference}")
 
     return {
         "schema": "SYSTEM-CARRIER-CAD-SCAFFOLD-VALIDATION-001",
         "status": "PASS" if not errors else "FAIL",
         "errors": errors,
         "parsed_schematics": parsed,
+        "verified_footprint_count": len(found_footprint_refs),
+        "verified_bom_mpn_count": len(verified_mpn_refs),
         "placeholder_count": len(
             manifest.get("symbol_placeholders", [])
         ),
@@ -164,6 +234,8 @@ def validate(root: Path) -> dict:
             unused_gpio_nc_count,
         "notes": [
             "PASS verifies generated KiCad syntax/hierarchy files parse through kicad-sch-api.",
+            "Every physical component must retain its locked footprint assignment after serialization.",
+            "Every physical component must retain its authoritative BOM MPN after serialization.",
             "Placeholder count is informational and must reach zero before Review A.",
         ],
     }

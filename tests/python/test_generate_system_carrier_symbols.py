@@ -61,7 +61,7 @@ def test_shared_tps259470_symbol_covers_u6_u7(tmp_path):
     assert symbol["pin_count"] == 10
 
 
-def test_pin_numbers_and_ep_are_emitted(tmp_path):
+def test_physical_pad_numbers_are_emitted(tmp_path):
     output = tmp_path / "SystemCarrier_Local.kicad_sym"
 
     generate(
@@ -76,8 +76,10 @@ def test_pin_numbers_and_ep_are_emitted(tmp_path):
     assert '(symbol "ICM-42688-P"' in text
     assert '(number "14"' in text
     assert '(symbol "TCAN3404DRBRQ1"' in text
-    assert '(number "EP"' in text
+    assert '(number "9"' in text
     assert '(symbol "TPS62132RGTR"' in text
+    assert '(number "17"' in text
+    assert '(number "EP"' not in text
 
 
 def test_locked_footprints_are_embedded_only_when_available(tmp_path):
@@ -96,7 +98,7 @@ def test_locked_footprints_are_embedded_only_when_available(tmp_path):
     }
 
     assert by_name["TCAN3404DRBRQ1"]["footprint"] == (
-        "Package_SON:Texas_DRB0008A"
+        "Package_DFN_QFN:Texas_DRB0008A"
     )
     assert by_name["TPS62132RGTR"]["footprint"] == (
         "Package_DFN_QFN:"

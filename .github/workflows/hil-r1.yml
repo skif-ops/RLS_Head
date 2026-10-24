@@ -754,23 +754,24 @@ jobs:
   system-carrier-cad:
     name: System Carrier generated KiCad scaffold
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/kicad/kicad:9.0.9@sha256:e638b79b0321f29395a5b783e94bb9f3c73303e8da15da27b8f5cb4b67a37729
+      options: --user 0
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install KiCad 9 and schematic generator
+      - name: Install schematic generator in KiCad 9 image
         run: |
-          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
-          sudo apt-get update
-          sudo apt-get install -y --install-recommends kicad
-          python -m pip install --upgrade "kicad-sch-api==0.5.6"
-          kicad-cli version
+          kicad_version="$(kicad-cli version)"
+          case "$kicad_version" in 9.*) ;; *) echo "KiCad 9 required, got $kicad_version" >&2; exit 1 ;; esac
+          apt-get update
+          apt-get install -y --no-install-recommends python3-venv
+          python3 -m venv /opt/carrier-python
+          /opt/carrier-python/bin/python -m pip install --upgrade "kicad-sch-api==0.5.6"
+          echo /opt/carrier-python/bin >> "$GITHUB_PATH"
+          echo "$kicad_version"
 
       - name: Generate System Carrier schematic scaffold
         run: |
@@ -863,6 +864,11 @@ jobs:
           assert manifest["status"] == "CAD_SCAFFOLD_READY"
           assert validation["status"] == "PASS"
           assert validation["placeholder_count"] == 0
+          assert validation["verified_footprint_count"] == 92
+          assert validation["verified_bom_mpn_count"] == 92
+          assert manifest["footprint_assignment_count"] == 92
+          assert manifest["staged_footprint_count"] == 25
+          assert manifest["altium_import_bridge_count"] == 6
           assert erc["source"] == "EVT_SYS_CARRIER.kicad_sch"
 
           violations = sum(
@@ -1267,6 +1273,82 @@ jobs:
           print("Altium routing readiness:", data["status"])
           PY
 
+      - name: Validate Altium connection integrity
+        run: |
+          python -m tools.altium_connection_integrity_gate \
+            --system-root hardware/system_carrier \
+            --output build-cad/system_carrier/altium_connection_integrity.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/"
+                  "altium_connection_integrity.json"
+              ).read_text()
+          )
+          native_pcb = Path(
+              "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+          ).is_file()
+          assert data["schema"] == "ALTIUM-CONNECTION-INTEGRITY-001"
+          assert data["production_authority"] == "NOT_AUTHORIZED"
+          if native_pcb:
+              assert data["status"] == "PASS"
+              assert data["outside_board_count"] == 0
+              assert data["endpoint_baseline_matches"] is True
+              assert data["inferred_free_pad_count"] == 30
+              assert data["free_pad_assignments"] == {
+                  "J4": 7,
+                  "J5": 3,
+                  "J6": 16,
+                  "SW1": 4,
+              }
+              assert data["unrouted_net_violations"] == 0
+              assert data["routing_topology_violations"] == 0
+              assert data["net_antennae_violations"] == 0
+              assert data["receipt_binding"] == "PASS"
+          else:
+              assert data["status"] == "NOT_APPLICABLE"
+          print("Altium connection integrity:", data["status"])
+          PY
+
+      - name: Validate Altium timing routing
+        run: |
+          python -m tools.altium_timing_routing_gate \
+            --system-root hardware/system_carrier \
+            --output build-cad/system_carrier/altium_timing_routing.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/"
+                  "altium_timing_routing.json"
+              ).read_text()
+          )
+          native_pcb = Path(
+              "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+          ).is_file()
+          assert data["schema"] == "ALTIUM-TIMING-ROUTING-GATE-001"
+          assert data["production_authority"] == "NOT_AUTHORIZED"
+          if native_pcb:
+              assert data["status"] == "PASS"
+              assert data["summary_binding"] == "PASS"
+              assert data["drc"]["route_induced_markers"] == 0
+              assert all(
+                  route["connected"]
+                  and route["layers"] == [1]
+                  and route["via_count"] == 0
+                  and route["quiet_clearance_mm"] >= 1.0
+                  for route in data["routes"].values()
+              )
+          else:
+              assert data["status"] == "NOT_APPLICABLE"
+          print("Altium timing routing:", data["status"])
+          PY
+
       - name: Evaluate native Altium handoff status
         run: |
           python -m tools.altium_native_handoff_status \
@@ -1396,6 +1478,12 @@ jobs:
               item["path"]
               for item in data["files"]
           }
+          assert "kicad_source/fp-lib-table" in package_paths
+          assert "kicad_source/sym-lib-table" in package_paths
+          assert sum(
+              path.endswith(".kicad_mod")
+              for path in package_paths
+          ) == 29
           assert all(
               item["package_path"] in package_paths
               for item in data["source_bindings"]
@@ -1495,6 +1583,7 @@ jobs:
         with:
           name: system-carrier-altium-import
           path: build-cad/altium_import/**
+          include-hidden-files: true
 
       - name: Upload generated System Carrier CAD
         if: always()
@@ -1508,5 +1597,5 @@ jobs:
             build-cad/system_carrier/*.json
             build-cad/system_carrier/fp-lib-table
             build-cad/system_carrier/sym-lib-table
-            build-cad/system_carrier/SystemCarrier_Local.pretty/*.kicad_mod
+            build-cad/system_carrier/*.pretty/*.kicad_mod
 

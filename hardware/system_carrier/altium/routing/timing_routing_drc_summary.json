@@ -1,0 +1,96 @@
+{
+  "altium_version": "26.10.1 Trial",
+  "board_id": "EVT-SYS-CARRIER",
+  "drc_timestamp": "24.10.2026 21:26:20",
+  "geometry": {
+    "fill_count": 67,
+    "minimum_quiet_clearance_mm": 9.519854,
+    "pad_count": 529,
+    "routes": {
+      "GNSS_PPS": {
+        "connected": true,
+        "endpoint_pads_resolved": 2,
+        "graph_component_count": 1,
+        "layers": [
+          1
+        ],
+        "length_mm": 41.986161,
+        "quiet_clearance_mm": 15.48213,
+        "segment_count": 7,
+        "via_count": 0,
+        "width_mm": [
+          0.2
+        ]
+      },
+      "IMU_DRDY": {
+        "connected": true,
+        "endpoint_pads_resolved": 2,
+        "graph_component_count": 1,
+        "layers": [
+          1
+        ],
+        "length_mm": 44.524254,
+        "quiet_clearance_mm": 9.519854,
+        "segment_count": 6,
+        "via_count": 0,
+        "width_mm": [
+          0.2
+        ]
+      },
+      "RADAR_REF": {
+        "connected": true,
+        "endpoint_pads_resolved": 2,
+        "graph_component_count": 1,
+        "layers": [
+          1
+        ],
+        "length_mm": 42.86359,
+        "quiet_clearance_mm": 19.860859,
+        "segment_count": 10,
+        "via_count": 0,
+        "width_mm": [
+          0.2
+        ]
+      }
+    },
+    "timing_track_count": 23,
+    "timing_via_count": 0,
+    "trace_width_mm": 0.2,
+    "track_count": 1156,
+    "via_count": 34
+  },
+  "input_sha256": {
+    "fill_inventory": "4e6560146ea09a108d1f539776bad48132826cf1fc55ec7fc1f02dab4ec60a3d",
+    "pad_geometry": "84dd6b4cba745400fed43b4510c83ea2e9075d07d3fbcaf63415003f8eba0546",
+    "review_render": "2ee22746079e50ee494f80f6795c77d81e8ee16f0115c78511a1571f6da6884f",
+    "review_render_script": "77823e708e654e1add46fcffed3d4b49ff60a62d7d8e8c7646458c2a8e024944",
+    "routing_audit_script": "b74db3494b61f64d5b525aac816354d412b876bd481b86be28fe8fcf97b9911d",
+    "routing_script": "4d56a59b0260f3b1d3df3929ab4b4c607b8e854de00742f11fd49ad9a9386ae8",
+    "track_inventory": "f2eec8fbd27b23b3763f2a1b9c4699ee5d810ce6714f3790f8a7339c0790a15b",
+    "via_inventory": "6deb31b50e9f25142476dd7976ccd427e98ce02333e97483fd1b150e6ec8a276"
+  },
+  "production_authority": "NOT_AUTHORIZED",
+  "review_status": "PASS",
+  "routing_authority": "AUTHORIZED",
+  "rule_violations": {
+    "component_clearance": 55,
+    "ethernet_class_clearance": 27,
+    "generic_clearance": 27,
+    "hole_size": 9,
+    "hole_to_hole": 1,
+    "net_antennae": 0,
+    "power_plane_connect": 0,
+    "routing_topology": 0,
+    "ten_mil_clearance": 0,
+    "timing_route_induced": 0,
+    "timing_to_buck_sw": 0,
+    "total": 119,
+    "unrouted_net": 0,
+    "warnings": 0
+  },
+  "schema": "ALTIUM-TIMING-ROUTING-REVIEW-A-001",
+  "source_drc_report": "hardware/system_carrier/altium/routing/connection_audit/connection_drc_report.drc",
+  "source_drc_report_sha256": "9ec65d448411ecf39dd9adad1d719e88687c64ac55957f1aba04d311f7a2515d",
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "3f9df31481f159d3962260687d5f039eac7c95ac19935172ba11f683871f2fa9"
+}
