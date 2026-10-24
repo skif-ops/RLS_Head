@@ -217,3 +217,16 @@ def test_timing_routing_rejects_width_drift(tmp_path):
 
     assert result["status"] == "FAIL"
     assert any(error.startswith("target_width:GNSS_PPS:") for error in result["errors"])
+
+
+def test_timing_summary_is_stable_across_text_line_endings(tmp_path):
+    _write_fixture(tmp_path)
+    assert validate(tmp_path, refresh_summary=True)["status"] == "PASS"
+    track_path = tmp_path / "altium" / "routing" / "connection_audit" / "track_inventory.csv"
+    data = track_path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    track_path.write_bytes(data)
+
+    result = validate(tmp_path)
+
+    assert result["status"] == "PASS"
+    assert result["summary_binding"] == "PASS"

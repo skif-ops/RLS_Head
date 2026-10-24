@@ -53,6 +53,7 @@ ZERO_DRC_RULES = {
 TRACK_WIDTH_MM = 0.20
 MIN_QUIET_CLEARANCE_MM = 1.0
 MM_PER_MIL = 0.0254
+TEXT_EVIDENCE_SUFFIXES = {".csv", ".drc", ".pas", ".py"}
 
 
 def sha256_file(path: Path) -> str:
@@ -61,6 +62,13 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def sha256_evidence_file(path: Path) -> str:
+    data = path.read_bytes()
+    if path.suffix.lower() in TEXT_EVIDENCE_SUFFIXES:
+        data = data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(data).hexdigest()
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -494,7 +502,7 @@ def validate(
         "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
         "source_pcb_sha256": sha256_file(native_pcb),
         "source_drc_report": "hardware/system_carrier/altium/routing/connection_audit/connection_drc_report.drc",
-        "source_drc_report_sha256": sha256_file(evidence["drc_report"]),
+        "source_drc_report_sha256": sha256_evidence_file(evidence["drc_report"]),
         "geometry": {
             "pad_count": len(pads),
             "track_count": len(tracks),
@@ -513,7 +521,7 @@ def validate(
             "timing_route_induced": 0 if no_new_drc_markers else None,
         },
         "input_sha256": {
-            name: sha256_file(path)
+            name: sha256_evidence_file(path)
             for name, path in sorted(evidence.items())
             if name not in {"native_pcb", "drc_report"}
         },
