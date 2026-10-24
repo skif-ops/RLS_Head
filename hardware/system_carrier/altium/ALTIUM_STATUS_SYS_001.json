@@ -20,7 +20,7 @@
     "production_release_authorized": false,
     "project_shell_ready": true,
     "repository_routing_prerequisites_ready": true,
-    "routing_started": false,
+    "routing_started": true,
     "rule_query_contract_ready": true
   },
   "blockers": [

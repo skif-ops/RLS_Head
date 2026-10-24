@@ -1,0 +1,41 @@
+{
+  "altium_version": "26.10.1 Trial",
+  "board_id": "EVT-SYS-CARRIER",
+  "drc_timestamp": "2026-10-24T16:33:14+03:00",
+  "geometry": {
+    "fill_count": 67,
+    "pad_count": 529,
+    "track_count": 1058,
+    "via_count": 23
+  },
+  "input_sha256": {
+    "fill_inventory": "fa61d47ffb0e41c45bc81e51fa6d0517e89751f0feb906f5b23e46607cf6cdda",
+    "pad_geometry": "43fb8504650e5777f40379c5a5b0d608980b53a03fa8a0fa9053bb9f5ab2fafd",
+    "review_render": "c66479f92069e8ddaf354f5a0084b03f518a982087dc3436fe539eb880f69217",
+    "routing_audit_script": "b74db3494b61f64d5b525aac816354d412b876bd481b86be28fe8fcf97b9911d",
+    "routing_script": "c5614d30c6808fb1d5b0e5a33c30cad19cb3f04bd97daf8f3db25d6b858a9d32",
+    "track_inventory": "656eeb30168aa96e72eb64a5f13aa6dbfbc87688e149774f038bc98caef0dffd",
+    "via_inventory": "4b911c588225415d6e0674d09a6e02914dbf6bc6e990e8c90bf54f6fae9da3c6"
+  },
+  "production_authority": "NOT_AUTHORIZED",
+  "review_status": "PASS",
+  "routing_authority": "AUTHORIZED",
+  "rule_violations": {
+    "component_clearance": 55,
+    "copper_clearance_cross_component": 0,
+    "copper_clearance_internal_footprint": 13,
+    "height": 0,
+    "hole_size": 9,
+    "hole_to_hole": 0,
+    "net_antennae": 0,
+    "new_power_routing_violations": 0,
+    "routing_topology": 0,
+    "total": 77,
+    "unrouted_net": 0
+  },
+  "schema": "ALTIUM-POWER-ROUTING-REVIEW-A-001",
+  "source_drc_report": "hardware/system_carrier/altium/routing/power_routing_drc_2026-10-24.drc",
+  "source_drc_report_sha256": "c657e55ee47918d51c3f88a9c08c411ce17c495bf57224b0da554abc411f5fb7",
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "3ec2e0eef94b8ef4763f60129f1928bcbb785cb196d6e7d60c40fc907525abab"
+}

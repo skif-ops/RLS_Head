@@ -85,3 +85,13 @@ For routing preparation, `ALTIUM_EVT_STACKUP_SYS_002.csv` defines the provisiona
 ## Routing readiness gate
 
 `ALTIUM_ROOMS_SYS_001.csv` defines seven provisional placement rooms aligned with the existing functional zones. `tools/altium_evt_mechanical_datum_gate.py` freezes only the EVT routing coordinate datum (board envelope, mounting pattern and primary edge connectors) while keeping production mechanics explicitly unfrozen. `tools/altium_evt_routing_stack_gate.py` similarly locks only the EVT routing stack/impedance baseline while leaving production fabricator binding explicitly open. `tools/altium_evt_power_routing_gate.py` locks only the EVT minimum power-neck geometry while leaving final copper/thermal review open. `tools/altium_routing_readiness.py` consolidates the CAD-policy, pre-layout, placement, EVT mechanical-datum, room, impedance, EVT routing-stack, power-width, EVT power-routing and native-rule-scope gates. The native files and equivalence evidence now pass this gate with `READY_FOR_ROUTING`. Placement Review A is recorded in `placement/PLACEMENT_REVIEW_A.md`; production authority remains separate and is not authorized. If the electrical SchDoc later changes, revoke-only reconciliation moves the project to `EQUIVALENCE_STALE`; that is a safe CI-valid rework phase with routing/production authority disabled until a fresh equivalence PASS. After that PASS, the approved SchDoc remains the electrical baseline while PcbDoc is allowed to evolve through placement/routing; CI does not replay the pre-routing PCB hash gate against a legitimately routed board.
+
+## Power Routing Review A
+
+The refined 92-component placement and the first native power-routing pass are
+recorded in `routing/POWER_ROUTING_REVIEW_A.md`. Altium placed 67 power copper
+fills and 23 vias, exported the routed geometry, and repeated DRC with Verify
+Shorting Copper enabled. The result retained the 77 documented placement
+baseline markers and added no power-routing violation. Continued native
+routing is authorized under the existing equivalence PASS. Production release
+remains `NOT_AUTHORIZED`.

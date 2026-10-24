@@ -2,7 +2,7 @@
   "altium_version": "26.10.1 Trial",
   "board_id": "EVT-SYS-CARRIER",
   "component_centers_outside_board": 0,
-  "drc_timestamp": "2026-10-23T21:15:40+03:00",
+  "drc_timestamp": "2026-10-24T16:33:14+03:00",
   "plan_rows": 92,
   "plan_runtime_mismatches": 0,
   "production_authority": "NOT_AUTHORIZED",
@@ -18,8 +18,8 @@
   },
   "runtime_rows": 92,
   "schema": "ALTIUM-PLACEMENT-REVIEW-A-001",
-  "source_drc_report": "hardware/system_carrier/altium/placement/focused_drc_2026-10-23.drc",
-  "source_drc_report_sha256": "13ba167e86831320fddf134781b18661bd29b99a8f58ce8067cb2d4d10afae97",
+  "source_drc_report": "hardware/system_carrier/altium/placement/focused_drc_2026-10-24.drc",
+  "source_drc_report_sha256": "c657e55ee47918d51c3f88a9c08c411ce17c495bf57224b0da554abc411f5fb7",
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "19d53dd8fe1edc6dcad85ea1e28e8bb541874cfd549483c420ea06d0556b0ced"
+  "source_pcb_sha256": "3ec2e0eef94b8ef4763f60129f1928bcbb785cb196d6e7d60c40fc907525abab"
 }

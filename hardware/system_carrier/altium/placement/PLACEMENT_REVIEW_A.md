@@ -1,6 +1,6 @@
 # EVT System Carrier Placement Review A
 
-Date: 2026-10-23
+Date: 2026-10-24
 
 `PLACEMENT_REVIEW_A=PASS`
 
@@ -14,12 +14,10 @@ EVT routing authority. It is not a production release.
 - Placement plan: `EVT_SYS_CARRIER_PLACEMENT_SYS_001.csv`
 - Altium runtime inventory: `placement_runtime_inventory.csv`
 - Placement script: `../scripts/EVT_SYS_CARRIER_Placement.pas`
-- Focused Altium DRC source: `focused_drc_2026-10-23.drc`
-
-The retained DRC text has only trailing spaces removed from the Altium export.
+- Focused Altium DRC source: `focused_drc_2026-10-24.drc`
 
 The reviewed PCB SHA-256 is
-`19d53dd8fe1edc6dcad85ea1e28e8bb541874cfd549483c420ea06d0556b0ced`.
+`3ec2e0eef94b8ef4763f60129f1928bcbb785cb196d6e7d60c40fc907525abab`.
 
 ## Placement result
 
@@ -38,8 +36,9 @@ its placement origin remains at the planned 70.0 x 5.5 mm service position.
 
 ## Focused native DRC
 
-Altium Designer 26.10.1 ran the focused placement DRC at 21:15:40 on
-2026-10-23. The report contains 77 markers:
+Altium Designer 26.10.1 ran the focused placement DRC with Verify Shorting
+Copper enabled at 16:28:39 on 2026-10-24, then repeated it after the reviewed
+power routing at 16:33:14. Both reports contain the same 77 markers:
 
 - Copper clearance: 13, all internal to the imported D8, U6 and U7 footprints
 - Copper clearance between different components: 0
@@ -48,8 +47,11 @@ Altium Designer 26.10.1 ran the focused placement DRC at 21:15:40 on
 - Component clearance: 55
 - Height: 0
 
-The component-clearance markers use imported component bounds that include
-legend and designator geometry. The dense functional groups were therefore
+The refined placement moves MCU decoupling parts away from adjacent copper,
+rotates U5 so its VIN and BUCK_SW sides face the intended power chain, and
+separates the dense Ethernet support parts. The component-clearance markers
+use imported component bounds that include legend and designator geometry.
+The dense functional groups were therefore
 reviewed against copper clearance as well as the placed origins and runtime
 bounds. No copper collision remains between different components. The 13
 internal footprint clearances and the generic hole-size markers remain open

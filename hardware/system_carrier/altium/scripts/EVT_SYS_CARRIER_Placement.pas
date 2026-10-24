@@ -113,21 +113,21 @@ Begin
         33: Result := '30.5mm'; 34: Result := '34mm'; 35: Result := '37mm';
         36: Result := '38.5mm'; 37: Result := '60mm'; 38: Result := '62mm';
         39: Result := '64mm'; 40: Result := '62mm'; 41: Result := '59mm';
-        42: Result := '65mm'; 43: Result := '38.5mm'; 44: Result := '38.5mm';
-        45: Result := '38.5mm'; 46: Result := '43mm'; 47: Result := '49mm';
-        48: Result := '55mm'; 49: Result := '61mm'; 50: Result := '65.5mm';
-        51: Result := '65.5mm'; 52: Result := '65.5mm'; 53: Result := '68mm';
+        42: Result := '65mm'; 43: Result := '37.5mm'; 44: Result := '37.5mm';
+        45: Result := '37.5mm'; 46: Result := '43mm'; 47: Result := '49mm';
+        48: Result := '55mm'; 49: Result := '61mm'; 50: Result := '66.5mm';
+        51: Result := '66.5mm'; 52: Result := '66.5mm'; 53: Result := '68mm';
         54: Result := '61mm'; 55: Result := '55mm'; 56: Result := '49mm';
-        57: Result := '67.5mm'; 58: Result := '38.5mm'; 59: Result := '58.5mm';
+        57: Result := '67.5mm'; 58: Result := '37.5mm'; 59: Result := '58.5mm';
         60: Result := '67.5mm'; 61: Result := '52mm'; 62: Result := '67.5mm';
-        63: Result := '67.5mm'; 64: Result := '43mm'; 65: Result := '46mm';
+        63: Result := '68.5mm'; 64: Result := '43mm'; 65: Result := '46mm';
         66: Result := '49mm'; 67: Result := '52mm'; 68: Result := '55mm';
         69: Result := '14.5mm'; 70: Result := '16mm'; 71: Result := '15mm';
         72: Result := '12mm'; 73: Result := '31mm'; 74: Result := '32mm';
-        75: Result := '32mm'; 76: Result := '69mm'; 77: Result := '69mm';
+        75: Result := '32mm'; 76: Result := '70mm'; 77: Result := '69mm';
         78: Result := '72mm'; 79: Result := '76mm'; 80: Result := '76mm';
-        81: Result := '76mm'; 82: Result := '76mm'; 83: Result := '68mm';
-        84: Result := '68.5mm'; 85: Result := '68.5mm'; 86: Result := '73.5mm';
+        81: Result := '76mm'; 82: Result := '76mm'; 83: Result := '69.5mm';
+        84: Result := '68.5mm'; 85: Result := '67.5mm'; 86: Result := '73.5mm';
         87: Result := '80mm'; 88: Result := '80mm'; 89: Result := '87mm';
         90: Result := '78mm'; 91: Result := '81mm';
     End;
@@ -145,11 +145,11 @@ Begin
         32: Result := '10.5mm'; 33..35: Result := '17.5mm';
         36..39: Result := '10.5mm'; 40..42: Result := '17.5mm';
         43: Result := '45mm'; 44: Result := '42mm'; 45: Result := '35mm';
-        46..49: Result := '26.5mm'; 50: Result := '31mm'; 51: Result := '35mm';
-        52: Result := '43mm'; 53: Result := '48mm'; 54..56: Result := '53.5mm';
+        46..49: Result := '25.5mm'; 50: Result := '31mm'; 51: Result := '35mm';
+        52: Result := '43mm'; 53: Result := '48mm'; 54..56: Result := '54.5mm';
         57: Result := '41mm'; 58: Result := '37.5mm'; 59: Result := '24.5mm';
         60: Result := '46mm'; 61: Result := '24.5mm'; 62: Result := '38.5mm';
-        63: Result := '36.5mm'; 64: Result := '53.5mm'; 65: Result := '55.5mm';
+        63: Result := '35.5mm'; 64: Result := '54.5mm'; 65: Result := '55.5mm';
         66: Result := '61.5mm'; 67: Result := '62mm'; 68: Result := '61.5mm';
         69: Result := '63.5mm'; 70: Result := '61.5mm'; 71: Result := '59.5mm';
         72: Result := '57mm'; 73: Result := '66mm'; 74: Result := '63mm';
@@ -163,6 +163,11 @@ End;
 
 Function PlacementRotation(PlanIdx : Integer) : Double;
 Begin
+    If PlanIdx = 3 Then
+    Begin
+        Result := 180;
+        Exit;
+    End;
     Case PlanIdx Of
         1, 12, 18, 21..22, 25, 27..29, 31..32, 35..36, 38..40,
         42..59, 62..66, 68..70, 73, 75..89, 91: Result := 90;
@@ -182,6 +187,31 @@ End;
 Function InvariantFloat(Value : Double) : String;
 Begin
     Result := StringReplace(FloatToStr(Value), ',', '.', rfReplaceAll);
+End;
+
+Function IsPreRefinementTarget(PlanIdx : Integer; XCoord, YCoord : TCoord) : Boolean;
+Begin
+    Result := False;
+    Case PlanIdx Of
+        43..45, 58: Result := (Abs(XCoord - PlacementCoord('38.5mm')) <= 1);
+        46..49: Result := (Abs(YCoord - PlacementCoord('26.5mm')) <= 1);
+        50..52: Result := (Abs(XCoord - PlacementCoord('65.5mm')) <= 1);
+        54..56, 64: Result := (Abs(YCoord - PlacementCoord('53.5mm')) <= 1);
+        63: Result := (Abs(YCoord - PlacementCoord('36.5mm')) <= 1) Or
+                      ((Abs(XCoord - PlacementCoord('67.5mm')) <= 1) And
+                       (Abs(YCoord - PlacementCoord('35.5mm')) <= 1));
+        76: Result := ((Abs(XCoord - PlacementCoord('69mm')) <= 1) And
+                       (Abs(YCoord - PlacementCoord('55mm')) <= 1)) Or
+                      ((Abs(XCoord - PlacementCoord('70mm')) <= 1) And
+                       (Abs(YCoord - PlacementCoord('54mm')) <= 1)) Or
+                      ((Abs(XCoord - PlacementCoord('71mm')) <= 1) And
+                       (Abs(YCoord - PlacementCoord('54mm')) <= 1));
+        83: Result := (Abs(XCoord - PlacementCoord('68mm')) <= 1);
+        85: Result := ((Abs(XCoord - PlacementCoord('68.5mm')) <= 1) And
+                       (Abs(YCoord - PlacementCoord('59mm')) <= 1)) Or
+                      ((Abs(XCoord - PlacementCoord('68.5mm')) <= 1) And
+                       (Abs(YCoord - PlacementCoord('59.5mm')) <= 1));
+    End;
 End;
 
 Function IsCanonicalBoardPath(APath : String) : Boolean;
@@ -371,6 +401,7 @@ Begin
                 If Not AtTarget Then BaselineOK := False;
             End
             Else If Not (AtTarget Or OutsideBoard Or
+                IsPreRefinementTarget(PlanIdx, Component.X, Component.Y) Or
                 ((PlanIdx = 53) And
                  (Abs(Component.X - PlacementCoord('65.5mm')) <= 1) And
                  (Abs(Component.Y - PlacementCoord('48mm')) <= 1))) Then
@@ -419,5 +450,5 @@ Begin
     ResetParameters;
     AddStringParameter('Action', 'Redraw');
     RunProcess('PCB:Zoom');
-    ShowMessage('EVT placement applied to all 92 components. Save the PCB and complete Placement Review A.');
+    ShowMessage('EVT placement applied to all 92 components. Save the PCB and complete the placement review.');
 End;
