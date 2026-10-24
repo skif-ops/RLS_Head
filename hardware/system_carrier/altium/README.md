@@ -116,3 +116,25 @@ documented baseline markers and added no Ethernet-route violation. Bottom
 Layer escape segments and asymmetric main-path transitions remain explicit
 production SI cleanup items. Continued native routing is authorized under the
 existing equivalence PASS. Production release remains `NOT_AUTHORIZED`.
+
+## Connection integrity gate
+
+Every change to the native `EVT_SYS_CARRIER.PcbDoc` requires a fresh run of
+`EVT_SYS_CARRIER_ConnectionAudit.PrjScr` and a native Altium DRC report for the
+same canonical board. The resulting `routing/connection_audit` evidence is
+checked against the 100 x 80 mm outline and the equivalence pad-to-net
+baseline. All pads, vias and copper primitives must remain inside the board,
+all routed copper must belong to a net, and the Un-Routed Net, Routing Topology
+and Net Antennae DRC counts must remain zero.
+
+The imported J4, J5, J6 and SW1 child pads are stored by Altium as free pads
+after their native placement transform. The gate reconciles each such pad to
+the equivalence baseline by pad name, net and nearest component origin, and
+fails on an unmatched, distant or ambiguous owner. The receipt records the
+inferred owner counts so this import limitation cannot hide a connection
+change.
+
+`tools.altium_connection_integrity_gate` binds the audit CSV files, DRC report,
+mechanical datum, pad/net baseline and native PcbDoc by SHA-256 in the committed
+receipt. CI rejects a changed PcbDoc or stale audit evidence. This gate permits
+continued EVT routing only. Production authority remains `NOT_AUTHORIZED`.

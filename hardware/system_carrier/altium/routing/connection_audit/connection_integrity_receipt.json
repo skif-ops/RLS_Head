@@ -1,0 +1,16 @@
+{
+  "evidence_sha256": {
+    "altium/ALTIUM_BOARD_MECHANICAL_SYS_001.csv": "450228cffb8a68da75ba05e592f3ad57274d24ebc0e6a453dd784f128465579b",
+    "altium/equivalence/pad_net_inventory.csv": "619f97fcd7f791765bc88da69591063c77120451850d39acdd4952cabc1a5d8d",
+    "altium/native/EVT_SYS_CARRIER.PcbDoc": "f47ceaffd67f4e88899a13e3839aa1082b22a876cdbfea82f31e17226f48e010",
+    "altium/routing/connection_audit/component_bounds.csv": "d7e04b8a88129a1e0abf4680fad9e1d00e7f041a887391f51efdbee5804ef0c6",
+    "altium/routing/connection_audit/connection_drc_report.drc": "79ffec94ca51bc6038c79f4ad0f816c3ece47763bd8b0b2e2b745decb2084a71",
+    "altium/routing/connection_audit/fill_inventory.csv": "4e6560146ea09a108d1f539776bad48132826cf1fc55ec7fc1f02dab4ec60a3d",
+    "altium/routing/connection_audit/pad_geometry.csv": "84dd6b4cba745400fed43b4510c83ea2e9075d07d3fbcaf63415003f8eba0546",
+    "altium/routing/connection_audit/track_inventory.csv": "8917c607616859e2618d64aa1b28eb241a34dd834b1845bdb48d9a0562e172fd",
+    "altium/routing/connection_audit/via_inventory.csv": "6deb31b50e9f25142476dd7976ccd427e98ce02333e97483fd1b150e6ec8a276"
+  },
+  "production_authority": "NOT_AUTHORIZED",
+  "schema": "ALTIUM-CONNECTION-INTEGRITY-RECEIPT-001",
+  "status": "PASS"
+}

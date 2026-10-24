@@ -581,8 +581,10 @@ Begin
             Begin
                 If Not AtTarget And
                    Not ((((PlanIdx = 6) Or (PlanIdx = 7)) And
-                         (Abs(Component.X - TargetX) <= 1) And
-                         (Abs(Component.Y - TargetY) <= 1) And
+                         (Abs(Component.X -
+                              PlacementCoord(PlacementX(PlanIdx))) <= 1) And
+                         (Abs(Component.Y -
+                              PlacementCoord(PlacementY(PlanIdx))) <= 1) And
                          (Abs(Component.Rotation) <= 0.001)) Or
                         ((PlanIdx = 20) And
                          (Abs(Component.X - PlacementCoord('96mm')) <= 1) And

@@ -1273,6 +1273,46 @@ jobs:
           print("Altium routing readiness:", data["status"])
           PY
 
+      - name: Validate Altium connection integrity
+        run: |
+          python -m tools.altium_connection_integrity_gate \
+            --system-root hardware/system_carrier \
+            --output build-cad/system_carrier/altium_connection_integrity.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/"
+                  "altium_connection_integrity.json"
+              ).read_text()
+          )
+          native_pcb = Path(
+              "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+          ).is_file()
+          assert data["schema"] == "ALTIUM-CONNECTION-INTEGRITY-001"
+          assert data["production_authority"] == "NOT_AUTHORIZED"
+          if native_pcb:
+              assert data["status"] == "PASS"
+              assert data["outside_board_count"] == 0
+              assert data["endpoint_baseline_matches"] is True
+              assert data["inferred_free_pad_count"] == 30
+              assert data["free_pad_assignments"] == {
+                  "J4": 7,
+                  "J5": 3,
+                  "J6": 16,
+                  "SW1": 4,
+              }
+              assert data["unrouted_net_violations"] == 0
+              assert data["routing_topology_violations"] == 0
+              assert data["net_antennae_violations"] == 0
+              assert data["receipt_binding"] == "PASS"
+          else:
+              assert data["status"] == "NOT_APPLICABLE"
+          print("Altium connection integrity:", data["status"])
+          PY
+
       - name: Evaluate native Altium handoff status
         run: |
           python -m tools.altium_native_handoff_status \
