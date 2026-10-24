@@ -184,7 +184,7 @@ Begin
     AddEthernetTrack(Board, TxP, '89.00mm', '65.9467mm', '89.00mm', '65.00mm', TrackCount);
     AddEthernetTrack(Board, TxP, '89.00mm', '65.00mm', '95.20mm', '65.00mm', TrackCount);
     AddEthernetTrack(Board, TxP, '95.20mm', '65.00mm', '95.20mm', '61.00mm', TrackCount);
-    AddEthernetTrack(Board, TxP, '95.20mm', '61.00mm', '96.00mm', '60.00mm', TrackCount);
+    AddEthernetTrack(Board, TxP, '95.20mm', '61.00mm', '94.75mm', '60.00mm', TrackCount);
 
     AddEthernetTrack(Board, TxN, '72.75mm', '59.9375mm', '72.75mm', '64.08mm', TrackCount);
     AddEthernetTrack(Board, TxN, '72.75mm', '64.08mm', '73.21mm', '64.54mm', TrackCount);
@@ -192,8 +192,9 @@ Begin
     AddEthernetTrack(Board, TxN, '94.50mm', '64.54mm', '94.50mm', '63.50mm', TrackCount);
     AddEthernetVia(Board, TxN, '94.50mm', '63.50mm', ViaCount);
     AddEthernetBottomTrack(Board, TxN, '94.50mm', '63.50mm', '94.50mm', '58.00mm', TrackCount);
-    AddEthernetBottomTrack(Board, TxN, '94.50mm', '58.00mm', '98.54mm', '58.00mm', TrackCount);
-    AddEthernetBottomTrack(Board, TxN, '98.54mm', '58.00mm', '98.54mm', '60.00mm', TrackCount);
+    AddEthernetBottomTrack(Board, TxN, '94.50mm', '58.00mm', '94.50mm', '57.196607mm', TrackCount);
+    AddEthernetBottomTrack(Board, TxN, '94.50mm', '57.196607mm', '92.21mm', '57.196607mm', TrackCount);
+    AddEthernetBottomTrack(Board, TxN, '92.21mm', '57.196607mm', '92.21mm', '60.00mm', TrackCount);
 
     AddEthernetTrack(Board, RxP, '71.25mm', '59.9375mm', '71.25mm', '66.54mm', TrackCount);
     AddEthernetTrack(Board, RxP, '71.25mm', '66.54mm', '71.71mm', '67.00mm', TrackCount);
@@ -204,13 +205,18 @@ Begin
     AddEthernetTrack(Board, RxP, '91.00mm', '67.00mm', '96.50mm', '67.00mm', TrackCount);
     AddEthernetTrack(Board, RxP, '96.50mm', '67.00mm', '96.50mm', '68.00mm', TrackCount);
     AddEthernetVia(Board, RxP, '96.50mm', '68.00mm', ViaCount);
-    AddEthernetBottomTrack(Board, RxP, '96.50mm', '68.00mm', '99.81mm', '65.50mm', TrackCount);
-    AddEthernetBottomTrack(Board, RxP, '99.81mm', '65.50mm', '99.81mm', '62.54mm', TrackCount);
+    AddEthernetBottomTrack(Board, RxP, '96.50mm', '68.00mm', '96.50mm', '61.77mm', TrackCount);
+    AddEthernetBottomTrack(Board, RxP, '96.50mm', '61.77mm', '90.94mm', '57.46mm', TrackCount);
 
     AddEthernetTrack(Board, RxN, '71.75mm', '59.9375mm', '71.75mm', '66.08mm', TrackCount);
     AddEthernetTrack(Board, RxN, '71.75mm', '66.08mm', '72.21mm', '66.54mm', TrackCount);
-    AddEthernetTrack(Board, RxN, '72.21mm', '66.54mm', '102.35mm', '66.54mm', TrackCount);
-    AddEthernetTrack(Board, RxN, '102.35mm', '66.54mm', '102.35mm', '62.54mm', TrackCount);
+    AddEthernetTrack(Board, RxN, '72.21mm', '66.54mm', '74.00mm', '66.54mm', TrackCount);
+    AddEthernetTrack(Board, RxN, '74.00mm', '66.54mm', '74.00mm', '67.771978mm', TrackCount);
+    AddEthernetTrack(Board, RxN, '74.00mm', '67.771978mm', '76.00mm', '67.771978mm', TrackCount);
+    AddEthernetTrack(Board, RxN, '76.00mm', '67.771978mm', '76.00mm', '66.54mm', TrackCount);
+    AddEthernetTrack(Board, RxN, '76.00mm', '66.54mm', '97.00mm', '66.54mm', TrackCount);
+    AddEthernetTrack(Board, RxN, '97.00mm', '66.54mm', '97.00mm', '64.81mm', TrackCount);
+    AddEthernetTrack(Board, RxN, '97.00mm', '64.81mm', '88.40mm', '57.46mm', TrackCount);
 
     AddEthernetTrack(Board, TxN, '81.50mm', '64.54mm', '81.50mm', '60.50mm', TrackCount);
     AddEthernetTrack(Board, TxN, '81.50mm', '60.50mm', '83.615mm', '60.50mm', TrackCount);

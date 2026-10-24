@@ -36,8 +36,8 @@
     },
     "J6": {
       "edge": "RIGHT",
-      "edge_distance_mm": 4.0,
-      "x_mm": 96.0,
+      "edge_distance_mm": 5.25,
+      "x_mm": 94.75,
       "y_mm": 60.0
     },
     "J8": {

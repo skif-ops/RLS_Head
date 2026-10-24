@@ -19,9 +19,9 @@ D8,11,66,,TOP,ZONE_GNSS,HARD,EVT_PROVISIONAL,RF ESD directly behind J8
 U3,72,58,,TOP,ZONE_ETH,HARD,EVT_PROVISIONAL,PHY
 Y2,65,50,,TOP,ZONE_ETH,HARD,EVT_PROVISIONAL,50MHz source between MCU/PHY with short branches
 D3,84,60,,TOP,ZONE_ETH,HARD,EVT_PROVISIONAL,ESD before MagJack
-J6,96,60,RIGHT,TOP,ZONE_ETH,HARD,EVT_ROUTING_LOCKED,MagJack at board edge; EVT connector routing datum locked; production enclosure access verification remains separate
+J6,94.75,60,RIGHT,TOP,ZONE_ETH,HARD,EVT_ROUTING_LOCKED,MagJack at board edge; EVT connector routing datum locked; production enclosure access verification remains separate
 J10,50,5,BOTTOM,TOP,ZONE_DEBUG,HARD,EVT_ROUTING_LOCKED,Tag-Connect accessible from board edge; EVT connector routing datum locked; production enclosure access verification remains separate
-SW1,70,6,BOTTOM,TOP,ZONE_DEBUG,SOFT,EVT_PROVISIONAL,Reset tactile switch
+SW1,70,8,BOTTOM,TOP,ZONE_DEBUG,SOFT,EVT_PROVISIONAL,Reset tactile switch
 TP1,56,6,BOTTOM,TOP,ZONE_DEBUG,SOFT,EVT_PROVISIONAL,DEBUG_TX test pad
 TP2,60,6,BOTTOM,TOP,ZONE_DEBUG,SOFT,EVT_PROVISIONAL,DEBUG_RX test pad
 C1,,,,TOP,ZONE_PWR,LOCAL,EVT_PROVISIONAL,Adjacent U5 PVIN/PGND

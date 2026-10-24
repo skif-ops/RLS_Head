@@ -105,7 +105,7 @@ Begin
         9: Result := '80mm'; 10: Result := '52mm'; 11: Result := '36mm';
         12: Result := '69mm'; 13: Result := '52mm'; 14: Result := '24mm';
         15: Result := '5mm'; 16: Result := '11mm'; 17: Result := '72mm';
-        18: Result := '67mm'; 19: Result := '84mm'; 20: Result := '96mm';
+        18: Result := '67mm'; 19: Result := '84mm'; 20: Result := '94.75mm';
         21: Result := '50mm'; 22: Result := '70mm'; 23: Result := '57mm';
         24: Result := '60mm'; 25: Result := '64mm'; 26: Result := '20mm';
         27: Result := '22mm'; 28: Result := '24mm'; 29: Result := '22mm';
@@ -140,7 +140,8 @@ Begin
         0..6: Result := '14mm'; 7..9: Result := '30mm';
         10..12: Result := '40mm'; 13: Result := '58mm'; 14: Result := '62mm';
         15..16: Result := '66mm'; 17: Result := '58mm'; 18: Result := '50mm';
-        19..20: Result := '60mm'; 21: Result := '5mm'; 22..25: Result := '5.5mm';
+        19..20: Result := '60mm'; 21: Result := '5mm'; 22: Result := '8mm';
+        23..25: Result := '5.5mm';
         26..28: Result := '10.5mm'; 29..31: Result := '17.5mm';
         32: Result := '10.5mm'; 33..35: Result := '17.5mm';
         36..39: Result := '10.5mm'; 40..42: Result := '17.5mm';
@@ -163,7 +164,8 @@ End;
 
 Function PlacementRotation(PlanIdx : Integer) : Double;
 Begin
-    If PlanIdx = 3 Then
+    If (PlanIdx = 3) Or (PlanIdx = 6) Or (PlanIdx = 7) Or
+       (PlanIdx = 20) Then
     Begin
         Result := 180;
         Exit;
@@ -174,6 +176,181 @@ Begin
     Else
         Result := 0;
     End;
+End;
+
+Function PlacementAngle(Value : Double) : Double;
+Begin
+    Result := Value;
+    While Result >= 360 Do Result := Result - 360;
+    While Result < 0 Do Result := Result + 360;
+End;
+
+Function PlacementTransformCoord(ValueText : String) : TCoord;
+Var
+    UnitKind : TUnit;
+Begin
+    UnitKind := eMetric;
+    StringToCoordUnit(ValueText, Result, UnitKind);
+End;
+
+Function FindPlacementComponent(Board : IPCB_Board; Ref : String) : IPCB_Component;
+Var
+    Iterator  : IPCB_BoardIterator;
+    Component : IPCB_Component;
+Begin
+    Result := Nil;
+    Iterator := Board.BoardIterator_Create;
+    Iterator.AddFilter_ObjectSet(MkSet(eComponentObject));
+    Iterator.AddFilter_LayerSet(AllLayers);
+    Iterator.AddFilter_Method(eProcessAll);
+    Component := Iterator.FirstPCBObject;
+    While Component <> Nil Do
+    Begin
+        If UpperCase(Component.SourceDesignator) = UpperCase(Ref) Then
+        Begin
+            Result := Component;
+            Break;
+        End;
+        Component := Iterator.NextPCBObject;
+    End;
+    Board.BoardIterator_Destroy(Iterator);
+End;
+
+Procedure RotatePlacementPrimitive180(Primitive : IPCB_Primitive;
+                                      OldX, OldY, NewX, NewY : TCoord);
+Var
+    Track                         : IPCB_Track;
+    Pad                           : IPCB_Pad;
+    ViaObj                        : IPCB_Via;
+    ArcObj                        : IPCB_Arc;
+    TextObj                       : IPCB_Text;
+    FillObj                       : IPCB_Fill;
+    R                             : TCoordRect;
+    CenterX, CenterY              : TCoord;
+    TargetX, TargetY              : TCoord;
+    X1, Y1, X2, Y2                : TCoord;
+Begin
+    Primitive.BeginModify;
+    Case Primitive.ObjectId Of
+        eTrackObject:
+        Begin
+            Track := Primitive;
+            Track.X1 := OldX + NewX - Track.X1;
+            Track.Y1 := OldY + NewY - Track.Y1;
+            Track.X2 := OldX + NewX - Track.X2;
+            Track.Y2 := OldY + NewY - Track.Y2;
+        End;
+        ePadObject:
+        Begin
+            Pad := Primitive;
+            Pad.X := OldX + NewX - Pad.X;
+            Pad.Y := OldY + NewY - Pad.Y;
+            Pad.Rotation := PlacementAngle(Pad.Rotation + 180);
+        End;
+        eViaObject:
+        Begin
+            ViaObj := Primitive;
+            ViaObj.X := OldX + NewX - ViaObj.X;
+            ViaObj.Y := OldY + NewY - ViaObj.Y;
+        End;
+        eArcObject:
+        Begin
+            ArcObj := Primitive;
+            ArcObj.XCenter := OldX + NewX - ArcObj.XCenter;
+            ArcObj.YCenter := OldY + NewY - ArcObj.YCenter;
+            ArcObj.StartAngle := PlacementAngle(ArcObj.StartAngle + 180);
+            ArcObj.EndAngle := PlacementAngle(ArcObj.EndAngle + 180);
+        End;
+        eTextObject:
+        Begin
+            TextObj := Primitive;
+            TextObj.XLocation := OldX + NewX - TextObj.XLocation;
+            TextObj.YLocation := OldY + NewY - TextObj.YLocation;
+            TextObj.Rotation := PlacementAngle(TextObj.Rotation + 180);
+        End;
+        eFillObject:
+        Begin
+            FillObj := Primitive;
+            X1 := FillObj.X1Location;
+            Y1 := FillObj.Y1Location;
+            X2 := FillObj.X2Location;
+            Y2 := FillObj.Y2Location;
+            FillObj.X1Location := OldX + NewX - X2;
+            FillObj.Y1Location := OldY + NewY - Y2;
+            FillObj.X2Location := OldX + NewX - X1;
+            FillObj.Y2Location := OldY + NewY - Y1;
+        End;
+        Else
+        Begin
+            R := Primitive.BoundingRectangle;
+            CenterX := (R.Left + R.Right) Div 2;
+            CenterY := (R.Bottom + R.Top) Div 2;
+            TargetX := OldX + NewX - CenterX;
+            TargetY := OldY + NewY - CenterY;
+            Primitive.RotateBy(180);
+            Primitive.MoveByXY(TargetX - CenterX, TargetY - CenterY);
+        End;
+    End;
+    Primitive.EndModify;
+End;
+
+Procedure TransformPlacementPrimitiveGroup(Board : IPCB_Board;
+                                           Component : IPCB_Component;
+                                           OldXText, OldYText : String;
+                                           NewXText, NewYText : String;
+                                           NewRotation : Double;
+                                           Rotate180 : Boolean);
+Var
+    Iterator                    : IPCB_BoardIterator;
+    Primitive                   : IPCB_Primitive;
+    OldX, OldY, NewX, NewY      : TCoord;
+    NameAddress, CommentAddress : TPCBObjectHandle;
+Begin
+    OldX := PlacementTransformCoord(OldXText);
+    OldY := PlacementTransformCoord(OldYText);
+    NewX := PlacementTransformCoord(NewXText);
+    NewY := PlacementTransformCoord(NewYText);
+    If (Abs(Component.X - NewX) <= 1) And
+       (Abs(Component.Y - NewY) <= 1) And
+       (Abs(PlacementAngle(Component.Rotation) -
+            PlacementAngle(NewRotation)) <= 0.001) Then
+        Exit;
+    NameAddress := Component.Name.I_ObjectAddress;
+    CommentAddress := Component.Comment.I_ObjectAddress;
+
+    Iterator := Board.BoardIterator_Create;
+    Iterator.AddFilter_ObjectSet(AllObjects);
+    Iterator.AddFilter_LayerSet(AllLayers);
+    Iterator.AddFilter_Method(eProcessAll);
+    Primitive := Iterator.FirstPCBObject;
+    While Primitive <> Nil Do
+    Begin
+        If Primitive.Component <> Nil Then
+            If (UpperCase(Primitive.Component.SourceDesignator) =
+                UpperCase(Component.SourceDesignator)) And
+               (Primitive.I_ObjectAddress <> NameAddress) And
+               (Primitive.I_ObjectAddress <> CommentAddress) Then
+            Begin
+                If Rotate180 Then
+                    RotatePlacementPrimitive180(Primitive, OldX, OldY, NewX, NewY)
+                Else
+                Begin
+                    Primitive.BeginModify;
+                    Primitive.MoveByXY(NewX - OldX, NewY - OldY);
+                    Primitive.EndModify;
+                End;
+            End;
+        Primitive := Iterator.NextPCBObject;
+    End;
+    Board.BoardIterator_Destroy(Iterator);
+
+    Component.BeginModify;
+    Component.X := NewX;
+    Component.Y := NewY;
+    Component.Rotation := NewRotation;
+    Component.Rebuild;
+    Component.SetState_XSizeYSize;
+    Component.EndModify;
 End;
 
 Function PlacementCoord(ValueText : String) : TCoord;
@@ -338,6 +515,10 @@ Var
     AtTarget       : Boolean;
     OutsideBoard   : Boolean;
     OutputPath     : String;
+    J4             : IPCB_Component;
+    J5             : IPCB_Component;
+    J6             : IPCB_Component;
+    SW1            : IPCB_Component;
 Begin
     Board := ResolveNativeBoard;
     If Board = Nil Then
@@ -398,9 +579,21 @@ Begin
             End
             Else If PlanIdx <= 21 Then
             Begin
-                If Not AtTarget Then BaselineOK := False;
+                If Not AtTarget And
+                   Not ((((PlanIdx = 6) Or (PlanIdx = 7)) And
+                         (Abs(Component.X - TargetX) <= 1) And
+                         (Abs(Component.Y - TargetY) <= 1) And
+                         (Abs(Component.Rotation) <= 0.001)) Or
+                        ((PlanIdx = 20) And
+                         (Abs(Component.X - PlacementCoord('96mm')) <= 1) And
+                         (Abs(Component.Y - PlacementCoord('60mm')) <= 1) And
+                         (Abs(Component.Rotation) <= 0.001))) Then
+                    BaselineOK := False;
             End
             Else If Not (AtTarget Or OutsideBoard Or
+                ((PlanIdx = 22) And
+                 (Abs(Component.X - PlacementCoord('70mm')) <= 1) And
+                 (Abs(Component.Y - PlacementCoord('5.5mm')) <= 1)) Or
                 IsPreRefinementTarget(PlanIdx, Component.X, Component.Y) Or
                 ((PlanIdx = 53) And
                  (Abs(Component.X - PlacementCoord('65.5mm')) <= 1) And
@@ -417,7 +610,25 @@ Begin
         Exit;
     End;
 
+    J4 := FindPlacementComponent(Board, 'J4');
+    J5 := FindPlacementComponent(Board, 'J5');
+    J6 := FindPlacementComponent(Board, 'J6');
+    SW1 := FindPlacementComponent(Board, 'SW1');
+    If (J4 = Nil) Or (J5 = Nil) Or (J6 = Nil) Or (SW1 = Nil) Then
+    Begin
+        ShowMessage('EVT placement stopped: J4, J5, J6 or SW1 is missing.');
+        Exit;
+    End;
+
     PCBServer.PreProcess;
+    TransformPlacementPrimitiveGroup(Board, J4, '95mm', '30mm',
+        '95mm', '30mm', 180, True);
+    TransformPlacementPrimitiveGroup(Board, J5, '95mm', '14mm',
+        '95mm', '14mm', 180, True);
+    TransformPlacementPrimitiveGroup(Board, J6, '96mm', '60mm',
+        '94.75mm', '60mm', 180, True);
+    TransformPlacementPrimitiveGroup(Board, SW1, '70mm', '5.5mm',
+        '70mm', '8mm', 90, False);
     Iterator := Board.BoardIterator_Create;
     Iterator.AddFilter_ObjectSet(MkSet(eComponentObject));
     Iterator.AddFilter_LayerSet(AllLayers);
