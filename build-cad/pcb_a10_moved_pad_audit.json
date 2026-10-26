@@ -1,0 +1,206 @@
+{
+  "moved_component_count": 11,
+  "moved_pad_count": 22,
+  "covered_count": 22,
+  "uncovered_count": 0,
+  "pads": [
+    {
+      "designator": "R601",
+      "pad_name": "2",
+      "net": "3V3",
+      "x_mm": 77.5,
+      "y_mm": 56.509996,
+      "covered": true,
+      "method": "power_connection"
+    },
+    {
+      "designator": "R601",
+      "pad_name": "1",
+      "net": "ETH_TXP",
+      "x_mm": 77.5,
+      "y_mm": 55.490008,
+      "covered": true,
+      "method": "mdi_replacement"
+    },
+    {
+      "designator": "C60",
+      "pad_name": "2",
+      "net": "GND",
+      "x_mm": 66.49999,
+      "y_mm": 57.774992,
+      "covered": true,
+      "method": "power_connection"
+    },
+    {
+      "designator": "C60",
+      "pad_name": "1",
+      "net": "NetC60_1",
+      "x_mm": 66.49999,
+      "y_mm": 56.225008,
+      "covered": true,
+      "method": "signal_route"
+    },
+    {
+      "designator": "C64",
+      "pad_name": "2",
+      "net": "GND",
+      "x_mm": 67.999987,
+      "y_mm": 55.480001,
+      "covered": true,
+      "method": "power_connection"
+    },
+    {
+      "designator": "C64",
+      "pad_name": "1",
+      "net": "3V3",
+      "x_mm": 67.999987,
+      "y_mm": 54.520008,
+      "covered": true,
+      "method": "power_connection"
+    },
+    {
+      "designator": "R605",
+      "pad_name": "2",
+      "net": "GND",
+      "x_mm": 77.499988,
+      "y_mm": 53.324989,
+      "covered": true,
+      "method": "power_connection"
+    },
+    {
+      "designator": "R605",
+      "pad_name": "1",
+      "net": "ETH_NRST",
+      "x_mm": 77.499988,
+      "y_mm": 51.675005,
+      "covered": true,
+      "method": "signal_route"
+    },
+    {
+      "designator": "R602",
+      "pad_name": "2",
+      "net": "3V3",
+      "x_mm": 77.5,
+      "y_mm": 58.509992,
+      "covered": true,
+      "method": "power_connection"
+    },
+    {
+      "designator": "R602",
+      "pad_name": "1",
+      "net": "ETH_TXN",
+      "x_mm": 77.5,
+      "y_mm": 57.490004,
+      "covered": true,
+      "method": "mdi_replacement"
+    },
+    {
+      "designator": "C63",
+      "pad_name": "2",
+      "net": "GND",
+      "x_mm": 82.499992,
+      "y_mm": 57.774992,
+      "covered": true,
+      "method": "power_connection"
+    },
+    {
+      "designator": "C63",
+      "pad_name": "1",
+      "net": "ETH_CT",
+      "x_mm": 82.499992,
+      "y_mm": 56.225008,
+      "covered": true,
+      "method": "signal_route"
+    },
+    {
+      "designator": "C107",
+      "pad_name": "2",
+      "net": "GND",
+      "x_mm": 69.499994,
+      "y_mm": 31.479998,
+      "covered": true,
+      "method": "power_connection"
+    },
+    {
+      "designator": "C107",
+      "pad_name": "1",
+      "net": "3V3",
+      "x_mm": 69.499994,
+      "y_mm": 30.520005,
+      "covered": true,
+      "method": "power_connection"
+    },
+    {
+      "designator": "C102",
+      "pad_name": "2",
+      "net": "GND",
+      "x_mm": 34.500001,
+      "y_mm": 35.47999,
+      "covered": true,
+      "method": "power_connection"
+    },
+    {
+      "designator": "C102",
+      "pad_name": "1",
+      "net": "3V3",
+      "x_mm": 34.500001,
+      "y_mm": 34.519997,
+      "covered": true,
+      "method": "power_connection"
+    },
+    {
+      "designator": "C111",
+      "pad_name": "2",
+      "net": "GND",
+      "x_mm": 64.000005,
+      "y_mm": 54.980002,
+      "covered": true,
+      "method": "power_connection"
+    },
+    {
+      "designator": "C111",
+      "pad_name": "1",
+      "net": "3V3",
+      "x_mm": 64.000005,
+      "y_mm": 54.020009,
+      "covered": true,
+      "method": "power_connection"
+    },
+    {
+      "designator": "C113",
+      "pad_name": "2",
+      "net": "GND",
+      "x_mm": 47.000004,
+      "y_mm": 54.980002,
+      "covered": true,
+      "method": "power_connection"
+    },
+    {
+      "designator": "C113",
+      "pad_name": "1",
+      "net": "3V3",
+      "x_mm": 47.000004,
+      "y_mm": 54.020009,
+      "covered": true,
+      "method": "power_connection"
+    },
+    {
+      "designator": "C115",
+      "pad_name": "2",
+      "net": "GND",
+      "x_mm": 35.750001,
+      "y_mm": 37.98001,
+      "covered": true,
+      "method": "power_connection"
+    },
+    {
+      "designator": "C115",
+      "pad_name": "1",
+      "net": "NRST",
+      "x_mm": 35.750001,
+      "y_mm": 37.019992,
+      "covered": true,
+      "method": "signal_route"
+    }
+  ]
+}
