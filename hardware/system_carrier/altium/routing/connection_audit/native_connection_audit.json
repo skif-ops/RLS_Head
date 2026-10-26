@@ -1,11 +1,11 @@
 {
   "candidate_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "candidate_pcb_sha256": "3ea321c0c4fbbadd556fe5f07af521ee4f87a8a0db2e51e57ba262f2639fb05f",
+  "candidate_pcb_sha256": "fc3404b281f3ca76123a8dd68b6076a4e50f5d867ed9fc9582fb6f6ef248ba44",
   "counts": {
     "fill": 67,
     "pad": 346,
-    "track": 579,
-    "via": 127
+    "track": 582,
+    "via": 132
   },
   "disconnected_pad_nets": [
     "3V3",
@@ -46,12 +46,12 @@
   },
   "errors": [],
   "evidence_sha256": {
-    "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc": "3ea321c0c4fbbadd556fe5f07af521ee4f87a8a0db2e51e57ba262f2639fb05f",
-    "hardware/system_carrier/altium/routing/connection_audit/connection_drc_report.drc": "be8726999e3f036e416468af421dc0efe95dc56f8f12bf91c1a475e4a300cc47",
+    "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc": "fc3404b281f3ca76123a8dd68b6076a4e50f5d867ed9fc9582fb6f6ef248ba44",
+    "hardware/system_carrier/altium/routing/connection_audit/connection_drc_report.drc": "e3237e4125aeb85b9ea87551544a27ac8c6ff6d30541ced138c2a7897aa2feae",
     "hardware/system_carrier/altium/routing/connection_audit/fill_inventory.csv": "22da9cb43d435f74d48ab5b5fda857530b1540a7f1f79d1e3801f1cbe287d5d9",
     "hardware/system_carrier/altium/routing/connection_audit/pad_geometry.csv": "a6a288c6359c11a32956f4f33f509163b74777ee73475cee27a867470e5d3af9",
-    "hardware/system_carrier/altium/routing/connection_audit/track_inventory.csv": "b2ebf6136ae857766154505168d8898e1519e347d468a1878d7d2fc02de01a56",
-    "hardware/system_carrier/altium/routing/connection_audit/via_inventory.csv": "b820c70a395a8a4629d6bba49013898589be0593760f345f71b48d2eb66c7552"
+    "hardware/system_carrier/altium/routing/connection_audit/track_inventory.csv": "ceb50e72e9b49a7870c3b1d8a741bddf0b6e035863fe8d1ae19b4d0405fbb426",
+    "hardware/system_carrier/altium/routing/connection_audit/via_inventory.csv": "6e103c4564f07e8288cf0669eb134b084e65473d3d7211202f5454953b72b971"
   },
   "missing_target_nets": [],
   "net_results": {
@@ -147,13 +147,13 @@
     },
     "ETH_RXN": {
       "connected": true,
-      "node_count": 22,
+      "node_count": 26,
       "pad_component_count": 1,
       "pad_count": 4
     },
     "ETH_RXP": {
       "connected": true,
-      "node_count": 27,
+      "node_count": 34,
       "pad_component_count": 1,
       "pad_count": 4
     },
@@ -171,13 +171,13 @@
     },
     "ETH_TXN": {
       "connected": true,
-      "node_count": 17,
+      "node_count": 24,
       "pad_component_count": 1,
       "pad_count": 4
     },
     "ETH_TXP": {
       "connected": true,
-      "node_count": 32,
+      "node_count": 22,
       "pad_component_count": 1,
       "pad_count": 4
     },
@@ -463,10 +463,10 @@
   "outside_board": [],
   "outside_board_count": 0,
   "planned_geometry": {
-    "expected_track_count": 494,
-    "expected_via_count": 94,
-    "matched_track_count": 494,
-    "matched_via_count": 94,
+    "expected_track_count": 562,
+    "expected_via_count": 109,
+    "matched_track_count": 562,
+    "matched_via_count": 109,
     "missing_tracks": [],
     "missing_vias": []
   },
