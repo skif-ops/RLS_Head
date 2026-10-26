@@ -5,8 +5,9 @@ Date: 2026-10-24
 `TIMING_ROUTING_REVIEW_A=PASS`
 
 Altium Designer 26.10.1 routed `GNSS_PPS`, `IMU_DRDY` and `RADAR_REF` on
-the canonical native PCB. The resulting canonical PCB SHA-256 is
-`3f9df31481f159d3962260687d5f039eac7c95ac19935172ba11f683871f2fa9`.
+the canonical native PCB. PCB-A10 later rerouted `GNSS_PPS` while preserving
+the timing contract. The resulting canonical PCB SHA-256 is
+`3ea321c0c4fbbadd556fe5f07af521ee4f87a8a0db2e51e57ba262f2639fb05f`.
 
 ## Reviewed geometry
 
@@ -16,7 +17,7 @@ component between each required endpoint pair.
 
 | Net | Endpoint pair | Length | Segments | Vias |
 | --- | --- | ---: | ---: | ---: |
-| `GNSS_PPS` | U8-3 to U1-40 | 41.986161 mm | 7 | 0 |
+| `GNSS_PPS` | U8-3 to U1-40 | 44.746448 mm | 10 | 0 |
 | `IMU_DRDY` | U2-4 to U1-80 | 44.524254 mm | 6 | 0 |
 | `RADAR_REF` | U1-79 to J4-4 | 42.863590 mm | 10 | 0 |
 
@@ -30,17 +31,17 @@ clearance required by the timing-route gate.
 - Timing routing script: `../scripts/EVT_SYS_CARRIER_TimingRouting.pas`
 - Runtime audit script: `../scripts/EVT_SYS_CARRIER_RoutingAudit.pas`
 - Pad export: `connection_audit/pad_geometry.csv`, 529 rows
-- Track export: `connection_audit/track_inventory.csv`, 1156 rows
+- Track export: `connection_audit/track_inventory.csv`, 1637 rows
 - Fill export: `connection_audit/fill_inventory.csv`, 67 rows
-- Via export: `connection_audit/via_inventory.csv`, 34 rows
+- Via export: `connection_audit/via_inventory.csv`, 127 rows
 - Native Altium DRC: `connection_audit/connection_drc_report.drc`
 - Board render: `timing_routing_review_a.png`
 - SHA-bound result: `timing_routing_drc_summary.json`
 
 ## Native DRC
 
-Altium ran DRC on the canonical PCB at 21:26:20. The report has 119 markers,
-the same counts as the immediate pre-route connection-integrity baseline:
+Altium ran DRC on the canonical PCB at 20:49:45 on 2026-10-26. The report has
+114 accepted baseline markers:
 
 - Generic copper clearance: 27
 - Ethernet class clearance: 27
@@ -48,7 +49,7 @@ the same counts as the immediate pre-route connection-integrity baseline:
 - 10 mil clearance: 0
 - Hole size: 9
 - Hole-to-hole clearance: 1
-- Component clearance: 55
+- Component clearance: 50
 - Unrouted net, routing topology, power-plane connect and net antennae: 0
 
 The timing routes introduced no DRC markers. The existing clearance,

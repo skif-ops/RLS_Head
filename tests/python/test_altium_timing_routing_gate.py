@@ -73,7 +73,7 @@ def _write_fixture(root: Path) -> None:
 
     tracks = []
     for net, y, count in (
-        ("GNSS_PPS", 10.0, 7),
+        ("GNSS_PPS", 10.0, 10),
         ("IMU_DRDY", 20.0, 6),
         ("RADAR_REF", 30.0, 10),
     ):
@@ -90,7 +90,7 @@ def _write_fixture(root: Path) -> None:
     )
     pads = [
         _pad("U8", "3", "GNSS_PPS", 10.0, 10.0),
-        _pad("U1", "40", "GNSS_PPS", 17.0, 10.0),
+        _pad("U1", "40", "GNSS_PPS", 20.0, 10.0),
         _pad("U2", "4", "IMU_DRDY", 10.0, 20.0),
         _pad("U1", "80", "IMU_DRDY", 16.0, 20.0),
         _pad("U1", "79", "RADAR_REF", 10.0, 30.0),
@@ -177,6 +177,26 @@ def test_timing_routing_passes_and_binds_summary(tmp_path):
     assert result["routes"]["RADAR_REF"]["via_count"] == 0
     assert result["drc"]["route_induced_markers"] == 0
     assert result["production_authority"] == "NOT_AUTHORIZED"
+
+
+def test_timing_routing_accepts_native_report_without_zero_warning_line(tmp_path):
+    _write_fixture(tmp_path)
+    drc_path = (
+        tmp_path
+        / "altium"
+        / "routing"
+        / "connection_audit"
+        / "connection_drc_report.drc"
+    )
+    drc_path.write_text(
+        drc_path.read_text(encoding="utf-8").replace("Warnings : 0\n", ""),
+        encoding="utf-8",
+    )
+
+    result = validate(tmp_path, refresh_summary=True)
+
+    assert result["status"] == "PASS"
+    assert result["drc"]["counts"]["warnings"] == 0
 
 
 def test_timing_routing_rejects_disconnected_route(tmp_path):

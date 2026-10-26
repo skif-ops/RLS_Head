@@ -13,7 +13,7 @@ SCHEMA = "ALTIUM-TIMING-ROUTING-GATE-001"
 SUMMARY_SCHEMA = "ALTIUM-TIMING-ROUTING-REVIEW-A-001"
 TARGETS = {
     "GNSS_PPS": {
-        "segments": 7,
+        "segments": 10,
         "endpoints": (("U8", "3", None), ("U1", "40", None)),
     },
     "IMU_DRDY": {
@@ -366,6 +366,8 @@ def parse_drc(path: Path) -> tuple[str, str, dict[str, int]]:
         counts["total"] = int(total_match.group(1))
     if warning_match:
         counts["warnings"] = int(warning_match.group(1))
+    elif total_match:
+        counts["warnings"] = 0
     return pcb_file, timestamp, counts
 
 
