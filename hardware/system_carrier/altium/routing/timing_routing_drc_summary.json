@@ -90,7 +90,7 @@
   },
   "schema": "ALTIUM-TIMING-ROUTING-REVIEW-A-001",
   "source_drc_report": "hardware/system_carrier/altium/routing/connection_audit/connection_drc_report.drc",
-  "source_drc_report_sha256": "a65dab15cff887c0c833a9df5455681da3e891fe3be9a667ccfe22c3709f8f4b",
+  "source_drc_report_sha256": "4e7e1bacd8cd0c5109e9e400ec20499a295f18f90230a3c2d1e0caae980a259e",
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
   "source_pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc"
 }
