@@ -1297,13 +1297,8 @@ jobs:
               assert data["status"] == "PASS"
               assert data["outside_board_count"] == 0
               assert data["endpoint_baseline_matches"] is True
-              assert data["inferred_free_pad_count"] == 30
-              assert data["free_pad_assignments"] == {
-                  "J4": 7,
-                  "J5": 3,
-                  "J6": 16,
-                  "SW1": 4,
-              }
+              assert data["inferred_free_pad_count"] == 0
+              assert data["free_pad_assignments"] == {}
               assert data["unrouted_net_violations"] == 0
               assert data["routing_topology_violations"] == 0
               assert data["net_antennae_violations"] == 0
