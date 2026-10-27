@@ -5,8 +5,8 @@
   "input_sha256": {
     "api_contract": "06638f8620c3a2fac52cd8f4e3403bb1a9fe887cedba7be052ea33b9f20815dd",
     "hierarchy_audit_script": "351f1d609aee4793373ec9786740d5d19fba83f65310fd698ac1ed2227f64304",
-    "pcb": "fa321c98678931940b536031b03bc2ddf1a504156a5a62b9b8ebeddeb12ac0ab",
-    "pcb_audit_script": "c96cbeaa35113823484f9f4e47a9b76573a25a2c195b6c3bba7c206cd970c108",
+    "pcb": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc",
+    "pcb_audit_script": "77d0a429378e502831bb2318f701b9020d8bb8a3f44e73f59c5c0a1c530baab5",
     "project": "59284024bdb3184601c17657c14d78c81da3352848f81fbe023bc74b25fc41bd",
     "schematic": "5941fb8d9a36092d06f2ff164514ed53c41ccc44a18829ca7ce8cf2aac1cd10d",
     "script_project": "b01c15c859d2c7ed923ef2e88d55f53cbd63944a67881d92580a3383cb6b878b"
@@ -17,12 +17,12 @@
   ],
   "operator": "Codex computer use on user-authorized workstation",
   "output_sha256": {
-    "component_inventory": "e35e60d9bd74f9dbce12b09aaa3e5562acb93d5d2ea69caed4fe3ee95150b26d",
+    "component_inventory": "6cedbba5a0af2a13094adda2ab2f168af0a8c67beaa02d9fd5c8c7c00c9641d4",
     "hierarchy_export": "8d65b155bee329da15aec6ffe606a8df1f8f1724f0befdf0f56711f1ad6786aa",
     "layer_stack_inventory": "cbdf4c20e487668a5b1e67abfa8e4d3bcd8dc4015688fc52b0e1d6e9cfa662ec",
     "net_inventory": "8e66f63a7b8d8d9fc073c7e05f28db63b24ad5552bd243b70a0da54da2e08fcf",
-    "pad_net_inventory": "8bb0000090712de5b4950e5a1c89f0fb8f11192744b97c9dd7fe38226c7bc556",
-    "rule_inventory": "e7944aa9f546f25cb34c491957da5c50aa6eeb5b3f5bce25bfd1bb838ea27fc1"
+    "pad_net_inventory": "42adf427dc6643c41a46044c8e05e265a0e5db4c46a13cd7f0d90a2f1095d1a9",
+    "rule_inventory": "b5c34be425efa5fd9f0ea231273f514b3ce97ab5e301d2abe32e254c0be93895"
   },
   "prepared_by": "tools.altium_script_runtime_receipt_prepare",
   "procedures": {

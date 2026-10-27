@@ -1,10 +1,10 @@
 {
   "candidate_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "candidate_pcb_sha256": "fc3404b281f3ca76123a8dd68b6076a4e50f5d867ed9fc9582fb6f6ef248ba44",
+  "candidate_pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc",
   "counts": {
     "fill": 67,
     "pad": 346,
-    "track": 582,
+    "track": 581,
     "via": 132
   },
   "disconnected_pad_nets": [
@@ -46,11 +46,11 @@
   },
   "errors": [],
   "evidence_sha256": {
-    "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc": "fc3404b281f3ca76123a8dd68b6076a4e50f5d867ed9fc9582fb6f6ef248ba44",
-    "hardware/system_carrier/altium/routing/connection_audit/connection_drc_report.drc": "e3237e4125aeb85b9ea87551544a27ac8c6ff6d30541ced138c2a7897aa2feae",
-    "hardware/system_carrier/altium/routing/connection_audit/fill_inventory.csv": "22da9cb43d435f74d48ab5b5fda857530b1540a7f1f79d1e3801f1cbe287d5d9",
-    "hardware/system_carrier/altium/routing/connection_audit/pad_geometry.csv": "a6a288c6359c11a32956f4f33f509163b74777ee73475cee27a867470e5d3af9",
-    "hardware/system_carrier/altium/routing/connection_audit/track_inventory.csv": "ceb50e72e9b49a7870c3b1d8a741bddf0b6e035863fe8d1ae19b4d0405fbb426",
+    "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc",
+    "hardware/system_carrier/altium/routing/connection_audit/connection_drc_report.drc": "5396af1617e3e470767b8b4995a55770199350c3ca798cf628b17dd2915e3d16",
+    "hardware/system_carrier/altium/routing/connection_audit/fill_inventory.csv": "5da6ba46033c23c3b32ba65a59e73ca1c922726bcfb2533beb65299fc722046b",
+    "hardware/system_carrier/altium/routing/connection_audit/pad_geometry.csv": "a627426856314fc0f30f4fbbdc3b85aee4fe9734021b84b4c6221e770ab6d15c",
+    "hardware/system_carrier/altium/routing/connection_audit/track_inventory.csv": "f7e7317534919b8b91305705af7d8f184d4f6c2f3352024f6a1cf8a5ba1ed61d",
     "hardware/system_carrier/altium/routing/connection_audit/via_inventory.csv": "6e103c4564f07e8288cf0669eb134b084e65473d3d7211202f5454953b72b971"
   },
   "missing_target_nets": [],
@@ -327,7 +327,7 @@
     },
     "RADAR_CANL": {
       "connected": true,
-      "node_count": 29,
+      "node_count": 28,
       "pad_component_count": 1,
       "pad_count": 4
     },
@@ -463,10 +463,10 @@
   "outside_board": [],
   "outside_board_count": 0,
   "planned_geometry": {
-    "expected_track_count": 562,
-    "expected_via_count": 109,
-    "matched_track_count": 562,
-    "matched_via_count": 109,
+    "expected_track_count": 489,
+    "expected_via_count": 93,
+    "matched_track_count": 489,
+    "matched_via_count": 93,
     "missing_tracks": [],
     "missing_vias": []
   },

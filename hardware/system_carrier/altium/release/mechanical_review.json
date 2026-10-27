@@ -1,22 +1,26 @@
 {
   "schema": "ALTIUM-MECHANICAL-REVIEW-001",
   "status": "PENDING",
-  "board_outline_frozen": false,
-  "mounting_geometry_frozen": false,
+  "board_outline_frozen": true,
+  "mounting_geometry_frozen": true,
   "connector_access_verified": false,
   "step_enclosure_verified": false,
-  "reviewer": "PENDING",
+  "reviewer": "Codex computer use operator on user-authorized workstation",
   "evidence_refs": [
     {
       "path": "hardware/system_carrier/altium/release/COMPACT_ENCLOSURE_TARGET.md",
       "sha256": "62af9d524f36dd18e97adca2ce6d143e8514f79ab831b2663d87b7528a7075a3"
+    },
+    {
+      "path": "hardware/system_carrier/altium/release/pilot_r1/fab/Fabrication_Drawing_PRELIMINARY.pdf",
+      "sha256": "20b351994652f39a9db62ceb4cab8f51f30148aabe62bb8cedb65f8b9d20c0c3"
     }
   ],
   "notes": [
-    "No enclosure or STEP model exists yet.",
-    "The target is the smallest practical enclosure around the validated 100 x 80 mm PCB.",
-    "Production mechanical freeze requires verified component bodies, connector and cable keepouts, fastener access and a STEP assembly review."
+    "The native board outline is frozen at 100.00 x 80.00 mm with four 3.20 mm NPTH mounting holes at 5.00 mm corner offsets.",
+    "Altium direct and OutJob STEP exports failed, so enclosure and connector-access verification remain open.",
+    "The target remains the smallest practical enclosure around the validated board."
   ],
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "fc3404b281f3ca76123a8dd68b6076a4e50f5d867ed9fc9582fb6f6ef248ba44"
+  "source_pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc"
 }

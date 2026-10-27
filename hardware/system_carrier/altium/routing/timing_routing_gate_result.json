@@ -1,0 +1,75 @@
+{
+  "canonical_pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc",
+  "drc": {
+    "counts": {
+      "component_clearance": 0,
+      "ethernet_class_clearance": 0,
+      "generic_clearance": 0,
+      "hole_size": 0,
+      "hole_to_hole": 0,
+      "net_antennae": 0,
+      "power_plane_connect": 0,
+      "routing_topology": 0,
+      "ten_mil_clearance": 0,
+      "timing_to_buck_sw": 0,
+      "total": 0,
+      "unrouted_net": 0,
+      "warnings": 0
+    },
+    "route_induced_markers": 0,
+    "timestamp": "27.10.2026 19:56:27"
+  },
+  "errors": [],
+  "production_authority": "NOT_AUTHORIZED",
+  "routes": {
+    "GNSS_PPS": {
+      "connected": true,
+      "endpoint_pads_resolved": 2,
+      "graph_component_count": 1,
+      "layers": [
+        1
+      ],
+      "length_mm": 44.746448,
+      "quiet_clearance_mm": 15.48213,
+      "segment_count": 10,
+      "via_count": 0,
+      "width_mm": [
+        0.2
+      ]
+    },
+    "IMU_DRDY": {
+      "connected": true,
+      "endpoint_pads_resolved": 2,
+      "graph_component_count": 1,
+      "layers": [
+        1
+      ],
+      "length_mm": 44.524254,
+      "quiet_clearance_mm": 9.519854,
+      "segment_count": 6,
+      "via_count": 0,
+      "width_mm": [
+        0.2
+      ]
+    },
+    "RADAR_REF": {
+      "connected": true,
+      "endpoint_pads_resolved": 2,
+      "graph_component_count": 1,
+      "layers": [
+        1
+      ],
+      "length_mm": 42.86359,
+      "quiet_clearance_mm": 19.860859,
+      "segment_count": 10,
+      "via_count": 0,
+      "width_mm": [
+        0.2
+      ]
+    }
+  },
+  "routing_authority": "AUTHORIZED",
+  "schema": "ALTIUM-TIMING-ROUTING-GATE-001",
+  "status": "PASS",
+  "summary_binding": "PASS"
+}

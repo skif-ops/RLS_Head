@@ -6,8 +6,8 @@
       "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
       "sector_shift": 9,
       "sector_size": 512,
-      "sha256": "fc3404b281f3ca76123a8dd68b6076a4e50f5d867ed9fc9582fb6f6ef248ba44",
-      "size": 1807872,
+      "sha256": "ce70e2c5f349885a0817756e5abcdf3076fed040e2985d3ae8f3916a80329322",
+      "size": 2050048,
       "status": "PASS"
     },
     "schematic": {

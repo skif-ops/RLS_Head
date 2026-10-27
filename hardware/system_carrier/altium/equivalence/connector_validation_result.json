@@ -5,7 +5,7 @@
   "input_sha256": {
     "connector_native_map": "c6adf75d170f0eaa1f6f6731d7ec529c1a7216687b48bfac0544424eb7576ef4",
     "connector_pinout_contract": "28afa65cd63f52fe09f3a4b0bc3325d62bb87b5d33c0708aefc42226894b45ee",
-    "pad_net_inventory": "8bb0000090712de5b4950e5a1c89f0fb8f11192744b97c9dd7fe38226c7bc556"
+    "pad_net_inventory": "42adf427dc6643c41a46044c8e05e265a0e5db4c46a13cd7f0d90a2f1095d1a9"
   },
   "logical_connector_pin_count": 19,
   "native_map_row_count": 22,

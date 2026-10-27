@@ -1,0 +1,31 @@
+{
+  "schema": "ALTIUM-RETURN-PATH-SI-REVIEW-001",
+  "status": "PENDING",
+  "p0_open_findings": 2,
+  "l2_ground_continuity_verified": false,
+  "timing_return_paths_verified": true,
+  "ethernet_mdi_return_path_verified": false,
+  "reviewer": "Codex computer use operator on user-authorized workstation",
+  "evidence_refs": [
+    {
+      "path": "hardware/system_carrier/altium/routing/timing_routing_drc_summary.json",
+      "sha256": "472c49b8c9b392a4903a162faaa1f183bb7633080037250f80db90f0a2a38952"
+    },
+    {
+      "path": "hardware/system_carrier/altium/equivalence/no_mmwave_review_result.json",
+      "sha256": "77025e0f8a6764b91f67b59bab4dd94eb749b0850c59efb2456fd5152d6a1248"
+    }
+  ],
+  "notes": [
+    "Final native connectivity and timing-route checks pass with no unrouted nets, topology errors or antenna violations.",
+    "L2 continuity and Ethernet MDI return-path release remain open until the provisional stack is bound and the routed pair is reviewed against the fabricator solver result.",
+    "GNSS and Ethernet routing geometry is present, but impedance release remains dependent on the fabricator binding."
+  ],
+  "power_hot_loop_verified": true,
+  "power_branch_widths_verified": true,
+  "ethernet_mdi_impedance_rule_verified": false,
+  "gnss_rf_route_verified": true,
+  "no_mmwave_post_route_verified": true,
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc"
+}

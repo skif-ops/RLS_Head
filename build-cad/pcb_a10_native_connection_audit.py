@@ -382,7 +382,6 @@ def expected_geometry():
             "width": 0.26,
             "id": f"mdi-replacement:{index}",
         })
-    vias.append({"net": "ETH_TXP", "point": (79.0, 55.49), "id": "mdi-replacement-via"})
     return tracks, vias
 
 

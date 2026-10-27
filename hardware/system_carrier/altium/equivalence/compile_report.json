@@ -10,7 +10,7 @@
   "source_project": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
   "source_project_sha256": "59284024bdb3184601c17657c14d78c81da3352848f81fbe023bc74b25fc41bd",
   "source_report": "hardware/system_carrier/altium/equivalence/compile_report_raw.txt",
-  "source_report_sha256": "6d38272528b73a07ffe8df6e6660a782cdd82ee41fc5dc2b244a970adbcabf60",
+  "source_report_sha256": "454cf6299621236ea3291e2e4ec81e83726fcf607cb8186c4e50f9e238158dd4",
   "source_schematic": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
   "source_schematic_sha256": "5941fb8d9a36092d06f2ff164514ed53c41ccc44a18829ca7ce8cf2aac1cd10d",
   "status": "PASS",

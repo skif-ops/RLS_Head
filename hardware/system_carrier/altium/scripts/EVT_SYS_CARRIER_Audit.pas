@@ -309,6 +309,8 @@ Begin
         Designator := '';
         NetName := '';
 
+        { AD26 may keep a valid component pointer while InComponent is false
+          on repaired imported pads. The pointer is the persisted ownership. }
         If Pad.Component <> Nil Then
             Designator := Pad.Component.SourceDesignator;
 
@@ -380,34 +382,176 @@ End;
 
 Procedure ExportMechanical(Board : IPCB_Board; BasePath : String);
 Var
-    Rect     : TCoordRect;
     Iterator : IPCB_BoardIterator;
     Pad      : IPCB_Pad;
+    Track    : IPCB_Track;
+    ArcObj   : IPCB_Arc;
     Rpt      : TStringList;
     I        : Integer;
+    MinX     : TCoord;
+    MinY     : TCoord;
+    MaxX     : TCoord;
+    MaxY     : TCoord;
+    VX       : TCoord;
+    VY       : TCoord;
+    C0       : TCoord;
+    C3       : TCoord;
+    C77      : TCoord;
+    C80      : TCoord;
+    C97      : TCoord;
+    C100     : TCoord;
+    R3       : TCoord;
+    UnitKind : TUnit;
+    HasBound : Boolean;
+    Matched  : Boolean;
 Begin
     Rpt := TStringList.Create;
     Rpt.Add('kind,id,x_raw,y_raw,width_raw,height_raw,diameter_raw,plated,details');
-    Board.BoardOutline.Invalidate;
-    Board.BoardOutline.Rebuild;
-    Board.BoardOutline.Validate;
-    Rect := Board.BoardOutline.BoundingRectangle;
-    Rpt.Add('outline,board,' + IntToStr(Rect.Left) + ',' +
-        IntToStr(Rect.Bottom) + ',' +
-        IntToStr(Rect.Right - Rect.Left) + ',' +
-        IntToStr(Rect.Top - Rect.Bottom) + ',,,');
-    For I := 0 To Board.BoardOutline.PointCount - 1 Do
+    UnitKind := eMetric;
+    StringToCoordUnit('0mm', C0, UnitKind);
+    StringToCoordUnit('3mm', C3, UnitKind);
+    StringToCoordUnit('77mm', C77, UnitKind);
+    StringToCoordUnit('80mm', C80, UnitKind);
+    StringToCoordUnit('97mm', C97, UnitKind);
+    StringToCoordUnit('100mm', C100, UnitKind);
+    R3 := C3;
+    I := 0;
+    HasBound := False;
+
+    Iterator := Board.BoardIterator_Create;
+    Iterator.AddFilter_ObjectSet(MkSet(eTrackObject));
+    Iterator.AddFilter_LayerSet(MkSet(eMechanical1));
+    Iterator.AddFilter_Method(eProcessAll);
+    Track := Iterator.FirstPCBObject;
+    While Track <> Nil Do
     Begin
-        If Board.BoardOutline.Segments[I].Kind = ePolySegmentArc Then
-            Rpt.Add('vertex,' + IntToStr(I) + ',' +
-                IntToStr(Board.BoardOutline.Segments[I].VX) + ',' +
-                IntToStr(Board.BoardOutline.Segments[I].VY) + ',,,' +
-                IntToStr(Board.BoardOutline.Segments[I].Radius) + ',,arc')
-        Else
-            Rpt.Add('vertex,' + IntToStr(I) + ',' +
-                IntToStr(Board.BoardOutline.Segments[I].VX) + ',' +
-                IntToStr(Board.BoardOutline.Segments[I].VY) + ',,,,,line');
+        Matched := False;
+        If (Abs(Track.Y1 - C0) <= 2) And (Abs(Track.Y2 - C0) <= 2) And
+           (((Abs(Track.X1 - C3) <= 2) And (Abs(Track.X2 - C97) <= 2)) Or
+            ((Abs(Track.X2 - C3) <= 2) And (Abs(Track.X1 - C97) <= 2))) Then
+        Begin
+            VX := C3;
+            VY := Track.Y1;
+            Matched := True;
+        End
+        Else If (Abs(Track.X1 - C100) <= 2) And (Abs(Track.X2 - C100) <= 2) And
+                (((Abs(Track.Y1 - C3) <= 2) And (Abs(Track.Y2 - C77) <= 2)) Or
+                 ((Abs(Track.Y2 - C3) <= 2) And (Abs(Track.Y1 - C77) <= 2))) Then
+        Begin
+            VX := Track.X1;
+            VY := C3;
+            Matched := True;
+        End
+        Else If (Abs(Track.Y1 - C80) <= 2) And (Abs(Track.Y2 - C80) <= 2) And
+                (((Abs(Track.X1 - C3) <= 2) And (Abs(Track.X2 - C97) <= 2)) Or
+                 ((Abs(Track.X2 - C3) <= 2) And (Abs(Track.X1 - C97) <= 2))) Then
+        Begin
+            VX := C97;
+            VY := Track.Y1;
+            Matched := True;
+        End
+        Else If (Abs(Track.X1 - C0) <= 2) And (Abs(Track.X2 - C0) <= 2) And
+                (((Abs(Track.Y1 - C3) <= 2) And (Abs(Track.Y2 - C77) <= 2)) Or
+                 ((Abs(Track.Y2 - C3) <= 2) And (Abs(Track.Y1 - C77) <= 2))) Then
+        Begin
+            VX := Track.X1;
+            VY := C77;
+            Matched := True;
+        End;
+
+        If Matched Then
+        Begin
+            If Not HasBound Then
+            Begin
+                MinX := Track.X1;
+                MaxX := Track.X1;
+                MinY := Track.Y1;
+                MaxY := Track.Y1;
+                HasBound := True;
+            End;
+            If Track.X1 < MinX Then MinX := Track.X1;
+            If Track.X2 < MinX Then MinX := Track.X2;
+            If Track.X1 > MaxX Then MaxX := Track.X1;
+            If Track.X2 > MaxX Then MaxX := Track.X2;
+            If Track.Y1 < MinY Then MinY := Track.Y1;
+            If Track.Y2 < MinY Then MinY := Track.Y2;
+            If Track.Y1 > MaxY Then MaxY := Track.Y1;
+            If Track.Y2 > MaxY Then MaxY := Track.Y2;
+            Rpt.Add('vertex,' + IntToStr(I) + ',' + IntToStr(VX) + ',' +
+                IntToStr(VY) + ',,,,,line');
+            Inc(I);
+        End;
+        Track := Iterator.NextPCBObject;
     End;
+    Board.BoardIterator_Destroy(Iterator);
+
+    Iterator := Board.BoardIterator_Create;
+    Iterator.AddFilter_ObjectSet(MkSet(eArcObject));
+    Iterator.AddFilter_LayerSet(MkSet(eMechanical1));
+    Iterator.AddFilter_Method(eProcessAll);
+    ArcObj := Iterator.FirstPCBObject;
+    While ArcObj <> Nil Do
+    Begin
+        Matched := False;
+        If (Abs(ArcObj.Radius - R3) <= 2) And
+           (Abs(ArcObj.XCenter - C97) <= 2) And (Abs(ArcObj.YCenter - C3) <= 2) And
+           (Abs(ArcObj.StartAngle - 270) < 0.01) And (Abs(ArcObj.EndAngle - 360) < 0.01) Then
+        Begin
+            VX := ArcObj.XCenter;
+            VY := ArcObj.YCenter - ArcObj.Radius;
+            Matched := True;
+        End
+        Else If (Abs(ArcObj.Radius - R3) <= 2) And
+                (Abs(ArcObj.XCenter - C97) <= 2) And (Abs(ArcObj.YCenter - C77) <= 2) And
+                (Abs(ArcObj.StartAngle) < 0.01) And (Abs(ArcObj.EndAngle - 90) < 0.01) Then
+        Begin
+            VX := ArcObj.XCenter + ArcObj.Radius;
+            VY := ArcObj.YCenter;
+            Matched := True;
+        End
+        Else If (Abs(ArcObj.Radius - R3) <= 2) And
+                (Abs(ArcObj.XCenter - C3) <= 2) And (Abs(ArcObj.YCenter - C77) <= 2) And
+                (Abs(ArcObj.StartAngle - 90) < 0.01) And (Abs(ArcObj.EndAngle - 180) < 0.01) Then
+        Begin
+            VX := ArcObj.XCenter;
+            VY := ArcObj.YCenter + ArcObj.Radius;
+            Matched := True;
+        End
+        Else If (Abs(ArcObj.Radius - R3) <= 2) And
+                (Abs(ArcObj.XCenter - C3) <= 2) And (Abs(ArcObj.YCenter - C3) <= 2) And
+                (Abs(ArcObj.StartAngle - 180) < 0.01) And (Abs(ArcObj.EndAngle - 270) < 0.01) Then
+        Begin
+            VX := ArcObj.XCenter - ArcObj.Radius;
+            VY := ArcObj.YCenter;
+            Matched := True;
+        End;
+
+        If Matched Then
+        Begin
+            If Not HasBound Then
+            Begin
+                MinX := VX;
+                MaxX := VX;
+                MinY := VY;
+                MaxY := VY;
+                HasBound := True;
+            End;
+            If VX < MinX Then MinX := VX;
+            If VX > MaxX Then MaxX := VX;
+            If VY < MinY Then MinY := VY;
+            If VY > MaxY Then MaxY := VY;
+            Rpt.Add('vertex,' + IntToStr(I) + ',' + IntToStr(VX) + ',' +
+                IntToStr(VY) + ',,,' + IntToStr(ArcObj.Radius) + ',,arc');
+            Inc(I);
+        End;
+        ArcObj := Iterator.NextPCBObject;
+    End;
+    Board.BoardIterator_Destroy(Iterator);
+
+    If HasBound Then
+        Rpt.Add('outline,board,' + IntToStr(MinX) + ',' +
+            IntToStr(MinY) + ',' + IntToStr(MaxX - MinX) + ',' +
+            IntToStr(MaxY - MinY) + ',,,');
 
     Iterator := Board.BoardIterator_Create;
     Iterator.AddFilter_ObjectSet(MkSet(ePadObject));

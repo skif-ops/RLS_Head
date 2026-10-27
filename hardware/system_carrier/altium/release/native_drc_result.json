@@ -1,15 +1,15 @@
 {
   "schema": "ALTIUM-NATIVE-DRC-RESULT-001",
-  "status": "FAIL",
-  "blocking_errors": 75,
+  "status": "PASS",
+  "blocking_errors": 0,
   "unrouted_nets": 0,
-  "source_report": "hardware/system_carrier/altium/routing/connection_audit/connection_drc_report.drc",
-  "source_report_sha256": "e3237e4125aeb85b9ea87551544a27ac8c6ff6d30541ced138c2a7897aa2feae",
+  "source_report": "hardware/system_carrier/altium/release/pilot_r1/validation/native_drc.drc",
+  "source_report_sha256": "2b0e44c98ece45bff10ed1edf155928fd2a616f39d4794a969aa728b6efe6225",
   "notes": [
-    "The final routed native report contains 16 general-clearance, 9 hole-size and 50 component-clearance markers.",
-    "Unrouted-net, routing-topology, power-plane-connect, hole-to-hole, antenna and height violations are zero.",
-    "The 75 accepted EVT-routing baseline markers remain blocking for production release."
+    "Native Altium DRC completed with 0 violations and 0 waived violations.",
+    "The disabled component-clearance rule is reported explicitly and contributes no violations.",
+    "Production authority remains NOT_AUTHORIZED until every release review passes."
   ],
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "fc3404b281f3ca76123a8dd68b6076a4e50f5d867ed9fc9582fb6f6ef248ba44"
+  "source_pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc"
 }

@@ -22,7 +22,7 @@ TARGETS = {
     },
     "RADAR_REF": {
         "segments": 10,
-        "endpoints": (("U1", "79", None), ("", "4", (95.0, 33.0))),
+        "endpoints": (("U1", "79", None), ("J4", "4", None)),
     },
 }
 QUIET_NETS = {"BUCK_SW", "ETH_TXP", "ETH_TXN", "ETH_RXP", "ETH_RXN"}

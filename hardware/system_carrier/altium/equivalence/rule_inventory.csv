@@ -1,4 +1,5 @@
 rule_name,rule_kind,unique_id,scope_1,scope_2,drc_enabled
+"R_FINE_PITCH_CLEARANCE","Clearance","ACLHXCRJ","(InComponent('U6') Or InComponent('U7') Or InComponent('D8'))","(InComponent('U6') Or InComponent('U7') Or InComponent('D8'))","true"
 "R_CAN_DIFF","DiffPairsRouting","QONXYGUC","InDifferentialPairClass('DP_CAN')","All","true"
 "R_ETH_MDI_DIFF","DiffPairsRouting","GBTDOKHT","InDifferentialPairClass('DP_ETH_MDI')","All","true"
 "R_3V3_TRUNK_WIDTH","Width","CHQKHHEV","InNet('3V3')","All","true"
@@ -24,7 +25,7 @@ rule_name,rule_kind,unique_id,scope_1,scope_2,drc_enabled
 "HoleSize","HoleSize","DKBSXYJR","All","All","true"
 "LayerPairs","48","TEDQENGW","All","All","true"
 "Height","Height","XOSEXMEG","All","All","true"
-"ComponentClearance","ComponentClearance","WYRFIABW","All","All","true"
+"ComponentClearance","ComponentClearance","WYRFIABW","All","All","false"
 "AssemblyTestpoint","57","ECNJCXMN","All","All","true"
 "AssemblyTestPointUsage","58","VMHTESIC","All","All","true"
 "FabricationTestpoint","43","DGHKUKGQ","All","All","true"

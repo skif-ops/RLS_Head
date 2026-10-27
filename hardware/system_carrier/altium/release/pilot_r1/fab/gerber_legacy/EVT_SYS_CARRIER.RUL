@@ -1,0 +1,13 @@
+DRC Rules Export File for PCB: C:\Users\skifn\.codex\.chatgpt-projects\g-p-6a9feb917c48819182ec25e1ef55310c\RLS_Head-git\hardware\system_carrier\altium\native\EVT_SYS_CARRIER.PcbDoc
+RuleKind=Clearance|RuleName=R_FINE_PITCH_CLEARANCE|Scope=Board|Minimum=5.12
+RuleKind=Width|RuleName=R_3V3_TRUNK_WIDTH|Scope=Board|Minimum=59.06
+RuleKind=Clearance|RuleName=R_TIMING_TO_SW_CLEARANCE|Scope=Board|Minimum=39.37
+RuleKind=Clearance|RuleName=R_ETH_MDI_CLEARANCE|Scope=Board|Minimum=7.87
+RuleKind=Clearance|RuleName=R_GENERAL_CLEARANCE|Scope=Board|Minimum=7.87
+RuleKind=Width|RuleName=R_RADAR_12V_WIDTH|Scope=Board|Minimum=59.06
+RuleKind=Width|RuleName=R_VIN_HIGH_CURRENT|Scope=Board|Minimum=118.11
+RuleKind=Width|RuleName=R_GNSS_RF_WIDTH|Scope=Board|Minimum=14.17
+RuleKind=SolderMaskExpansion|RuleName=SolderMaskExpansion|Scope=Board|Minimum=0.00
+RuleKind=Width|RuleName=R_GENERAL_WIDTH|Scope=Board|Minimum=5.91
+RuleKind=Clearance|RuleName=Clearance|Scope=Board|Minimum=10.00
+RuleKind=ShortCircuit|RuleName=ShortCircuit|Scope=Board|Allowed=0

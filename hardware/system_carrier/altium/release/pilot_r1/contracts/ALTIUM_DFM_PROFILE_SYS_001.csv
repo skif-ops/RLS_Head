@@ -1,0 +1,11 @@
+dfm_id,category,parameter,value,status,criticality,notes
+DFM-001,COPPER,min_trace_width,FAB_TO_CONFIRM,OPEN,P0,Bind to selected fabricator before production release
+DFM-002,COPPER,min_clearance,FAB_TO_CONFIRM,OPEN,P0,Bind to selected fabricator before production release
+DFM-003,VIA,min_drill,FAB_TO_CONFIRM,OPEN,P0,Do not assume microvia capability
+DFM-004,VIA,min_annular_ring,FAB_TO_CONFIRM,OPEN,P0,Use standard through vias for baseline
+DFM-005,MASK,min_solder_mask_sliver,FAB_TO_CONFIRM,OPEN,P1,Check fine-pitch packages and local footprints
+DFM-006,PASTE,stencil_thickness,FAB_ASSEMBLY_TO_CONFIRM,OPEN,P1,Confirm with assembler
+DFM-007,IMPEDANCE,ETH_MDI_100R,0.26mm_width_0.20mm_gap,EVT_CALCULATED,P0,Initial analytical value on provisional 0.18mm L1-L2 dielectric; fabricator solver binding required before production
+DFM-008,IMPEDANCE,GNSS_RF_50R,0.36mm_width,EVT_CALCULATED,P0,Initial analytical value on provisional 0.18mm L1-L2 dielectric; fabricator solver binding required before production
+DFM-009,ASSEMBLY,min_component_spacing,FAB_ASSEMBLY_TO_CONFIRM,OPEN,P1,Use IPC-class typical rules until assembler contract
+DFM-010,MECHANICAL,board_thickness,1.60mm,LOCKED_FOR_EVT,P0,EVT board thickness fixed; production stack still requires fabricator binding

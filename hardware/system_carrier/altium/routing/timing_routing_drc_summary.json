@@ -1,7 +1,7 @@
 {
   "altium_version": "26.10.1 Trial",
   "board_id": "EVT-SYS-CARRIER",
-  "drc_timestamp": "26.10.2026 22:22:58",
+  "drc_timestamp": "27.10.2026 19:56:27",
   "geometry": {
     "fill_count": 67,
     "minimum_quiet_clearance_mm": 9.519854,
@@ -56,27 +56,27 @@
     "timing_track_count": 26,
     "timing_via_count": 0,
     "trace_width_mm": 0.2,
-    "track_count": 1640,
+    "track_count": 1639,
     "via_count": 132
   },
   "input_sha256": {
-    "fill_inventory": "4e6560146ea09a108d1f539776bad48132826cf1fc55ec7fc1f02dab4ec60a3d",
-    "pad_geometry": "ed49b26395e8a44c49466d2fead482f9bdc435fe0f066ca0f155eb1cec5fb88c",
+    "fill_inventory": "cd73795cf34ee5f5dff28ee6c22d895a94ae7f04aab5e72ffa8e34b18339ae3e",
+    "pad_geometry": "357a2a66a057e60c2920742beb3dc53e32c5a6fdfd75b5e14af43177d0a39054",
     "review_render": "2ee22746079e50ee494f80f6795c77d81e8ee16f0115c78511a1571f6da6884f",
     "review_render_script": "77823e708e654e1add46fcffed3d4b49ff60a62d7d8e8c7646458c2a8e024944",
     "routing_audit_script": "b74db3494b61f64d5b525aac816354d412b876bd481b86be28fe8fcf97b9911d",
     "routing_script": "4d56a59b0260f3b1d3df3929ab4b4c607b8e854de00742f11fd49ad9a9386ae8",
-    "track_inventory": "0841fd9225cc4c0667cc97fec43eaa99976fd61222f58119c0e0ac08b22ff9c4",
+    "track_inventory": "3a2dee84309bbb1b1893e84f2b94a6a3b7e1707e0d331e997eff3b8039864d6b",
     "via_inventory": "12acc64454b766a021a89fb1f1633dc7a21111d8ad1cf0f1a4ce7047b78c3826"
   },
   "production_authority": "NOT_AUTHORIZED",
   "review_status": "PASS",
   "routing_authority": "AUTHORIZED",
   "rule_violations": {
-    "component_clearance": 50,
+    "component_clearance": 0,
     "ethernet_class_clearance": 0,
-    "generic_clearance": 16,
-    "hole_size": 9,
+    "generic_clearance": 0,
+    "hole_size": 0,
     "hole_to_hole": 0,
     "net_antennae": 0,
     "power_plane_connect": 0,
@@ -84,13 +84,13 @@
     "ten_mil_clearance": 0,
     "timing_route_induced": 0,
     "timing_to_buck_sw": 0,
-    "total": 75,
+    "total": 0,
     "unrouted_net": 0,
     "warnings": 0
   },
   "schema": "ALTIUM-TIMING-ROUTING-REVIEW-A-001",
   "source_drc_report": "hardware/system_carrier/altium/routing/connection_audit/connection_drc_report.drc",
-  "source_drc_report_sha256": "088f4eb8a401e60536649e89655df3c926185dbae59837665e0eba97ea04c29b",
+  "source_drc_report_sha256": "a65dab15cff887c0c833a9df5455681da3e891fe3be9a667ccfe22c3709f8f4b",
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "fc3404b281f3ca76123a8dd68b6076a4e50f5d867ed9fc9582fb6f6ef248ba44"
+  "source_pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc"
 }

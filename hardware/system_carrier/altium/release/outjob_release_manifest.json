@@ -1,0 +1,91 @@
+{
+  "schema": "ALTIUM-OUTJOB-RELEASE-MANIFEST-001",
+  "status": "FAIL",
+  "required_outputs_complete": false,
+  "source_is_native_altium": true,
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "outputs": [
+    {
+      "output_id": "OUT-001",
+      "path": "hardware/system_carrier/altium/release/pilot_r1/fab/Gerber_X2_with_Legacy_Profile.zip",
+      "sha256": "c84ad183ab67eba4ae97ea3b03502f0da85b31491b9a2296c89168af12dbebe4",
+      "status": "PASS",
+      "notes": "Ten native Gerber X2 layer files with the native legacy GKO board profile."
+    },
+    {
+      "output_id": "OUT-002",
+      "path": "hardware/system_carrier/altium/release/pilot_r1/fab/NC_Drill.zip",
+      "sha256": "9e2947f884f05cc8279c77de51e9c5bbfe8ee1038c8eaa6d1c4158e0201310eb",
+      "status": "PASS"
+    },
+    {
+      "output_id": "OUT-005",
+      "path": "hardware/system_carrier/altium/release/pilot_r1/assembly/Pick_Place.zip",
+      "sha256": "5a60db10d6cea527f8577dc40c2dff5e564557b51d8efd52eb8a8b6f504ca8c9",
+      "status": "PASS"
+    },
+    {
+      "output_id": "OUT-006",
+      "path": "hardware/system_carrier/altium/release/pilot_r1/assembly/BOM.csv",
+      "sha256": "bb9ae52d3826707d673c7fc43ce1e1856c942b8ed46bdea8566d23d2ac69f063",
+      "status": "PARTIAL",
+      "notes": "Native-equivalence BOM is validated for 92 designators and MPN binding; manufacturer and DNP columns are not populated."
+    },
+    {
+      "output_id": "OUT-007",
+      "path": "hardware/system_carrier/altium/release/pilot_r1/assembly/AssemblyDrawing.pdf",
+      "sha256": "66e547e940e97368447f9b09e570d448d3731ab07868e421602f3b27fee09085",
+      "status": "PASS",
+      "notes": "Two-page native Altium assembly drawing. Top population is shown."
+    },
+    {
+      "output_id": "OUT-008",
+      "path": "hardware/system_carrier/altium/release/pilot_r1/assembly/AssemblyDrawing.pdf",
+      "sha256": "66e547e940e97368447f9b09e570d448d3731ab07868e421602f3b27fee09085",
+      "status": "PASS",
+      "notes": "Bottom page is intentionally empty because the board has no bottom population."
+    },
+    {
+      "output_id": "OUT-009",
+      "path": "hardware/system_carrier/altium/release/pilot_r1/fab/Fabrication_Drawing_PRELIMINARY.pdf",
+      "sha256": "20b351994652f39a9db62ceb4cab8f51f30148aabe62bb8cedb65f8b9d20c0c3",
+      "status": "PARTIAL",
+      "notes": "Derived from native Altium mechanical and drill evidence; marked preliminary and NOT_AUTHORIZED."
+    },
+    {
+      "output_id": "OUT-011",
+      "path": "hardware/system_carrier/altium/release/pilot_r1/documentation/Schematic_Prints.pdf",
+      "sha256": "e8cc76680c9345d876e662eb4cc103b0b8e3b8d4a448b2947c49c30eed8fb7d1",
+      "status": "PASS"
+    },
+    {
+      "output_id": "OUT-012",
+      "path": "hardware/system_carrier/altium/release/pilot_r1/validation/native_drc.drc",
+      "sha256": "2b0e44c98ece45bff10ed1edf155928fd2a616f39d4794a969aa728b6efe6225",
+      "status": "PASS"
+    },
+    {
+      "output_id": "OUT-013",
+      "path": "hardware/system_carrier/altium/release/pilot_r1/validation/compile_report.json",
+      "sha256": "7c85fa6e8320d22b0e77049df83453c74e13f403702ca455257d0a40d5c81dd8",
+      "status": "PASS"
+    },
+    {
+      "output_id": "OUT-014",
+      "path": "hardware/system_carrier/altium/release/pilot_r1/validation/netlist_validation_result.json",
+      "sha256": "f831621dff2401908724a8b17cf28ebe081649b369bcc63bc75be60788158374",
+      "status": "PASS"
+    }
+  ],
+  "missing_required_output_ids": [
+    "OUT-003",
+    "OUT-010"
+  ],
+  "notes": [
+    "IPC-2581 output is missing because the Altium exporter raised an access-violation error.",
+    "STEP output is missing because both direct and OutJob exports failed.",
+    "Gerber X2 profile was not emitted; the native legacy GKO profile is bundled with the X2 layers.",
+    "Production authority remains NOT_AUTHORIZED."
+  ],
+  "source_pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc"
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "EVT-SYS-CARRIER-PILOT-PACKAGE-STATUS-001",
+  "board_id": "EVT-SYS-CARRIER",
+  "hardware_revision": "A",
+  "prepared_on": "2026-10-27",
+  "status": "HOLD",
+  "purpose": "PILOT_MANUFACTURING_PACKAGE_PREPARATION",
+  "production_authority": "NOT_AUTHORIZED",
+  "routing_authority": "AUTHORIZED",
+  "equivalence_gate": "PASS",
+  "native_drc": {
+    "status": "PASS",
+    "violations": 0,
+    "unrouted_nets": 0
+  },
+  "source": {
+    "schematic": "source/EVT_SYS_CARRIER.SchDoc",
+    "schematic_sha256": "5941fb8d9a36092d06f2ff164514ed53c41ccc44a18829ca7ce8cf2aac1cd10d",
+    "pcb": "source/EVT_SYS_CARRIER.PcbDoc",
+    "pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc"
+  },
+  "required_outputs": [
+    {"output_id": "OUT-001", "name": "Gerber X2", "status": "PASS"},
+    {"output_id": "OUT-002", "name": "NC Drill", "status": "PASS"},
+    {"output_id": "OUT-003", "name": "IPC-2581", "status": "MISSING"},
+    {"output_id": "OUT-005", "name": "Pick and Place", "status": "PASS"},
+    {"output_id": "OUT-006", "name": "BOM", "status": "PARTIAL", "reason": "Manufacturer and DNP columns are not populated."},
+    {"output_id": "OUT-007", "name": "Assembly Drawing Top", "status": "PASS"},
+    {"output_id": "OUT-008", "name": "Assembly Drawing Bottom", "status": "PASS", "reason": "No bottom population; page intentionally empty."},
+    {"output_id": "OUT-009", "name": "Fabrication Drawing", "status": "PARTIAL", "reason": "Preliminary derived drawing, not released Altium Draftsman output."},
+    {"output_id": "OUT-010", "name": "STEP", "status": "MISSING"},
+    {"output_id": "OUT-011", "name": "PDF Schematic", "status": "PASS"},
+    {"output_id": "OUT-012", "name": "DRC Report", "status": "PASS"},
+    {"output_id": "OUT-013", "name": "ERC/Compile Report", "status": "PASS"},
+    {"output_id": "OUT-014", "name": "Netlist Comparison", "status": "PASS"}
+  ],
+  "release_holds": [
+    "IPC-2581 export missing after Altium exporter access violation.",
+    "STEP export missing after direct and OutJob failures.",
+    "Rezonit order-specific stack and impedance solver binding pending.",
+    "BOM manufacturer and DNP columns pending.",
+    "Released fabrication drawing pending."
+  ],
+  "authorized_use": [
+    "Internal CAM review",
+    "Fabricator quotation and stack confirmation",
+    "Assembly-process review"
+  ],
+  "prohibited_use": [
+    "Authorized production order",
+    "Claim of production release"
+  ]
+}
