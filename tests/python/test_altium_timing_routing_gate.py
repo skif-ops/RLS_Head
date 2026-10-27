@@ -94,9 +94,9 @@ def _write_fixture(root: Path) -> None:
         _pad("U2", "4", "IMU_DRDY", 10.0, 20.0),
         _pad("U1", "80", "IMU_DRDY", 16.0, 20.0),
         _pad("U1", "79", "RADAR_REF", 10.0, 30.0),
-        _pad("", "4", "RADAR_REF", 95.0, 33.0),
+        _pad("J4", "4", "RADAR_REF", 95.0, 33.0),
     ]
-    pads[-1] = _pad("", "4", "RADAR_REF", 95.0, 33.0)
+    pads[-1] = _pad("J4", "4", "RADAR_REF", 95.0, 33.0)
     tracks[-2] = _track("RADAR_REF", 18.0, 30.0, 95.0, 33.0)
     _write_csv(
         audit / "track_inventory.csv",
