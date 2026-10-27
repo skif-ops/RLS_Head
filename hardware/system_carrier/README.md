@@ -3,6 +3,13 @@
 This directory contains the authoritative non-RF System Carrier
 electrical design inputs.
 
+Project-level documents:
+
+- `../../docs/EVT_SYSTEM_CARRIER_PROJECT_DESCRIPTION.md`
+- `../../docs/EVT_SYSTEM_CARRIER_TECHNICAL_SPECIFICATION.md`
+- `../../docs/EVT_SYSTEM_CARRIER_ENGINEERING_PACKAGE.md`
+- `../../docs/EVT_SYSTEM_CARRIER_REZONIT_REQUEST.md`
+
 Present:
 
 - `BOM_SYS_CARRIER_003.csv`
@@ -54,14 +61,24 @@ CAD status:
 - the retained KiCad System Carrier capture is ERC-clean at 0 errors / 0 warnings;
 - Altium Designer is now the primary PCB CAD target;
 - all KiCad sources are retained as the independent electrical verification baseline;
-- native Altium files live under `hardware/system_carrier/altium/` after the Altium import/equivalence gate.
+- native Altium files live under `hardware/system_carrier/altium/native/` after the Altium import/equivalence gate.
+
+Current implementation:
+
+- native Altium import and equivalence are complete;
+- `ALTIUM_EQUIVALENCE_GATE=PASS`;
+- placement and EVT routing are complete;
+- target signal connection audit reports no disconnected signal nets;
+- routing authority is authorized;
+- production authority is not authorized.
 
 Still open:
 
-- formal `review_a/erc.json` and `review_a/manifest.json` evidence binding;
-- native Altium `SchDoc` / `PcbDoc` import and equivalence verification;
 - exact AWR2944PEVM `RADAR_REF` GPIO/header assignment after bench verification;
-- GNSS antenna connector and RF matching implementation.
+- order-specific Rezonit stack and controlled-impedance binding;
+- closure of the 75 production DRC markers;
+- compact enclosure and STEP verification;
+- return-path, SI, DFM and OutJob production evidence.
 
 Run:
 
@@ -73,9 +90,9 @@ and:
 
 before schematic capture.
 
-The first real schematic gate remains `CARRIER_REVIEW_A`.
-Synthetic files under `tests/fixtures/carrier_review_a/` must never
-be used to close that gate.
+The `CARRIER_REVIEW_A` schematic gate is closed by the retained project
+evidence. Synthetic files under `tests/fixtures/carrier_review_a/` must never
+be used as release evidence.
 
 ## CAD authority
 

@@ -1,0 +1,18 @@
+item,parameter,value,unit,status,source,notes
+PCB,board_length,100,mm,EVT_LOCKED,ALTIUM_BOARD_MECHANICAL_SYS_001.csv,Current routed outline
+PCB,board_width,80,mm,EVT_LOCKED,ALTIUM_BOARD_MECHANICAL_SYS_001.csv,Current routed outline
+PCB,board_thickness,1.60,mm,PROVISIONAL,ALTIUM_BOARD_MECHANICAL_SYS_001.csv,Order-specific Rezonit stack required
+PCB,corner_radius,3,mm,EVT_LOCKED,ALTIUM_BOARD_MECHANICAL_SYS_001.csv,
+PLACEMENT,component_bounds_width,94.776,mm,MEASURED,component_bounds.csv,X 1.043 to 95.819 mm
+PLACEMENT,component_bounds_height,71.190,mm,MEASURED,component_bounds.csv,Y 0.803 to 71.994 mm
+J6,overall_height_max,16.13,mm,DATASHEET_CONFIRMED,Bel SI-60182-F official drawing,Primary current enclosure height driver
+J4,mated_height,10.29,mm,DATASHEET_CONFIRMED,Molex 43045-0600 product data,Allow connector and harness access
+J1_J5,recommended_pcb_thickness,1.57,mm,DATASHEET_CONFIRMED,Molex 43650 series drawing,Project target remains 1.60 mm
+U8,module_height_max,2.60,mm,DATASHEET_CONFIRMED,u-blox NEO-M9N-00B data sheet,
+J8,receptacle_height,1.25,mm,DATASHEET_CONFIRMED,Hirose U.FL-R-SMT-K product data,
+J8,mated_height_max,2.50,mm,DATASHEET_CONFIRMED,Hirose U.FL-R-SMT-K product data,Cable strain relief still required
+SW1,actuator_height,4.30,mm,DATASHEET_CONFIRMED,E-Switch TL3301NF160QG product data,
+ENCLOSURE,internal_length,TBD,mm,OPEN,STEP assembly,Minimize after wall and assembly method selection
+ENCLOSURE,internal_width,TBD,mm,OPEN,STEP assembly,Minimize after wall and assembly method selection
+ENCLOSURE,internal_height,TBD,mm,OPEN,STEP assembly,Must exceed populated board envelope with assembly clearance
+ENCLOSURE,external_dimensions,TBD,mm,OPEN,STEP assembly,No production freeze
