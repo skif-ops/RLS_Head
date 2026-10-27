@@ -1,0 +1,24 @@
+{
+  "schema": "ALTIUM-FABRICATOR-BINDING-001",
+  "status": "PENDING",
+  "fabricator": "Rezonit",
+  "stackup_bound": false,
+  "copper_weight_bound": false,
+  "impedance_50r_bound": false,
+  "impedance_100r_bound": false,
+  "min_trace_clearance_bound": false,
+  "via_rules_bound": false,
+  "evidence_refs": [
+    {
+      "path": "hardware/system_carrier/altium/release/REZONIT_FABRICATION_BASELINE.md",
+      "sha256": "05552923df7e7b013b10da8f04eea9f4d8ebae9479917954f2606d5ceb38a181"
+    }
+  ],
+  "notes": [
+    "Rezonit is selected as the candidate fabricator.",
+    "Published generic capabilities were reviewed, but the requested 1.60 mm four-layer stack and controlled-impedance geometries still require an order-specific fabricator response.",
+    "This PENDING record does not authorize production."
+  ],
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "fc3404b281f3ca76123a8dd68b6076a4e50f5d867ed9fc9582fb6f6ef248ba44"
+}

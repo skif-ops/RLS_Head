@@ -1,5 +1,17 @@
 # System Carrier Altium production release
 
+## Current preparation state
+
+Rezonit is the selected candidate fabricator. The published generic process
+capabilities are recorded in `REZONIT_FABRICATION_BASELINE.md`, while the
+order-specific 1.60 mm stack and controlled-impedance geometries remain
+pending confirmation. There is no enclosure model; the compact mechanical
+target is recorded in `COMPACT_ENCLOSURE_TARGET.md`.
+
+The current native DRC release result is `FAIL` with 75 production-blocking
+baseline markers and zero unrouted nets. Routing authority remains valid, but
+production authority remains `NOT_AUTHORIZED`.
+
 This directory is the evidence boundary between native Altium routing completion and manufacturing release.
 
 `tools.altium_production_release_gate` is the only repository tool that may return production authority for EVT System Carrier Rev.A. The current canonical `native/EVT_SYS_CARRIER.SchDoc` and final routed `native/EVT_SYS_CARRIER.PcbDoc` are both required release artifacts. The SchDoc hash must still match the schematic hash recorded by the equivalence PASS; any electrical schematic change requires a fresh equivalence run. Every post-routing DRC/review/DFM/OutJob evidence file must carry `source_pcb` and `source_pcb_sha256` matching the exact final PcbDoc, so evidence from different board revisions cannot be mixed.

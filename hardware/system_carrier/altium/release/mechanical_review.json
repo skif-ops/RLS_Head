@@ -1,0 +1,22 @@
+{
+  "schema": "ALTIUM-MECHANICAL-REVIEW-001",
+  "status": "PENDING",
+  "board_outline_frozen": false,
+  "mounting_geometry_frozen": false,
+  "connector_access_verified": false,
+  "step_enclosure_verified": false,
+  "reviewer": "PENDING",
+  "evidence_refs": [
+    {
+      "path": "hardware/system_carrier/altium/release/COMPACT_ENCLOSURE_TARGET.md",
+      "sha256": "62af9d524f36dd18e97adca2ce6d143e8514f79ab831b2663d87b7528a7075a3"
+    }
+  ],
+  "notes": [
+    "No enclosure or STEP model exists yet.",
+    "The target is the smallest practical enclosure around the validated 100 x 80 mm PCB.",
+    "Production mechanical freeze requires verified component bodies, connector and cable keepouts, fastener access and a STEP assembly review."
+  ],
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "fc3404b281f3ca76123a8dd68b6076a4e50f5d867ed9fc9582fb6f6ef248ba44"
+}

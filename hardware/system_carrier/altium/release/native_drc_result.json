@@ -1,0 +1,15 @@
+{
+  "schema": "ALTIUM-NATIVE-DRC-RESULT-001",
+  "status": "FAIL",
+  "blocking_errors": 75,
+  "unrouted_nets": 0,
+  "source_report": "hardware/system_carrier/altium/routing/connection_audit/connection_drc_report.drc",
+  "source_report_sha256": "e3237e4125aeb85b9ea87551544a27ac8c6ff6d30541ced138c2a7897aa2feae",
+  "notes": [
+    "The final routed native report contains 16 general-clearance, 9 hole-size and 50 component-clearance markers.",
+    "Unrouted-net, routing-topology, power-plane-connect, hole-to-hole, antenna and height violations are zero.",
+    "The 75 accepted EVT-routing baseline markers remain blocking for production release."
+  ],
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "fc3404b281f3ca76123a8dd68b6076a4e50f5d867ed9fc9582fb6f6ef248ba44"
+}
