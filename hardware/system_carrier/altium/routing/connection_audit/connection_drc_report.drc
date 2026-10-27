@@ -36,7 +36,7 @@ Rule Violations :0
 Processing Rule : Net Antennae (Tolerance=0mil) (All)
 Rule Violations :0
 
-Processing Rule : Component Clearance Constraint ( Horizontal Gap = 7.874mil, Vertical Gap = 7.874mil ) (Disabled)(All),(All)
+Processing Rule : Component Clearance Constraint ( Horizontal Gap = 7.874mil, Vertical Gap = 7.874mil ) (Disabled)(All),(All) 
 Rule Violations :0
 
 Processing Rule : Height Constraint (Min=0mil) (Max=1000mil) (Prefered=500mil) (All)
