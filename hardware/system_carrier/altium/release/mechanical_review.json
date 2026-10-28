@@ -4,6 +4,7 @@
   "board_outline_frozen": true,
   "mounting_geometry_frozen": true,
   "connector_access_verified": false,
+  "step_board_geometry_available": true,
   "step_enclosure_verified": false,
   "reviewer": "Codex computer use operator on user-authorized workstation",
   "evidence_refs": [
@@ -14,11 +15,16 @@
     {
       "path": "hardware/system_carrier/altium/release/pilot_r1/fab/Fabrication_Drawing_PRELIMINARY.pdf",
       "sha256": "20b351994652f39a9db62ceb4cab8f51f30148aabe62bb8cedb65f8b9d20c0c3"
+    },
+    {
+      "path": "hardware/system_carrier/altium/release/pilot_r1/mechanical/EVT_SYS_CARRIER.step",
+      "sha256": "1bc7e0ab9bfd29c2391a5efe477ed6bc9e08d91ae593a1478c154fb34a093459"
     }
   ],
   "notes": [
     "The native board outline is frozen at 100.00 x 80.00 mm with four 3.20 mm NPTH mounting holes at 5.00 mm corner offsets.",
-    "Altium direct and OutJob STEP exports failed, so enclosure and connector-access verification remain open.",
+    "Native Altium board-level STEP export succeeded after disabling Export Folded Board for the rigid PCB.",
+    "The PCB has no usable component 3D bodies, so enclosure and connector-access verification remain open.",
     "The target remains the smallest practical enclosure around the validated board."
   ],
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",

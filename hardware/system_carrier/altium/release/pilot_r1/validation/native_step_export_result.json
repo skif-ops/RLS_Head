@@ -1,0 +1,49 @@
+{
+  "schema": "ALTIUM-NATIVE-STEP-EXPORT-RESULT-001",
+  "status": "PASS",
+  "scope_status": "PARTIAL_3D_BOARD_ASSEMBLY",
+  "exported_on": "2026-10-28",
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc",
+  "step_path": "hardware/system_carrier/altium/release/pilot_r1/mechanical/EVT_SYS_CARRIER.step",
+  "step_sha256": "1bc7e0ab9bfd29c2391a5efe477ed6bc9e08d91ae593a1478c154fb34a093459",
+  "step_size_bytes": 80025,
+  "exporter": {
+    "application": "Altium Designer",
+    "version": "26.10.1",
+    "format": "STEP 3D",
+    "processor": "Open CASCADE STEP processor 7.5",
+    "schema": "AUTOMOTIVE_DESIGN ISO 10303-214"
+  },
+  "export_options": {
+    "export_folded_board": false,
+    "pad_holes": "ALL",
+    "components_with_3d_bodies": "ALL",
+    "three_dimensional_bodies": "BOTH_SIMPLE_AND_GENERIC",
+    "single_part": false
+  },
+  "step_inventory": {
+    "product_records": 3,
+    "manifold_solid_brep_records": 1,
+    "advanced_face_records": 50,
+    "face_bound_records": 130,
+    "named_products": [
+      "PCB",
+      "Board"
+    ]
+  },
+  "verified_checks": {
+    "altium_export_completed": "PASS",
+    "iso_10303_21_header": "PASS",
+    "step_terminator_present": "PASS",
+    "board_solid_present": "PASS"
+  },
+  "limitations": [
+    "The native PCB contains no usable component 3D bodies, so the STEP contains the board solid and holes but not a populated component assembly.",
+    "Connector access, mating-plug clearance and enclosure Z clearance remain unverified."
+  ],
+  "notes": [
+    "The earlier direct export failure was cleared by disabling Export Folded Board for this rigid PCB.",
+    "This artifact is suitable for board outline, thickness, hole and mounting-datum exchange."
+  ]
+}

@@ -52,7 +52,7 @@
       "path": "hardware/system_carrier/altium/release/outjob_release_manifest.json",
       "present": true,
       "schema": "ALTIUM-OUTJOB-RELEASE-MANIFEST-001",
-      "status": "FAIL"
+      "status": "PARTIAL"
     },
     "return_path_si_review": {
       "path": "hardware/system_carrier/altium/release/return_path_si_review.json",

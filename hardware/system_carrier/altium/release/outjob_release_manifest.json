@@ -1,7 +1,7 @@
 {
   "schema": "ALTIUM-OUTJOB-RELEASE-MANIFEST-001",
-  "status": "FAIL",
-  "required_outputs_complete": false,
+  "status": "PARTIAL",
+  "required_outputs_complete": true,
   "source_is_native_altium": true,
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
   "outputs": [
@@ -19,6 +19,13 @@
       "status": "PASS"
     },
     {
+      "output_id": "OUT-003",
+      "path": "hardware/system_carrier/altium/release/pilot_r1/fab/EVT_SYS_CARRIER.cvg",
+      "sha256": "78924c43c6f20a533e93d109d9486c3b69a03e87fc76cd69a12003c3ab1f2ccf",
+      "status": "PASS",
+      "notes": "Native Altium IPC-2581 Revision B XML. Structural checks confirm 92 components, 20 layers, 172 holes and 68 named nets; no external-XSD validation claim is made."
+    },
+    {
       "output_id": "OUT-005",
       "path": "hardware/system_carrier/altium/release/pilot_r1/assembly/Pick_Place.zip",
       "sha256": "5a60db10d6cea527f8577dc40c2dff5e564557b51d8efd52eb8a8b6f504ca8c9",
@@ -27,9 +34,9 @@
     {
       "output_id": "OUT-006",
       "path": "hardware/system_carrier/altium/release/pilot_r1/assembly/BOM.csv",
-      "sha256": "bb9ae52d3826707d673c7fc43ce1e1856c942b8ed46bdea8566d23d2ac69f063",
-      "status": "PARTIAL",
-      "notes": "Native-equivalence BOM is validated for 92 designators and MPN binding; manufacturer and DNP columns are not populated."
+      "sha256": "65856736f177702b61c117f66229736dcbf7fcd5ed760a40043e0e0ea6c30c96",
+      "status": "PASS",
+      "notes": "The 92 native Altium designators and MPNs are enriched from the locked BOM contract with manufacturer, population, DNP and procurement fields. The unchanged native export is retained as BOM_NATIVE.csv."
     },
     {
       "output_id": "OUT-007",
@@ -51,6 +58,13 @@
       "sha256": "20b351994652f39a9db62ceb4cab8f51f30148aabe62bb8cedb65f8b9d20c0c3",
       "status": "PARTIAL",
       "notes": "Derived from native Altium mechanical and drill evidence; marked preliminary and NOT_AUTHORIZED."
+    },
+    {
+      "output_id": "OUT-010",
+      "path": "hardware/system_carrier/altium/release/pilot_r1/mechanical/EVT_SYS_CARRIER.step",
+      "sha256": "1bc7e0ab9bfd29c2391a5efe477ed6bc9e08d91ae593a1478c154fb34a093459",
+      "status": "PARTIAL",
+      "notes": "Native Altium STEP export contains one board solid with hole geometry. No usable component 3D bodies were present, so populated assembly and enclosure-access verification remain open."
     },
     {
       "output_id": "OUT-011",
@@ -77,13 +91,10 @@
       "status": "PASS"
     }
   ],
-  "missing_required_output_ids": [
-    "OUT-003",
-    "OUT-010"
-  ],
+  "missing_required_output_ids": [],
   "notes": [
-    "IPC-2581 output is missing because the Altium exporter raised an access-violation error.",
-    "STEP output is missing because both direct and OutJob exports failed.",
+    "IPC-2581 Revision B export completed successfully in a fresh Altium session and passes XML and content-structure checks.",
+    "Board-level STEP export succeeds when Export Folded Board is disabled; component 3D bodies remain unavailable.",
     "Gerber X2 profile was not emitted; the native legacy GKO profile is bundled with the X2 layers.",
     "Production authority remains NOT_AUTHORIZED."
   ],

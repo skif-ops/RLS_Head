@@ -2,7 +2,7 @@
   "schema": "EVT-SYS-CARRIER-PILOT-PACKAGE-STATUS-001",
   "board_id": "EVT-SYS-CARRIER",
   "hardware_revision": "A",
-  "prepared_on": "2026-10-27",
+  "prepared_on": "2026-10-28",
   "status": "HOLD",
   "purpose": "PILOT_MANUFACTURING_PACKAGE_PREPARATION",
   "production_authority": "NOT_AUTHORIZED",
@@ -22,25 +22,30 @@
   "required_outputs": [
     {"output_id": "OUT-001", "name": "Gerber X2", "status": "PASS"},
     {"output_id": "OUT-002", "name": "NC Drill", "status": "PASS"},
-    {"output_id": "OUT-003", "name": "IPC-2581", "status": "MISSING"},
+    {"output_id": "OUT-003", "name": "IPC-2581", "status": "PASS", "reason": "Native Altium IPC-2581 Revision B export is present and passes XML and content-structure checks."},
     {"output_id": "OUT-005", "name": "Pick and Place", "status": "PASS"},
-    {"output_id": "OUT-006", "name": "BOM", "status": "PARTIAL", "reason": "Manufacturer and DNP columns are not populated."},
+    {"output_id": "OUT-006", "name": "BOM", "status": "PASS", "reason": "92 native designators and MPNs are joined to the locked manufacturer, population and procurement contract; PILOT_BASE_REV_A resolves optional parts as DNP."},
     {"output_id": "OUT-007", "name": "Assembly Drawing Top", "status": "PASS"},
     {"output_id": "OUT-008", "name": "Assembly Drawing Bottom", "status": "PASS", "reason": "No bottom population; page intentionally empty."},
     {"output_id": "OUT-009", "name": "Fabrication Drawing", "status": "PARTIAL", "reason": "Preliminary derived drawing, not released Altium Draftsman output."},
-    {"output_id": "OUT-010", "name": "STEP", "status": "MISSING"},
+    {"output_id": "OUT-010", "name": "STEP", "status": "PARTIAL", "reason": "Native Altium board solid and holes exported successfully; component 3D bodies are absent, so populated assembly and enclosure-access verification remain open."},
     {"output_id": "OUT-011", "name": "PDF Schematic", "status": "PASS"},
     {"output_id": "OUT-012", "name": "DRC Report", "status": "PASS"},
     {"output_id": "OUT-013", "name": "ERC/Compile Report", "status": "PASS"},
     {"output_id": "OUT-014", "name": "Netlist Comparison", "status": "PASS"}
   ],
   "release_holds": [
-    "IPC-2581 export missing after Altium exporter access violation.",
-    "STEP export missing after direct and OutJob failures.",
+    "Native board-level STEP is available, but populated component 3D bodies and enclosure-access verification are pending.",
     "Rezonit order-specific stack and impedance solver binding pending.",
-    "BOM manufacturer and DNP columns pending.",
     "Released fabrication drawing pending."
   ],
+  "pilot_population_variant": {
+    "name": "PILOT_BASE_REV_A",
+    "fit": 84,
+    "dnp": 5,
+    "pcb_only": 3,
+    "optional_gnss_active_antenna_bias": "DNP"
+  },
   "authorized_use": [
     "Internal CAM review",
     "Fabricator quotation and stack confirmation",

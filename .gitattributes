@@ -7,9 +7,10 @@ hardware/system_carrier/altium/equivalence/* binary
 # Native DRC exporter padding is bound by the connection-integrity receipt.
 hardware/system_carrier/altium/routing/connection_audit/connection_drc_report.drc whitespace=-trailing-space
 # Manufacturing packages bind exact exporter bytes and their SHA-256 values.
-hardware/system_carrier/altium/release/pilot_r1/** -text
+hardware/system_carrier/altium/release/pilot_r1/** -text whitespace=cr-at-eol
 hardware/system_carrier/altium/release/pilot_r1/**/*.pdf binary
 hardware/system_carrier/altium/release/pilot_r1/**/*.zip binary
+hardware/system_carrier/altium/release/pilot_r1/**/*.step whitespace=-trailing-space
 hardware/system_carrier/altium/release/*.pdf binary
 hardware/system_carrier/altium/release/*.zip binary
 tools/generate_system_carrier_schematic.py text eol=lf
