@@ -11,7 +11,7 @@ Generating : Bottom Layer
 
 
 Used DCodes :
-    D29
+    D41
     D55
     D56
     D57
@@ -60,7 +60,7 @@ Generating : Bottom Pad Master
 
 
 Used DCodes :
-    D29
+    D41
     D55
     D56
     D57
@@ -87,8 +87,8 @@ Generating : Mid-Layer 2
 
 Used DCodes :
     D68
-    D70
-    D72
+    D69
+    D71
     D73
     D111
     D112
@@ -270,8 +270,9 @@ Generating : Mid-Layer 1
 
 
 Used DCodes :
-    D60
-    D66
+    D62
+    D64
+    D65
     D68
     D69
     D70
@@ -465,7 +466,7 @@ Generating : Bottom Solder
 
 
 Used DCodes :
-    D29
+    D41
     D55
     D56
     D57
@@ -496,7 +497,7 @@ Generating : Bottom Paste
 
 
 Used DCodes :
-    D29
+    D41
 *************************************************************
 
 *************************************************************

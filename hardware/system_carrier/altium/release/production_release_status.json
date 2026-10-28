@@ -20,7 +20,7 @@
       "path": "hardware/system_carrier/altium/release/fabricator_binding.json",
       "present": true,
       "schema": "ALTIUM-FABRICATOR-BINDING-001",
-      "status": "PENDING"
+      "status": "PUBLISHED_BASELINE_CAPTURED"
     },
     "manifest": {
       "path": "hardware/system_carrier/altium/release/manifest.json",
@@ -41,7 +41,7 @@
     "native_pcb": {
       "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
       "present": true,
-      "sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc"
+      "sha256": "ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816"
     },
     "native_schematic": {
       "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
@@ -61,7 +61,7 @@
       "status": "PENDING"
     }
   },
-  "final_native_pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc",
+  "final_native_pcb_sha256": "ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816",
   "invalid_artifacts": [],
   "manifest_errors": [],
   "manifest_ready": false,

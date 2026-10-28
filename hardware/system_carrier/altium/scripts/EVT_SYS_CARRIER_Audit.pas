@@ -662,6 +662,78 @@ Begin
     Rpt.Free;
 End;
 
+Procedure ExportPolygons(Board : IPCB_Board; BasePath : String);
+Var
+    Iterator          : IPCB_BoardIterator;
+    PolygonObj        : IPCB_Polygon;
+    LayerObj          : IPCB_LayerObject;
+    Rpt               : TStringList;
+    I                 : Integer;
+    LayerName         : String;
+    NetName           : String;
+    PolygonTypeName   : String;
+    HatchStyleName    : String;
+    OutlineMatch      : Boolean;
+Begin
+    Rpt := TStringList.Create;
+    Rpt.Add('polygon_name,layer_name,net_name,polygon_type,hatch_style,point_count,outline_point_count,outline_match,remove_dead,remove_islands_by_area,remove_narrow_necks');
+
+    Iterator := Board.BoardIterator_Create;
+    Iterator.AddFilter_ObjectSet(MkSet(ePolyObject));
+    Iterator.AddFilter_LayerSet(AllLayers);
+    Iterator.AddFilter_Method(eProcessAll);
+
+    PolygonObj := Iterator.FirstPCBObject;
+    While PolygonObj <> Nil Do
+    Begin
+        LayerName := IntToStr(Ord(PolygonObj.Layer));
+        LayerObj := Board.LayerStack.LayerObject[PolygonObj.Layer];
+        If LayerObj <> Nil Then LayerName := LayerObj.Name;
+
+        NetName := '';
+        If PolygonObj.Net <> Nil Then NetName := PolygonObj.Net.Name;
+
+        PolygonTypeName := IntToStr(Ord(PolygonObj.PolygonType));
+        If PolygonObj.PolygonType = eSignalLayerPolygon Then
+            PolygonTypeName := 'SignalLayer';
+
+        HatchStyleName := IntToStr(Ord(PolygonObj.PolyHatchStyle));
+        If PolygonObj.PolyHatchStyle = ePolySolid Then
+            HatchStyleName := 'Solid';
+
+        OutlineMatch :=
+            PolygonObj.PointCount = Board.BoardOutline.PointCount;
+        If OutlineMatch Then
+            For I := 0 To PolygonObj.PointCount - 1 Do
+                If (PolygonObj.Segments[I].Kind <>
+                    Board.BoardOutline.Segments[I].Kind) Or
+                   (PolygonObj.Segments[I].vx <>
+                    Board.BoardOutline.Segments[I].vx) Or
+                   (PolygonObj.Segments[I].vy <>
+                    Board.BoardOutline.Segments[I].vy) Then
+                    OutlineMatch := False;
+
+        Rpt.Add(
+            CsvQuote(PolygonObj.Name) + ',' +
+            CsvQuote(LayerName) + ',' +
+            CsvQuote(NetName) + ',' +
+            CsvQuote(PolygonTypeName) + ',' +
+            CsvQuote(HatchStyleName) + ',' +
+            IntToStr(PolygonObj.PointCount) + ',' +
+            IntToStr(Board.BoardOutline.PointCount) + ',' +
+            CsvQuote(BoolText(OutlineMatch)) + ',' +
+            CsvQuote(BoolText(PolygonObj.RemoveDead)) + ',' +
+            CsvQuote(BoolText(PolygonObj.RemoveIslandsByArea)) + ',' +
+            CsvQuote(BoolText(PolygonObj.RemoveNarrowNecks))
+        );
+        PolygonObj := Iterator.NextPCBObject;
+    End;
+
+    Board.BoardIterator_Destroy(Iterator);
+    Rpt.SaveToFile(BasePath + 'polygon_inventory.csv');
+    Rpt.Free;
+End;
+
 Procedure ExportNativeAudit;
 Var
     Board    : IPCB_Board;
@@ -693,6 +765,7 @@ Begin
     ExportMechanical(Board, BasePath);
     ExportPairsAndClasses(Board, BasePath);
     ExportStackDetails(Board, BasePath);
+    ExportPolygons(Board, BasePath);
 
     ShowMessage(
         'EVT System Carrier native audit exported to:' + #13#10 +

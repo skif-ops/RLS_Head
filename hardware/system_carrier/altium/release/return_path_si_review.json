@@ -1,24 +1,33 @@
 {
   "schema": "ALTIUM-RETURN-PATH-SI-REVIEW-001",
   "status": "PENDING",
-  "p0_open_findings": 2,
-  "l2_ground_continuity_verified": false,
+  "p0_open_findings": 1,
+  "l2_ground_continuity_verified": true,
   "timing_return_paths_verified": true,
   "ethernet_mdi_return_path_verified": false,
   "reviewer": "Codex computer use operator on user-authorized workstation",
   "evidence_refs": [
     {
       "path": "hardware/system_carrier/altium/routing/timing_routing_drc_summary.json",
-      "sha256": "472c49b8c9b392a4903a162faaa1f183bb7633080037250f80db90f0a2a38952"
+      "sha256": "e12920672d330ef990e0957bb96457951adc6964cc4fe9b6257380933a9e8b04"
     },
     {
       "path": "hardware/system_carrier/altium/equivalence/no_mmwave_review_result.json",
-      "sha256": "77025e0f8a6764b91f67b59bab4dd94eb749b0850c59efb2456fd5152d6a1248"
+      "sha256": "1112034c996536508ebf3cd8b3340256246c1fe47e880a2a8eae630531caf1c7"
+    },
+    {
+      "path": "hardware/system_carrier/altium/equivalence/polygon_inventory.csv",
+      "sha256": "12c49b597ad4fbade427acd80cdf8d22032348f51997dff6d74c288bb3441cc4"
+    },
+    {
+      "path": "hardware/system_carrier/altium/equivalence/native_audit_result.json",
+      "sha256": "c43f5f69b72b589bef52a601d1336998b628f0acc1d749b34c7e0e949eab526a"
     }
   ],
   "notes": [
     "Final native connectivity and timing-route checks pass with no unrouted nets, topology errors or antenna violations.",
-    "L2 continuity and Ethernet MDI return-path release remain open until the provisional stack is bound and the routed pair is reviewed against the fabricator solver result.",
+    "L2 continuity is closed by the native polygon audit and the visually checked color Mid-Layer 1 print. The solid GND polygon covers the full board outline with eight vertices and no removal flags.",
+    "Ethernet MDI return-path and impedance release remain open until the routed pair is reviewed against the fabricator solver result.",
     "GNSS and Ethernet routing geometry is present, but impedance release remains dependent on the fabricator binding."
   ],
   "power_hot_loop_verified": true,
@@ -27,5 +36,5 @@
   "gnss_rf_route_verified": true,
   "no_mmwave_post_route_verified": true,
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc"
+  "source_pcb_sha256": "ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816"
 }

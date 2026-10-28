@@ -1,7 +1,7 @@
 {
   "altium_version": "26.10.1 Trial",
   "board_id": "EVT-SYS-CARRIER",
-  "drc_timestamp": "27.10.2026 19:56:27",
+  "drc_timestamp": "28.10.2026 14:22:30",
   "geometry": {
     "fill_count": 67,
     "minimum_quiet_clearance_mm": 9.519854,
@@ -60,14 +60,14 @@
     "via_count": 132
   },
   "input_sha256": {
-    "fill_inventory": "cd73795cf34ee5f5dff28ee6c22d895a94ae7f04aab5e72ffa8e34b18339ae3e",
-    "pad_geometry": "357a2a66a057e60c2920742beb3dc53e32c5a6fdfd75b5e14af43177d0a39054",
+    "fill_inventory": "f438908251c9281552fe9925dc77b6fdef9f2e3603fbc0125514785a13b22435",
+    "pad_geometry": "01a1fe536dc0ba38aa2d28c208d28c08e37a7767be2709fb88ef9f4bf2312bbb",
     "review_render": "2ee22746079e50ee494f80f6795c77d81e8ee16f0115c78511a1571f6da6884f",
     "review_render_script": "77823e708e654e1add46fcffed3d4b49ff60a62d7d8e8c7646458c2a8e024944",
     "routing_audit_script": "b74db3494b61f64d5b525aac816354d412b876bd481b86be28fe8fcf97b9911d",
     "routing_script": "4d56a59b0260f3b1d3df3929ab4b4c607b8e854de00742f11fd49ad9a9386ae8",
-    "track_inventory": "3a2dee84309bbb1b1893e84f2b94a6a3b7e1707e0d331e997eff3b8039864d6b",
-    "via_inventory": "12acc64454b766a021a89fb1f1633dc7a21111d8ad1cf0f1a4ce7047b78c3826"
+    "track_inventory": "6cd1843e389aba33446c3d3500f7fd6d7aceafc55f9edf55c3b298874c6b6f13",
+    "via_inventory": "2fd1b3f4b38905580fbceff62dc3569de88cb301ea513f73755977164e617d17"
   },
   "production_authority": "NOT_AUTHORIZED",
   "review_status": "PASS",
@@ -90,7 +90,7 @@
   },
   "schema": "ALTIUM-TIMING-ROUTING-REVIEW-A-001",
   "source_drc_report": "hardware/system_carrier/altium/routing/connection_audit/connection_drc_report.drc",
-  "source_drc_report_sha256": "4e7e1bacd8cd0c5109e9e400ec20499a295f18f90230a3c2d1e0caae980a259e",
+  "source_drc_report_sha256": "b9f8c2019c07d45a08c0c138aeca5a1b2e4941b9baf5ef793be8f531ca774e5d",
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc"
+  "source_pcb_sha256": "ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816"
 }

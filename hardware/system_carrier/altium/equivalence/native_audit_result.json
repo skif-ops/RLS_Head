@@ -4,6 +4,7 @@
   "errors": [],
   "expected_component_count": 92,
   "expected_layer_stack_count": 4,
+  "gnd_l2_plane_count": 1,
   "input_sha256": {
     "class_inventory": "e8ac2b28fe12d96657c899053049a4271589bf9752cdfa26a2066530521d1084",
     "component_inventory": "6cedbba5a0af2a13094adda2ab2f168af0a8c67beaa02d9fd5c8c7c00c9641d4",
@@ -12,7 +13,8 @@
     "layer_stack_inventory": "cbdf4c20e487668a5b1e67abfa8e4d3bcd8dc4015688fc52b0e1d6e9cfa662ec",
     "mechanical_inventory": "0b587c41ef071255e8b17084fc24d107bdd7f6d3ee97f5e28d9d8482f8cb8bcd",
     "net_inventory": "8e66f63a7b8d8d9fc073c7e05f28db63b24ad5552bd243b70a0da54da2e08fcf",
-    "pad_net_inventory": "42adf427dc6643c41a46044c8e05e265a0e5db4c46a13cd7f0d90a2f1095d1a9",
+    "pad_net_inventory": "4ad8833119d284abf9a55b3540294bcbc5f09ea6d9c84708c201e1d28c08aab3",
+    "polygon_inventory": "12c49b597ad4fbade427acd80cdf8d22032348f51997dff6d74c288bb3441cc4",
     "rule_constraint_inventory": "f53b0fa073b4dbd4f420698190673ecccbbc70f0c1d00a2d7c34b60d74f847b8",
     "rule_inventory": "b5c34be425efa5fd9f0ea231273f514b3ce97ab5e301d2abe32e254c0be93895"
   },
@@ -20,12 +22,13 @@
   "mounting_hole_count": 4,
   "net_count": 67,
   "notes": [
-    "PASS cross-checks native components, P0/P1 net names, rule names/families and values, MCU pin-to-net assignments, direct symbol pin contracts, four-layer copper stack, board outline and mounting holes.",
+    "PASS cross-checks native components, P0/P1 net names, rule names/families and values, MCU pin-to-net assignments, direct symbol pin contracts, four-layer copper stack, board outline, mounting holes and the solid GND polygon bound to the complete L2 board outline.",
     "Exact footprint equivalence, hierarchy/port semantics, connector aggregate semantics and rule priority remain controlled by dedicated evidence.",
     "The full ALTIUM_EQUIVALENCE_GATE still controls layout authority."
   ],
   "pad_record_count": 512,
   "pinmap_checked_count": 29,
+  "polygon_count": 1,
   "required_class_count": 10,
   "required_p0_p1_net_count": 32,
   "required_rule_count": 10,

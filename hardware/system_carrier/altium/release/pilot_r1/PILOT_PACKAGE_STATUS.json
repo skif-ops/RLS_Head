@@ -17,7 +17,7 @@
     "schematic": "source/EVT_SYS_CARRIER.SchDoc",
     "schematic_sha256": "5941fb8d9a36092d06f2ff164514ed53c41ccc44a18829ca7ce8cf2aac1cd10d",
     "pcb": "source/EVT_SYS_CARRIER.PcbDoc",
-    "pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc"
+    "pcb_sha256": "ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816"
   },
   "required_outputs": [
     {"output_id": "OUT-001", "name": "Gerber X2", "status": "PASS"},

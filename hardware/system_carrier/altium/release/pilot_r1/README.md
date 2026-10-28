@@ -32,7 +32,8 @@ Production authority is `NOT_AUTHORIZED`.
 - Preliminary fabrication drawing with outline, mounting datum, stack,
   impedance start values and drill table.
 - Five-page color PCB layer reference with the composite, top, two internal
-  copper layers and bottom. All pages were rendered and visually checked.
+  copper layers and bottom. All pages were rendered and visually checked. The
+  Mid-Layer 1 page confirms full-board L2 GND-plane coverage.
 - Rezonit published four-layer TG150 working stack, TG170 alternative,
   material properties, process limits, mask, finish and mechanical data.
 
@@ -80,4 +81,4 @@ is explicitly completed.
 - `PILOT_PACKAGE_STATUS.json`
 
 The source PcbDoc SHA-256 is
-`d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc`.
+`ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816`.

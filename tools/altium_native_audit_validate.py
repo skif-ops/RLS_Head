@@ -156,6 +156,7 @@ def validate(
         "diff_pair_inventory": audit / "diff_pair_inventory.csv",
         "class_inventory": audit / "class_inventory.csv",
         "layer_stack_detail": audit / "layer_stack_detail.csv",
+        "polygon_inventory": audit / "polygon_inventory.csv",
     }
 
     errors: list[str] = []
@@ -183,6 +184,7 @@ def validate(
     diff_pairs = read_csv(paths["diff_pair_inventory"])
     classes = read_csv(paths["class_inventory"])
     stack_detail = read_csv(paths["layer_stack_detail"])
+    polygons = read_csv(paths["polygon_inventory"])
 
     input_sha256 = {
         artifact_id: sha256_file(path)
@@ -535,6 +537,47 @@ def validate(
                     stack_errors.append(f"stack_dielectric_er:{index + 1}")
     errors.extend(stack_errors)
 
+    ground_planes = [
+        row for row in polygons
+        if _clean(row.get("polygon_name")) == "EVT_GND_L2_PLANE"
+    ]
+    ground_plane_errors: list[str] = []
+    if len(ground_planes) != 1:
+        ground_plane_errors.append(
+            f"gnd_l2_plane_count:{len(ground_planes)}"
+        )
+    else:
+        ground_plane = ground_planes[0]
+        expected_values = {
+            "layer_name": "midlayer1",
+            "net_name": "gnd",
+            "polygon_type": "signallayer",
+            "hatch_style": "solid",
+            "outline_match": "true",
+            "remove_dead": "false",
+            "remove_islands_by_area": "false",
+            "remove_narrow_necks": "false",
+        }
+        for field, expected in expected_values.items():
+            actual = _norm_layer(ground_plane.get(field))
+            if actual != expected:
+                ground_plane_errors.append(
+                    f"gnd_l2_plane_{field}:{expected}!={actual or 'missing'}"
+                )
+        point_count = _clean(ground_plane.get("point_count"))
+        outline_point_count = _clean(
+            ground_plane.get("outline_point_count")
+        )
+        if (
+            not point_count.isdigit()
+            or int(point_count) < 4
+            or point_count != outline_point_count
+        ):
+            ground_plane_errors.append(
+                "gnd_l2_plane_outline_point_count"
+            )
+    errors.extend(ground_plane_errors)
+
     audit_status = "PASS" if not errors else "FAIL"
     verified_checks = {
         "native_pcb_audit": audit_status,
@@ -586,6 +629,8 @@ def validate(
         ),
         "differential_pair_count": len(actual_pairs),
         "required_class_count": len(required_classes),
+        "polygon_count": len(polygons),
+        "gnd_l2_plane_count": len(ground_planes),
         "input_sha256": input_sha256,
         "verified_checks": verified_checks,
         "notes": [
@@ -593,7 +638,8 @@ def validate(
                 "PASS cross-checks native components, P0/P1 net names, "
                 "rule names/families and values, MCU pin-to-net assignments, "
                 "direct symbol pin contracts, four-layer copper stack, "
-                "board outline and mounting holes."
+                "board outline, mounting holes and the solid GND polygon "
+                "bound to the complete L2 board outline."
             ),
             (
                 "Exact footprint equivalence, hierarchy/port semantics, "

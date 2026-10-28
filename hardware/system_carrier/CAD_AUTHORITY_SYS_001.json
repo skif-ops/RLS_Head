@@ -46,7 +46,7 @@
   "board_id": "EVT-SYS-CARRIER",
   "delete_kicad_sources": false,
   "equivalence_gate_required": true,
-  "equivalence_result_sha256": "c2b9906dad696b8070980a03787e877ade76ba98ddf45b50a25ce18aa00d99ca",
+  "equivalence_result_sha256": "5fa96baa967194d9907b0f8876b31673ac13569044326d5ba13af3cc8fb73051",
   "evt_impedance_model": {
     "eth_mdi_100r": "0.26 mm width / 0.20 mm gap top differential microstrip over provisional 0.18 mm L1-L2 dielectric",
     "gnss_rf_50r": "0.36 mm top microstrip over provisional 0.18 mm L1-L2 dielectric",
@@ -72,7 +72,7 @@
   ],
   "hardware_revision": "A",
   "native_document_status": "NATIVE_EQUIVALENCE_PASS",
-  "native_pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc",
+  "native_pcb_sha256": "ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816",
   "native_schematic_sha256": "5941fb8d9a36092d06f2ff164514ed53c41ccc44a18829ca7ce8cf2aac1cd10d",
   "notes": [
     "KiCad electrical sources remain permanently retained.",

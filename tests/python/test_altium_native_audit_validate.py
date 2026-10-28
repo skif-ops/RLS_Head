@@ -238,6 +238,28 @@ def _native_fixture(tmp_path: Path, *, drop_last_rule: bool = False) -> None:
         ["layer_name", "copper_thickness_raw", "dielectric_height_raw", "dielectric_er"],
         detail_rows,
     )
+    _write_csv(
+        tmp_path / "polygon_inventory.csv",
+        [
+            "polygon_name", "layer_name", "net_name", "polygon_type",
+            "hatch_style", "point_count", "outline_point_count",
+            "outline_match", "remove_dead", "remove_islands_by_area",
+            "remove_narrow_necks",
+        ],
+        [{
+            "polygon_name": "EVT_GND_L2_PLANE",
+            "layer_name": "Mid-Layer 1",
+            "net_name": "GND",
+            "polygon_type": "SignalLayer",
+            "hatch_style": "Solid",
+            "point_count": "8",
+            "outline_point_count": "8",
+            "outline_match": "true",
+            "remove_dead": "false",
+            "remove_islands_by_area": "false",
+            "remove_narrow_necks": "false",
+        }],
+    )
 
 
 def test_native_audit_validator_passes_complete_fixture(tmp_path):
@@ -272,6 +294,7 @@ def test_native_audit_validator_passes_complete_fixture(tmp_path):
         "diff_pair_inventory",
         "class_inventory",
         "layer_stack_detail",
+        "polygon_inventory",
     }
     assert all(
         len(value) == 64
@@ -330,6 +353,25 @@ def test_native_audit_validator_detects_layer_stack_mismatch(tmp_path):
         item.startswith("layer_stack_mismatch:")
         for item in result["errors"]
     )
+
+
+def test_native_audit_validator_detects_missing_gnd_l2_plane(tmp_path):
+    _native_fixture(tmp_path)
+    _write_csv(
+        tmp_path / "polygon_inventory.csv",
+        [
+            "polygon_name", "layer_name", "net_name", "polygon_type",
+            "hatch_style", "point_count", "outline_point_count",
+            "outline_match", "remove_dead", "remove_islands_by_area",
+            "remove_narrow_necks",
+        ],
+        [],
+    )
+
+    result = validate(system_root=SYSTEM, audit_dir=tmp_path)
+
+    assert result["status"] == "FAIL"
+    assert "gnd_l2_plane_count:0" in result["errors"]
 
 
 def test_native_audit_validator_accepts_altium_layer_name_punctuation(tmp_path):
