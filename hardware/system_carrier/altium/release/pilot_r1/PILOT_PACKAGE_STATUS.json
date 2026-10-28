@@ -3,7 +3,7 @@
   "board_id": "EVT-SYS-CARRIER",
   "hardware_revision": "A",
   "prepared_on": "2026-10-28",
-  "status": "HOLD",
+  "status": "PILOT_PACKAGE_READY_FOR_FABRICATOR_REVIEW",
   "purpose": "PILOT_MANUFACTURING_PACKAGE_PREPARATION",
   "production_authority": "NOT_AUTHORIZED",
   "routing_authority": "AUTHORIZED",
@@ -28,14 +28,19 @@
     {"output_id": "OUT-007", "name": "Assembly Drawing Top", "status": "PASS"},
     {"output_id": "OUT-008", "name": "Assembly Drawing Bottom", "status": "PASS", "reason": "No bottom population; page intentionally empty."},
     {"output_id": "OUT-009", "name": "Fabrication Drawing", "status": "PARTIAL", "reason": "Preliminary derived drawing, not released Altium Draftsman output."},
-    {"output_id": "OUT-010", "name": "STEP", "status": "PARTIAL", "reason": "Native Altium board solid and holes exported successfully; component 3D bodies are absent, so populated assembly and enclosure-access verification remain open."},
+    {"output_id": "OUT-010", "name": "STEP", "status": "PARTIAL", "reason": "Native Altium board solid and holes exported successfully. Populated component 3D and enclosure verification are outside the current pilot package scope and are not archive blockers."},
     {"output_id": "OUT-011", "name": "PDF Schematic", "status": "PASS"},
     {"output_id": "OUT-012", "name": "DRC Report", "status": "PASS"},
     {"output_id": "OUT-013", "name": "ERC/Compile Report", "status": "PASS"},
     {"output_id": "OUT-014", "name": "Netlist Comparison", "status": "PASS"}
   ],
-  "release_holds": [
-    "Native board-level STEP is available, but populated component 3D bodies and enclosure-access verification are pending.",
+  "archive_blockers": [],
+  "deferred_corrections": [
+    "Bind the final Rezonit finished thickness, finished copper and impedance solver geometries when order data becomes available.",
+    "Replace the preliminary fabrication drawing with a released fabrication drawing before production authorization.",
+    "Enclosure manufacturing and populated component 3D are outside the current scope. Create antenna-mount 3D only if assembly technology requires it."
+  ],
+  "production_release_holds": [
     "Rezonit order-specific stack and impedance solver binding pending.",
     "Released fabrication drawing pending."
   ],
@@ -48,7 +53,8 @@
   },
   "authorized_use": [
     "Internal CAM review",
-    "Fabricator quotation and stack confirmation",
+    "Fabricator quotation and CAM preflight",
+    "Order-specific stack and impedance correction",
     "Assembly-process review"
   ],
   "prohibited_use": [

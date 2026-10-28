@@ -31,22 +31,29 @@ Production authority is `NOT_AUTHORIZED`.
   board export succeeds with `Export Folded Board` disabled.
 - Preliminary fabrication drawing with outline, mounting datum, stack,
   impedance start values and drill table.
+- Five-page color PCB layer reference with the composite, top, two internal
+  copper layers and bottom. All pages were rendered and visually checked.
+- Rezonit published four-layer TG150 working stack, TG170 alternative,
+  material properties, process limits, mask, finish and mechanical data.
 
-## Open release holds
+## Pilot package disposition
 
-1. The native STEP contains the board solid and holes, but no component 3D
-   bodies were available. Connector access, mating-plug clearance and enclosure
-   Z clearance therefore remain open.
-2. The Rezonit order-specific 1.60 mm stack, finished copper and field-solver
-   impedance values are not yet bound. Generic published process data is
-   included only as a preparation baseline.
-3. The fabrication drawing is preliminary and derived from native Altium
-   mechanical, stack and drill evidence. It is not a released Altium Draftsman
-   document.
-These holds prevent production release. The package can be used for internal
-CAM review and for obtaining the order-specific fabricator data. It must not be
-submitted as an authorized production order until the holds are closed and the
-production release gate passes.
+Archive assembly has no open blockers. The package is ready for internal CAM
+review, Rezonit quotation and fabricator preflight. The published 1.50 mm TG150
+four-layer 35 um construction is used as the working factory baseline.
+
+The following corrections are deferred and do not block the archive:
+
+1. Bind the exact finished thickness, finished copper and impedance solver
+   geometries supplied for the order.
+2. Replace the preliminary fabrication drawing with a released drawing before
+   production authorization.
+3. Enclosure manufacturing and populated component 3D are outside the current
+   scope. Create antenna-mount 3D only if assembly technology requires it.
+
+Production authority remains `NOT_AUTHORIZED`. The archive must not be
+submitted as an authorized production order until the production release gate
+is explicitly completed.
 
 ## Main files
 
@@ -54,18 +61,22 @@ production release gate passes.
 - `fab/NC_Drill.zip`
 - `fab/EVT_SYS_CARRIER.cvg`
 - `fab/Fabrication_Drawing_PRELIMINARY.pdf`
+- `fab/PCB_Layer_Reference_COLOR.pdf`
 - `assembly/Pick_Place.zip`
 - `assembly/BOM.csv`
 - `assembly/BOM_NATIVE.csv`
 - `assembly/AssemblyDrawing.pdf`
 - `mechanical/EVT_SYS_CARRIER.step`
 - `documentation/Schematic_Prints.pdf`
+- `documentation/REZONIT_FABRICATION_BASELINE.md`
+- `documentation/REZONIT_PUBLISHED_STACK_4L_35UM.csv`
 - `validation/native_drc.drc`
 - `validation/altium_equivalence_result.json`
 - `validation/pilot_bom_enrichment_result.json`
 - `validation/native_step_export_result.json`
 - `validation/ipc2581_status_report.txt`
 - `validation/native_ipc2581_export_result.json`
+- `validation/native_color_layer_pdf_result.json`
 - `PILOT_PACKAGE_STATUS.json`
 
 The source PcbDoc SHA-256 is

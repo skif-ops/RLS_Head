@@ -64,7 +64,14 @@
       "path": "hardware/system_carrier/altium/release/pilot_r1/mechanical/EVT_SYS_CARRIER.step",
       "sha256": "1bc7e0ab9bfd29c2391a5efe477ed6bc9e08d91ae593a1478c154fb34a093459",
       "status": "PARTIAL",
-      "notes": "Native Altium STEP export contains one board solid with hole geometry. No usable component 3D bodies were present, so populated assembly and enclosure-access verification remain open."
+      "notes": "Native Altium STEP export contains one board solid with hole geometry. Populated component 3D and enclosure verification are outside the current pilot package scope and are not archive blockers."
+    },
+    {
+      "output_id": "OUT-S01",
+      "path": "hardware/system_carrier/altium/release/pilot_r1/fab/PCB_Layer_Reference_COLOR.pdf",
+      "sha256": "33f3f654946a31729b16cfca0508663caa29e1ecb27c48ebade65746ae27df3a",
+      "status": "PASS",
+      "notes": "Supplemental five-page color layer reference. It contains the multilayer composite, top, two internal copper layers and bottom. It is not a substitute for OUT-009."
     },
     {
       "output_id": "OUT-011",
@@ -94,8 +101,10 @@
   "missing_required_output_ids": [],
   "notes": [
     "IPC-2581 Revision B export completed successfully in a fresh Altium session and passes XML and content-structure checks.",
-    "Board-level STEP export succeeds when Export Folded Board is disabled; component 3D bodies remain unavailable.",
+    "Board-level STEP export succeeds when Export Folded Board is disabled; component and enclosure 3D are outside the current package scope.",
     "Gerber X2 profile was not emitted; the native legacy GKO profile is bundled with the X2 layers.",
+    "The color layer PDF was rendered at 144 DPI and all five pages passed visual and non-grayscale checks.",
+    "The published Rezonit TG150 four-layer 35 um stack is the working package baseline. Exact order values remain deferred corrections.",
     "Production authority remains NOT_AUTHORIZED."
   ],
   "source_pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc"

@@ -2,14 +2,19 @@
 
 ## Current preparation state
 
-Rezonit is the selected candidate fabricator. The published generic process
-capabilities are recorded in `REZONIT_FABRICATION_BASELINE.md`, while the
-order-specific 1.60 mm stack and controlled-impedance geometries remain
-pending confirmation. There is no enclosure model; the compact mechanical
-target is recorded in `COMPACT_ENCLOSURE_TARGET.md`.
+Rezonit is the selected candidate fabricator. The published 1.50 mm TG150
+four-layer 35 um construction is the working package baseline. The TG170
+alternative, material data, process limits, mask, finish, mechanical and
+impedance starting values are recorded in
+`REZONIT_FABRICATION_BASELINE.md` and
+`REZONIT_PUBLISHED_STACK_4L_35UM.csv`. Exact order values are deferred for
+later correction and do not block pilot archive assembly.
 
-The current native DRC release result is `FAIL` with 75 production-blocking
-baseline markers and zero unrouted nets. Routing authority remains valid, but
+The current pilot package native DRC result is `PASS` with zero violations and
+zero unrouted nets. The package is ready for internal CAM review, Rezonit
+quotation and fabricator preflight. Enclosure manufacturing and populated
+component 3D are outside the current scope; antenna-mount 3D is required only
+if assembly technology needs it. Routing authority remains valid, but
 production authority remains `NOT_AUTHORIZED`.
 
 This directory is the evidence boundary between native Altium routing completion and manufacturing release.

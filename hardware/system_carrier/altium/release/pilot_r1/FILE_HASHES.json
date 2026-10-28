@@ -4,16 +4,20 @@
   "files": [
     {"path": "source/EVT_SYS_CARRIER.SchDoc", "sha256": "5941fb8d9a36092d06f2ff164514ed53c41ccc44a18829ca7ce8cf2aac1cd10d"},
     {"path": "source/EVT_SYS_CARRIER.PcbDoc", "sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc"},
+    {"path": "source/Fabrication.OutJob", "sha256": "d410baa26041616e04616247d5ee736a2353cd9d28c17de0697a122823b94219"},
     {"path": "fab/Gerber_X2_with_Legacy_Profile.zip", "sha256": "c84ad183ab67eba4ae97ea3b03502f0da85b31491b9a2296c89168af12dbebe4"},
     {"path": "fab/NC_Drill.zip", "sha256": "9e2947f884f05cc8279c77de51e9c5bbfe8ee1038c8eaa6d1c4158e0201310eb"},
     {"path": "fab/EVT_SYS_CARRIER.cvg", "sha256": "78924c43c6f20a533e93d109d9486c3b69a03e87fc76cd69a12003c3ab1f2ccf"},
     {"path": "fab/Fabrication_Drawing_PRELIMINARY.pdf", "sha256": "20b351994652f39a9db62ceb4cab8f51f30148aabe62bb8cedb65f8b9d20c0c3"},
+    {"path": "fab/PCB_Layer_Reference_COLOR.pdf", "sha256": "33f3f654946a31729b16cfca0508663caa29e1ecb27c48ebade65746ae27df3a"},
     {"path": "assembly/Pick_Place.zip", "sha256": "5a60db10d6cea527f8577dc40c2dff5e564557b51d8efd52eb8a8b6f504ca8c9"},
     {"path": "assembly/BOM.csv", "sha256": "65856736f177702b61c117f66229736dcbf7fcd5ed760a40043e0e0ea6c30c96"},
     {"path": "assembly/BOM_NATIVE.csv", "sha256": "bb9ae52d3826707d673c7fc43ce1e1856c942b8ed46bdea8566d23d2ac69f063"},
     {"path": "assembly/AssemblyDrawing.pdf", "sha256": "66e547e940e97368447f9b09e570d448d3731ab07868e421602f3b27fee09085"},
     {"path": "mechanical/EVT_SYS_CARRIER.step", "sha256": "1bc7e0ab9bfd29c2391a5efe477ed6bc9e08d91ae593a1478c154fb34a093459"},
     {"path": "documentation/Schematic_Prints.pdf", "sha256": "e8cc76680c9345d876e662eb4cc103b0b8e3b8d4a448b2947c49c30eed8fb7d1"},
+    {"path": "documentation/REZONIT_FABRICATION_BASELINE.md", "sha256": "f5c129de5c137a7a1cefc41f49e53b083922b8f739cb2a5e216f7898af95c560"},
+    {"path": "documentation/REZONIT_PUBLISHED_STACK_4L_35UM.csv", "sha256": "f7ca95d95928badc369252852b6f6335d46e99abeaa51c4d4cf23457bbb5d281"},
     {"path": "validation/native_drc.drc", "sha256": "2b0e44c98ece45bff10ed1edf155928fd2a616f39d4794a969aa728b6efe6225"},
     {"path": "validation/compile_report.json", "sha256": "7c85fa6e8320d22b0e77049df83453c74e13f403702ca455257d0a40d5c81dd8"},
     {"path": "validation/netlist_validation_result.json", "sha256": "f831621dff2401908724a8b17cf28ebe081649b369bcc63bc75be60788158374"},
@@ -21,6 +25,7 @@
     {"path": "validation/pilot_bom_enrichment_result.json", "sha256": "f48c24c83a5f56b3a6903e9a2c8c8aacc008d88a8a80651cddc82cf53e9d2f43"},
     {"path": "validation/native_step_export_result.json", "sha256": "40353434bcf27b51b592e91477c776eb9f66ce021bdb9176c58f499f1cc2d3e4"},
     {"path": "validation/ipc2581_status_report.txt", "sha256": "7dc58734739d0dd7b940eaefbb0d6fd97c2d07a275843d13fd200c01b272d51a"},
-    {"path": "validation/native_ipc2581_export_result.json", "sha256": "60853f352b37b32aa64939ba2da83634919cc657492be06ed3d03bdaba1542cb"}
+    {"path": "validation/native_ipc2581_export_result.json", "sha256": "60853f352b37b32aa64939ba2da83634919cc657492be06ed3d03bdaba1542cb"},
+    {"path": "validation/native_color_layer_pdf_result.json", "sha256": "7e99723f536343d1695b43615e9ae96227f4b938091945da1d012cb1288e3325"}
   ]
 }

@@ -1,0 +1,31 @@
+{
+  "schema": "EVT-SYS-CARRIER-COLOR-LAYER-PDF-001",
+  "status": "PASS",
+  "generated_on": "2026-10-28",
+  "source_outjob": "source/Fabrication.OutJob",
+  "source_outjob_sha256": "d410baa26041616e04616247d5ee736a2353cd9d28c17de0697a122823b94219",
+  "source_pcb": "source/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc",
+  "output": "fab/PCB_Layer_Reference_COLOR.pdf",
+  "output_sha256": "33f3f654946a31729b16cfca0508663caa29e1ecb27c48ebade65746ae27df3a",
+  "file_size_bytes": 1969472,
+  "page_count": 5,
+  "page_size_points": [792, 612],
+  "render_check_dpi": 144,
+  "pages": [
+    {"page": 1, "name": "Multilayer Composite Print", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.160010},
+    {"page": 2, "name": "Top Layer", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.084529},
+    {"page": 3, "name": "Mid-Layer 1", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.017429},
+    {"page": 4, "name": "Mid-Layer 2", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.025667},
+    {"page": 5, "name": "Bottom Layer", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.046921}
+  ],
+  "checks": {
+    "pdf_structure": "PASS",
+    "all_pages_rendered": true,
+    "all_pages_nonblank": true,
+    "all_pages_contain_color": true,
+    "visual_inspection": "PASS"
+  },
+  "limitation": "This is a supplemental color layer reference. It does not replace the preliminary fabrication drawing or an order-bound released fabrication drawing.",
+  "production_authority": "NOT_AUTHORIZED"
+}

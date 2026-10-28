@@ -1,6 +1,6 @@
 {
   "schema": "ALTIUM-FABRICATOR-BINDING-001",
-  "status": "PENDING",
+  "status": "PUBLISHED_BASELINE_CAPTURED",
   "fabricator": "Rezonit",
   "stackup_bound": false,
   "copper_weight_bound": false,
@@ -11,7 +11,11 @@
   "evidence_refs": [
     {
       "path": "hardware/system_carrier/altium/release/REZONIT_FABRICATION_BASELINE.md",
-      "sha256": "05552923df7e7b013b10da8f04eea9f4d8ebae9479917954f2606d5ceb38a181"
+      "sha256": "f5c129de5c137a7a1cefc41f49e53b083922b8f739cb2a5e216f7898af95c560"
+    },
+    {
+      "path": "hardware/system_carrier/altium/release/REZONIT_PUBLISHED_STACK_4L_35UM.csv",
+      "sha256": "f7ca95d95928badc369252852b6f6335d46e99abeaa51c4d4cf23457bbb5d281"
     },
     {
       "path": "hardware/system_carrier/altium/release/pilot_r1/fab/Fabrication_Drawing_PRELIMINARY.pdf",
@@ -20,8 +24,9 @@
   ],
   "notes": [
     "Rezonit is the selected candidate fabricator for the pilot.",
-    "Published generic process limits are documented, but the requested 1.60 mm four-layer stack and controlled-impedance geometries are not order-bound.",
-    "Fabricator confirmation is not awaited before package preparation, but it remains a release hold that can be supplemented later.",
+    "The published 1.50 mm TG150 four-layer 35 um stack is the working baseline. The TG170 alternative and published process, mask, finish, mechanical and impedance starting data are also captured.",
+    "The requested 1.60 mm finished thickness, finished copper and controlled-impedance geometries are not order-bound.",
+    "Order-specific confirmation is not awaited before pilot archive preparation. Remaining order values are deferred corrections and do not block archive assembly.",
     "This record does not authorize production."
   ],
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
