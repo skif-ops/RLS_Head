@@ -13,15 +13,21 @@ SCHEMA = "ALTIUM-TIMING-ROUTING-GATE-001"
 SUMMARY_SCHEMA = "ALTIUM-TIMING-ROUTING-REVIEW-A-001"
 TARGETS = {
     "GNSS_PPS": {
-        "segments": 10,
+        "segments": 9,
+        "vias": 3,
+        "layers": (1, 2, 32),
         "endpoints": (("J8", "4", None), ("U1", "40", None)),
     },
     "IMU_DRDY": {
         "segments": 6,
+        "vias": 0,
+        "layers": (1,),
         "endpoints": (("U2", "4", None), ("U1", "80", None)),
     },
     "RADAR_REF": {
-        "segments": 10,
+        "segments": 4,
+        "vias": 1,
+        "layers": (1, 2),
         "endpoints": (("U1", "79", None), ("J4", "4", None)),
     },
 }
@@ -30,7 +36,6 @@ EXPECTED_DRC = {
     "generic_clearance": 27,
     "ten_mil_clearance": 0,
     "timing_to_buck_sw": 0,
-    "uart_to_buck_sw": 27,
     "unrouted_net": 0,
     "routing_topology": 0,
     "power_plane_connect": 0,
@@ -234,6 +239,7 @@ def resolve_pad(
 
 def route_is_connected(
     rows: list[dict[str, str]],
+    vias: list[dict[str, str]],
     endpoint_pads: list[dict[str, str]],
 ) -> tuple[bool, int]:
     if not rows:
@@ -247,16 +253,51 @@ def route_is_connected(
                 continue
             if segment_distance(*first_segment, *track_segment(second)) <= 0.003:
                 sets.union(first_index, second_index)
+
+    via_tracks: list[list[int]] = []
+    for via in vias:
+        center = (mm(via["x_mil"]), mm(via["y_mil"]))
+        radius = mm(via["size_mil"]) / 2.0
+        low_layer = int(via["low_layer"])
+        high_layer = int(via["high_layer"])
+        touching = [
+            index
+            for index, row in enumerate(rows)
+            if low_layer <= int(row["layer"]) <= high_layer
+            and point_segment_distance(center, *track_segment(row))
+            <= radius + mm(row["width_mil"]) / 2.0 + 0.003
+        ]
+        via_tracks.append(touching)
+        for index in touching[1:]:
+            sets.union(touching[0], index)
+
     components = {sets.find(index) for index in range(len(rows))}
     endpoint_components: list[set[int]] = []
     for pad in endpoint_pads:
         rect = row_rect(pad)
+        pad_layer = int(pad["layer"])
+        through_hole = float(pad["hole_mil"]) > 0.0
         touching = {
             sets.find(index)
             for index, row in enumerate(rows)
-            if segment_rect_distance(*track_segment(row), rect)
+            if (through_hole or int(row["layer"]) == pad_layer)
+            and segment_rect_distance(*track_segment(row), rect)
             <= mm(row["width_mil"]) / 2.0 + 0.003
         }
+        left, bottom, right, top = rect
+        for via, track_indices in zip(vias, via_tracks):
+            if not track_indices:
+                continue
+            low_layer = int(via["low_layer"])
+            high_layer = int(via["high_layer"])
+            if not through_hole and not low_layer <= pad_layer <= high_layer:
+                continue
+            x = mm(via["x_mil"])
+            y = mm(via["y_mil"])
+            dx = max(left - x, 0.0, x - right)
+            dy = max(bottom - y, 0.0, y - top)
+            if math.hypot(dx, dy) <= mm(via["size_mil"]) / 2.0 + 0.003:
+                touching.add(sets.find(track_indices[0]))
         endpoint_components.append(touching)
     connected = (
         len(endpoint_components) == 2
@@ -442,7 +483,9 @@ def validate(
         net_vias = [row for row in vias if row.get("net_name") == net]
         endpoint_pads = [resolve_pad(pads, net, endpoint) for endpoint in contract["endpoints"]]
         resolved_pads = [pad for pad in endpoint_pads if pad is not None]
-        connected, component_count = route_is_connected(net_tracks, resolved_pads)
+        connected, component_count = route_is_connected(
+            net_tracks, net_vias, resolved_pads
+        )
         length_mm = sum(
             math.hypot(second[0] - first[0], second[1] - first[1])
             for first, second in map(track_segment, net_tracks)
@@ -464,9 +507,9 @@ def validate(
         route_payload[net] = payload
         if len(net_tracks) != contract["segments"]:
             errors.append(f"segment_count:{net}:{len(net_tracks)}")
-        if net_vias:
+        if len(net_vias) != contract["vias"]:
             errors.append(f"target_via_count:{net}:{len(net_vias)}")
-        if layers != [1]:
+        if layers != list(contract["layers"]):
             errors.append(f"target_layer:{net}:{layers}")
         if len(widths) != 1 or abs(widths[0] - TRACK_WIDTH_MM) > 0.001:
             errors.append(f"target_width:{net}:{widths}")

@@ -1,9 +1,8 @@
 {
-  "canonical_pcb_sha256": "ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816",
+  "canonical_pcb_sha256": "0dacc26bbba8b95c0c1bc591546ef879edb8815cb134b4c30d1742d85fdcc1fd",
   "drc": {
     "counts": {
       "component_clearance": 0,
-      "ethernet_class_clearance": 0,
       "generic_clearance": 0,
       "hole_size": 0,
       "hole_to_hole": 0,
@@ -27,12 +26,14 @@
       "endpoint_pads_resolved": 2,
       "graph_component_count": 1,
       "layers": [
-        1
+        1,
+        2,
+        32
       ],
-      "length_mm": 44.746448,
-      "quiet_clearance_mm": 15.48213,
-      "segment_count": 10,
-      "via_count": 0,
+      "length_mm": 49.962051,
+      "quiet_clearance_mm": 5.203308,
+      "segment_count": 9,
+      "via_count": 3,
       "width_mm": [
         0.2
       ]
@@ -45,7 +46,7 @@
         1
       ],
       "length_mm": 44.524254,
-      "quiet_clearance_mm": 9.519854,
+      "quiet_clearance_mm": 20.863505,
       "segment_count": 6,
       "via_count": 0,
       "width_mm": [
@@ -57,12 +58,13 @@
       "endpoint_pads_resolved": 2,
       "graph_component_count": 1,
       "layers": [
-        1
+        1,
+        2
       ],
-      "length_mm": 42.86359,
-      "quiet_clearance_mm": 19.860859,
-      "segment_count": 10,
-      "via_count": 0,
+      "length_mm": 23.178526,
+      "quiet_clearance_mm": 19.092931,
+      "segment_count": 4,
+      "via_count": 1,
       "width_mm": [
         0.2
       ]

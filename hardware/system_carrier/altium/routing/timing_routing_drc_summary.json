@@ -3,21 +3,23 @@
   "board_id": "EVT-SYS-CARRIER",
   "drc_timestamp": "28.10.2026 14:22:30",
   "geometry": {
-    "fill_count": 67,
-    "minimum_quiet_clearance_mm": 9.519854,
-    "pad_count": 529,
+    "fill_count": 60,
+    "minimum_quiet_clearance_mm": 5.203308,
+    "pad_count": 483,
     "routes": {
       "GNSS_PPS": {
         "connected": true,
         "endpoint_pads_resolved": 2,
         "graph_component_count": 1,
         "layers": [
-          1
+          1,
+          2,
+          32
         ],
-        "length_mm": 44.746448,
-        "quiet_clearance_mm": 15.48213,
-        "segment_count": 10,
-        "via_count": 0,
+        "length_mm": 49.962051,
+        "quiet_clearance_mm": 5.203308,
+        "segment_count": 9,
+        "via_count": 3,
         "width_mm": [
           0.2
         ]
@@ -30,7 +32,7 @@
           1
         ],
         "length_mm": 44.524254,
-        "quiet_clearance_mm": 9.519854,
+        "quiet_clearance_mm": 20.863505,
         "segment_count": 6,
         "via_count": 0,
         "width_mm": [
@@ -42,39 +44,39 @@
         "endpoint_pads_resolved": 2,
         "graph_component_count": 1,
         "layers": [
-          1
+          1,
+          2
         ],
-        "length_mm": 42.86359,
-        "quiet_clearance_mm": 19.860859,
-        "segment_count": 10,
-        "via_count": 0,
+        "length_mm": 23.178526,
+        "quiet_clearance_mm": 19.092931,
+        "segment_count": 4,
+        "via_count": 1,
         "width_mm": [
           0.2
         ]
       }
     },
-    "timing_track_count": 26,
-    "timing_via_count": 0,
+    "timing_track_count": 19,
+    "timing_via_count": 4,
     "trace_width_mm": 0.2,
-    "track_count": 1639,
-    "via_count": 132
+    "track_count": 1378,
+    "via_count": 115
   },
   "input_sha256": {
-    "fill_inventory": "f438908251c9281552fe9925dc77b6fdef9f2e3603fbc0125514785a13b22435",
-    "pad_geometry": "01a1fe536dc0ba38aa2d28c208d28c08e37a7767be2709fb88ef9f4bf2312bbb",
-    "review_render": "2ee22746079e50ee494f80f6795c77d81e8ee16f0115c78511a1571f6da6884f",
-    "review_render_script": "77823e708e654e1add46fcffed3d4b49ff60a62d7d8e8c7646458c2a8e024944",
+    "fill_inventory": "074cd5589ebd238b916059fc2e584c3c7ab1fd18b34e96c87f8a954c5bd1d7a0",
+    "pad_geometry": "acd4d47ba4ec3055d10f8a58bc65d45b88dc9c50bed51909d209295548741bec",
+    "review_render": "4f5bcafae306d5225d8a974d250d88330e77a1c0c6bad48d372de3d96fdaf100",
+    "review_render_script": "d5a777114112b7cd42c132290fcad34a105e8d74112325b58c1c5e59b721e9e2",
     "routing_audit_script": "b74db3494b61f64d5b525aac816354d412b876bd481b86be28fe8fcf97b9911d",
     "routing_script": "4d56a59b0260f3b1d3df3929ab4b4c607b8e854de00742f11fd49ad9a9386ae8",
-    "track_inventory": "6cd1843e389aba33446c3d3500f7fd6d7aceafc55f9edf55c3b298874c6b6f13",
-    "via_inventory": "2fd1b3f4b38905580fbceff62dc3569de88cb301ea513f73755977164e617d17"
+    "track_inventory": "ee2bf1be592245ce36e55b82caea62c093a5ca3e7477ffbb8e53ce057f47a7d9",
+    "via_inventory": "93e93ef3b038ae3c8e9fc0d1cdf237d0976eb7295a2385987c96eafb13eb2255"
   },
   "production_authority": "NOT_AUTHORIZED",
   "review_status": "PASS",
   "routing_authority": "AUTHORIZED",
   "rule_violations": {
     "component_clearance": 0,
-    "ethernet_class_clearance": 0,
     "generic_clearance": 0,
     "hole_size": 0,
     "hole_to_hole": 0,
@@ -92,5 +94,5 @@
   "source_drc_report": "hardware/system_carrier/altium/routing/connection_audit/connection_drc_report.drc",
   "source_drc_report_sha256": "b9f8c2019c07d45a08c0c138aeca5a1b2e4941b9baf5ef793be8f531ca774e5d",
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816"
+  "source_pcb_sha256": "0dacc26bbba8b95c0c1bc591546ef879edb8815cb134b4c30d1742d85fdcc1fd"
 }

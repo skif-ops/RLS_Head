@@ -39,6 +39,7 @@ def main():
     pads = read_csv(args.input_dir / "pad_geometry.csv")
     tracks = read_csv(args.input_dir / "track_inventory.csv")
     fills = read_csv(args.input_dir / "fill_inventory.csv")
+    vias = read_csv(args.input_dir / "via_inventory.csv")
     image = Image.new("RGB", (1600, 1040), "#0e141b")
     draw = ImageDraw.Draw(image, "RGBA")
     font = ImageFont.load_default()
@@ -50,7 +51,7 @@ def main():
     )
     draw.text(
         (46, 49),
-        "GNSS_PPS, IMU_DRDY and RADAR_REF on Top Layer, 0.20 mm width",
+        "GNSS_PPS, IMU_DRDY and RADAR_REF, multilayer view, 0.20 mm width",
         fill="#b6c2d0",
         font=font,
     )
@@ -87,13 +88,15 @@ def main():
 
     scale = (board[2] - board[0] - 2 * margin) / (xmax - xmin)
     for track in tracks:
-        if int(track["layer"]) != 1:
+        layer = int(track["layer"])
+        if layer != 1 and track["net_name"] not in TARGET_COLORS:
             continue
         first = point(float(track["x1_mil"]), float(track["y1_mil"]))
         second = point(float(track["x2_mil"]), float(track["y2_mil"]))
         net = track["net_name"]
         if net in TARGET_COLORS:
-            color = TARGET_COLORS[net]
+            alpha = {1: "FF", 2: "D0", 3: "A0", 32: "80"}.get(layer, "70")
+            color = TARGET_COLORS[net] + alpha
             width = max(4, round(float(track["width_mil"]) * scale))
         elif net in QUIET_COLORS:
             color = QUIET_COLORS[net] + "B0"
@@ -102,6 +105,19 @@ def main():
             color = "#71809628"
             width = 1
         draw.line((*first, *second), fill=color, width=width)
+
+    for via in vias:
+        net = via["net_name"]
+        if net not in TARGET_COLORS:
+            continue
+        px, py = point(float(via["x_mil"]), float(via["y_mil"]))
+        radius = max(4, round(float(via["size_mil"]) * scale / 2.0))
+        draw.ellipse(
+            (px - radius, py - radius, px + radius, py + radius),
+            fill="#0e141b",
+            outline=TARGET_COLORS[net],
+            width=2,
+        )
 
     for pad in pads:
         x = float(pad["x_mil"])
@@ -145,9 +161,11 @@ def main():
             if row["net_name"] == net
         )
         segments = sum(1 for row in tracks if row["net_name"] == net)
+        via_count = sum(1 for row in vias if row["net_name"] == net)
+        layers = sorted({int(row["layer"]) for row in tracks if row["net_name"] == net})
         draw.text(
             (legend_x + 40, y),
-            f"{net}: {length:.3f} mm, {segments} segments",
+            f"{net}: {length:.3f} mm, {segments} segments, {via_count} vias, L{layers}",
             fill="#f4f7fb",
             font=font,
         )

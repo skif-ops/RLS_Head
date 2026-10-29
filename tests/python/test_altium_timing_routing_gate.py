@@ -15,11 +15,19 @@ def _write_csv(path: Path, fieldnames: list[str], rows: list[dict]) -> None:
         writer.writerows(rows)
 
 
-def _track(net: str, x1: float, y1: float, x2: float, y2: float, width=0.2):
+def _track(
+    net: str,
+    x1: float,
+    y1: float,
+    x2: float,
+    y2: float,
+    width=0.2,
+    layer=1,
+):
     radius = width / 2.0
     return {
         "net_name": net,
-        "layer": 1,
+        "layer": layer,
         "x1_mil": _mil(x1),
         "y1_mil": _mil(y1),
         "x2_mil": _mil(x2),
@@ -32,7 +40,15 @@ def _track(net: str, x1: float, y1: float, x2: float, y2: float, width=0.2):
     }
 
 
-def _pad(designator: str, name: str, net: str, x: float, y: float):
+def _pad(
+    designator: str,
+    name: str,
+    net: str,
+    x: float,
+    y: float,
+    *,
+    hole=0.0,
+):
     return {
         "designator": designator,
         "pad_name": name,
@@ -40,13 +56,30 @@ def _pad(designator: str, name: str, net: str, x: float, y: float):
         "x_mil": _mil(x),
         "y_mil": _mil(y),
         "layer": 1,
-        "hole_mil": 0,
+        "hole_mil": _mil(hole),
         "x_size_mil": _mil(0.4),
         "y_size_mil": _mil(0.4),
         "left_mil": _mil(x - 0.2),
         "bottom_mil": _mil(y - 0.2),
         "right_mil": _mil(x + 0.2),
         "top_mil": _mil(y + 0.2),
+    }
+
+
+def _via(net: str, x: float, y: float):
+    radius = 0.3
+    return {
+        "net_name": net,
+        "x_mil": _mil(x),
+        "y_mil": _mil(y),
+        "size_mil": _mil(radius * 2.0),
+        "hole_mil": _mil(0.3),
+        "low_layer": 1,
+        "high_layer": 32,
+        "left_mil": _mil(x - radius),
+        "bottom_mil": _mil(y - radius),
+        "right_mil": _mil(x + radius),
+        "top_mil": _mil(y + radius),
     }
 
 
@@ -71,14 +104,27 @@ def _write_fixture(root: Path) -> None:
     )
     (routing / "timing_routing_review_a.png").write_bytes(b"png")
 
-    tracks = []
-    for net, y, count in (
-        ("GNSS_PPS", 10.0, 10),
-        ("IMU_DRDY", 20.0, 6),
-        ("RADAR_REF", 30.0, 10),
-    ):
-        for index in range(count):
-            tracks.append(_track(net, 10.0 + index, y, 11.0 + index, y))
+    tracks = [
+        _track("GNSS_PPS", 10.0, 10.0, 11.0, 10.0),
+        _track("GNSS_PPS", 11.0, 10.0, 12.0, 10.0, layer=32),
+        _track("GNSS_PPS", 12.0, 10.0, 13.0, 10.0, layer=32),
+        _track("GNSS_PPS", 13.0, 10.0, 14.0, 10.0, layer=32),
+        _track("GNSS_PPS", 14.0, 10.0, 15.0, 10.0, layer=2),
+        _track("GNSS_PPS", 15.0, 10.0, 16.0, 10.0, layer=2),
+        _track("GNSS_PPS", 16.0, 10.0, 18.0, 10.0, layer=2),
+        _track("GNSS_PPS", 18.0, 10.0, 19.0, 10.0),
+        _track("GNSS_PPS", 19.0, 10.0, 20.0, 10.0),
+    ]
+    for index in range(6):
+        tracks.append(_track("IMU_DRDY", 10.0 + index, 20.0, 11.0 + index, 20.0))
+    tracks.extend(
+        [
+            _track("RADAR_REF", 10.0, 30.0, 11.0, 30.0),
+            _track("RADAR_REF", 11.0, 30.0, 12.0, 30.0),
+            _track("RADAR_REF", 12.0, 30.0, 13.0, 30.0),
+            _track("RADAR_REF", 13.0, 30.0, 20.0, 30.0, layer=2),
+        ]
+    )
     tracks.append(_track("BUCK_SW", 10.0, 50.0, 20.0, 50.0, width=0.5))
     _write_csv(
         audit / "track_inventory.csv",
@@ -94,10 +140,8 @@ def _write_fixture(root: Path) -> None:
         _pad("U2", "4", "IMU_DRDY", 10.0, 20.0),
         _pad("U1", "80", "IMU_DRDY", 16.0, 20.0),
         _pad("U1", "79", "RADAR_REF", 10.0, 30.0),
-        _pad("J4", "4", "RADAR_REF", 95.0, 33.0),
+        _pad("J4", "4", "RADAR_REF", 20.0, 30.0, hole=1.0),
     ]
-    pads[-1] = _pad("J4", "4", "RADAR_REF", 95.0, 33.0)
-    tracks[-2] = _track("RADAR_REF", 18.0, 30.0, 95.0, 33.0)
     _write_csv(
         audit / "track_inventory.csv",
         [
@@ -123,6 +167,12 @@ def _write_fixture(root: Path) -> None:
         ],
         [],
     )
+    vias = [
+        _via("GNSS_PPS", 11.0, 10.0),
+        _via("GNSS_PPS", 14.0, 10.0),
+        _via("GNSS_PPS", 18.0, 10.0),
+        _via("RADAR_REF", 13.0, 30.0),
+    ]
     _write_csv(
         audit / "via_inventory.csv",
         [
@@ -130,7 +180,7 @@ def _write_fixture(root: Path) -> None:
             "low_layer", "high_layer", "left_mil", "bottom_mil", "right_mil",
             "top_mil",
         ],
-        [],
+        vias,
     )
     (audit / "connection_drc_report.drc").write_text(
         "Altium Designer 26.10.1 Native Design Rule Check Summary\n"
@@ -174,7 +224,7 @@ def test_timing_routing_passes_and_binds_summary(tmp_path):
     assert result["summary_binding"] == "PASS"
     assert result["routes"]["GNSS_PPS"]["connected"] is True
     assert result["routes"]["IMU_DRDY"]["segment_count"] == 6
-    assert result["routes"]["RADAR_REF"]["via_count"] == 0
+    assert result["routes"]["RADAR_REF"]["via_count"] == 1
     assert result["drc"]["route_induced_markers"] == 0
     assert result["production_authority"] == "NOT_AUTHORIZED"
 
