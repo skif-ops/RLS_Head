@@ -77,7 +77,7 @@ def derive_audits(system: Path) -> tuple[dict[str, str], dict]:
 
     mcu_nets = hierarchy_nets(hierarchy_rows, "MCU_CORE")
     imu_nets = hierarchy_nets(hierarchy_rows, "IMU")
-    eth_nets = hierarchy_nets(hierarchy_rows, "ETHERNET")
+    host_uart_nets = hierarchy_nets(hierarchy_rows, "HOST_UART")
     can_nets = hierarchy_nets(hierarchy_rows, "RADAR_IO_CAN")
 
     reset_boot_ok = (
@@ -107,22 +107,16 @@ def derive_audits(system: Path) -> tuple[dict[str, str], dict]:
         }.issubset(imu_nets)
     )
 
-    ethernet_ok = (
+    host_uart_ok = (
         design.get("bom", {}).get("status") == "PASS"
         and {
             "3V3",
             "GND",
-            "ETH_50M",
-            "ETH_MDIO",
-            "ETH_MDC",
-            "ETH_CRS_DV",
-            "ETH_RXD0",
-            "ETH_RXD1",
-            "ETH_TX_EN",
-            "ETH_TXD0",
-            "ETH_TXD1",
-            "ETH_NRST",
-        }.issubset(eth_nets)
+            "HOST_UART1_TX",
+            "HOST_UART1_RX",
+            "HOST_UART2_TX",
+            "HOST_UART2_RX",
+        }.issubset(host_uart_nets)
     )
 
     can_ok = (
@@ -151,7 +145,7 @@ def derive_audits(system: Path) -> tuple[dict[str, str], dict]:
         "reset_boot": "PASS" if reset_boot_ok else "FAIL",
         "timing_capture": "PASS" if timing_ok else "FAIL",
         "imu": "PASS" if imu_ok else "FAIL",
-        "ethernet": "PASS" if ethernet_ok else "FAIL",
+        "host_uart": "PASS" if host_uart_ok else "FAIL",
         "can_fd": "PASS" if can_ok else "FAIL",
     }
 
@@ -163,7 +157,7 @@ def derive_audits(system: Path) -> tuple[dict[str, str], dict]:
             "reset_boot": reset_boot_ok,
             "timing_capture": timing_ok,
             "imu": imu_ok,
-            "ethernet": ethernet_ok,
+            "host_uart": host_uart_ok,
             "can_fd": can_ok,
         },
     }

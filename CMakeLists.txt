@@ -56,10 +56,6 @@ add_library(capture_router STATIC
     src/capture_router.c
 )
 
-add_library(ethernet_reset STATIC
-    src/ethernet_reset.c
-)
-
 add_library(config_lock STATIC
     src/config_lock.c
 )
@@ -120,10 +116,6 @@ target_include_directories(capture_router PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-target_include_directories(ethernet_reset PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
 target_include_directories(config_lock PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -149,7 +141,6 @@ if(MSVC)
     target_compile_options(measurement_session PRIVATE /W4 /WX)
     target_compile_options(evidence_export PRIVATE /W4 /WX)
     target_compile_options(capture_router PRIVATE /W4 /WX)
-    target_compile_options(ethernet_reset PRIVATE /W4 /WX)
     target_compile_options(config_lock PRIVATE /W4 /WX)
     target_compile_options(gnss_service PRIVATE /W4 /WX)
     target_compile_options(imu_service PRIVATE /W4 /WX)
@@ -166,7 +157,6 @@ else()
     target_compile_options(measurement_session PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(evidence_export PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(capture_router PRIVATE -Wall -Wextra -Wpedantic -Werror)
-    target_compile_options(ethernet_reset PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(config_lock PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(gnss_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(imu_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
@@ -177,10 +167,10 @@ endif()
 target_link_libraries(sys_err PUBLIC hil_r2)
 target_link_libraries(targetstate_uncertainty PUBLIC hil_r1 sys_err)
 target_link_libraries(targetstate_error_ledger PUBLIC targetstate_uncertainty)
-target_link_libraries(hil_r2_evidence PUBLIC m)
 target_link_libraries(evidence_export PUBLIC measurement_session time_service carrier_health)
 
 if(NOT MSVC)
+    target_link_libraries(hil_r2_evidence PUBLIC m)
     target_link_libraries(time_service PUBLIC m)
 endif()
 
@@ -355,20 +345,6 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
 
     add_test(NAME carrier_capture_router COMMAND test_capture_router)
 
-    add_executable(test_ethernet_reset
-        tests/test_ethernet_reset.c
-    )
-
-    target_link_libraries(test_ethernet_reset PRIVATE ethernet_reset)
-
-    if(MSVC)
-        target_compile_options(test_ethernet_reset PRIVATE /W4 /WX)
-    else()
-        target_compile_options(test_ethernet_reset PRIVATE -Wall -Wextra -Wpedantic -Werror)
-    endif()
-
-    add_test(NAME carrier_ethernet_reset COMMAND test_ethernet_reset)
-
     add_executable(test_config_lock
         tests/test_config_lock.c
     )
@@ -451,7 +427,6 @@ if(HIL_BUILD_STM32H753_SMOKE)
         measurement_session
         evidence_export
         capture_router
-        ethernet_reset
         config_lock
         gnss_service
         imu_service

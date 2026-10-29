@@ -9,12 +9,14 @@ PWR-001,VIN_RAW,5.00,35,10,2.77,3.00,EVT_CALCULATED,test
 PWR-002,VIN_PROTECTED,5.00,35,10,2.77,3.00,EVT_CALCULATED,test
 PWR-003,RADAR_12V,3.18,35,10,1.48,1.50,EVT_CALCULATED,test
 PWR-004,3V3_TRUNK,3.00,35,10,1.37,1.50,EVT_CALCULATED,test
+PWR-005,5V_GNSS,0.50,35,10,0.12,0.50,EVT_CALCULATED,test
 """
 
 RULES = """rule_id,scope,parameter,value,unit,status,notes
 RV-006,VIN_RAW,min_neck_width,3.00,mm,EVT_CALCULATED,test
 RV-007,RADAR_12V,min_neck_width,1.50,mm,EVT_BASELINE,test
 RV-008,3V3,min_trunk_width,1.50,mm,EVT_CALCULATED,test
+RV-009,5V_GNSS,min_trunk_width,0.50,mm,EVT_CALCULATED,test
 RV-023,VIN_PROTECTED,min_neck_width,3.00,mm,EVT_CALCULATED,test
 RV-024,POWER_EXTERNAL,screen_temp_rise,10,C,EVT_CALCULATED,test
 """
@@ -23,6 +25,7 @@ BUDGET = """rail,load,nominal_voltage,min_voltage,max_voltage,peak_current,avera
 12V_IN,System,12,10,14,5,3,5,A,test,LOCKED,test
 RADAR_12V,Radar,12,10,14,3.18,2,3.18,A,test,LOCKED,test
 3V3,Digital,3.3,3.2,3.4,3,2,3,A,test,LOCKED,test
+5V_GNSS,GNSS,5.0,4.8,5.2,0.5,0.3,0.5,A,test,LOCKED,test
 """
 
 
@@ -55,6 +58,11 @@ def _contract() -> dict:
                 "current_a": 3.0,
                 "min_neck_width_mm": 1.5,
                 "rule_id": "RV-008",
+            },
+            "5V_GNSS": {
+                "current_a": 0.5,
+                "min_neck_width_mm": 0.5,
+                "rule_id": "RV-009",
             },
         },
         "locked_sources": [
@@ -104,7 +112,7 @@ def test_evt_power_routing_gate_passes_locked_baseline(tmp_path):
     assert result["evt_power_routing_locked"] is True
     assert result["production_power_geometry_locked"] is False
     assert result["production_review_required"] is True
-    assert len(result["models"]) == 4
+    assert len(result["models"]) == 5
 
 
 def test_evt_power_routing_gate_rejects_width_drift(tmp_path):

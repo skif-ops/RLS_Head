@@ -64,17 +64,12 @@ Var
     Ground     : IPCB_Net;
     PolygonObj : IPCB_Polygon;
     I          : Integer;
+    Created    : Boolean;
 Begin
     Board := PCBServer.GetCurrentPCBBoard;
     If Not IsCanonicalGNDPlaneBoard(Board) Then
     Begin
         ShowMessage('GND plane stopped: activate the canonical native EVT_SYS_CARRIER.PcbDoc.');
-        Exit;
-    End;
-
-    If FindExistingGNDPlane(Board) <> Nil Then
-    Begin
-        ShowMessage('GND plane stopped: EVT_GND_L2_PLANE already exists.');
         Exit;
     End;
 
@@ -94,7 +89,12 @@ Begin
         Exit;
     End;
 
-    PolygonObj := PCBServer.PCBObjectFactory(ePolyObject, eNoDimension, eCreate_Default);
+    PolygonObj := FindExistingGNDPlane(Board);
+    Created := PolygonObj = Nil;
+    If Created Then
+        PolygonObj := PCBServer.PCBObjectFactory(ePolyObject, eNoDimension, eCreate_Default)
+    Else
+        PolygonObj.BeginModify;
     PolygonObj.Name := 'EVT_GND_L2_PLANE';
     PolygonObj.Layer := eMidLayer1;
     PolygonObj.Net := Ground;
@@ -114,12 +114,17 @@ Begin
         PolygonObj.Segments[I] := Board.BoardOutline.Segments[I];
 
     PCBServer.PreProcess;
-    Board.AddPCBObject(PolygonObj);
-    PCBServer.SendMessageToRobots(Board.I_ObjectAddress, c_Broadcast,
-                                  PCBM_BoardRegisteration, PolygonObj.I_ObjectAddress);
+    If Created Then
+    Begin
+        Board.AddPCBObject(PolygonObj);
+        PCBServer.SendMessageToRobots(Board.I_ObjectAddress, c_Broadcast,
+                                      PCBM_BoardRegisteration, PolygonObj.I_ObjectAddress);
+    End
+    Else
+        PolygonObj.EndModify;
     PolygonObj.Rebuild;
     PCBServer.PostProcess;
     Board.ViewManager_FullUpdate;
 
-    ShowMessage('EVT_GND_L2_PLANE created on Mid-Layer 1. Repour all polygons, inspect L2, then save and run DRC.');
+    ShowMessage('EVT_GND_L2_PLANE synchronized to the current board outline. Repour all polygons, inspect L2, then save and run DRC.');
 End;

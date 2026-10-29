@@ -156,17 +156,32 @@ def build(
         )
 
     audit_script_dir = system / "altium" / "scripts"
-    if audit_script_dir.is_dir():
-        for script_path in sorted(audit_script_dir.rglob("*")):
-            if not script_path.is_file():
-                continue
-            rel = script_path.relative_to(system / "altium")
-            target = output / "altium_target" / rel
-            records.append(copy_file(script_path, target))
-            register_binding(
-                target=target,
-                source_path=script_path,
+    active_script_names = [
+        "EVT_SYS_CARRIER_ApplyRules.pas",
+        "EVT_SYS_CARRIER_Audit.PrjScr",
+        "EVT_SYS_CARRIER_Audit.pas",
+        "EVT_SYS_CARRIER_Classes.pas",
+        "EVT_SYS_CARRIER_ConnectionAudit.PrjScr",
+        "EVT_SYS_CARRIER_ConnectionAudit.pas",
+        "EVT_SYS_CARRIER_GNDPlane.pas",
+        "EVT_SYS_CARRIER_Hierarchy_Audit.pas",
+        "EVT_SYS_CARRIER_Mechanical.pas",
+        "EVT_SYS_CARRIER_RoutingAudit.PrjScr",
+        "EVT_SYS_CARRIER_RoutingAudit.pas",
+    ]
+    for name in active_script_names:
+        script_path = audit_script_dir / name
+        if not script_path.is_file():
+            raise FileNotFoundError(
+                f"missing active Altium script: {script_path.as_posix()}"
             )
+        rel = script_path.relative_to(system / "altium")
+        target = output / "altium_target" / rel
+        records.append(copy_file(script_path, target))
+        register_binding(
+            target=target,
+            source_path=script_path,
+        )
 
     handoff_files = [
         (

@@ -35,6 +35,14 @@
       "model_id": "PWR-004",
       "net_or_class": "3V3_TRUNK",
       "selected_width_mm": 1.5
+    },
+    {
+      "calculated_min_width_mm": 0.115,
+      "current_a": 0.5,
+      "margin_mm": 0.385,
+      "model_id": "PWR-005",
+      "net_or_class": "5V_GNSS",
+      "selected_width_mm": 0.5
     }
   ],
   "notes": [

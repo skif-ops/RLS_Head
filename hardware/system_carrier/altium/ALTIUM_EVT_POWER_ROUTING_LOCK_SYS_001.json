@@ -26,6 +26,11 @@
       "current_a": 3,
       "min_neck_width_mm": 1.5,
       "rule_id": "RV-008"
+    },
+    "5V_GNSS": {
+      "current_a": 0.5,
+      "min_neck_width_mm": 0.5,
+      "rule_id": "RV-009"
     }
   },
   "locked_sources": [

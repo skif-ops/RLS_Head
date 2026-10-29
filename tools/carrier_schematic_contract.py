@@ -22,19 +22,20 @@ REQUIRED_BLOCKS = {
     "30": "TIME_GNSS",
     "40": "IMU",
     "50": "RADAR_IO_CAN",
-    "60": "ETHERNET",
+    "60": "HOST_UART",
     "70": "DEBUG_BOOT",
 }
 
 REQUIRED_COMPONENTS = {
     "U5": "TPS62132RGTR",
+    "U9": "TPS62133RGTR",
     "R_U6_ILIM": "665R 1%",
     "R_U7_ILIM": "1.05k 1%",
     "C_VCAP1;C_VCAP2": "2.2uF X7R ESR_lt_100mR",
     "R_BOOT0": "10k 1%",
-    "R_ETH_RBIAS": "12.1k 1%",
+    "R_UART_SERIES": "33R 1%",
     "R_CAN_TERM": "120R 1%",
-    "D_GNSS": "ESD0P2RF-02LS",
+    "D_GNSS_EXT": "TPD4E05U06DQAR",
 }
 
 REQUIRED_CONNECTOR_SIGNALS = {
@@ -47,7 +48,15 @@ REQUIRED_CONNECTOR_SIGNALS = {
     ("J_RADAR_IO", "RADAR_CAN_GND"),
     ("J_RADAR_IO", "RADAR_REF"),
     ("J_RADAR_IO", "RADAR_REF_GND"),
-    ("J_GNSS_ANT", "GNSS_RF"),
+    ("J_GNSS_EXT", "5V_GNSS"),
+    ("J_GNSS_EXT", "GNSS_RX_EXT"),
+    ("J_GNSS_EXT", "GNSS_TX_EXT"),
+    ("J_GNSS_EXT", "GNSS_PPS"),
+    ("J_GNSS_EXT", "GND"),
+    ("J_HOST_UART", "HOST_UART1_TX"),
+    ("J_HOST_UART", "HOST_UART1_RX"),
+    ("J_HOST_UART", "HOST_UART2_TX"),
+    ("J_HOST_UART", "HOST_UART2_RX"),
     ("J_SWD", "SWDIO"),
     ("J_SWD", "SWCLK"),
 }
@@ -177,7 +186,7 @@ def validate_power_budget(path: Path) -> dict:
 
         entry["allocation"] += allocation
 
-    for rail in {"12V_IN", "RADAR_12V", "3V3"}:
+    for rail in {"12V_IN", "RADAR_12V", "5V_GNSS", "3V3"}:
         if rail not in by_rail:
             findings.append(f"missing_rail:{rail}")
 

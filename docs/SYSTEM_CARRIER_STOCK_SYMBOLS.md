@@ -1,14 +1,7 @@
 # System Carrier stock KiCad symbols
 
-The System Carrier generator now prefers official KiCad symbols for:
+The generator uses official KiCad symbols for standard devices and connectors, including STM32H753, passives, generic connectors, Micro-Fit and JST-GH.
 
-- `Interface_Ethernet:LAN8742A`
-- `RF_GPS:NEO-M9N`
+Non-standard active devices and protection arrays are generated in `SystemCarrier_Local.kicad_sym` from the pin contracts. Generation must fail rather than silently substitute a different pin mapping.
 
-If either symbol is unavailable in the CI/runtime library set, generation
-falls back to the existing `SYMBOL_PENDING` placeholder instead of silently
-changing pin mappings.
-
-This reduces custom-symbol scope while keeping the project reproducible.
-The remaining custom-symbol candidates are validated through the local
-pin/package contracts before Carrier Review A.
+There is no LAN8742A or NEO-M9N symbol in the current design.

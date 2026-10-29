@@ -173,14 +173,14 @@ def _native_fixture(tmp_path: Path, *, drop_last_rule: bool = False) -> None:
 
     xy = [
         (3, 0, "arc"), (0, 3, "line"),
-        (0, 77, "arc"), (3, 80, "line"),
-        (97, 80, "arc"), (100, 77, "line"),
-        (100, 3, "arc"), (97, 0, "line"),
+        (0, 67, "arc"), (3, 70, "line"),
+        (87, 70, "arc"), (90, 67, "line"),
+        (90, 3, "arc"), (87, 0, "line"),
     ]
     mechanical_rows = [{
         "kind": "outline", "id": "board", "x_raw": "0", "y_raw": "0",
-        "width_raw": str(_coord_from_mm("100")),
-        "height_raw": str(_coord_from_mm("80")),
+        "width_raw": str(_coord_from_mm("90")),
+        "height_raw": str(_coord_from_mm("70")),
     }]
     mechanical_rows.extend({
         "kind": "vertex", "id": str(index),
@@ -195,7 +195,7 @@ def _native_fixture(tmp_path: Path, *, drop_last_rule: bool = False) -> None:
         "y_raw": str(_coord_from_mm(py)),
         "diameter_raw": str(_coord_from_mm("3.2")),
         "plated": "false",
-    } for index, (px, py) in enumerate(((5, 5), (95, 5), (5, 75), (95, 75)), 1))
+    } for index, (px, py) in enumerate(((5, 5), (85, 5), (5, 65), (85, 65)), 1))
     _write_csv(
         tmp_path / "mechanical_inventory.csv",
         ["kind", "id", "x_raw", "y_raw", "width_raw", "height_raw",
@@ -270,7 +270,7 @@ def test_native_audit_validator_passes_complete_fixture(tmp_path):
     assert result["status"] == "PASS"
     assert result["errors"] == []
     assert result["component_count"] == result["expected_component_count"]
-    assert result["required_rule_count"] == 10
+    assert result["required_rule_count"] == 9
     assert result["pinmap_checked_count"] > 0
     assert result["symbol_pin_checked_count"] > 0
     assert result["symbol_pin_semantic_deferred_count"] > 0
@@ -432,7 +432,7 @@ def test_native_audit_validator_detects_rule_scope_mismatch(tmp_path):
     result = validate(system_root=SYSTEM, audit_dir=tmp_path)
 
     assert result["status"] == "FAIL"
-    assert "rule_scope_1_mismatch:R_GNSS_RF_WIDTH" in result["errors"]
+    assert "rule_scope_1_mismatch:R_VIN_HIGH_CURRENT" in result["errors"]
     assert result["verified_checks"]["rules_equivalence"] == "FAIL"
 
 
@@ -442,7 +442,7 @@ def test_native_audit_validator_detects_rule_value_mismatch(tmp_path):
     path = tmp_path / "rule_constraint_inventory.csv"
     rows = _contract_rows(path)
     for row in rows:
-        if row["rule_name"] == "R_ETH_MDI_DIFF" and row["layer_name"] == "Top Layer":
+        if row["rule_name"] == "R_CAN_DIFF" and row["layer_name"] == "Top Layer":
             row["preferred_gap_raw"] = "0"
             break
     _write_csv(
@@ -459,7 +459,7 @@ def test_native_audit_validator_detects_rule_value_mismatch(tmp_path):
 
     assert result["status"] == "FAIL"
     assert any(
-        "R_ETH_MDI_DIFF:Top Layer:preferred_gap_raw" in item
+        "R_CAN_DIFF:Top Layer:preferred_gap_raw" in item
         for item in result["errors"]
     )
 

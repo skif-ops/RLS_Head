@@ -1,18 +1,16 @@
 item,parameter,value,unit,status,source,notes
-PCB,board_length,100,mm,EVT_LOCKED,ALTIUM_BOARD_MECHANICAL_SYS_001.csv,Current routed outline
-PCB,board_width,80,mm,EVT_LOCKED,ALTIUM_BOARD_MECHANICAL_SYS_001.csv,Current routed outline
-PCB,board_thickness,1.60,mm,PROVISIONAL,ALTIUM_BOARD_MECHANICAL_SYS_001.csv,Order-specific Rezonit stack required
-PCB,corner_radius,3,mm,EVT_LOCKED,ALTIUM_BOARD_MECHANICAL_SYS_001.csv,
-PLACEMENT,component_bounds_width,94.776,mm,MEASURED,component_bounds.csv,X 1.043 to 95.819 mm
-PLACEMENT,component_bounds_height,71.190,mm,MEASURED,component_bounds.csv,Y 0.803 to 71.994 mm
-J6,overall_height_max,16.13,mm,DATASHEET_CONFIRMED,Bel SI-60182-F official drawing,Primary current enclosure height driver
+PCB,board_length,90,mm,ECO_CANDIDATE,ALTIUM_BOARD_MECHANICAL_SYS_001.csv,Compact target reduced from the former 100 mm outline; native placement routing and DRC must confirm
+PCB,board_width,70,mm,ECO_CANDIDATE,ALTIUM_BOARD_MECHANICAL_SYS_001.csv,Compact target reduced from the former 80 mm outline; native placement routing and DRC must confirm
+PCB,board_thickness,1.60,mm,PILOT_REZONIT_BASELINE,ALTIUM_BOARD_MECHANICAL_SYS_001.csv,Selected pilot stack
+PCB,corner_radius,3,mm,ECO_CANDIDATE,ALTIUM_BOARD_MECHANICAL_SYS_001.csv,Retained for compact candidate
+PLACEMENT,component_bounds_width,TBD,mm,ALTIUM_RECALCULATE,Current native placement required,Old Ethernet and onboard GNSS bounds are superseded
+PLACEMENT,component_bounds_height,TBD,mm,ALTIUM_RECALCULATE,Current native placement required,Old Ethernet and onboard GNSS bounds are superseded
+J6,mated_height,10.29,mm,DATASHEET_CONFIRMED,Molex 43045-0600 product data,Allow connector and harness access for the dual host UART
 J4,mated_height,10.29,mm,DATASHEET_CONFIRMED,Molex 43045-0600 product data,Allow connector and harness access
 J1_J5,recommended_pcb_thickness,1.57,mm,DATASHEET_CONFIRMED,Molex 43650 series drawing,Project target remains 1.60 mm
-U8,module_height_max,2.60,mm,DATASHEET_CONFIRMED,u-blox NEO-M9N-00B data sheet,
-J8,receptacle_height,1.25,mm,DATASHEET_CONFIRMED,Hirose U.FL-R-SMT-K product data,
-J8,mated_height_max,2.50,mm,DATASHEET_CONFIRMED,Hirose U.FL-R-SMT-K product data,Cable strain relief still required
+J8,receptacle_height,TBD,mm,CAD_MODEL_VERIFY,JST SM06B-GHS-TB official drawing,Verify exact Altium footprint and STEP model before compact outline lock
 SW1,actuator_height,4.30,mm,DATASHEET_CONFIRMED,E-Switch TL3301NF160QG product data,
-ENCLOSURE,internal_length,TBD,mm,OPEN,STEP assembly,Minimize after wall and assembly method selection
-ENCLOSURE,internal_width,TBD,mm,OPEN,STEP assembly,Minimize after wall and assembly method selection
-ENCLOSURE,internal_height,TBD,mm,OPEN,STEP assembly,Must exceed populated board envelope with assembly clearance
-ENCLOSURE,external_dimensions,TBD,mm,OPEN,STEP assembly,No production freeze
+ENCLOSURE,internal_length,TBD,mm,OUT_OF_PILOT_SCOPE,STEP assembly,Enclosure is not manufactured for the pilot and does not block the PCB archive
+ENCLOSURE,internal_width,TBD,mm,OUT_OF_PILOT_SCOPE,STEP assembly,Enclosure is not manufactured for the pilot and does not block the PCB archive
+ENCLOSURE,internal_height,TBD,mm,OUT_OF_PILOT_SCOPE,STEP assembly,Enclosure is not manufactured for the pilot and does not block the PCB archive
+ENCLOSURE,external_dimensions,TBD,mm,OUT_OF_PILOT_SCOPE,STEP assembly,No production freeze required for the pilot PCB

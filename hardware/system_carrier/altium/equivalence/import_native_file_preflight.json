@@ -16,16 +16,17 @@
       "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
       "sector_shift": 9,
       "sector_size": 512,
-      "sha256": "26b6b3ab119ea476d2710c42856dc07ea1bf326bd558ae19c186bcc88e71adfc",
-      "size": 64512,
+      "sha256": "33a784a9d7a4c17cd4d372348dffeb7615c6affabdd14a1571c347639f30ca06",
+      "size": 58880,
       "status": "PASS"
     }
   },
   "errors": [],
   "layout_authority": "NOT_AUTHORIZED",
   "notes": [
-    "PASS proves that the native Altium documents are non-trivial Microsoft Compound File Binary containers with valid CFB header geometry; it does not prove electrical equivalence.",
-    "Electrical/layout authority remains controlled by ALTIUM_EQUIVALENCE_GATE."
+    "The schematic hash is the immediate 2026-10-28 KiCad Importer output.",
+    "The PCB hash is the retained native pre-ECO PCB base. Later native ECOs and the equivalence manifest bind the current prepared PCB.",
+    "Electrical and layout authority remain controlled by ALTIUM_EQUIVALENCE_GATE."
   ],
   "production_authority": "NOT_AUTHORIZED",
   "schema": "ALTIUM-NATIVE-FILE-PREFLIGHT-001",

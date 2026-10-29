@@ -10,22 +10,22 @@
     {
       "kind": "solver_export",
       "path": "tests/fixtures/d1_em/solver_export.txt",
-      "sha256": "979c764179aacd26bfcad8b5e6e67e4088446b2ee016f90aa89876435429c81f"
+      "sha256": "28e6c58b5b9f9b6515fd1c8462748430ac0dbc69f48287e07478c8840134206e"
     },
     {
       "kind": "model_input",
       "path": "tests/fixtures/d1_em/model.json",
-      "sha256": "9fba244cda9cb9e37c8e45b03f21f28df87cd478c64d144a054cb8b659ef343f"
+      "sha256": "44e3adf2ef5b02b01599155ad5b8d1027945002c2f21918801e774c5f2ce80be"
     },
     {
       "kind": "material_definition",
       "path": "tests/fixtures/d1_em/material.json",
-      "sha256": "271dcf0444fc6a544879d698616bd210ba20fea4e26483b99ec36ea46e6ea216"
+      "sha256": "3fd321a934ecf9c45b5a42729079608e98f774dd806b4619daea5bb5cdf064c4"
     },
     {
       "kind": "antenna_map",
       "path": "tests/fixtures/d1_em/antenna_map.csv",
-      "sha256": "d573694bde667c735e5169d5c359eb3dcab25487d7e7a8feccff47fb94bebd58"
+      "sha256": "de997cf0aedf517e314ff10b8a7e23983702f53b4866e745167675e0874d5e55"
     }
   ]
 }

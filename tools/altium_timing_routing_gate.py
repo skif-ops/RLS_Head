@@ -14,7 +14,7 @@ SUMMARY_SCHEMA = "ALTIUM-TIMING-ROUTING-REVIEW-A-001"
 TARGETS = {
     "GNSS_PPS": {
         "segments": 10,
-        "endpoints": (("U8", "3", None), ("U1", "40", None)),
+        "endpoints": (("J8", "4", None), ("U1", "40", None)),
     },
     "IMU_DRDY": {
         "segments": 6,
@@ -25,12 +25,12 @@ TARGETS = {
         "endpoints": (("U1", "79", None), ("J4", "4", None)),
     },
 }
-QUIET_NETS = {"BUCK_SW", "ETH_TXP", "ETH_TXN", "ETH_RXP", "ETH_RXN"}
+QUIET_NETS = {"BUCK_SW", "BUCK5_SW"}
 EXPECTED_DRC = {
     "generic_clearance": 27,
     "ten_mil_clearance": 0,
     "timing_to_buck_sw": 0,
-    "ethernet_class_clearance": 27,
+    "uart_to_buck_sw": 27,
     "unrouted_net": 0,
     "routing_topology": 0,
     "power_plane_connect": 0,
@@ -344,8 +344,11 @@ def parse_drc(path: Path) -> tuple[str, str, dict[str, int]]:
     for rule, count in clearance_rules:
         if "NC_TIMING" in rule and "BUCK_SW" in rule:
             counts["timing_to_buck_sw"] = count
-        if "DP_ETH_MDI" in rule:
-            counts["ethernet_class_clearance"] = count
+        if (
+            ("NC_HOST_UART" in rule or "NC_GNSS_UART" in rule)
+            and ("BUCK_SW" in rule or "BUCK5_SW" in rule)
+        ):
+            counts["uart_to_buck_sw"] = count
     prefixes = {
         "Un-Routed Net Constraint": "unrouted_net",
         "Routing Topology Rule": "routing_topology",

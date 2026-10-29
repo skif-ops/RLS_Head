@@ -226,6 +226,7 @@ def validate(system_root: str | Path) -> dict:
             }
         )
 
+    production_binding_required = bool(results)
     return {
         "schema": SCHEMA,
         "status": "PASS" if not errors else "FAIL",
@@ -235,17 +236,24 @@ def validate(system_root: str | Path) -> dict:
         "l1_l2_dielectric_mm": h,
         "er_nominal": er,
         "models": results,
-        "production_binding_required": True,
+        "model_count": len(results),
+        "production_binding_required": production_binding_required,
         "notes": [
             (
-                "This is an EVT routing-start estimate only. "
-                "Production impedance must be rebound to the selected "
-                "fabricator stack and field-solver result."
+                "No controlled-impedance structure is required for the current "
+                "dual-UART and external-GNSS ECO."
+                if not results
+                else
+                "This is an EVT routing-start estimate only. Production "
+                "impedance must be rebound to the selected fabricator stack."
             ),
             (
-                "The analytical model intentionally provides a stable "
-                "repository check, not a substitute for the fabricator "
-                "impedance coupon/solver."
+                "The empty impedance table is intentional and is checked "
+                "against the routing-stack contract."
+                if not results
+                else
+                "The analytical model is a repository check, not a substitute "
+                "for the fabricator impedance solver."
             ),
         ],
     }

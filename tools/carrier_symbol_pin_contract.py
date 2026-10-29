@@ -6,12 +6,11 @@ from pathlib import Path
 
 EXPECTED_COUNTS = {
     "U2": 14,
-    "U3": 25,
     "U4": 9,
     "U5": 17,
     "U6": 10,
     "U7": 10,
-    "U8": 24,
+    "U9": 17,
 }
 
 

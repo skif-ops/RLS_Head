@@ -1,8 +1,8 @@
 room_id,zone_id,x_min_mm,y_min_mm,x_max_mm,y_max_mm,status,criticality,notes
-ROOM_PWR,ZONE_PWR,2,8,98,20,EVT_PROVISIONAL,P0,Power-entry and regulator corridor
-ROOM_CAN,ZONE_CAN,76,24,99,36,EVT_PROVISIONAL,P0,Radar CAN and reference connector corridor
-ROOM_MCU,ZONE_MCU,32,34,70,46,EVT_PROVISIONAL,P0,MCU clock and analog-support placement room
-ROOM_IMU,ZONE_IMU,46,52,58,64,EVT_PROVISIONAL,P1,Mechanically quiet IMU room
-ROOM_GNSS,ZONE_GNSS,3,56,32,72,EVT_PROVISIONAL,P0,GNSS quiet placement room inside GNSS keepout corridor
-ROOM_ETH,ZONE_ETH,62,46,99,66,EVT_PROVISIONAL,P0,PHY ESD and MagJack corridor
-ROOM_DEBUG,ZONE_DEBUG,45,2,75,10,EVT_PROVISIONAL,P1,SWD reset and debug-access room
+ROOM_PWR,ZONE_PWR,2,8,88,20,ECO_CANDIDATE,P0,Power-entry and regulator corridor in the 90x70 mm candidate
+ROOM_CAN,ZONE_CAN,68,23,89,35,ECO_CANDIDATE,P0,Radar CAN and reference connector corridor
+ROOM_MCU,ZONE_MCU,27,28,63,45,ECO_CANDIDATE,P0,MCU clock and analog-support placement room
+ROOM_IMU,ZONE_IMU,38,46,52,60,ECO_CANDIDATE,P1,Mechanically quiet IMU room
+ROOM_GNSS,ZONE_GNSS,3,50,32,65,ECO_CANDIDATE,P0,External GNSS connector ESD and 5V supply room
+ROOM_UART,ZONE_UART,70,47,89,62,ECO_CANDIDATE,P0,Dual host UART ESD and connector corridor
+ROOM_DEBUG,ZONE_DEBUG,38,2,68,10,ECO_CANDIDATE,P1,SWD reset and debug-access room

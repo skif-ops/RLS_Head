@@ -321,18 +321,18 @@ jobs:
           assert data["status"] == "PASS"
           assert data["primary_cad"] == "Altium Designer"
           assert data["preserve_kicad"] is True
-          assert data["source_rule_count"] == data["mapped_rule_count"] == 24
+          assert data["source_rule_count"] == data["mapped_rule_count"] == 25
           assert data["layer_count"] == 4
-          assert data["outjob_contract_count"] == 14
-          assert data["required_output_count"] == 13
-          assert data["release_checklist_count"] == 18
+          assert data["outjob_contract_count"] == 17
+          assert data["required_output_count"] == 16
+          assert data["release_checklist_count"] == 20
           assert data["board_planning_count"] == 8
-          assert data["dfm_profile_count"] == 10
+          assert data["dfm_profile_count"] == 11
           assert data["implementation_step_count"] == 15
-          assert data["impedance_model_count"] == 2
-          assert data["power_width_model_count"] == 4
-          assert data["diff_pair_count"] == 3
-          assert data["rule_query_count"] == 10
+          assert data["impedance_model_count"] == 0
+          assert data["power_width_model_count"] == 5
+          assert data["diff_pair_count"] == 1
+          assert data["rule_query_count"] == 9
           assert data["room_count"] == 7
           assert data["equivalence_check_count"] == 11
           native_sch = Path(
@@ -369,8 +369,6 @@ jobs:
           assert data["edge_ref_count"] >= 6
           assert data["hard_position_count"] >= 20
           assert data["imu_to_buck_mm"] >= 20.0
-          assert data["eth_50m_to_mcu_mm"] <= 20.0
-          assert data["eth_50m_to_phy_mm"] <= 20.0
           print("Altium placement geometry PASS")
           PY
 
@@ -391,7 +389,8 @@ jobs:
           )
           assert data["status"] == "PASS"
           assert data["errors"] == []
-          assert data["evt_routing_datums_locked"] is True
+          assert data["compact_candidate_validated"] is True
+          assert data["evt_routing_datums_locked"] is False
           assert data["production_mechanical_freeze"] is False
           assert data["minimum_mount_hole_edge_ligament_mm"] >= 3.0
           print("EVT mechanical routing datums PASS")
@@ -411,8 +410,8 @@ jobs:
           assert data["status"] == "PASS"
           assert data["errors"] == []
           assert data["stack_total_mm"] == 1.6
-          assert len(data["models"]) == 2
-          assert data["production_binding_required"] is True
+          assert data["model_count"] == 0
+          assert data["production_binding_required"] is False
           print("Altium provisional impedance model PASS")
           PY
 
@@ -433,8 +432,8 @@ jobs:
           assert data["errors"] == []
           assert data["evt_routing_stack_locked"] is True
           assert data["production_stack_locked"] is False
-          assert data["production_binding_required"] is True
-          assert data["field_solver_required"] is True
+          assert data["production_binding_required"] is False
+          assert data["field_solver_required"] is False
           assert data["stack_total_mm"] == 1.6
           print("EVT routing stack lock PASS")
           PY
@@ -452,7 +451,7 @@ jobs:
           assert data["schema"] == "ALTIUM-POWER-WIDTH-GATE-001"
           assert data["status"] == "PASS"
           assert data["errors"] == []
-          assert len(data["models"]) == 4
+          assert len(data["models"]) == 5
           assert data["production_review_required"] is True
           print("Altium provisional power-width model PASS")
           PY
@@ -493,9 +492,9 @@ jobs:
           assert data["schema"] == "ALTIUM-RULE-SCOPE-GATE-001"
           assert data["status"] == "PASS"
           assert data["errors"] == []
-          assert data["rule_count"] == 10
-          assert data["differential_pair_count"] == 3
-          assert data["differential_pair_class_count"] == 2
+          assert data["rule_count"] == 9
+          assert data["differential_pair_count"] == 1
+          assert data["differential_pair_class_count"] == 1
           print("Altium rule scopes and differential pairs PASS")
           PY
 
@@ -864,11 +863,11 @@ jobs:
           assert manifest["status"] == "CAD_SCAFFOLD_READY"
           assert validation["status"] == "PASS"
           assert validation["placeholder_count"] == 0
-          assert validation["verified_footprint_count"] == 92
-          assert validation["verified_bom_mpn_count"] == 92
-          assert manifest["footprint_assignment_count"] == 92
-          assert manifest["staged_footprint_count"] == 25
-          assert manifest["altium_import_bridge_count"] == 6
+          assert validation["verified_footprint_count"] == 83
+          assert validation["verified_bom_mpn_count"] == 83
+          assert manifest["footprint_assignment_count"] == 83
+          assert manifest["staged_footprint_count"] == 21
+          assert manifest["altium_import_bridge_count"] == 5
           assert erc["source"] == "EVT_SYS_CARRIER.kicad_sch"
 
           violations = sum(
@@ -994,8 +993,8 @@ jobs:
           assert data["status"] == "PASS"
           assert data["errors"] == []
           assert data["mcu_vdd_decoupling_count"] == 14
-          assert data["board_width_mm"] == 100.0
-          assert data["board_height_mm"] == 80.0
+          assert data["board_width_mm"] == 90.0
+          assert data["board_height_mm"] == 70.0
           assert (
               data["physical_ref_count"]
               == data["bom_ref_count"]
@@ -1044,7 +1043,8 @@ jobs:
               ).read_text()
           )
           assert data["status"] == "PASS"
-          assert data["evt_routing_datums_locked"] is True
+          assert data["compact_candidate_validated"] is True
+          assert data["evt_routing_datums_locked"] is False
           assert data["production_mechanical_freeze"] is False
           print("EVT mechanical routing datum evidence READY")
           PY
@@ -1064,7 +1064,8 @@ jobs:
               ).read_text()
           )
           assert data["status"] == "PASS"
-          assert data["production_binding_required"] is True
+          assert data["production_binding_required"] is False
+          assert data["model_count"] == 0
           print("Altium impedance evidence READY")
           PY
 
@@ -1086,7 +1087,7 @@ jobs:
           assert data["status"] == "PASS"
           assert data["evt_routing_stack_locked"] is True
           assert data["production_stack_locked"] is False
-          assert data["production_binding_required"] is True
+          assert data["production_binding_required"] is False
           print("EVT routing stack evidence READY")
           PY
 
@@ -1146,7 +1147,7 @@ jobs:
               ).read_text()
           )
           assert data["status"] == "PASS"
-          assert data["rule_count"] == 10
+          assert data["rule_count"] == 9
           print("Altium native rule-scope evidence READY")
           PY
 

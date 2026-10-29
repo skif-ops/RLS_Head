@@ -1,14 +1,14 @@
 {
-  "aggregate_logical_pin_count": 1,
-  "checked_native_pad_count": 22,
+  "aggregate_logical_pin_count": 0,
+  "checked_native_pad_count": 28,
   "errors": [],
   "input_sha256": {
-    "connector_native_map": "c6adf75d170f0eaa1f6f6731d7ec529c1a7216687b48bfac0544424eb7576ef4",
-    "connector_pinout_contract": "28afa65cd63f52fe09f3a4b0bc3325d62bb87b5d33c0708aefc42226894b45ee",
-    "pad_net_inventory": "4ad8833119d284abf9a55b3540294bcbc5f09ea6d9c84708c201e1d28c08aab3"
+    "connector_native_map": "dcd8f987a809a4c41e8f493f16dc70da503126466f5cb1e1e36133fd003798b1",
+    "connector_pinout_contract": "e9e250c4e0e0a7f04261a8e0b8b2a74b9da5dc941b2eadec72f981686d30c0ae",
+    "pad_net_inventory": "43a3461471e11b12bc0f3fc5b83f85a4e4a9234104d4c17f4013420c7270d443"
   },
-  "logical_connector_pin_count": 19,
-  "native_map_row_count": 22,
+  "logical_connector_pin_count": 28,
+  "native_map_row_count": 28,
   "notes": [
     "The native mapping bridges logical harness connector names to actual System Carrier PCB designators and pad numbers.",
     "J_ETH MDI is an aggregate contract mapped to the four PHY-side MagJack pair pads."

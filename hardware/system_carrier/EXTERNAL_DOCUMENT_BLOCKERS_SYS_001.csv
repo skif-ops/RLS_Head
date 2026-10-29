@@ -1,2 +1,3 @@
 blocker_id,ref,mpn,required_document,status,notes
-MAGJACK_DRAWING,J_ETH,SI-60182-F,Manufacturer pinout/PCB drawing,CLOSED,Bel SI-60182-F official drawing verified; P01-0006-01 is listed by Bel as compatible and SI-60182-F maps to the electrically/mechanically equivalent KiCad SI-60062-F stock representation.
+JST_GH_DRAWING,J8,SM06B-GHS-TB(LF)(SN),Manufacturer footprint and mechanical drawing,CLOSED,Exact KiCad stock footprint selected; native Altium footprint and 3D clearance remain part of the Altium mechanical audit
+GNSS_MODULE_PINOUT,EXT_GNSS,simpleRTK3B Pro mosaic-X5,Manufacturer connector pinout and supply requirement,CLOSED,JST-GH port pinout and minimum 5V supply requirement are bound in the connector and power contracts

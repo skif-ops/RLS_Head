@@ -89,7 +89,7 @@ def _write_fixture(root: Path) -> None:
         tracks,
     )
     pads = [
-        _pad("U8", "3", "GNSS_PPS", 10.0, 10.0),
+        _pad("J8", "4", "GNSS_PPS", 10.0, 10.0),
         _pad("U1", "40", "GNSS_PPS", 20.0, 10.0),
         _pad("U2", "4", "IMU_DRDY", 10.0, 20.0),
         _pad("U1", "80", "IMU_DRDY", 16.0, 20.0),
@@ -144,7 +144,7 @@ def _write_fixture(root: Path) -> None:
         "Rule Violations :0\n"
         "Processing Rule : Clearance Constraint (Gap=39.37mil) (InNetClass('NC_TIMING')),(InNet('BUCK_SW'))\n"
         "Rule Violations :0\n"
-        "Processing Rule : Clearance Constraint (Gap=7.874mil) (InDifferentialPairClass('DP_ETH_MDI')),(Not InDifferentialPairClass('DP_ETH_MDI'))\n"
+        "Processing Rule : Clearance Constraint (Gap=39.37mil) (InNetClass('NC_HOST_UART') Or InNetClass('NC_GNSS_UART')),(InNet('BUCK_SW') Or InNet('BUCK5_SW'))\n"
         "Rule Violations :27\n"
         "Processing Rule : Un-Routed Net Constraint ( (All) )\n"
         "Rule Violations :0\n"

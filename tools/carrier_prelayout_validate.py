@@ -226,7 +226,7 @@ def validate(
             f"missing_mcu_vdd_decoupling:{ref}"
         )
 
-    for ref in {"C114", "C115", "C64", "C65"}:
+    for ref in {"C114", "C115"}:
         if ref not in physical_refs:
             errors.append(
                 f"missing_required_decoupling:{ref}"
@@ -347,11 +347,10 @@ def validate(
         "U1",
         "Y1",
         "U2",
-        "U8",
         "J8",
         "D8",
-        "U3",
-        "Y2",
+        "U9",
+        "L9",
         "D3",
         "J6",
         "J10",
@@ -363,14 +362,10 @@ def validate(
             f"missing_hard_placement:{ref}"
         )
 
-    if board_width != 100.0:
-        warnings.append(
-            f"evt_board_width:{board_width}"
-        )
-    if board_height != 80.0:
-        warnings.append(
-            f"evt_board_height:{board_height}"
-        )
+    if board_width != 90.0:
+        errors.append(f"compact_board_width:{board_width}")
+    if board_height != 70.0:
+        errors.append(f"compact_board_height:{board_height}")
 
     return {
         "schema": SCHEMA,
@@ -402,9 +397,9 @@ def validate(
                 "native Altium equivalence is a separate gate."
             ),
             (
-                "The 100x80mm outline is EVT_ROUTING_LOCKED for "
-                "native layout datum use; it does not constitute a "
-                "production mechanical freeze."
+                "The 90x70 mm outline is an ECO candidate for native "
+                "Altium placement, routing and DRC validation. It is not "
+                "a production mechanical freeze."
             ),
         ],
     }

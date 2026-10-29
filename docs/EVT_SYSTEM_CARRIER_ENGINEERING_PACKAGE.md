@@ -2,7 +2,7 @@
 
 | Параметр | Значение |
 | --- | --- |
-| Срез комплекта | 2026-10-27 |
+| Срез комплекта | 2026-10-28 |
 | Аппаратная ревизия | A |
 | Основная CAD-система | Altium Designer |
 | Production authority | NOT_AUTHORIZED |
@@ -29,7 +29,7 @@
 
 | Файл | Содержание |
 | --- | --- |
-| hardware/system_carrier/BOM_SYS_CARRIER_LAYOUT_004.csv | 92 физических позиции и PCB-only элементы |
+| hardware/system_carrier/BOM_SYS_CARRIER_LAYOUT_004.csv | Физические позиции и PCB-only элементы текущего ECO |
 | hardware/system_carrier/NETLIST_SYS_001.csv | Электрическая база соединений |
 | hardware/system_carrier/PINMAP_SYS_001.csv | Назначения выводов MCU |
 | hardware/system_carrier/CONNECTOR_PINOUT_SYS_001.csv | Внешние разъёмы |
@@ -51,41 +51,32 @@
 | hardware/system_carrier/altium/ALTIUM_DFM_PROFILE_SYS_001.csv | Производственные DFM-пункты |
 | hardware/system_carrier/altium/ALTIUM_OUTJOB_CONTRACT_SYS_001.csv | Обязательные выходные файлы |
 
-## Подтверждённые результаты
+## Подтверждённые результаты источника ECO
 
 | Проверка | Результат |
 | --- | --- |
 | KiCad ERC | PASS, 0 ошибок, 0 предупреждений |
-| Native Altium import | PASS |
-| Source binding | PASS |
-| Native compile | PASS, 0 ошибок, 0 предупреждений |
-| BOM/designator/MPN | PASS, 92 позиции |
-| Footprint equivalence | PASS |
-| Pinmap и connector pinout | PASS |
-| Netlist и hierarchy | PASS |
-| No-mmWave review | PASS |
-| ALTIUM_EQUIVALENCE_GATE | PASS |
-| Signal connection audit | PASS |
-| Target signal disconnected nets | 0 |
-| Copper outside board | 0 |
-| Unrouted/topology/antennae | 0 |
-| Layout authority gate | READY_FOR_ROUTING |
-| EVT signal routing implementation | PASS |
+| Design input contracts | PASS |
+| Hierarchy contract | PASS, 55 соединений |
+| Generated CAD scaffold | PASS, 83 MPN и посадочных места |
+| Generated hierarchy realization | PASS, 55 из 55 соединений |
+| Native Altium import после ECO | PENDING |
+| Native compile и DRC после ECO | PENDING |
+| ALTIUM_EQUIVALENCE_GATE после ECO | PENDING |
 | Production authority | NOT_AUTHORIZED |
 
-Зафиксированный результат аудита трассировки привязан к `PcbDoc` с SHA-256
-`fc3404b281f3ca76123a8dd68b6076a4e50f5d867ed9fc9582fb6f6ef248ba44`.
+Старый native-аудит относится к схеме с Ethernet и встроенным GNSS и не
+используется как доказательство для текущего ECO.
 
 ## Незакрытые производственные работы
 
-- Согласовать с «Резонитом» стек 1,60 мм, 35 мкм и допуски.
-- Получить расчёт 50 Ом GNSS_RF и 100 Ом Ethernet MDI.
-- Исправить или формально закрыть 75 production DRC markers.
-- Выполнить return-path и SI review.
-- Спроектировать компактный корпус и проверить STEP-сборку.
-- Выполнить DFM и электрический контроль производственного пакета.
+- Импортировать обновлённые восемь листов в native Altium.
+- Удалить Ethernet и встроенный GNSS из PcbDoc, добавить UART, J8 и 5V_GNSS.
+- Выполнить размещение, трассировку, return-path review и native DRC.
+- Выполнить новый equivalence gate для текущего SchDoc и PcbDoc.
+- Выполнить DFM и электрический контроль производственного пакета под Резонит.
 - Создать полный Altium OutJob и проверить каждый обязательный выход.
-- Провести стендовые испытания питания и интерфейсов.
+- Провести стендовые испытания питания, двух UART и внешнего GNSS.
 - Подтвердить источник RADAR_REF на AWR2944PEVM.
 
 ## Управление изменениями

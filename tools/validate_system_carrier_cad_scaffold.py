@@ -18,13 +18,18 @@ EXPECTED_CHILDREN = {
     "30_TIME_GNSS.kicad_sch",
     "40_IMU.kicad_sch",
     "50_RADAR_IO_CAN.kicad_sch",
-    "60_ETHERNET.kicad_sch",
+    "60_HOST_UART.kicad_sch",
     "70_DEBUG_BOOT.kicad_sch",
 }
 
 EXPECTED_PAPER_SIZE = {
     "EVT_SYS_CARRIER.kicad_sch": "A2",
     "20_MCU_CORE.kicad_sch": "A3",
+    "30_TIME_GNSS.kicad_sch": "A5",
+    "40_IMU.kicad_sch": "A5",
+    "50_RADAR_IO_CAN.kicad_sch": "A5",
+    "60_HOST_UART.kicad_sch": "A5",
+    "70_DEBUG_BOOT.kicad_sch": "A5",
 }
 
 
@@ -106,11 +111,9 @@ def validate(root: Path) -> dict:
         "Device",
         "Connector_Generic",
         "Connector",
-        "RF_GPS",
         "Switch",
         "power",
         "MCU_ST_STM32H7",
-        "Interface_Ethernet",
     }
 
     if not isinstance(symbol_bindings, dict):
@@ -135,7 +138,7 @@ def validate(root: Path) -> dict:
         for item in manifest.get("symbol_placeholders", [])
         if isinstance(item, dict)
     }
-    for ref in {"U2", "U4", "U5", "U6", "U7", "Y1", "Y2", "D3", "D4"}:
+    for ref in {"U2", "U4", "U5", "U6", "U7", "U9", "Y1", "D3", "D4", "D8"}:
         if ref in pending_refs:
             errors.append(
                 f"local_symbol_fell_back:{ref}"

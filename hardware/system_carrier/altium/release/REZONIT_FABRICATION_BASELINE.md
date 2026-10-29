@@ -12,17 +12,17 @@ production.
 - Fabricator: Rezonit
 - Construction: standard four-layer FR-4 with plated through holes
 - Working material: FR-4 TG150, IPC-4101/99
-- Working published thickness: 1.50 mm, excluding plating, finish and solder mask
+- Pilot order thickness: 1.60 mm nominal
+- Closest fully published Rezonit construction: 1.50 mm actual before order-specific CAM confirmation
 - Copper: 35 um on all four layers
-- Controlled impedance: required for 50 ohm GNSS RF and 100 ohm Ethernet MDI
+- Controlled impedance: not required by the current carrier ECO
 - Package use: pilot quotation, CAM preflight and order-specific correction
 - Production authority: `NOT_AUTHORIZED`
 
-The published TG150 four-layer stack is the working factory baseline because
-it is the closest fully described Rezonit construction to the project target.
-The project 1.60 mm mechanical target remains recorded. The 0.10 mm difference
-and the order-specific finished thickness are deferred for Rezonit CAM review.
-They do not block assembly of the pilot archive.
+The published TG150 four-layer stack is the working factory reference because
+it is the closest fully described Rezonit construction to the 1.60 mm pilot
+target. The 0.10 mm difference and the exact finished thickness can be corrected
+during CAM review and do not block assembly of the pilot archive.
 
 ## Published four-layer stacks
 
@@ -88,18 +88,13 @@ Surface finish remains an order selection. The available finishes are listed
 here so CAM and procurement can bind one without reopening the source-data
 search.
 
-## Published impedance starting values
+## Impedance scope
 
-For the published four-layer, 35 um, 1.50 mm TG150 construction, Rezonit lists:
-
-- 50 ohm microstrip starting width: 0.18 mm
-- 100 ohm differential starting geometry: 0.15 mm width and 0.30 mm gap
-
-The routed EVT provisional values are 0.36 mm for GNSS and 0.26 mm width with
-0.20 mm gap for Ethernet. The values do not match. No production impedance
-claim is made from the website table. The routed PcbDoc and locked EVT
-contracts remain unchanged until Rezonit supplies an order-specific stack,
-finished copper and solver result.
+The current carrier has no Ethernet MDI and no onboard GNSS RF path. Host UART,
+external GNSS UART/PPS, CAN-FD, SPI and clocks are routed over a continuous L2
+GND reference using the standard width and clearance rules. No controlled-
+impedance coupon or order-specific field-solver geometry is required for this
+pilot design.
 
 ## Deferred order corrections
 
@@ -109,8 +104,7 @@ blockers:
 1. Final 1.60 mm or nearest accepted finished thickness.
 2. Finished copper after plating.
 3. Exact dielectric thicknesses and production tolerances.
-4. Order-bound 50 ohm and 100 ohm solver geometries.
-5. Surface finish and any associated pad or mask correction.
+4. Surface finish and any associated pad or mask correction.
 
 They remain production-release inputs. Production authority stays
 `NOT_AUTHORIZED` until the final fabrication drawing and order-bound values are

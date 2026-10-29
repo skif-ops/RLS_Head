@@ -1,10 +1,10 @@
 {
-  "actual_component_count": 92,
+  "actual_component_count": 83,
   "errors": [],
-  "expected_footprint_count": 92,
+  "expected_footprint_count": 83,
   "input_sha256": {
-    "component_inventory": "6cedbba5a0af2a13094adda2ab2f168af0a8c67beaa02d9fd5c8c7c00c9641d4",
-    "footprint_contract": "9ec759c10f0f9864cf4cf96123a5ca11e796bf84ac01fe7d64c576acfe5536be"
+    "component_inventory": "3cefaac8cf9962e3fbcdaa7384992c4b72713f6d6fded2145e74c6627f2123db",
+    "footprint_contract": "2ebd86e2941eed48cbdf6aaf8ce8745fa86faba9b8307b94d2f38fa8d5935b9a"
   },
   "notes": [
     "Comparison uses the footprint pattern name, stripping library prefixes such as KiCad library-name:pattern.",

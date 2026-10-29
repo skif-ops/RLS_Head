@@ -47,7 +47,6 @@ def validate(system_root: str | Path) -> dict:
     rule_path = altium / "ALTIUM_RULE_QUERY_SYS_001.csv"
     net_class_path = altium / "ALTIUM_NET_CLASSES_SYS_001.csv"
     netlist_path = root / "NETLIST_SYS_001.csv"
-    impedance_path = altium / "ALTIUM_IMPEDANCE_START_SYS_001.csv"
     power_path = altium / "ALTIUM_POWER_WIDTH_SYS_001.csv"
     values_path = altium / "ALTIUM_PRELAYOUT_RULE_VALUES_SYS_001.csv"
 
@@ -59,7 +58,6 @@ def validate(system_root: str | Path) -> dict:
         rule_path,
         net_class_path,
         netlist_path,
-        impedance_path,
         power_path,
         values_path,
     )
@@ -79,10 +77,6 @@ def validate(system_root: str | Path) -> dict:
     rules = read_csv(rule_path)
     net_classes = read_csv(net_class_path)
     netlist = read_csv(netlist_path)
-    impedance = value_map(
-        read_csv(impedance_path),
-        key="model_id",
-    )
     power = value_map(
         read_csv(power_path),
         key="model_id",
@@ -96,11 +90,7 @@ def validate(system_root: str | Path) -> dict:
         str(row.get("pair_name", "")).strip()
         for row in pairs
     }
-    expected_pairs = {
-        "DP_ETH_TX",
-        "DP_ETH_RX",
-        "DP_CAN",
-    }
+    expected_pairs = {"DP_CAN"}
     if pair_names != expected_pairs:
         errors.append(
             "pair_set:"
@@ -111,7 +101,7 @@ def validate(system_root: str | Path) -> dict:
         str(row.get("pair_class", "")).strip()
         for row in pairs
     }
-    if pair_classes != {"DP_ETH_MDI", "DP_CAN"}:
+    if pair_classes != {"DP_CAN"}:
         errors.append(
             "pair_class_set:"
             + ",".join(sorted(pair_classes))
@@ -153,7 +143,7 @@ def validate(system_root: str | Path) -> dict:
         if str(row.get("net_name", "")).strip()
     }
     known_nets |= pair_nets
-    known_nets |= {"GNSS_RF", "BUCK_SW"}
+    known_nets |= {"BUCK_SW", "BUCK5_SW"}
 
     net_class_ids = {
         str(row.get("class_id", "")).strip()
@@ -162,13 +152,12 @@ def validate(system_root: str | Path) -> dict:
     }
 
     expected_rule_names = {
-        "R_GNSS_RF_WIDTH",
-        "R_ETH_MDI_DIFF",
         "R_VIN_HIGH_CURRENT",
         "R_RADAR_12V_WIDTH",
         "R_3V3_TRUNK_WIDTH",
+        "R_5V_GNSS_WIDTH",
         "R_TIMING_TO_SW_CLEARANCE",
-        "R_ETH_MDI_CLEARANCE",
+        "R_UART_TO_SW_CLEARANCE",
         "R_CAN_DIFF",
         "R_GENERAL_CLEARANCE",
         "R_GENERAL_WIDTH",
@@ -354,21 +343,6 @@ def validate(system_root: str | Path) -> dict:
             )
 
     check_float(
-        "R_GNSS_RF_WIDTH",
-        "preferred_value",
-        float(impedance["IMP-001"]["trace_width_mm"]),
-    )
-    check_float(
-        "R_ETH_MDI_DIFF",
-        "preferred_value",
-        float(impedance["IMP-002"]["trace_width_mm"]),
-    )
-    check_float(
-        "R_ETH_MDI_DIFF",
-        "gap_preferred_mm",
-        float(impedance["IMP-002"]["pair_gap_mm"]),
-    )
-    check_float(
         "R_VIN_HIGH_CURRENT",
         "preferred_value",
         float(power["PWR-001"]["selected_width_mm"]),
@@ -384,6 +358,11 @@ def validate(system_root: str | Path) -> dict:
         float(power["PWR-004"]["selected_width_mm"]),
     )
     check_float(
+        "R_5V_GNSS_WIDTH",
+        "min_value",
+        float(power["PWR-005"]["selected_width_mm"]),
+    )
+    check_float(
         "R_GENERAL_CLEARANCE",
         "preferred_value",
         float(values["RV-003"]["value"]),
@@ -392,6 +371,11 @@ def validate(system_root: str | Path) -> dict:
         "R_TIMING_TO_SW_CLEARANCE",
         "preferred_value",
         float(values["RV-015"]["value"]),
+    )
+    check_float(
+        "R_UART_TO_SW_CLEARANCE",
+        "preferred_value",
+        float(values["RV-019"]["value"]),
     )
 
     return {

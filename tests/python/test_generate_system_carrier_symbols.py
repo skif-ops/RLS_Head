@@ -33,9 +33,9 @@ def test_generates_expected_local_symbols(tmp_path):
         "ICM-42688-P",
         "TCAN3404DRBRQ1",
         "TPS62132RGTR",
+        "TPS62133RGTR",
         "TPS259470ARPWR",
         "ECS-2520S33-250-FN-TR",
-        "ECS-2520S33-500-FN-TR",
         "ESD2CANFD24DBZRQ1",
         "TPD4E05U06DQAR",
     }
@@ -104,6 +104,10 @@ def test_locked_footprints_are_embedded_only_when_available(tmp_path):
         "Package_DFN_QFN:"
         "VQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm"
     )
+    assert by_name["TPS62133RGTR"]["footprint"] == (
+        "Package_DFN_QFN:"
+        "VQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm"
+    )
     assert by_name["ICM-42688-P"]["footprint"] == (
         "SystemCarrier_Local:"
         "ICM-42688-P_LGA14_2.5x3mm_P0.5mm"
@@ -131,12 +135,6 @@ def test_auxiliary_symbol_pin_counts_and_footprints(tmp_path):
 
     assert by_name["ECS-2520S33-250-FN-TR"]["pin_count"] == 4
     assert by_name["ECS-2520S33-250-FN-TR"]["footprint"] == (
-        "Oscillator:"
-        "Oscillator_SMD_ECS_2520MV-xxx-xx-4Pin_2.5x2.0mm"
-    )
-
-    assert by_name["ECS-2520S33-500-FN-TR"]["pin_count"] == 4
-    assert by_name["ECS-2520S33-500-FN-TR"]["footprint"] == (
         "Oscillator:"
         "Oscillator_SMD_ECS_2520MV-xxx-xx-4Pin_2.5x2.0mm"
     )

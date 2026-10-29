@@ -1,5 +1,5 @@
-{ Apply the locked EVT outline and mounting-hole datum to the active PcbDoc.
-  Run ApplyEVTMechanical once on a fresh import, then audit the resulting board.
+{ Apply the 90x70 mm ECO candidate outline and mounting-hole datum.
+  Lock the datum only after native placement, routing and DRC validation.
 }
 
 Function EVTMechanicalCoord(ValueText : String) : TCoord;
@@ -85,17 +85,64 @@ Begin
     Board.BoardIterator_Destroy(Iterator);
 End;
 
+Function EVTIsExpectedMountingHole(Pad : IPCB_Pad) : Boolean;
+Begin
+    Result := False;
+    If UpperCase(Pad.Name) = 'H1' Then
+        Result := (Abs(Pad.X - EVTMechanicalCoord('5mm')) <= 1) And
+                  (Abs(Pad.Y - EVTMechanicalCoord('5mm')) <= 1)
+    Else If UpperCase(Pad.Name) = 'H2' Then
+        Result := (Abs(Pad.X - EVTMechanicalCoord('85mm')) <= 1) And
+                  (Abs(Pad.Y - EVTMechanicalCoord('5mm')) <= 1)
+    Else If UpperCase(Pad.Name) = 'H3' Then
+        Result := (Abs(Pad.X - EVTMechanicalCoord('5mm')) <= 1) And
+                  (Abs(Pad.Y - EVTMechanicalCoord('65mm')) <= 1)
+    Else If UpperCase(Pad.Name) = 'H4' Then
+        Result := (Abs(Pad.X - EVTMechanicalCoord('85mm')) <= 1) And
+                  (Abs(Pad.Y - EVTMechanicalCoord('65mm')) <= 1);
+End;
+
+Procedure EVTRemoveObsoleteMountingHoles(Board : IPCB_Board);
+Var
+    Iterator : IPCB_BoardIterator;
+    Pad      : IPCB_Pad;
+    NextPad  : IPCB_Pad;
+    IsNamedMountingHole : Boolean;
+Begin
+    Iterator := Board.BoardIterator_Create;
+    Iterator.AddFilter_ObjectSet(MkSet(ePadObject));
+    Iterator.AddFilter_LayerSet(AllLayers);
+    Iterator.AddFilter_Method(eProcessAll);
+    Pad := Iterator.FirstPCBObject;
+    While Pad <> Nil Do
+    Begin
+        NextPad := Iterator.NextPCBObject;
+        IsNamedMountingHole :=
+            (UpperCase(Pad.Name) = 'H1') Or
+            (UpperCase(Pad.Name) = 'H2') Or
+            (UpperCase(Pad.Name) = 'H3') Or
+            (UpperCase(Pad.Name) = 'H4');
+        If (Pad.Component = Nil) And (Not Pad.Plated) And
+           IsNamedMountingHole And
+           (Not EVTIsExpectedMountingHole(Pad)) Then
+            Board.RemovePCBObject(Pad);
+        Pad := NextPad;
+    End;
+    Board.BoardIterator_Destroy(Iterator);
+End;
+
 Procedure EVTAddMissingHoles(Board : IPCB_Board);
 Begin
     PCBServer.PreProcess;
+    EVTRemoveObsoleteMountingHoles(Board);
     If Not EVTHasMountingHole(Board, '5mm', '5mm') Then
         EVTMountingHole(Board, 'H1', '5mm', '5mm');
-    If Not EVTHasMountingHole(Board, '95mm', '5mm') Then
-        EVTMountingHole(Board, 'H2', '95mm', '5mm');
-    If Not EVTHasMountingHole(Board, '5mm', '75mm') Then
-        EVTMountingHole(Board, 'H3', '5mm', '75mm');
-    If Not EVTHasMountingHole(Board, '95mm', '75mm') Then
-        EVTMountingHole(Board, 'H4', '95mm', '75mm');
+    If Not EVTHasMountingHole(Board, '85mm', '5mm') Then
+        EVTMountingHole(Board, 'H2', '85mm', '5mm');
+    If Not EVTHasMountingHole(Board, '5mm', '65mm') Then
+        EVTMountingHole(Board, 'H3', '5mm', '65mm');
+    If Not EVTHasMountingHole(Board, '85mm', '65mm') Then
+        EVTMountingHole(Board, 'H4', '85mm', '65mm');
     PCBServer.PostProcess;
 End;
 
@@ -112,22 +159,22 @@ Begin
     Board.BoardOutline.Rebuild;
     Board.BoardOutline.Validate;
     Rect := Board.BoardOutline.BoundingRectangle;
-    If (Abs(Rect.Right - Rect.Left - EVTMechanicalCoord('100mm')) <= 1) And
-       (Abs(Rect.Top - Rect.Bottom - EVTMechanicalCoord('80mm')) <= 1) Then
+    If (Abs(Rect.Right - Rect.Left - EVTMechanicalCoord('90mm')) <= 1) And
+       (Abs(Rect.Top - Rect.Bottom - EVTMechanicalCoord('70mm')) <= 1) Then
     Begin
         EVTAddMissingHoles(Board);
-        ShowMessage('EVT mechanical datum: existing 100x80mm outline retained; missing NPTH holes added.');
+        ShowMessage('EVT mechanical datum: existing 90x70mm candidate retained; missing NPTH holes added.');
         Exit;
     End;
 
     PCBServer.PreProcess;
-    EVTOutlineTrack(Board, '3mm', '0mm', '97mm', '0mm');
-    EVTOutlineArc(Board, '97mm', '3mm', 270, 360);
-    EVTOutlineTrack(Board, '100mm', '3mm', '100mm', '77mm');
-    EVTOutlineArc(Board, '97mm', '77mm', 0, 90);
-    EVTOutlineTrack(Board, '97mm', '80mm', '3mm', '80mm');
-    EVTOutlineArc(Board, '3mm', '77mm', 90, 180);
-    EVTOutlineTrack(Board, '0mm', '77mm', '0mm', '3mm');
+    EVTOutlineTrack(Board, '3mm', '0mm', '87mm', '0mm');
+    EVTOutlineArc(Board, '87mm', '3mm', 270, 360);
+    EVTOutlineTrack(Board, '90mm', '3mm', '90mm', '67mm');
+    EVTOutlineArc(Board, '87mm', '67mm', 0, 90);
+    EVTOutlineTrack(Board, '87mm', '70mm', '3mm', '70mm');
+    EVTOutlineArc(Board, '3mm', '67mm', 90, 180);
+    EVTOutlineTrack(Board, '0mm', '67mm', '0mm', '3mm');
     EVTOutlineArc(Board, '3mm', '3mm', 180, 270);
     PCBServer.PostProcess;
 
@@ -139,10 +186,10 @@ Begin
     Board.BoardOutline.Rebuild;
     Board.BoardOutline.Validate;
     Rect := Board.BoardOutline.BoundingRectangle;
-    If (Abs(Rect.Right - Rect.Left - EVTMechanicalCoord('100mm')) > 1) Or
-       (Abs(Rect.Top - Rect.Bottom - EVTMechanicalCoord('80mm')) > 1) Then
+    If (Abs(Rect.Right - Rect.Left - EVTMechanicalCoord('90mm')) > 1) Or
+       (Abs(Rect.Top - Rect.Bottom - EVTMechanicalCoord('70mm')) > 1) Then
     Begin
-        ShowMessage('EVT mechanical datum: board outline did not match 100x80mm. No mounting holes added.');
+        ShowMessage('EVT mechanical datum: board outline did not match 90x70mm. No mounting holes added.');
         Exit;
     End;
 

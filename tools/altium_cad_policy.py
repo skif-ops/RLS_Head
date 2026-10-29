@@ -237,9 +237,14 @@ def _native_status_coherence(
         if expected[0] == "WAITING_NATIVE_ALTIUM_IMPORT"
         else {"IMPORTED", "PASS", "NATIVE_FILES_READY"}
     )
+    if phase == "EQUIVALENCE_STALE":
+        allowed_import.add("REIMPORT_REQUIRED_AFTER_UART_GNSS_ECO")
     if native_import not in allowed_import:
         errors.append("native_import_status")
-    if equivalence != expected[1]:
+    allowed_equivalence = {expected[1]}
+    if phase == "EQUIVALENCE_STALE":
+        allowed_equivalence.add("REQUIRED_AFTER_ECO_IMPORT")
+    if equivalence not in allowed_equivalence:
         errors.append("native_equivalence_status")
     if layout != expected[2]:
         errors.append("native_layout_authority")
@@ -399,11 +404,11 @@ def validate(root: str | Path) -> dict:
     if len(outline) != 1:
         errors.append("mechanical_outline")
     else:
-        if (
-            str(outline[0].get("status", "")).strip()
-            != "EVT_ROUTING_LOCKED"
-        ):
-            errors.append("mechanical_outline_not_evt_routing_locked")
+        outline_status = str(outline[0].get("status", "")).strip()
+        if outline_status not in {"EVT_ROUTING_LOCKED", "ECO_CANDIDATE"}:
+            errors.append("mechanical_outline_status")
+        elif outline_status == "ECO_CANDIDATE":
+            warnings.append("mechanical_outline_requires_native_validation")
 
     status_data = json.loads(
         status_path.read_text(encoding="utf-8")
@@ -419,7 +424,10 @@ def validate(root: str | Path) -> dict:
     )
     if native_status_doc.get("primary_cad") != "Altium Designer":
         errors.append("native_status_primary_cad")
-    if native_status_doc.get("review_a_status") != "PASS":
+    allowed_review_status = {"PASS"}
+    if str(status_data.get("current_phase", "")) == "EQUIVALENCE_STALE":
+        allowed_review_status.add("REQUIRED_AFTER_ECO_IMPORT")
+    if native_status_doc.get("review_a_status") not in allowed_review_status:
         errors.append("native_status_review_a")
     errors.extend(
         _native_status_coherence(
@@ -458,13 +466,19 @@ def validate(root: str | Path) -> dict:
         errors.append("dfm_profile_count")
     if len(implementation_ids) < 14:
         errors.append("implementation_step_count")
-    if impedance_ids != {"IMP-001", "IMP-002"}:
+    if impedance_ids:
         errors.append("impedance_model_set")
-    if power_width_ids != {"PWR-001", "PWR-002", "PWR-003", "PWR-004"}:
+    if power_width_ids != {
+        "PWR-001",
+        "PWR-002",
+        "PWR-003",
+        "PWR-004",
+        "PWR-005",
+    }:
         errors.append("power_width_model_set")
-    if diff_pair_ids != {"DP_ETH_TX", "DP_ETH_RX", "DP_CAN"}:
+    if diff_pair_ids != {"DP_CAN"}:
         errors.append("diff_pair_set")
-    if len(rule_query_ids) != 10:
+    if len(rule_query_ids) != 9:
         errors.append("rule_query_count")
     if len(room_ids) != 7:
         errors.append("room_count")

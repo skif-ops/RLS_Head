@@ -168,55 +168,55 @@ Begin
     Board := PCBServer.GetCurrentPCBBoard;
     If Board = Nil Then Exit;
     If UpperCase(ExtractFileExt(Board.FileName)) <> '.PCBDOC' Then Exit;
-    If (EVTClassNet(Board, 'ETH_TXP') = Nil) Or
-       (EVTClassNet(Board, 'ETH_TXN') = Nil) Or
-       (EVTClassNet(Board, 'ETH_RXP') = Nil) Or
-       (EVTClassNet(Board, 'ETH_RXN') = Nil) Or
-       (EVTClassNet(Board, 'RADAR_CANH') = Nil) Or
+    If (EVTClassNet(Board, 'RADAR_CANH') = Nil) Or
        (EVTClassNet(Board, 'RADAR_CANL') = Nil) Or
        (EVTClassNet(Board, 'GNSS_PPS') = Nil) Or
        (EVTClassNet(Board, 'RADAR_REF') = Nil) Or
-       (EVTClassNet(Board, 'IMU_DRDY') = Nil) Then
+       (EVTClassNet(Board, 'IMU_DRDY') = Nil) Or
+       (EVTClassNet(Board, '5V_GNSS') = Nil) Or
+       (EVTClassNet(Board, 'HOST_UART1_TX') = Nil) Or
+       (EVTClassNet(Board, 'HOST_UART1_TX_EXT') = Nil) Or
+       (EVTClassNet(Board, 'HOST_UART1_RX') = Nil) Or
+       (EVTClassNet(Board, 'HOST_UART1_RX_EXT') = Nil) Or
+       (EVTClassNet(Board, 'HOST_UART2_TX') = Nil) Or
+       (EVTClassNet(Board, 'HOST_UART2_TX_EXT') = Nil) Or
+       (EVTClassNet(Board, 'HOST_UART2_RX') = Nil) Or
+       (EVTClassNet(Board, 'HOST_UART2_RX_EXT') = Nil) Or
+       (EVTClassNet(Board, 'GNSS_RX_EXT') = Nil) Or
+       (EVTClassNet(Board, 'GNSS_TX_EXT') = Nil) Then
     Begin
         ShowMessage('EVT class binding: a required native net is missing.');
         Exit;
     End;
 
     PCBServer.PreProcess;
-    EVTBindPair(Board, 'DP_ETH_TX', 'ETH_TXP', 'ETH_TXN');
-    EVTBindPair(Board, 'DP_ETH_RX', 'ETH_RXP', 'ETH_RXN');
     EVTBindPair(Board, 'DP_CAN', 'RADAR_CANH', 'RADAR_CANL');
-    EVTBindClass(Board, 'DP_ETH_MDI', eClassMemberKind_DifferentialPair,
-                 'DP_ETH_TX', 'DP_ETH_RX', '');
     EVTBindClass(Board, 'DP_CAN', eClassMemberKind_DifferentialPair,
                  'DP_CAN', '', '');
     EVTBindNetClass(Board, 'NC_POWER_12V',
         'VIN_RAW;VIN_PROTECTED;RADAR_12V');
     EVTBindNetClass(Board, 'NC_POWER_3V3', '3V3;VDDA_FILTERED');
-    EVTBindNetClass(Board, 'NC_ETH_MDI',
-        'ETH_TXP;ETH_TXN;ETH_RXP;ETH_RXN');
-    EVTBindNetClass(Board, 'NC_GNSS_RF', 'GNSS_RF');
+    EVTBindNetClass(Board, 'NC_POWER_5V_GNSS', '5V_GNSS');
     EVTBindNetClass(Board, 'NC_CAN', 'RADAR_CANH;RADAR_CANL');
     EVTBindNetClass(Board, 'NC_TIMING',
         'GNSS_PPS;RADAR_REF;IMU_DRDY');
-    EVTBindNetClass(Board, 'NC_RMII',
-        'ETH_50M;ETH_MDIO;ETH_MDC;ETH_CRS_DV;ETH_RXD0;ETH_RXD1;' +
-        'ETH_TX_EN;ETH_TXD0;ETH_TXD1;ETH_NRST');
+    EVTBindNetClass(Board, 'NC_HOST_UART',
+        'HOST_UART1_TX;HOST_UART1_TX_EXT;HOST_UART1_RX;HOST_UART1_RX_EXT;' +
+        'HOST_UART2_TX;HOST_UART2_TX_EXT;HOST_UART2_RX;HOST_UART2_RX_EXT');
+    EVTBindNetClass(Board, 'NC_GNSS_UART', 'GNSS_RX_EXT;GNSS_TX_EXT');
     EVTBindNetClass(Board, 'NC_IMU_SPI',
         'IMU_NSS;IMU_SCK;IMU_MISO;IMU_MOSI');
-    EVTRepairClass(Board, 'DP_ETH_MDI', 'DP_ETH_TX;DP_ETH_RX');
     EVTRepairClass(Board, 'DP_CAN', 'DP_CAN');
     EVTRepairClass(Board, 'NC_POWER_12V',
         'VIN_RAW;VIN_PROTECTED;RADAR_12V');
     EVTRepairClass(Board, 'NC_POWER_3V3', '3V3;VDDA_FILTERED');
-    EVTRepairClass(Board, 'NC_ETH_MDI',
-        'ETH_TXP;ETH_TXN;ETH_RXP;ETH_RXN');
-    EVTRepairClass(Board, 'NC_GNSS_RF', 'GNSS_RF');
+    EVTRepairClass(Board, 'NC_POWER_5V_GNSS', '5V_GNSS');
     EVTRepairClass(Board, 'NC_CAN', 'RADAR_CANH;RADAR_CANL');
     EVTRepairClass(Board, 'NC_TIMING', 'GNSS_PPS;RADAR_REF;IMU_DRDY');
-    EVTRepairClass(Board, 'NC_RMII',
-        'ETH_50M;ETH_MDIO;ETH_MDC;ETH_CRS_DV;ETH_RXD0;ETH_RXD1;' +
-        'ETH_TX_EN;ETH_TXD0;ETH_TXD1;ETH_NRST');
+    EVTRepairClass(Board, 'NC_HOST_UART',
+        'HOST_UART1_TX;HOST_UART1_TX_EXT;HOST_UART1_RX;HOST_UART1_RX_EXT;' +
+        'HOST_UART2_TX;HOST_UART2_TX_EXT;HOST_UART2_RX;HOST_UART2_RX_EXT');
+    EVTRepairClass(Board, 'NC_GNSS_UART', 'GNSS_RX_EXT;GNSS_TX_EXT');
     EVTRepairClass(Board, 'NC_IMU_SPI',
         'IMU_NSS;IMU_SCK;IMU_MISO;IMU_MOSI');
     PCBServer.PostProcess;

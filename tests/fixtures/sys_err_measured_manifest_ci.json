@@ -4,10 +4,10 @@
   "evidence_level": "SOFTWARE_CI",
   "timing_evidence": {
     "path": "tests/fixtures/sys_err_measured_timing_ci.json",
-    "sha256": "a7747227debd42b2f1fb71b1bd2a051807ee12900614082a1cf1501cd752a0c6"
+    "sha256": "a1a7048fe7c714892aee6a0c3ea1d23b4e1f17f8a580629f58b785549d5159ec"
   },
   "cells_csv": {
     "path": "tests/fixtures/sys_err_measured_cells_ci.csv",
-    "sha256": "c9589dea6b185e39ad4a3497202b43c7bd4f16f95bf24e047fefb7a1edd61c44"
+    "sha256": "1c22c7917f782f1338d92bd8754c5b4379428470cbed28c33e31af16db34476a"
   }
 }

@@ -1,14 +1,15 @@
 {
   "board_baseline": {
     "corner_radius_mm": 3.0,
-    "height_mm": 80.0,
+    "height_mm": 70.0,
     "origin_mm": [
       0.0,
       0.0
     ],
     "thickness_mm": 1.6,
-    "width_mm": 100.0
+    "width_mm": 90.0
   },
+  "compact_candidate_validated": true,
   "connector_datums": {
     "J1": {
       "edge": "LEFT",
@@ -19,36 +20,36 @@
     "J10": {
       "edge": "BOTTOM",
       "edge_distance_mm": 5.0,
-      "x_mm": 50.0,
+      "x_mm": 45.0,
       "y_mm": 5.0
     },
     "J4": {
       "edge": "RIGHT",
       "edge_distance_mm": 5.0,
-      "x_mm": 95.0,
-      "y_mm": 30.0
+      "x_mm": 85.0,
+      "y_mm": 29.0
     },
     "J5": {
       "edge": "RIGHT",
       "edge_distance_mm": 5.0,
-      "x_mm": 95.0,
+      "x_mm": 85.0,
       "y_mm": 14.0
     },
     "J6": {
       "edge": "RIGHT",
-      "edge_distance_mm": 5.25,
-      "x_mm": 94.75,
-      "y_mm": 60.0
+      "edge_distance_mm": 5.0,
+      "x_mm": 85.0,
+      "y_mm": 54.0
     },
     "J8": {
       "edge": "LEFT",
       "edge_distance_mm": 5.0,
       "x_mm": 5.0,
-      "y_mm": 66.0
+      "y_mm": 57.0
     }
   },
   "errors": [],
-  "evt_routing_datums_locked": true,
+  "evt_routing_datums_locked": false,
   "minimum_mount_hole_edge_ligament_mm": 3.4,
   "mounting_holes": {
     "H1": {
@@ -58,27 +59,29 @@
     },
     "H2": {
       "diameter_mm": 3.2,
-      "x_mm": 95.0,
+      "x_mm": 85.0,
       "y_mm": 5.0
     },
     "H3": {
       "diameter_mm": 3.2,
       "x_mm": 5.0,
-      "y_mm": 75.0
+      "y_mm": 65.0
     },
     "H4": {
       "diameter_mm": 3.2,
-      "x_mm": 95.0,
-      "y_mm": 75.0
+      "x_mm": 85.0,
+      "y_mm": 65.0
     }
   },
   "notes": [
-    "PASS locks the repository EVT routing datum only: board envelope, mounting pattern and primary edge-connector anchors.",
+    "PASS validates the repository board envelope, mounting pattern and primary edge-connector anchors. ECO_CANDIDATE remains unlocked until native Altium placement, routing and DRC pass.",
     "PASS does not constitute a production mechanical freeze, enclosure/STEP fit verification or manufacturing authority.",
     "Production remains subject to the separate native-PcbDoc-bound ALTIUM-MECHANICAL-REVIEW-001 required by the production gate."
   ],
   "production_mechanical_freeze": false,
   "schema": "ALTIUM-EVT-MECHANICAL-DATUM-GATE-001",
   "status": "PASS",
-  "warnings": []
+  "warnings": [
+    "compact_candidate_requires_native_drc_before_lock"
+  ]
 }

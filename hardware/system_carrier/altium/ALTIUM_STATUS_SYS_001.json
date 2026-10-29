@@ -3,14 +3,14 @@
     "board_outline_frozen": false,
     "differential_pairs_defined": true,
     "equivalence_gate": true,
-    "evt_mechanical_routing_datums_locked": true,
+    "evt_mechanical_routing_datums_locked": false,
     "evt_power_routing_locked": true,
     "evt_routing_stack_locked": true,
     "evt_stackup_provisional": true,
-    "fabricator_stack_bound": false,
-    "impedance_start_values_ready": true,
-    "import_package_ready": true,
-    "native_pcb_sha256": "ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816",
+    "fabricator_stack_bound": true,
+    "impedance_start_values_ready": false,
+    "import_package_ready": false,
+    "native_pcb_sha256": "0dacc26bbba8b95c0c1bc591546ef879edb8815cb134b4c30d1742d85fdcc1fd",
     "native_pcbdoc": true,
     "native_schdoc": true,
     "placement_rooms_ready": true,
@@ -24,31 +24,21 @@
     "rule_query_contract_ready": true
   },
   "blockers": [
-    "EVT routing datums are locked; final enclosure/STEP fit and production mechanical freeze remain required before production release.",
-    "Fabricator field-solver/dielectric stack binding is still required before production release; EVT routing start values are calculated."
+    "Current native Altium files and evidence predate the UART and external-GNSS ECO and must be regenerated.",
+    "The 90x70 mm compact candidate must pass native placement routing connector-access and DRC checks before its outline is locked."
   ],
   "board_id": "EVT-SYS-CARRIER",
   "current_phase": "READY_FOR_ROUTING",
   "electrical_baseline": {
-    "erc_errors": 0,
-    "erc_warnings": 0,
-    "source": "KiCad 9 retained verification baseline",
-    "source_commit": "f23476e94428295f080b526143dc114f68883635"
+    "erc_errors": null,
+    "erc_warnings": null,
+    "source": "KiCad retained import and verification baseline",
+    "source_commit": null
   },
   "hardware_revision": "A",
   "impedance_start": {
-    "eth_mdi": {
-      "pair_gap_mm": 0.2,
-      "reference": "L2 GND",
-      "target_ohm": 100,
-      "trace_width_mm": 0.26
-    },
-    "gnss_rf": {
-      "reference": "L2 GND",
-      "target_ohm": 50,
-      "trace_width_mm": 0.36
-    },
-    "production_binding_required": true
+    "controlled_impedance_required": false,
+    "reason": "No Ethernet MDI and no onboard GNSS RF path in the current ECO"
   },
   "next_required_phase": "NATIVE_ALTIUM_PLACEMENT_AND_ROUTING",
   "power_width_start": {
@@ -58,28 +48,36 @@
     "production_review_required": true,
     "values_mm": {
       "3V3_TRUNK": 1.5,
+      "5V_GNSS": 0.5,
       "RADAR_12V": 1.5,
       "VIN_PROTECTED": 3,
       "VIN_RAW": 3
     }
   },
+  "release_source_policy": {
+    "all_production_documents_from_altium_outjob": true,
+    "all_schematics_from_altium": true,
+    "kicad_role": "import and equivalence baseline only",
+    "primary_cad": "Altium Designer",
+    "production_authority": "NOT_AUTHORIZED"
+  },
   "routing_readiness": {
-    "evt_mechanical_routing_datums_locked": true,
+    "evt_mechanical_routing_datums_locked": false,
     "evt_power_routing_locked": true,
     "evt_routing_stack_locked": true,
     "expected_status": "READY_FOR_ROUTING",
-    "production_fabricator_binding_required": true,
-    "production_mechanical_freeze_required": true,
+    "production_fabricator_binding_required": false,
+    "production_mechanical_freeze_required": false,
     "production_power_review_required": true,
     "required_to_authorize": [],
     "routing_authorized": true
   },
   "rule_query_status": {
-    "differential_pair_classes": 2,
-    "differential_pairs": 3,
+    "differential_pair_classes": 1,
+    "differential_pairs": 1,
     "native_drc_required": true,
     "native_instantiation_required": true,
-    "rules": 10
+    "rules": 9
   },
   "schema": "ALTIUM-PCB-IMPLEMENTATION-STATUS-001"
 }

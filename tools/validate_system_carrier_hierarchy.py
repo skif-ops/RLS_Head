@@ -123,7 +123,7 @@ def validate(root_path: str | Path) -> dict:
             "TIME_GNSS": "30_TIME_GNSS.kicad_sch",
             "IMU": "40_IMU.kicad_sch",
             "RADAR_IO_CAN": "50_RADAR_IO_CAN.kicad_sch",
-            "ETHERNET": "60_ETHERNET.kicad_sch",
+            "HOST_UART": "60_HOST_UART.kicad_sch",
             "DEBUG_BOOT": "70_DEBUG_BOOT.kicad_sch",
         }[sheet]
         child_path = root_path.parent / filename
