@@ -1475,10 +1475,19 @@ jobs:
           }
           assert "kicad_source/fp-lib-table" in package_paths
           assert "kicad_source/sym-lib-table" in package_paths
-          assert sum(
+          packaged_footprint_count = sum(
               path.endswith(".kicad_mod")
               for path in package_paths
-          ) == 29
+          )
+          generated_footprint_count = sum(
+              1
+              for path in Path("build-cad/system_carrier").glob(
+                  "*.pretty/*.kicad_mod"
+              )
+              if path.is_file()
+          )
+          assert generated_footprint_count > 0
+          assert packaged_footprint_count == generated_footprint_count
           assert all(
               item["package_path"] in package_paths
               for item in data["source_bindings"]
