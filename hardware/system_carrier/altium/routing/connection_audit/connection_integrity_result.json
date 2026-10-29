@@ -1,13 +1,14 @@
 {
-  "board_height_mm": 80.0,
-  "board_width_mm": 100.0,
-  "canonical_pcb_sha256": "ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816",
+  "baseline_shadow_pad_count": 112,
+  "board_height_mm": 70.0,
+  "board_width_mm": 90.0,
+  "canonical_pcb_sha256": "0dacc26bbba8b95c0c1bc591546ef879edb8815cb134b4c30d1742d85fdcc1fd",
   "counts": {
-    "components": 92,
-    "fills": 67,
-    "pads": 529,
-    "tracks": 1639,
-    "vias": 132
+    "components": 83,
+    "fills": 60,
+    "pads": 483,
+    "tracks": 1378,
+    "vias": 115
   },
   "endpoint_baseline_matches": true,
   "errors": [],
@@ -21,5 +22,24 @@
   "schema": "ALTIUM-CONNECTION-INTEGRITY-001",
   "status": "PASS",
   "unrouted_net_violations": 0,
-  "warnings": []
+  "warnings": [
+    "baseline_unowned_shadow_pads_ignored:112",
+    "component_courtyard_or_overlay_outside_board:C90",
+    "component_courtyard_or_overlay_outside_board:C91",
+    "component_courtyard_or_overlay_outside_board:C92",
+    "component_courtyard_or_overlay_outside_board:C93",
+    "component_courtyard_or_overlay_outside_board:D3",
+    "component_courtyard_or_overlay_outside_board:D4",
+    "component_courtyard_or_overlay_outside_board:D8",
+    "component_courtyard_or_overlay_outside_board:J4",
+    "component_courtyard_or_overlay_outside_board:J5",
+    "component_courtyard_or_overlay_outside_board:J6",
+    "component_courtyard_or_overlay_outside_board:J8",
+    "component_courtyard_or_overlay_outside_board:L9",
+    "component_courtyard_or_overlay_outside_board:R42",
+    "component_courtyard_or_overlay_outside_board:R605",
+    "component_courtyard_or_overlay_outside_board:R90",
+    "component_courtyard_or_overlay_outside_board:SW1",
+    "component_courtyard_or_overlay_outside_board:U9"
+  ]
 }

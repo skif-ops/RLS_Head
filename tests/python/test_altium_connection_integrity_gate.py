@@ -155,3 +155,22 @@ def test_connection_integrity_reconciles_free_imported_pad(tmp_path):
     assert result["endpoint_baseline_matches"] is True
     assert result["inferred_free_pad_count"] == 1
     assert result["free_pad_assignments"] == {"U1": 1}
+
+
+def test_connection_integrity_ignores_exported_unowned_shadow_pad(tmp_path):
+    _write_fixture(tmp_path)
+    baseline_path = (
+        tmp_path / "altium" / "equivalence" / "pad_net_inventory.csv"
+    )
+    baseline_path.write_text(
+        "designator,pad_name,net_name\n"
+        ",1,3V3\n"
+        "U1,1,3V3\n",
+        encoding="utf-8",
+    )
+
+    result = validate(tmp_path, refresh_receipt=True)
+
+    assert result["status"] == "PASS"
+    assert result["endpoint_baseline_matches"] is True
+    assert result["baseline_shadow_pad_count"] == 1

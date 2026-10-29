@@ -127,6 +127,7 @@ def validate(
         "counts": {},
         "outside_board_count": 0,
         "endpoint_baseline_matches": False,
+        "baseline_shadow_pad_count": 0,
         "inferred_free_pad_count": 0,
         "free_pad_assignments": {},
         "unrouted_net_violations": None,
@@ -229,9 +230,35 @@ def validate(
     result["outside_board_count"] = len(outside)
     errors.extend(f"outside_board:{item}" for item in outside)
 
+    baseline_rows = _read_csv(baseline_path)
+    owned_pad_identities = {
+        (row["pad_name"], row["net_name"])
+        for row in baseline_rows
+        if row.get("designator", "").strip()
+    }
+
+    def is_unowned_shadow(row: dict[str, str]) -> bool:
+        return (
+            not row.get("designator", "").strip()
+            and (row["pad_name"], row["net_name"])
+            in owned_pad_identities
+        )
+
+    shadow_rows = [
+        row
+        for row in baseline_rows
+        if is_unowned_shadow(row)
+    ]
+    result["baseline_shadow_pad_count"] = len(shadow_rows)
+    if shadow_rows:
+        warnings.append(
+            f"baseline_unowned_shadow_pads_ignored:{len(shadow_rows)}"
+        )
+
     expected = Counter(
         (row["designator"], row["pad_name"], row["net_name"])
-        for row in _read_csv(baseline_path)
+        for row in baseline_rows
+        if not is_unowned_shadow(row)
     )
     actual_owned = Counter(
         (row["designator"], row["pad_name"], row["net_name"])
