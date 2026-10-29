@@ -17,6 +17,7 @@ tools/generate_system_carrier_schematic.py text eol=lf
 tools/generate_system_carrier_symbols.py text eol=lf
 tools/kicad_netlist_baseline.py text eol=lf
 tools/validate_system_carrier_cad_scaffold.py text eol=lf
+tests/fixtures/** text eol=lf
 
 # Native Altium binary containers: never apply text conversion or textual merge/diff.
 *.SchDoc binary

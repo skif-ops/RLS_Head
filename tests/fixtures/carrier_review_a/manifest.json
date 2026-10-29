@@ -10,22 +10,22 @@
     {
       "id": "schematic",
       "path": "tests/fixtures/carrier_review_a/EVT_SYS_CARRIER.kicad_sch",
-      "sha256": "22fd25c9dad2acc193f415ff7c0aaec5164e616a4a0d8ac2e6d11db415362acf"
+      "sha256": "91074b89e9308fb6cd158e9ca5b62e2490811fcaaa7484894513ed90def1f597"
     },
     {
       "id": "erc_json",
       "path": "tests/fixtures/carrier_review_a/erc.json",
-      "sha256": "96337e6f4fe8dc00c67ee3ac5202b34cb9f22b634b82bf1f6ece290c70ae8d5a"
+      "sha256": "059debfbcb48f87c30ec399f8847b09bcf365c6551ea8a0a946ce30f581ac204"
     },
     {
       "id": "pinmap",
       "path": "tests/fixtures/carrier_review_a/pinmap.csv",
-      "sha256": "1792ee8d1c390003a4af4f53cb2c7ee28e18199a8e0ad092497eb6472f168e9c"
+      "sha256": "a6d479c97745de974d63116e7d686e8e87412de3784eb708cf6838e4ca09566f"
     },
     {
       "id": "bom",
       "path": "tests/fixtures/carrier_review_a/bom.csv",
-      "sha256": "d2cad57a17463c6d6f01ff3fce4bafee937c5cd7f1a33e853f86033ebc4fc6df"
+      "sha256": "5a617af8a69de87d70a8f411182472bc832653661f498deb1f4e9075c2c75b7c"
     }
   ],
   "erc_policy": {

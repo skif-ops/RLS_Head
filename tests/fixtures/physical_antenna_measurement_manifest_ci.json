@@ -7,6 +7,6 @@
   "calibration_id": "CI-CAL",
   "measurement_csv": {
     "path": "tests/fixtures/physical_antenna_measurement_ci.csv",
-    "sha256": "5214f1a60140073a118aa73cdc0fa9d455a4c25f71737d03a2e23367ed7ec2c8"
+    "sha256": "60f8f157906e22efb5617a3c9a2247bacd89128e0d2a3f83c5e03267ee21fb74"
   }
 }
