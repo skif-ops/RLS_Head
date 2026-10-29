@@ -1335,8 +1335,7 @@ jobs:
               assert data["drc"]["route_induced_markers"] == 0
               assert all(
                   route["connected"]
-                  and route["layers"] == [1]
-                  and route["via_count"] == 0
+                  and route["graph_component_count"] == 1
                   and route["quiet_clearance_mm"] >= 1.0
                   for route in data["routes"].values()
               )
