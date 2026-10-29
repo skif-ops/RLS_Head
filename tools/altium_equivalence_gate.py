@@ -8,6 +8,7 @@ from pathlib import Path
 from tools.altium_compile_evidence import validate as validate_compile_evidence
 from tools.altium_native_file_preflight import validate as validate_native_files
 from tools.altium_script_runtime_receipt import (
+    sha256_runtime_input,
     validate as validate_script_runtime_receipt,
 )
 
@@ -1300,7 +1301,7 @@ def validate_manifest(
                         f"script_runtime_source_missing:{artifact_id}"
                     )
                     continue
-                actual = sha256_file(path)
+                actual = sha256_runtime_input(path, artifact_id)
                 if (
                     str(
                         runtime_inputs.get(artifact_id, "")

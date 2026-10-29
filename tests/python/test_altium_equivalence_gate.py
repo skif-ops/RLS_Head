@@ -4,6 +4,7 @@ from pathlib import Path
 
 from tools.altium_equivalence_gate import validate_manifest
 from tools.altium_native_file_preflight import CFB_MAGIC
+from tools.altium_script_runtime_receipt import sha256_runtime_input
 
 
 def _write(path: Path, content: bytes) -> str:
@@ -505,9 +506,13 @@ def _manifest(tmp_path: Path) -> Path:
         api_contract_path,
         api_contract_content,
     )
-    script_project_hash = _write(
+    _write(
         script_project_path,
         script_project_content,
+    )
+    script_project_hash = sha256_runtime_input(
+        script_project_path,
+        "script_project",
     )
 
     runtime_input_hashes = {
