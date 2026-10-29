@@ -9,7 +9,7 @@
     "evt_stackup_provisional": true,
     "fabricator_stack_bound": true,
     "impedance_start_values_ready": false,
-    "import_package_ready": false,
+    "import_package_ready": true,
     "native_pcb_sha256": "0dacc26bbba8b95c0c1bc591546ef879edb8815cb134b4c30d1742d85fdcc1fd",
     "native_pcbdoc": true,
     "native_schdoc": true,
@@ -24,16 +24,15 @@
     "rule_query_contract_ready": true
   },
   "blockers": [
-    "Current native Altium files and evidence predate the UART and external-GNSS ECO and must be regenerated.",
     "The 90x70 mm compact candidate must pass native placement routing connector-access and DRC checks before its outline is locked."
   ],
   "board_id": "EVT-SYS-CARRIER",
   "current_phase": "READY_FOR_ROUTING",
   "electrical_baseline": {
-    "erc_errors": null,
-    "erc_warnings": null,
+    "erc_errors": 0,
+    "erc_warnings": 0,
     "source": "KiCad retained import and verification baseline",
-    "source_commit": null
+    "source_commit": "466919c7bff2eb7dde92c9ff10e9be548f7aa5e2"
   },
   "hardware_revision": "A",
   "impedance_start": {

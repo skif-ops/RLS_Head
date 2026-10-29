@@ -1,7 +1,7 @@
 {
   "board_id": "EVT-SYS-CARRIER",
-  "electrical_baseline_erc_errors": null,
-  "electrical_baseline_erc_warnings": null,
+  "electrical_baseline_erc_errors": 0,
+  "electrical_baseline_erc_warnings": 0,
   "equivalence_gate_status": "PASS",
   "equivalence_result": "hardware/system_carrier/altium/equivalence/altium_equivalence_result.json",
   "equivalence_result_sha256": "fc0ef2947e8bb7b4bbabafcc91cff5b1b3bb778999ed977bdcccff7fa6018d8d",
@@ -14,13 +14,13 @@
   "notes": [
     "PCB implementation is Altium-first.",
     "KiCad sources remain preserved as the electrical verification baseline.",
-    "The previous native files and equivalence evidence predate the UART and external-GNSS ECO and are not current authority.",
-    "Routing authority begins only after the current ECO receives ALTIUM_EQUIVALENCE_GATE PASS.",
+    "The current dual-UART and external-GNSS ECO native files passed import provenance, compile and equivalence checks.",
+    "Routing authority is active after ALTIUM_EQUIVALENCE_GATE PASS; production authority remains separate and not authorized.",
     "All released schematics PCB drawings BOM and manufacturing outputs must be generated from the current Altium project and OutJob."
   ],
   "primary_cad": "Altium Designer",
   "production_authority": "NOT_AUTHORIZED",
-  "review_a_merge_commit": null,
-  "review_a_status": "REQUIRED_AFTER_ECO_IMPORT",
+  "review_a_merge_commit": "466919c7bff2eb7dde92c9ff10e9be548f7aa5e2",
+  "review_a_status": "PASS",
   "schema": "ALTIUM-NATIVE-STATUS-SYS-001"
 }
