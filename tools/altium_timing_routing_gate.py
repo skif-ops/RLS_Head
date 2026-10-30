@@ -13,9 +13,9 @@ SCHEMA = "ALTIUM-TIMING-ROUTING-GATE-001"
 SUMMARY_SCHEMA = "ALTIUM-TIMING-ROUTING-REVIEW-A-001"
 TARGETS = {
     "GNSS_PPS": {
-        "segments": 9,
-        "vias": 3,
-        "layers": (1, 2, 32),
+        "segments": 22,
+        "vias": 0,
+        "layers": (1,),
         "endpoints": (("J8", "4", None), ("U1", "40", None)),
     },
     "IMU_DRDY": {
@@ -25,9 +25,9 @@ TARGETS = {
         "endpoints": (("U2", "4", None), ("U1", "80", None)),
     },
     "RADAR_REF": {
-        "segments": 4,
+        "segments": 6,
         "vias": 1,
-        "layers": (1, 2),
+        "layers": (1, 3),
         "endpoints": (("U1", "79", None), ("J4", "4", None)),
     },
 }

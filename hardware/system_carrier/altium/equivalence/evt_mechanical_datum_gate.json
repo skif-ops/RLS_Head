@@ -49,7 +49,7 @@
     }
   },
   "errors": [],
-  "evt_routing_datums_locked": false,
+  "evt_routing_datums_locked": true,
   "minimum_mount_hole_edge_ligament_mm": 3.4,
   "mounting_holes": {
     "H1": {
@@ -81,7 +81,5 @@
   "production_mechanical_freeze": false,
   "schema": "ALTIUM-EVT-MECHANICAL-DATUM-GATE-001",
   "status": "PASS",
-  "warnings": [
-    "compact_candidate_requires_native_drc_before_lock"
-  ]
+  "warnings": []
 }

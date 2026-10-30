@@ -3,8 +3,8 @@
   "input_sha256": {
     "component_inventory": "1845a69b0b4e6bfc0564343f3cce4ac61791d2306d0ea849ec8b6d61743855f7",
     "net_inventory": "b14d28a0a736d78997136fb041094dda21ddcabd7e6156f69c3797a5f3a9d0ce",
-    "pcb": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d",
-    "review": "6df467c087fe441ed3aea325b9a686a89bd774bed5f75fb27c37e417aa42a5d5"
+    "pcb": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
+    "review": "41c06294be75ebf71851575e7b698d3842534d57059d42aa4dbecdd31e5ba7ba"
   },
   "notes": [
     "The review is deliberately human-signoff evidence bound to the exact native PcbDoc and machine inventories.",

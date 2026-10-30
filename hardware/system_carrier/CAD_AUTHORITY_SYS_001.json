@@ -46,7 +46,7 @@
   "board_id": "EVT-SYS-CARRIER",
   "delete_kicad_sources": false,
   "equivalence_gate_required": true,
-  "equivalence_result_sha256": "99ff7b3cbc877538440fc17157064e3bdf4b97d6980d8ac0e982733424768459",
+  "equivalence_result_sha256": "85bb872103b08c38ea1f04c42112b16ac4cb069f89242983dee82881a9d184d8",
   "evt_impedance_model": {
     "controlled_impedance_required": false,
     "production_binding_required": false,
@@ -71,13 +71,13 @@
   ],
   "hardware_revision": "A",
   "native_document_status": "NATIVE_EQUIVALENCE_PASS",
-  "native_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d",
+  "native_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
   "native_schematic_sha256": "85b458cc95d32704a9a9dced80f2f8514bf2f9d3065e0f91c18ab57091dc9166",
   "notes": [
     "KiCad electrical sources remain permanently retained.",
     "Native SchDoc/PcbDoc must be produced by Altium Designer, not fabricated by extension-only placeholder files.",
     "All new PCB implementation work targets Altium Designer.",
-    "The checked-in native files predate the dual-UART and external-GNSS ECO and carry no current layout or production authority.",
+    "The current native dual-UART and external-GNSS files passed import provenance, compile, DRC and equivalence checks; production authority remains separate.",
     "All released schematics, PCB drawings, BOM and manufacturing outputs must be generated from the current native Altium project and OutJob."
   ],
   "pcb_design_phase": "ALTIUM_NATIVE_ROUTING",
@@ -89,8 +89,8 @@
       1.6
     ],
     "evt_mechanical_datum_validator": "tools/altium_evt_mechanical_datum_gate.py",
-    "evt_mechanical_routing_datums_locked": false,
-    "mechanical_status": "ECO_CANDIDATE_REQUIRES_NATIVE_DRC",
+    "evt_mechanical_routing_datums_locked": true,
+    "mechanical_status": "EVT_ROUTING_DATUM_LOCKED",
     "production_mechanical_freeze": false,
     "production_mechanical_review_required": true,
     "required_before_native_import_package": true,
@@ -103,7 +103,7 @@
   "routing_readiness_gate": {
     "current_expected_status": "READY_FOR_ROUTING",
     "evt_mechanical_datum_required": true,
-    "evt_mechanical_datum_status": "ECO_CANDIDATE",
+    "evt_mechanical_datum_status": "EVT_ROUTING_LOCKED",
     "evt_power_routing_required": true,
     "evt_power_routing_status": "EVT_ROUTING_LOCKED",
     "evt_routing_stack_required": true,

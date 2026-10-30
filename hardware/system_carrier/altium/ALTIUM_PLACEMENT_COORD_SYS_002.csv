@@ -1,25 +1,25 @@
 ref,x_mm,y_mm,edge,side,zone,lock_level,status,notes
-J1,5,14,LEFT,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,System 12V input; mating face outward in the 90x70 mm compact candidate
+J1,5,14,LEFT,TOP,ZONE_PWR,HARD,EVT_ROUTING_LOCKED,System 12V input edge datum; production connector-access review remains separate
 D1,11,14,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,Immediately behind J1
 U6,18,14,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,System eFuse
 U5,29,14,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,3V3 buck; hot-loop parts clustered
 L1,37,14,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,Adjacent to U5 SW
 U7,61,14,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,Radar eFuse; short path to J5
-J5,85,14,RIGHT,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,Radar 12V output; mating face outward in the 90x70 mm compact candidate
-J4,85,29,RIGHT,TOP,ZONE_CAN,HARD,ECO_CANDIDATE,Radar CAN and reference harness; mating face outward
+J5,85,14,RIGHT,TOP,ZONE_PWR,HARD,EVT_ROUTING_LOCKED,Radar 12V output edge datum; production connector-access review remains separate
+J4,85,29,RIGHT,TOP,ZONE_CAN,HARD,EVT_ROUTING_LOCKED,Radar CAN and reference harness edge datum; production connector-access review remains separate
 D4,78,29,,TOP,ZONE_CAN,HARD,ECO_CANDIDATE,ESD immediately behind J4
 U4,71,29,,TOP,ZONE_CAN,HARD,ECO_CANDIDATE,CAN transceiver
 U1,45,36,,TOP,ZONE_MCU,HARD,ECO_CANDIDATE,Central MCU anchor
 Y1,30,36,,TOP,ZONE_MCU,HARD,ECO_CANDIDATE,25MHz adjacent to OSC_IN
 FB1,58,36,,TOP,ZONE_MCU,HARD,ECO_CANDIDATE,Adjacent to MCU analog supply pins
 U2,45,53,,TOP,ZONE_IMU,HARD,ECO_CANDIDATE,Rigid central region away from connectors and buck inductors
-J8,5,57,LEFT,TOP,ZONE_GNSS,HARD,ECO_CANDIDATE,JST-GH external GNSS connector at board edge with mating face outward
+J8,5,57,LEFT,TOP,ZONE_GNSS,HARD,EVT_ROUTING_LOCKED,JST-GH external GNSS connector edge datum; production connector-access review remains separate
 D8,11,57,,TOP,ZONE_GNSS,HARD,ECO_CANDIDATE,ESD immediately behind J8
 U9,20,57,,TOP,ZONE_GNSS,HARD,ECO_CANDIDATE,5V_GNSS buck close to J8 with compact hot loop
 L9,28,57,,TOP,ZONE_GNSS,HARD,ECO_CANDIDATE,Adjacent to U9 SW
 D3,77,54,,TOP,ZONE_UART,HARD,ECO_CANDIDATE,Four-channel ESD immediately behind J6
-J6,85,54,RIGHT,TOP,ZONE_UART,HARD,ECO_CANDIDATE,Dual 3.3V host UART Micro-Fit connector with mating face outward
-J10,45,5,BOTTOM,TOP,ZONE_DEBUG,HARD,ECO_CANDIDATE,Tag-Connect accessible from the bottom board edge
+J6,85,54,RIGHT,TOP,ZONE_UART,HARD,EVT_ROUTING_LOCKED,Dual 3.3V host UART Micro-Fit edge datum; production connector-access review remains separate
+J10,45,5,BOTTOM,TOP,ZONE_DEBUG,HARD,EVT_ROUTING_LOCKED,Tag-Connect bottom-edge datum; production connector-access review remains separate
 SW1,64,7,BOTTOM,TOP,ZONE_DEBUG,SOFT,ECO_CANDIDATE,Reset tactile switch
 TP1,51,6,BOTTOM,TOP,ZONE_DEBUG,SOFT,ECO_CANDIDATE,DEBUG_TX test pad
 TP2,55,6,BOTTOM,TOP,ZONE_DEBUG,SOFT,ECO_CANDIDATE,DEBUG_RX test pad

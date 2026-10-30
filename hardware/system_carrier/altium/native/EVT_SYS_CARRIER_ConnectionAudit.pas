@@ -261,6 +261,68 @@ Begin
     Rpt.Free;
 End;
 
+Procedure ExportPolygons(Board : IPCB_Board; BasePath : String);
+Var
+    Iterator   : IPCB_BoardIterator;
+    PolygonObj : IPCB_Polygon;
+    Rpt        : TStringList;
+    NetName    : String;
+    R          : TCoordRect;
+Begin
+    Rpt := TStringList.Create;
+    Rpt.Add('net_name,layer,left_mil,bottom_mil,right_mil,top_mil');
+    Iterator := Board.BoardIterator_Create;
+    Iterator.AddFilter_ObjectSet(MkSet(ePolyObject));
+    Iterator.AddFilter_LayerSet(AllLayers);
+    Iterator.AddFilter_Method(eProcessAll);
+    PolygonObj := Iterator.FirstPCBObject;
+    While PolygonObj <> Nil Do
+    Begin
+        NetName := '';
+        If PolygonObj.Net <> Nil Then NetName := PolygonObj.Net.Name;
+        R := PolygonObj.BoundingRectangle;
+        Rpt.Add(
+            CsvQuote(NetName) + ',' + IntToStr(Ord(PolygonObj.Layer)) + ',' +
+            RectFields(R)
+        );
+        PolygonObj := Iterator.NextPCBObject;
+    End;
+    Board.BoardIterator_Destroy(Iterator);
+    Rpt.SaveToFile(BasePath + 'polygon_inventory.csv');
+    Rpt.Free;
+End;
+
+Procedure ExportRegions(Board : IPCB_Board; BasePath : String);
+Var
+    Iterator  : IPCB_BoardIterator;
+    RegionObj : IPCB_Region;
+    Rpt       : TStringList;
+    NetName   : String;
+    R         : TCoordRect;
+Begin
+    Rpt := TStringList.Create;
+    Rpt.Add('net_name,layer,left_mil,bottom_mil,right_mil,top_mil');
+    Iterator := Board.BoardIterator_Create;
+    Iterator.AddFilter_ObjectSet(MkSet(eRegionObject));
+    Iterator.AddFilter_LayerSet(AllLayers);
+    Iterator.AddFilter_Method(eProcessAll);
+    RegionObj := Iterator.FirstPCBObject;
+    While RegionObj <> Nil Do
+    Begin
+        NetName := '';
+        If RegionObj.Net <> Nil Then NetName := RegionObj.Net.Name;
+        R := RegionObj.BoundingRectangle;
+        Rpt.Add(
+            CsvQuote(NetName) + ',' + IntToStr(Ord(RegionObj.Layer)) + ',' +
+            RectFields(R)
+        );
+        RegionObj := Iterator.NextPCBObject;
+    End;
+    Board.BoardIterator_Destroy(Iterator);
+    Rpt.SaveToFile(BasePath + 'region_inventory.csv');
+    Rpt.Free;
+End;
+
 Procedure ExportConnectionIntegrity;
 Var
     Board    : IPCB_Board;
@@ -279,5 +341,33 @@ Begin
     ExportTracks(Board, BasePath);
     ExportFills(Board, BasePath);
     ExportVias(Board, BasePath);
+    ExportPolygons(Board, BasePath);
+    ExportRegions(Board, BasePath);
     ShowMessage('Connection audit exported for the canonical PcbDoc.');
+End;
+
+Procedure ExportPhysicalClosureCandidate;
+Var
+    Board    : IPCB_Board;
+    BasePath : String;
+Begin
+    Board := PCBServer.GetCurrentPCBBoard;
+    If (Board = Nil) Or
+       (UpperCase(ExtractFileName(Board.FileName)) <>
+        'EVT_SYS_CARRIER_PHYSICAL_CLOSURE_CANDIDATE.PCBDOC') Then
+    Begin
+        ShowMessage('Connection audit: select EVT_SYS_CARRIER_physical_closure_candidate.PcbDoc first.');
+        Exit;
+    End;
+
+    BasePath := ExtractFilePath(Board.FileName) + '..\routing\physical_closure_candidate\';
+    ForceDirectories(BasePath);
+    ExportComponents(Board, BasePath);
+    ExportPads(Board, BasePath);
+    ExportTracks(Board, BasePath);
+    ExportFills(Board, BasePath);
+    ExportVias(Board, BasePath);
+    ExportPolygons(Board, BasePath);
+    ExportRegions(Board, BasePath);
+    ShowMessage('Connection audit exported for the physical-closure candidate.');
 End;

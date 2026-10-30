@@ -254,23 +254,6 @@ GenerateClassCluster=0
 DocumentUniqueId=
 
 [Document13]
-DocumentPath=EVT_SYS_CARRIER.PcbDoc
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=-1
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=0
-ClassGenNCAutoScope=None
-DItemRevisionGUID=
-GenerateClassCluster=0
-DocumentUniqueId=ZCGQPVAN
-
-[Document14]
 DocumentPath=Assembly.OutJob
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -287,7 +270,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document15]
+[Document14]
 DocumentPath=Fabrication.OutJob
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -304,7 +287,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document16]
+[Document15]
 DocumentPath=Package_SON.PcbLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -321,7 +304,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document17]
+[Document16]
 DocumentPath=Connector_JST.PcbLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -338,7 +321,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document18]
+[Document17]
 DocumentPath=SystemCarrier_Altium.PcbLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -355,7 +338,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document19]
+[Document18]
 DocumentPath=Capacitor_SMD.PcbLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -372,7 +355,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document20]
+[Document19]
 DocumentPath=Inductor_SMD.PcbLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -389,7 +372,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=QQDYQXFU
 
-[Document21]
+[Document20]
 DocumentPath=Resistor_SMD.PcbLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -406,7 +389,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document22]
+[Document21]
 DocumentPath=Package_DFN_QFN.PcbLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -423,7 +406,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
-[Document23]
+[Document22]
 DocumentPath=EVT_SYS_CARRIER.IntLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -440,6 +423,23 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
+[Document23]
+DocumentPath=EVT_SYS_CARRIER.PcbDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=0
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=FDLGGADL
+
 [GeneratedDocument1]
 DocumentPath=Project Outputs for EVT_SYS_CARRIER\Design Rule Check - EVT_SYS_CARRIER.html
 DItemRevisionGUID=
@@ -453,58 +453,66 @@ DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER.EXTREP
 DItemRevisionGUID=
 
 [GeneratedDocument4]
-DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER.REP
+DocumentPath=Project Outputs for EVT_SYS_CARRIER\Reports\DRC\EVT_SYS_CARRIER.html
 DItemRevisionGUID=
 
 [GeneratedDocument5]
-DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Copper_Signal_1.gbr
+DocumentPath=Project Outputs for EVT_SYS_CARRIER\Reports\FootprintComparison\EVT_SYS_CARRIER.html
 DItemRevisionGUID=
 
 [GeneratedDocument6]
-DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Copper_Signal_2.gbr
+DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER.REP
 DItemRevisionGUID=
 
 [GeneratedDocument7]
-DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Copper_Signal_Bot.gbr
+DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Copper_Signal_1.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument8]
-DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Copper_Signal_Top.gbr
+DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Copper_Signal_2.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument9]
-DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Legend_Bot.gbr
+DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Copper_Signal_Bot.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument10]
-DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Legend_Top.gbr
+DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Copper_Signal_Top.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument11]
-DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_NPTH_Drill.gbr
+DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Legend_Bot.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument12]
-DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Paste_Bot.gbr
+DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Legend_Top.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument13]
-DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Paste_Top.gbr
+DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_NPTH_Drill.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument14]
-DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Profile.gbr
+DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Paste_Bot.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument15]
-DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_PTH_Drill.gbr
+DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Paste_Top.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument16]
-DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Soldermask_Bot.gbr
+DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Profile.gbr
 DItemRevisionGUID=
 
 [GeneratedDocument17]
+DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_PTH_Drill.gbr
+DItemRevisionGUID=
+
+[GeneratedDocument18]
+DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Soldermask_Bot.gbr
+DItemRevisionGUID=
+
+[GeneratedDocument19]
 DocumentPath=Project Outputs for EVT_SYS_CARRIER\EVT_SYS_CARRIER_Soldermask_Top.gbr
 DItemRevisionGUID=
 
@@ -1044,36 +1052,6 @@ OutputName12=Web Review Data
 OutputDocumentPath12=
 OutputVariantName12=
 OutputDefault12=0
-OutputType13=Ansoft Neutral
-OutputName13=Ansoft Neutral (AutoPCB)
-OutputDocumentPath13=
-OutputVariantName13=
-OutputDefault13=0
-OutputType14=HyperLynx
-OutputName14=HyperLynx (AutoPCB)
-OutputDocumentPath14=
-OutputVariantName14=
-OutputDefault14=0
-OutputType15=MathWorks
-OutputName15=MathWorks (AutoPCB)
-OutputDocumentPath15=
-OutputVariantName15=
-OutputDefault15=0
-OutputType16=Orcad v7 Capture Design
-OutputName16=Orcad v7 Capture Design (AutoSCH)
-OutputDocumentPath16=
-OutputVariantName16=
-OutputDefault16=0
-OutputType17=P-CAD ASCII
-OutputName17=P-CAD ASCII (AutoPCB)
-OutputDocumentPath17=
-OutputVariantName17=
-OutputDefault17=0
-OutputType18=P-CAD V16 Schematic Design
-OutputName18=P-CAD V16 Schematic Design (AutoSCH)
-OutputDocumentPath18=
-OutputVariantName18=
-OutputDefault18=0
 
 [OutputGroup10]
 Name=PostProcess Outputs

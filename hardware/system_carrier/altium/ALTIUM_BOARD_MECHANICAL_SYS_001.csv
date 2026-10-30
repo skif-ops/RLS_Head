@@ -1,11 +1,11 @@
 kind,id,x_mm,y_mm,width_mm,height_mm,diameter_mm,layer,criticality,status,notes
-BOARD,OUTLINE,0,0,90,70,,Mechanical,P0,ECO_CANDIDATE,Compact candidate reduced from 100x80 mm; lock only after native placement routing and DRC pass
+BOARD,OUTLINE,0,0,90,70,,Mechanical,P0,EVT_ROUTING_LOCKED,90x70 mm EVT routing datum locked after native placement routing and DRC PASS; production mechanical freeze remains separate
 BOARD,THICKNESS,,,,1.6,,Stackup,P0,LOCKED_FOR_EVT,Matches Micro-Fit recommended 1.57/1.60mm PCB
-BOARD,CORNER_RADIUS,,,,3,,Mechanical,P1,ECO_CANDIDATE,3mm corner radius retained in compact candidate
-HOLE,H1,5,5,,,3.2,MultiLayer,P0,ECO_CANDIDATE,M3 NPTH compact-board mounting hole
-HOLE,H2,85,5,,,3.2,MultiLayer,P0,ECO_CANDIDATE,M3 NPTH compact-board mounting hole
-HOLE,H3,5,65,,,3.2,MultiLayer,P0,ECO_CANDIDATE,M3 NPTH compact-board mounting hole
-HOLE,H4,85,65,,,3.2,MultiLayer,P0,ECO_CANDIDATE,M3 NPTH compact-board mounting hole
+BOARD,CORNER_RADIUS,,,,3,,Mechanical,P1,EVT_ROUTING_LOCKED,R3 EVT routing datum locked; production mechanical freeze remains separate
+HOLE,H1,5,5,,,3.2,MultiLayer,P0,EVT_ROUTING_LOCKED,M3 NPTH EVT routing datum mounting hole
+HOLE,H2,85,5,,,3.2,MultiLayer,P0,EVT_ROUTING_LOCKED,M3 NPTH EVT routing datum mounting hole
+HOLE,H3,5,65,,,3.2,MultiLayer,P0,EVT_ROUTING_LOCKED,M3 NPTH EVT routing datum mounting hole
+HOLE,H4,85,65,,,3.2,MultiLayer,P0,EVT_ROUTING_LOCKED,M3 NPTH EVT routing datum mounting hole
 KEEPOUT,EDGE_COMPONENT,0,0,90,70,2,Mechanical,P1,ECO_CANDIDATE,2mm generic component-to-edge keepout except edge connectors
 KEEPOUT,COPPER_EDGE,0,0,90,70,0.5,AllCopper,P0,ECO_CANDIDATE,Minimum copper-to-board-edge clearance
 KEEPOUT,CONNECTOR_ACCESS,0,0,90,70,,Mechanical,P0,ECO_VALIDATE,Native Altium 3D and assembly review must preserve mating and cable access for every edge connector

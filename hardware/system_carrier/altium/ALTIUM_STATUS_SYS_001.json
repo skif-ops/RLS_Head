@@ -3,14 +3,14 @@
     "board_outline_frozen": false,
     "differential_pairs_defined": true,
     "equivalence_gate": true,
-    "evt_mechanical_routing_datums_locked": false,
+    "evt_mechanical_routing_datums_locked": true,
     "evt_power_routing_locked": true,
     "evt_routing_stack_locked": true,
     "evt_stackup_provisional": true,
     "fabricator_stack_bound": true,
     "impedance_start_values_ready": false,
     "import_package_ready": true,
-    "native_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d",
+    "native_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
     "native_pcbdoc": true,
     "native_schdoc": true,
     "placement_rooms_ready": true,
@@ -23,9 +23,7 @@
     "routing_started": false,
     "rule_query_contract_ready": true
   },
-  "blockers": [
-    "The 90x70 mm compact candidate must pass native placement routing connector-access and DRC checks before its outline is locked."
-  ],
+  "blockers": [],
   "board_id": "EVT-SYS-CARRIER",
   "current_phase": "READY_FOR_ROUTING",
   "electrical_baseline": {
@@ -61,7 +59,7 @@
     "production_authority": "NOT_AUTHORIZED"
   },
   "routing_readiness": {
-    "evt_mechanical_routing_datums_locked": false,
+    "evt_mechanical_routing_datums_locked": true,
     "evt_power_routing_locked": true,
     "evt_routing_stack_locked": true,
     "expected_status": "READY_FOR_ROUTING",

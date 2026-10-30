@@ -10,20 +10,16 @@ from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 
-import pcb_a10_planner as planner
-import pcb_a10_validate as candidate_design
-
-
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_AUDIT = ROOT / "hardware/system_carrier/altium/routing/signal_candidate"
 DEFAULT_PCB = ROOT / "hardware/system_carrier/altium/native/EVT_SYS_CARRIER_signal_candidate.PcbDoc"
 DEFAULT_DRC = ROOT / "hardware/system_carrier/altium/native/Design Rule Check - EVT_SYS_CARRIER_signal_candidate.drc"
 DEFAULT_OUTPUT = DEFAULT_AUDIT / "native_connection_audit.json"
-PLAN = ROOT / "build-cad/pcb_a10_plan.json"
+PLAN = ROOT / "build-cad/compact_target_route_plan_repaired.json"
 POWER_PLAN = ROOT / "build-cad/pcb_a10_power_plan.json"
 COPPER_LAYERS = frozenset({1, 2, 3, 32})
-BOARD_WIDTH_MIL = 100.0 / 0.0254
-BOARD_HEIGHT_MIL = 80.0 / 0.0254
+BOARD_WIDTH_MIL = 90.0 / 0.0254
+BOARD_HEIGHT_MIL = 70.0 / 0.0254
 CONTACT_TOLERANCE_MIL = 0.02
 BOUND_TOLERANCE_MIL = 0.02
 
@@ -259,15 +255,15 @@ def nodes_touch(first: Node, second: Node) -> bool:
         distance = point_segment_distance(second.geometry, *first.geometry)
     elif first.kind == "via" and second.kind == "track":
         distance = point_segment_distance(first.geometry, *second.geometry)
-    elif first.kind in {"pad", "fill"} and second.kind in {"pad", "fill"}:
+    elif first.kind in {"pad", "fill", "polygon"} and second.kind in {"pad", "fill", "polygon"}:
         distance = polygon_distance(first.geometry, second.geometry)
-    elif first.kind in {"pad", "fill"} and second.kind == "track":
+    elif first.kind in {"pad", "fill", "polygon"} and second.kind == "track":
         distance = segment_polygon_distance(*second.geometry, first.geometry)
-    elif first.kind == "track" and second.kind in {"pad", "fill"}:
+    elif first.kind == "track" and second.kind in {"pad", "fill", "polygon"}:
         distance = segment_polygon_distance(*first.geometry, second.geometry)
-    elif first.kind in {"pad", "fill"} and second.kind == "via":
+    elif first.kind in {"pad", "fill", "polygon"} and second.kind == "via":
         distance = point_polygon_distance(second.geometry, first.geometry)
-    elif first.kind == "via" and second.kind in {"pad", "fill"}:
+    elif first.kind == "via" and second.kind in {"pad", "fill", "polygon"}:
         distance = point_polygon_distance(first.geometry, second.geometry)
     else:
         return False
@@ -340,6 +336,31 @@ def load_nodes(audit: Path) -> tuple[list[Node], list[str]]:
             0.0,
             f"fill:{index}",
         ))
+    for index, row in enumerate(read_csv(audit / "polygon_inventory.csv"), start=1):
+        layer = int(row["layer"])
+        if layer not in COPPER_LAYERS:
+            continue
+        net = row["net_name"].strip()
+        if not net:
+            errors.append(f"unassigned_polygon:{index}")
+            continue
+        left = float(row["left_mil"])
+        bottom = float(row["bottom_mil"])
+        right = float(row["right_mil"])
+        top = float(row["top_mil"])
+        nodes.append(Node(
+            "polygon",
+            net,
+            frozenset({layer}),
+            rectangle(
+                (left + right) / 2,
+                (bottom + top) / 2,
+                right - left,
+                top - bottom,
+            ),
+            0.0,
+            f"polygon:{index}",
+        ))
     for index, row in enumerate(read_csv(audit / "via_inventory.csv"), start=1):
         net = row["net_name"].strip()
         if not net:
@@ -359,29 +380,50 @@ def load_nodes(audit: Path) -> tuple[list[Node], list[str]]:
 def target_nets() -> tuple[set[str], set[str]]:
     plan = json.loads(PLAN.read_text(encoding="utf-8"))
     power_plan = json.loads(POWER_PLAN.read_text(encoding="utf-8"))
-    return set(plan), {item["net"] for item in power_plan}
+    signal_nets = set(plan["top"])
+    signal_nets.update(item["net"] for item in plan["layer_routes"])
+    return signal_nets, {item["net"] for item in power_plan}
 
 
 def expected_geometry():
-    _, _, tracks, vias = candidate_design.planned_geometry()
-    for index, (first, second) in enumerate(planner.GNSS_PPS_REROUTE):
-        tracks.append({
-            "net": "GNSS_PPS",
-            "layer": 0,
-            "first": first,
-            "second": second,
-            "width": 0.20,
-            "id": f"gnss-replacement:{index}",
-        })
-    for index, (net, layer, first, second) in enumerate(planner.MDI_REPLACEMENT_TRACKS):
-        tracks.append({
-            "net": net,
-            "layer": layer,
-            "first": first,
-            "second": second,
-            "width": 0.26,
-            "id": f"mdi-replacement:{index}",
-        })
+    plan = json.loads(PLAN.read_text(encoding="utf-8"))
+    tracks = []
+    layers_by_point: dict[tuple[str, float, float], set[int]] = defaultdict(set)
+    for net, paths in plan["top"].items():
+        for path_index, path in enumerate(paths):
+            for segment_index, (first, second) in enumerate(zip(path, path[1:])):
+                tracks.append({
+                    "net": net,
+                    "layer": 1,
+                    "first": first,
+                    "second": second,
+                    "width": 0.20,
+                    "id": f"top:{net}:{path_index}:{segment_index}",
+                })
+                layers_by_point[(net, round(first[0], 6), round(first[1], 6))].add(1)
+                layers_by_point[(net, round(second[0], 6), round(second[1], 6))].add(1)
+    for route_index, route in enumerate(plan["layer_routes"]):
+        net = route["net"]
+        layer = int(route["layer"])
+        for segment_index, (first, second) in enumerate(zip(route["points"], route["points"][1:])):
+            tracks.append({
+                "net": net,
+                "layer": layer,
+                "first": first,
+                "second": second,
+                "width": 0.20,
+                "id": f"layer:{net}:{route_index}:{segment_index}",
+            })
+            layers_by_point[(net, round(first[0], 6), round(first[1], 6))].add(layer)
+            layers_by_point[(net, round(second[0], 6), round(second[1], 6))].add(layer)
+    vias = []
+    for (net, x, y), layers in sorted(layers_by_point.items()):
+        if len(layers) > 1:
+            vias.append({
+                "net": net,
+                "point": (x, y),
+                "id": f"via:{net}:{x:.6f}:{y:.6f}",
+            })
     return tracks, vias
 
 
@@ -424,7 +466,6 @@ def match_expected_geometry(audit: Path) -> dict:
 
     used_tracks = set()
     missing_tracks = []
-    layer_map = {0: 1, 1: 3, 2: 32}
     for expected in tracks:
         first = tuple(value / 0.0254 for value in expected["first"])
         second = tuple(value / 0.0254 for value in expected["second"])
@@ -433,7 +474,7 @@ def match_expected_geometry(audit: Path) -> dict:
         for actual_index, actual in enumerate(actual_tracks):
             if actual_index in used_tracks:
                 continue
-            if actual["net"] != expected["net"] or actual["layer"] != layer_map[expected["layer"]]:
+            if actual["net"] != expected["net"] or actual["layer"] != expected["layer"]:
                 continue
             if abs(actual["width"] - width) > 0.05:
                 continue
@@ -523,6 +564,7 @@ def audit_connections(audit: Path, pcb: Path, drc: Path) -> dict:
 
     net_results = {}
     disconnected_nets = []
+    disconnected_components = {}
     unattached_target_pads = []
     orphan_copper = []
     signal_targets, power_targets = target_nets()
@@ -547,6 +589,17 @@ def audit_connections(audit: Path, pcb: Path, drc: Path) -> dict:
         disconnected = pad_count > 1 and len(pad_groups) > 1
         if disconnected:
             disconnected_nets.append(net)
+            disconnected_components[net] = [
+                {
+                    "pads": [nodes[index].identity for index in pads],
+                    "pad_count": len(pads),
+                    "has_copper": any(
+                        nodes[index].kind != "pad"
+                        for index in groups[disjoint.find(pads[0])]
+                    ),
+                }
+                for pads in pad_groups
+            ]
         if net in signal_targets:
             for pads in pad_groups:
                 root = disjoint.find(pads[0])
@@ -562,7 +615,13 @@ def audit_connections(audit: Path, pcb: Path, drc: Path) -> dict:
 
     missing_target_nets = sorted(expected_targets.difference(by_net))
     disconnected_signal_nets = sorted(signal_targets.intersection(disconnected_nets))
+    disconnected_power_nets = sorted(power_targets.intersection(disconnected_nets))
     expected_match = match_expected_geometry(audit)
+    expected_match["gate"] = "DIAGNOSTIC_ONLY"
+    expected_match["reason"] = (
+        "The compact route plan contains superseded alternative branches; "
+        "connectivity and native DRC are the release gates."
+    )
     drc_data = drc_result(drc)
     drc_board = Path(drc_data["pcb_file"].replace("\\", "/"))
     if drc_board.name.lower() != pcb.name.lower():
@@ -579,15 +638,12 @@ def audit_connections(audit: Path, pcb: Path, drc: Path) -> dict:
         errors.append(f"outside_board:{len(outside)}")
     if disconnected_signal_nets:
         errors.append(f"disconnected_signal_nets:{len(disconnected_signal_nets)}")
+    if disconnected_power_nets:
+        errors.append(f"disconnected_power_nets:{len(disconnected_power_nets)}")
     if missing_target_nets:
         errors.append(f"missing_target_nets:{len(missing_target_nets)}")
     if unattached_target_pads:
         errors.append(f"unattached_target_pads:{len(unattached_target_pads)}")
-    if expected_match["missing_tracks"]:
-        errors.append(f"missing_planned_tracks:{len(expected_match['missing_tracks'])}")
-    if expected_match["missing_vias"]:
-        errors.append(f"missing_planned_vias:{len(expected_match['missing_vias'])}")
-
     counts = defaultdict(int)
     for node in nodes:
         counts[node.kind] += 1
@@ -595,6 +651,7 @@ def audit_connections(audit: Path, pcb: Path, drc: Path) -> dict:
         audit / "pad_geometry.csv",
         audit / "track_inventory.csv",
         audit / "fill_inventory.csv",
+        audit / "polygon_inventory.csv",
         audit / "via_inventory.csv",
         pcb,
         drc,
@@ -612,9 +669,11 @@ def audit_connections(audit: Path, pcb: Path, drc: Path) -> dict:
         "power_stitch_net_count": len(power_targets),
         "missing_target_nets": missing_target_nets,
         "disconnected_pad_nets": disconnected_nets,
+        "disconnected_pad_components": disconnected_components,
         "disconnected_signal_nets": disconnected_signal_nets,
+        "disconnected_power_nets": disconnected_power_nets,
         "unattached_target_pads": unattached_target_pads,
-        "planned_geometry": expected_match,
+        "route_plan_geometry_diagnostic": expected_match,
         "outside_board_count": len(outside),
         "outside_board": outside,
         "orphan_copper_component_count": len(orphan_copper),
@@ -647,6 +706,7 @@ def main() -> int:
         "target_net_count": result["target_net_count"],
         "outside_board_count": result["outside_board_count"],
         "disconnected_pad_nets": result["disconnected_pad_nets"],
+        "disconnected_power_nets": result["disconnected_power_nets"],
         "unattached_target_pad_count": len(result["unattached_target_pads"]),
         "orphan_copper_component_count": result["orphan_copper_component_count"],
         "errors": result["errors"],

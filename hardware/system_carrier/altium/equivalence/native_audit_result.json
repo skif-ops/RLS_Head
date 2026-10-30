@@ -14,7 +14,7 @@
     "mechanical_inventory": "2ca8b90ad3b8a55cb69c8e2fdb4ef5e4594faf63731c936436704ed57f683899",
     "net_inventory": "b14d28a0a736d78997136fb041094dda21ddcabd7e6156f69c3797a5f3a9d0ce",
     "pad_net_inventory": "4d121072405bb86f00c1739c3401303216f7f31c854937ffdf547e5079e32d2a",
-    "polygon_inventory": "12c49b597ad4fbade427acd80cdf8d22032348f51997dff6d74c288bb3441cc4",
+    "polygon_inventory": "43697cf0486ab5dd5b6bb75179b5ac8da0f748addfbf0abaeb8b471abdeacc02",
     "rule_constraint_inventory": "e69b462df963630f4452822d80dfabe062d18b5a66437d05205f57e2bcbce0b0",
     "rule_inventory": "a46a1bd4f972ed2ac56451ce770ce2eed50b1a0880047b46141c834032e89f2b"
   },
@@ -28,7 +28,7 @@
   ],
   "pad_record_count": 466,
   "pinmap_checked_count": 21,
-  "polygon_count": 1,
+  "polygon_count": 2,
   "required_class_count": 9,
   "required_p0_p1_net_count": 31,
   "required_rule_count": 9,

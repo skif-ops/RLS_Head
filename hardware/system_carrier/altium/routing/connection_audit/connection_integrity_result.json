@@ -2,13 +2,13 @@
   "baseline_shadow_pad_count": 0,
   "board_height_mm": 70.0,
   "board_width_mm": 90.0,
-  "canonical_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d",
+  "canonical_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
   "counts": {
     "components": 83,
     "fills": 60,
     "pads": 483,
-    "tracks": 1378,
-    "vias": 115
+    "tracks": 1776,
+    "vias": 241
   },
   "endpoint_baseline_matches": true,
   "errors": [],
