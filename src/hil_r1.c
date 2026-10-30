@@ -1037,19 +1037,30 @@ HilRuntimeResult hil_runtime_process_packet(
     rt->last_sequence = frame.sequence;
     rt->have_sequence = true;
 
-    if (frame.detection_count > 1u) {
-        return HIL_RUNTIME_MULTI_DET_UNSUPPORTED;
-    }
-
     bool measurement_used = false;
     bool reacquired = false;
 
-    if (frame.detection_count == 1u) {
+    if (frame.detection_count > 0u) {
+        uint16_t selected = 0u;
+        for (uint16_t i = 1u; i < frame.detection_count; ++i) {
+            const HilDetectionDecoded *candidate = &frame.detections[i];
+            const HilDetectionDecoded *current = &frame.detections[selected];
+            if (candidate->quality > current->quality
+                || (candidate->quality == current->quality
+                    && candidate->snr_db > current->snr_db)
+                || (candidate->quality == current->quality
+                    && candidate->snr_db == current->snr_db
+                    && candidate->detection_id < current->detection_id)) {
+                selected = i;
+            }
+        }
+        rt->diag.detections_discarded += frame.detection_count - 1u;
+
         RadarMeasurement measurement;
 
         if (!radar_measurement_from_hil(
                 &frame,
-                &frame.detections[0],
+                &frame.detections[selected],
                 receive_time_us,
                 &measurement)) {
             ++rt->diag.numeric_errors;

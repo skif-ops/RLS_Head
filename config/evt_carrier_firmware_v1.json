@@ -1,0 +1,44 @@
+{
+  "schema": "evt-carrier-firmware-config-v1",
+  "target": "STM32H753IIT6",
+  "board": "EVT_SYS_CARRIER_R1",
+  "clock": {
+    "hse_hz": 25000000,
+    "core_hz": 400000000,
+    "timer_capture_hz": 1000000
+  },
+  "radar_can_fd": {
+    "peripheral": "FDCAN1",
+    "rx_id": "0x320",
+    "tx_id": "0x321",
+    "nominal_bit_rate": 500000,
+    "data_bit_rate": 2500000,
+    "transport_version": 1,
+    "payload_contract": "HIL-R1"
+  },
+  "host_uart": {
+    "channels": ["USART2", "USART1"],
+    "voltage_v": 3.3,
+    "baud": 921600,
+    "payload_contract": "TargetState-V1"
+  },
+  "gnss": {
+    "peripheral": "USART3",
+    "baud": 115200,
+    "optional": true,
+    "trusted_by_default": false,
+    "accepted_sentences": ["RMC", "GGA"]
+  },
+  "imu": {
+    "part": "ICM-42688-P",
+    "peripheral": "SPI2",
+    "odr_hz": 1000,
+    "accelerometer_full_scale_g": 16,
+    "gyroscope_full_scale_dps": 2000
+  },
+  "watchdog": {
+    "enabled": true,
+    "nominal_timeout_ms": 2000
+  },
+  "production_authority": "NOT_AUTHORIZED"
+}

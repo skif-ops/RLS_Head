@@ -1,0 +1,42 @@
+{
+  "schema": "evt-stm32h753-firmware-release-v1",
+  "release": "EVT_R1_2026-10-30",
+  "target": "STM32H753IIT6",
+  "board": "EVT_SYS_CARRIER_R1",
+  "configuration": "config/evt_carrier_firmware_v1.json",
+  "configuration_crc32c": "aa89a125",
+  "toolchain": "xPack GNU Arm Embedded GCC x86_64 14.2.1 20241119",
+  "stm32cubeh7": "v1.13.0",
+  "build_type": "Release",
+  "flash_origin": "0x08000000",
+  "flash_used_bytes": 48000,
+  "ram_static_and_stack_bytes": 20368,
+  "host_tests": {
+    "passed": 17,
+    "failed": 0
+  },
+  "artifacts": [
+    {
+      "file": "EVT_SYS_CARRIER_STM32H753_R1.elf",
+      "bytes": 1860168,
+      "sha256": "084b44325acb22bc1a03ca259965a6246186d4af2f742e343d4cff8a3c10dd48"
+    },
+    {
+      "file": "EVT_SYS_CARRIER_STM32H753_R1.hex",
+      "bytes": 135064,
+      "sha256": "882eb496cbb558db517f3e807472bb53607acfe349a4e51bc706309e71678166"
+    },
+    {
+      "file": "EVT_SYS_CARRIER_STM32H753_R1.bin",
+      "bytes": 48000,
+      "sha256": "42b6f0c5010b6fe5c61f44a251d176231f9268bd4a2ec12103ca6845f566210a"
+    },
+    {
+      "file": "EVT_SYS_CARRIER_STM32H753_R1.map",
+      "bytes": 259925,
+      "sha256": "dc3eb112c7c7aed57865fd867f41a40c404b89de6b4b0ed8c394e755ec882a94"
+    }
+  ],
+  "bench_validation": "REQUIRED",
+  "production_authority": "NOT_AUTHORIZED"
+}

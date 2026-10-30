@@ -181,6 +181,7 @@ typedef struct {
     uint32_t out_of_order_count;
     uint32_t frame_gap_count;
     uint32_t numeric_errors;
+    uint32_t detections_discarded;
     uint32_t tracker_updates;
     uint32_t tracker_misses;
     uint32_t targetstate_tx;

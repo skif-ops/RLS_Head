@@ -7,6 +7,7 @@ set(CMAKE_C_EXTENSIONS OFF)
 
 option(HIL_BUILD_HOST_TESTS "Build host-native HIL-R1 golden tests" ON)
 option(HIL_BUILD_STM32H753_SMOKE "Build STM32H753 cross-link smoke target" OFF)
+option(EVT_BUILD_STM32H753_FIRMWARE "Build operational STM32H753 EVT firmware" OFF)
 
 add_library(hil_r1 STATIC
     src/hil_r1.c
@@ -66,6 +67,14 @@ add_library(gnss_service STATIC
 
 add_library(imu_service STATIC
     src/imu_service.c
+)
+
+add_library(evt_transport STATIC
+    firmware/stm32h753/src/evt_transport.c
+)
+
+add_library(evt_gnss_parser STATIC
+    firmware/stm32h753/src/evt_gnss_parser.c
 )
 
 target_include_directories(hil_r1 PUBLIC
@@ -128,6 +137,14 @@ target_include_directories(imu_service PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_include_directories(evt_transport PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/include
+)
+
+target_include_directories(evt_gnss_parser PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/include
+)
+
 if(MSVC)
     target_compile_options(hil_r1 PRIVATE /W4 /WX)
     target_compile_options(hil_r2 PRIVATE /W4 /WX)
@@ -144,6 +161,8 @@ if(MSVC)
     target_compile_options(config_lock PRIVATE /W4 /WX)
     target_compile_options(gnss_service PRIVATE /W4 /WX)
     target_compile_options(imu_service PRIVATE /W4 /WX)
+    target_compile_options(evt_transport PRIVATE /W4 /WX)
+    target_compile_options(evt_gnss_parser PRIVATE /W4 /WX)
 else()
     target_compile_options(hil_r1 PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(hil_r2 PRIVATE -Wall -Wextra -Wpedantic -Werror)
@@ -160,6 +179,8 @@ else()
     target_compile_options(config_lock PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(gnss_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(imu_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(evt_transport PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(evt_gnss_parser PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_link_libraries(hil_r1 PUBLIC m)
     target_link_libraries(hil_r2 PUBLIC m)
 endif()
@@ -386,6 +407,28 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     endif()
 
     add_test(NAME carrier_imu_service COMMAND test_imu_service)
+
+    add_executable(test_evt_transport
+        tests/test_evt_transport.c
+    )
+    target_link_libraries(test_evt_transport PRIVATE evt_transport)
+    if(MSVC)
+        target_compile_options(test_evt_transport PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_evt_transport PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+    add_test(NAME evt_can_transport COMMAND test_evt_transport)
+
+    add_executable(test_evt_gnss_parser
+        tests/test_evt_gnss_parser.c
+    )
+    target_link_libraries(test_evt_gnss_parser PRIVATE evt_gnss_parser)
+    if(MSVC)
+        target_compile_options(test_evt_gnss_parser PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_evt_gnss_parser PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+    add_test(NAME evt_gnss_parser COMMAND test_evt_gnss_parser)
 endif()
 
 if(HIL_BUILD_STM32H753_SMOKE)
@@ -450,4 +493,126 @@ if(HIL_BUILD_STM32H753_SMOKE)
             VERBATIM
         )
     endif()
+endif()
+
+if(EVT_BUILD_STM32H753_FIRMWARE)
+    if(NOT CMAKE_CROSSCOMPILING)
+        message(FATAL_ERROR "EVT_BUILD_STM32H753_FIRMWARE requires the ARM cross toolchain")
+    endif()
+
+    set(STM32CUBE_VENDOR
+        ${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/vendor/stm32cubeh7)
+
+    add_library(stm32cubeh7_hal STATIC
+        ${STM32CUBE_VENDOR}/CMSIS/Device/ST/STM32H7xx/Source/Templates/system_stm32h7xx.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_cortex.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_dma.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_dma_ex.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_exti.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_fdcan.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_flash.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_flash_ex.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_gpio.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_iwdg.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_pwr.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_pwr_ex.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_rcc.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_rcc_ex.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_spi.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_tim.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_tim_ex.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_uart.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_uart_ex.c
+    )
+
+    target_compile_definitions(stm32cubeh7_hal PUBLIC
+        STM32H753xx
+        USE_HAL_DRIVER
+    )
+
+    target_include_directories(stm32cubeh7_hal PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/include
+        ${STM32CUBE_VENDOR}/HAL/Inc
+        ${STM32CUBE_VENDOR}/CMSIS/Include
+        ${STM32CUBE_VENDOR}/CMSIS/Device/ST/STM32H7xx/Include
+    )
+
+    target_compile_options(stm32cubeh7_hal PRIVATE
+        -Os
+        -Wall
+        -Wextra
+        -Wno-unused-parameter
+    )
+
+    add_executable(evt_stm32h753_firmware
+        ${STM32CUBE_VENDOR}/CMSIS/Device/ST/STM32H7xx/Source/Templates/gcc/startup_stm32h753xx.s
+        firmware/stm32h753/src/main.c
+        firmware/stm32h753/src/evt_app.c
+        firmware/stm32h753/src/evt_board.c
+        firmware/stm32h753/src/icm42688p.c
+        firmware/stm32h753/src/runtime_support.c
+        firmware/stm32h753/src/stm32h7xx_it.c
+    )
+
+    set_target_properties(evt_stm32h753_firmware PROPERTIES
+        OUTPUT_NAME "EVT_SYS_CARRIER_STM32H753_R1"
+        SUFFIX ".elf"
+    )
+
+    target_compile_definitions(evt_stm32h753_firmware PRIVATE
+        STM32H753xx
+        USE_HAL_DRIVER
+    )
+
+    target_include_directories(evt_stm32h753_firmware PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/include
+    )
+
+    target_compile_options(evt_stm32h753_firmware PRIVATE
+        -Os
+        -g3
+        -Wall
+        -Wextra
+        -Wpedantic
+        -Werror
+    )
+
+    target_link_libraries(evt_stm32h753_firmware PRIVATE
+        stm32cubeh7_hal
+        hil_r1
+        time_service
+        carrier_health
+        gnss_service
+        imu_service
+        evt_transport
+        evt_gnss_parser
+        m
+        c
+        nosys
+    )
+
+    target_link_options(evt_stm32h753_firmware PRIVATE
+        -nostartfiles
+        --specs=nano.specs
+        --specs=nosys.specs
+        -Wl,--gc-sections
+        -Wl,--print-memory-usage
+        -Wl,-Map=${CMAKE_BINARY_DIR}/EVT_SYS_CARRIER_STM32H753_R1.map
+        -T${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/linker/STM32H753IIT6_EVT.ld
+    )
+
+    add_custom_command(
+        TARGET evt_stm32h753_firmware
+        POST_BUILD
+        COMMAND ${CMAKE_OBJCOPY} -O ihex
+            $<TARGET_FILE:evt_stm32h753_firmware>
+            ${CMAKE_BINARY_DIR}/EVT_SYS_CARRIER_STM32H753_R1.hex
+        COMMAND ${CMAKE_OBJCOPY} -O binary
+            $<TARGET_FILE:evt_stm32h753_firmware>
+            ${CMAKE_BINARY_DIR}/EVT_SYS_CARRIER_STM32H753_R1.bin
+        COMMAND ${CMAKE_SIZE} $<TARGET_FILE:evt_stm32h753_firmware>
+        VERBATIM
+    )
 endif()
