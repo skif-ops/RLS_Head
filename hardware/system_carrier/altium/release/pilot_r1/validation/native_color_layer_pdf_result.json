@@ -1,23 +1,23 @@
 {
   "schema": "EVT-SYS-CARRIER-COLOR-LAYER-PDF-001",
   "status": "PASS",
-  "generated_on": "2026-10-28",
+  "generated_on": "2026-10-30",
   "source_outjob": "source/Fabrication.OutJob",
-  "source_outjob_sha256": "d410baa26041616e04616247d5ee736a2353cd9d28c17de0697a122823b94219",
+  "source_outjob_sha256": "82fdc731144d4b2d151dd4128e93d48f49306d6fc738e9e584433d45fde8e322",
   "source_pcb": "source/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816",
+  "source_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d",
   "output": "fab/PCB_Layer_Reference_COLOR.pdf",
-  "output_sha256": "3cba4eb91abdcb439353749213baba73d04251339c8658656ef2469ba099d24a",
-  "file_size_bytes": 1994818,
+  "output_sha256": "a9944d6fbc9544cfc3830560da7c8c0e6409673c8e1ad2dabe7fef7d090ad20d",
+  "file_size_bytes": 1878620,
   "page_count": 5,
   "page_size_points": [792, 612],
-  "render_check_dpi": 144,
+  "render_check_dpi": 150,
   "pages": [
-    {"page": 1, "name": "Multilayer Composite Print", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.898642},
-    {"page": 2, "name": "Top Layer", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.082427},
-    {"page": 3, "name": "Mid-Layer 1 GND Plane", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.892274},
-    {"page": 4, "name": "Mid-Layer 2", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.025107},
-    {"page": 5, "name": "Bottom Layer", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.045941}
+    {"page": 1, "name": "Multilayer Composite Print", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.697159},
+    {"page": 2, "name": "Top Layer", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.064457},
+    {"page": 3, "name": "Mid-Layer 1 GND Plane", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.689627},
+    {"page": 4, "name": "Mid-Layer 2", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.023911},
+    {"page": 5, "name": "Bottom Layer", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.028474}
   ],
   "checks": {
     "pdf_structure": "PASS",
@@ -28,6 +28,6 @@
     "l2_gnd_plane_full_board_coverage": "PASS",
     "board_content_within_page_bounds": "PASS"
   },
-  "limitation": "This is a supplemental color layer reference. It does not replace the preliminary fabrication drawing or an order-bound released fabrication drawing.",
+  "limitation": "This native color fabrication plot set does not replace an order-bound released Draftsman fabrication drawing.",
   "production_authority": "NOT_AUTHORIZED"
 }

@@ -1,13 +1,14 @@
 {
-  "board_height_mm": 80.0,
-  "board_width_mm": 100.0,
-  "canonical_pcb_sha256": "ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816",
+  "baseline_shadow_pad_count": 0,
+  "board_height_mm": 70.0,
+  "board_width_mm": 90.0,
+  "canonical_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d",
   "counts": {
-    "components": 92,
-    "fills": 67,
-    "pads": 529,
-    "tracks": 1639,
-    "vias": 132
+    "components": 83,
+    "fills": 60,
+    "pads": 483,
+    "tracks": 1378,
+    "vias": 115
   },
   "endpoint_baseline_matches": true,
   "errors": [],

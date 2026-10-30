@@ -1,67 +1,67 @@
 # EVT_SYS_CARRIER Rev.A pilot package
 
-Prepared: 2026-10-28
+Prepared: 2026-10-30
 
 This directory is the current pilot manufacturing package assembled from the
-final native Altium project and its verified equivalence evidence.
+native Altium project and evidence bound to the same schematic and PCB files.
 
 Production authority is `NOT_AUTHORIZED`.
 
 ## Verified contents
 
 - Native Altium schematic, PCB, project and OutJob sources.
-- Gerber X2 copper, mask, legend and paste files.
-- Native legacy GKO board profile bundled with the X2 files.
-- Legacy RS-274X Gerber set for CAM fallback.
-- NC drill files and report for 172 holes across 12 tools.
-- Native Altium IPC-2581 Revision B export. XML and content-structure checks
-  confirm 92 components, 20 layers, 172 holes and 68 named nets.
-- Pick-and-place CSV and text exports.
-- Validated 92-designator BOM with MPN, manufacturer, population, DNP and
-  procurement binding. The unchanged native Altium export is retained beside
-  it as `BOM_NATIVE.csv`.
-- `PILOT_BASE_REV_A` population is fixed at 84 fitted parts, 5 DNP parts and
-  3 PCB-only features. The optional GNSS active-antenna bias network is DNP.
-- Two-page native Altium assembly drawing. The bottom page is intentionally
+- Gerber X2 and legacy RS-274X files for four copper layers, mask, legend,
+  paste, board profile and drill plots.
+- NC drill files for 146 holes across 9 tools.
+- Native Altium IPC-2581 Revision B export. Structural checks confirm 83
+  components, 30 packages, 21 layers, 146 holes and 55 named nets.
+- Pick-and-place data for 83 top-side components and no bottom-side parts.
+- Validated 83-designator BOM. The `PILOT_BASE_REV_A` variant contains 78
+  fitted parts, 2 DNP parts and 3 PCB-only features.
+- Two-page native Altium assembly drawing. The bottom view is intentionally
   empty because the board has no bottom population.
-- Eight-page schematic PDF checked for sheet-boundary and readability issues.
-- Native Altium DRC report with zero violations and zero unrouted nets.
-- Compile, netlist, connection-integrity and Altium-equivalence PASS evidence.
-- Native Altium STEP with board outline, thickness and hole geometry. The rigid
-  board export succeeds with `Export Folded Board` disabled.
-- Preliminary fabrication drawing with outline, mounting datum, stack,
-  impedance start values and drill table.
-- Five-page color PCB layer reference with the composite, top, two internal
-  copper layers and bottom. All pages were rendered and visually checked. The
-  Mid-Layer 1 page confirms full-board L2 GND-plane coverage.
+- Eight-page native schematic PDF visually checked for sheet-boundary and
+  readability problems.
+- Native Altium DRC with zero violations, zero unrouted nets, zero routing
+  topology violations and zero net-antenna violations.
+- Compile, netlist, footprint, hierarchy, connection-integrity,
+  no-mmWave and Altium-equivalence PASS evidence.
+- Native STEP for the current 90.00 x 70.00 mm board. The direct export uses
+  all pad holes and disables `Export Folded Board` for this rigid PCB.
+- Five-page native color fabrication plot set with the multilayer composite,
+  top, two internal copper layers and bottom.
 - Rezonit published four-layer TG150 working stack, TG170 alternative,
   material properties, process limits, mask, finish and mechanical data.
 
+The canonical external interfaces are two 3.3 V UART channels and a
+connectorized external GNSS module. Ethernet is not part of this revision.
+
 ## Pilot package disposition
 
-Archive assembly has no open blockers. The package is ready for internal CAM
-review, Rezonit quotation and fabricator preflight. The published 1.50 mm TG150
-four-layer 35 um construction is used as the working factory baseline.
+The package is ready for internal CAM review, Rezonit quotation and pilot
+preflight. The published Rezonit four-layer TG150 construction is the working
+factory baseline until order-specific data is available.
 
-The following corrections are deferred and do not block the archive:
+The following items remain production-release holds, but do not block pilot
+archive review:
 
-1. Bind the exact finished thickness, finished copper and impedance solver
-   geometries supplied for the order.
-2. Replace the preliminary fabrication drawing with a released drawing before
-   production authorization.
-3. Enclosure manufacturing and populated component 3D are outside the current
-   scope. Create antenna-mount 3D only if assembly technology requires it.
+1. Bind exact finished thickness, finished copper and any order-specific
+   process values supplied for the order.
+2. Replace the native plot set with a released Draftsman fabrication drawing
+   before production authorization.
+3. Complete enclosure and connector-access verification if enclosure work
+   enters scope. Only antenna-mount 3D is required when assembly technology
+   makes it necessary.
 
-Production authority remains `NOT_AUTHORIZED`. The archive must not be
-submitted as an authorized production order until the production release gate
-is explicitly completed.
+Production authority remains `NOT_AUTHORIZED`. This package must not be used
+as an authorized production order until the production release gate passes.
 
 ## Main files
 
 - `fab/Gerber_X2_with_Legacy_Profile.zip`
 - `fab/NC_Drill.zip`
 - `fab/EVT_SYS_CARRIER.cvg`
-- `fab/Fabrication_Drawing_PRELIMINARY.pdf`
+- `fab/Fabrication_Drawing_PILOT_R1.pdf`
 - `fab/PCB_Layer_Reference_COLOR.pdf`
 - `assembly/Pick_Place.zip`
 - `assembly/BOM.csv`
@@ -72,13 +72,17 @@ is explicitly completed.
 - `documentation/REZONIT_FABRICATION_BASELINE.md`
 - `documentation/REZONIT_PUBLISHED_STACK_4L_35UM.csv`
 - `validation/native_drc.drc`
+- `validation/connection_integrity_result.json`
+- `validation/footprint_comparison.html`
 - `validation/altium_equivalence_result.json`
 - `validation/pilot_bom_enrichment_result.json`
 - `validation/native_step_export_result.json`
-- `validation/ipc2581_status_report.txt`
 - `validation/native_ipc2581_export_result.json`
 - `validation/native_color_layer_pdf_result.json`
 - `PILOT_PACKAGE_STATUS.json`
 
+The source schematic SHA-256 is
+`85b458cc95d32704a9a9dced80f2f8514bf2f9d3065e0f91c18ab57091dc9166`.
+
 The source PcbDoc SHA-256 is
-`ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816`.
+`35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d`.

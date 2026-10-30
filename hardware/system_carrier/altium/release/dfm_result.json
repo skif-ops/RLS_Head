@@ -5,11 +5,11 @@
   "evidence_refs": [
     {
       "path": "hardware/system_carrier/altium/ALTIUM_DFM_PROFILE_SYS_001.csv",
-      "sha256": "272ea8e2d70590d9cf5cbb2653c99769993eaec92330ec45b78723175de4e086"
+      "sha256": "e5c23a689bd1e8f8aba1b8a663d786a14886c48f0a6422063ed1271c93261bca"
     },
     {
       "path": "hardware/system_carrier/altium/release/REZONIT_FABRICATION_BASELINE.md",
-      "sha256": "05552923df7e7b013b10da8f04eea9f4d8ebae9479917954f2606d5ceb38a181"
+      "sha256": "0ab590ea9c89dabb655c429fed96352b32d970ea18da3f3916e7fc2596191caa"
     }
   ],
   "notes": [
@@ -17,10 +17,10 @@
     "DFM-001 through DFM-004 and the two impedance items DFM-007 and DFM-008 remain open until the Rezonit order is bound.",
     "Generic published capabilities are included for preparation but are not treated as a production binding."
   ],
-  "profile_sha256": "272ea8e2d70590d9cf5cbb2653c99769993eaec92330ec45b78723175de4e086",
+  "profile_sha256": "e5c23a689bd1e8f8aba1b8a663d786a14886c48f0a6422063ed1271c93261bca",
   "closed_p0_ids": [
     "DFM-010"
   ],
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816"
+  "source_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d"
 }

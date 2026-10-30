@@ -1,15 +1,15 @@
 {
   "schema": "ALTIUM-NATIVE-IPC2581-EXPORT-RESULT-001",
   "status": "PASS",
-  "generated_on": "2026-10-28",
+  "generated_on": "2026-10-30",
   "tool": "Altium Designer 26.10.1",
   "source_project": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PrjPcb",
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816",
+  "source_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d",
   "native_output": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/IPC-2581 Files/EVT_SYS_CARRIER.cvg",
   "package_output": "hardware/system_carrier/altium/release/pilot_r1/fab/EVT_SYS_CARRIER.cvg",
-  "package_output_sha256": "b7b8dd24a1472531e1b27faf7977ae2e972608284cc6864ddc44e8ae4b28f51e",
-  "package_output_bytes": 3953162,
+  "package_output_sha256": "c56db3a43ee38bbcbc69fa964b25eb38db5ba63beb47999c91bbb1bb1cc452a1",
+  "package_output_bytes": 4017819,
   "altium_status_report": "hardware/system_carrier/altium/release/pilot_r1/validation/ipc2581_status_report.txt",
   "altium_status_report_sha256": "2047ad8f95c2cde35b0f8b375130aa2a4212a66c29929c3e42481bb230d41e55",
   "structural_validation": {
@@ -20,15 +20,15 @@
     "content_sections": 1,
     "bom_sections": 1,
     "cad_data_sections": 1,
-    "components": 92,
+    "components": 83,
     "packages": 30,
     "bom_items": 30,
-    "layers": 20,
-    "holes": 172,
-    "net_attributes": 761,
-    "distinct_named_nets": 68,
-    "line_primitives": 8364
+    "layers": 21,
+    "holes": 146,
+    "net_attributes": 694,
+    "distinct_named_nets": 55,
+    "line_primitives": 9235
   },
-  "scope_note": "The file is a native Altium IPC-2581 Revision B export and passes XML and content-structure checks. No claim of validation against an external IPC XSD is made.",
+  "scope_note": "The file is a native Altium IPC-2581 Revision B export and passes XML and content-structure checks. No external IPC XSD validation claim is made.",
   "production_authority": "NOT_AUTHORIZED"
 }

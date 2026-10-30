@@ -1,6 +1,6 @@
 {
   "schema": "ALTIUM-RETURN-PATH-SI-REVIEW-001",
-  "status": "STALE_AFTER_UART_GNSS_ECO",
+  "status": "PENDING",
   "p0_open_findings": null,
   "l2_ground_continuity_verified": false,
   "timing_return_paths_verified": false,
@@ -9,13 +9,13 @@
   "reviewer": "Codex computer use operator on user-authorized workstation",
   "evidence_refs": [],
   "notes": [
-    "The previous review predates the dual-UART and external-GNSS ECO and is not current evidence.",
-    "Repeat the native Altium return-path review after import, compact-board routing and DRC."
+    "The compact-board routing and native DRC are current, but a dedicated return-path review has not yet been recorded.",
+    "Production authority remains NOT_AUTHORIZED until this review is completed."
   ],
   "power_hot_loop_verified": false,
   "power_branch_widths_verified": false,
   "five_volt_gnss_route_verified": false,
   "no_mmwave_post_route_verified": false,
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": null
+  "source_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d"
 }

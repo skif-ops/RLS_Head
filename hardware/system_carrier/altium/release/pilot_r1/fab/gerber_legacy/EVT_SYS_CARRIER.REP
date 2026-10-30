@@ -2,57 +2,63 @@
 FileName = EVT_SYS_CARRIER.GBR
 AutoAperture = True
 *************************************************************
-Generating : Bottom Layer
-      File : EVT_SYS_CARRIER.GBL
+Generating : Mechanical 15
+      File : EVT_SYS_CARRIER.GM15
 
-    Adding Layer      : Bottom Layer
-
-    Adding Layer      : Multi-Layer
+    Adding Layer      : Mechanical 15
 
 
 Used DCodes :
-    D41
-    D55
-    D56
-    D57
-    D58
-    D59
-    D60
-    D61
-    D62
-    D63
-    D64
-    D65
-    D66
-    D67
-    D68
-    D69
-    D70
-    D71
-    D72
-    D73
-    D115
-    D116
-    D117
-    D118
-    D119
-    D120
-    D121
-    D122
-    D123
-    D124
-    D125
-    D126
     D127
-    D128
-    D129
-    D130
-    D131
 *************************************************************
 
 *************************************************************
-Generating : Bottom Pad Master
-      File : EVT_SYS_CARRIER.GPB
+Generating : Mechanical 7
+      File : EVT_SYS_CARRIER.GM7
+
+    Adding Layer      : Mechanical 7
+
+
+Used DCodes :
+    D126
+*************************************************************
+
+*************************************************************
+Generating : Mechanical 1
+      File : EVT_SYS_CARRIER.GM1
+
+    Adding Layer      : Mechanical 1
+
+
+Used DCodes :
+    D125
+*************************************************************
+
+*************************************************************
+Generating : Keep-Out Layer
+      File : EVT_SYS_CARRIER.GKO
+
+    Adding Layer      : Keep-Out Layer
+
+
+Used DCodes :
+*************************************************************
+
+*************************************************************
+Generating : Bottom Overlay
+      File : EVT_SYS_CARRIER.GBO
+
+    Adding Layer      : Bottom Overlay
+
+
+Used DCodes :
+*************************************************************
+
+*************************************************************
+Generating : Bottom Paste
+      File : EVT_SYS_CARRIER.GBP
+
+    Adding Layer      : Bottom Paste
 
     Adding Layer      : Bottom Layer
 
@@ -60,10 +66,22 @@ Generating : Bottom Pad Master
 
 
 Used DCodes :
-    D41
-    D55
-    D56
-    D57
+    D28
+*************************************************************
+
+*************************************************************
+Generating : Bottom Solder
+      File : EVT_SYS_CARRIER.GBS
+
+    Adding Layer      : Bottom Solder
+
+    Adding Layer      : Bottom Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D28
     D58
     D59
     D60
@@ -74,31 +92,15 @@ Used DCodes :
     D65
     D66
     D67
-*************************************************************
-
-*************************************************************
-Generating : Mid-Layer 2
-      File : EVT_SYS_CARRIER.G2
-
-    Adding Layer      : Mid-Layer 2
-
-    Adding Layer      : Multi-Layer
-
-
-Used DCodes :
     D68
     D69
-    D71
-    D73
-    D111
-    D112
-    D113
-    D114
 *************************************************************
 
 *************************************************************
-Generating : Top Pad Master
-      File : EVT_SYS_CARRIER.GPT
+Generating : Top Solder
+      File : EVT_SYS_CARRIER.GTS
+
+    Adding Layer      : Top Solder
 
     Adding Layer      : Top Layer
 
@@ -106,7 +108,6 @@ Generating : Top Pad Master
 
 
 Used DCodes :
-    D17
     D18
     D19
     D20
@@ -157,18 +158,8 @@ Used DCodes :
     D65
     D66
     D67
-*************************************************************
-
-*************************************************************
-Generating : Top Overlay
-      File : EVT_SYS_CARRIER.GTO
-
-    Adding Layer      : Top Overlay
-
-
-Used DCodes :
-    D10
-    D11
+    D68
+    D69
 *************************************************************
 
 *************************************************************
@@ -183,7 +174,6 @@ Generating : Top Paste
 
 
 Used DCodes :
-    D12
     D13
     D14
     D15
@@ -226,38 +216,170 @@ Used DCodes :
     D52
     D53
     D54
+    D55
+    D56
+    D57
 *************************************************************
 
 *************************************************************
-Generating : Keep-Out Layer
-      File : EVT_SYS_CARRIER.GKO
+Generating : Top Overlay
+      File : EVT_SYS_CARRIER.GTO
 
-    Adding Layer      : Keep-Out Layer
+    Adding Layer      : Top Overlay
 
 
 Used DCodes :
+    D10
+    D11
+    D12
 *************************************************************
 
 *************************************************************
-Generating : Mechanical 1
-      File : EVT_SYS_CARRIER.GM1
+Generating : Top Pad Master
+      File : EVT_SYS_CARRIER.GPT
 
-    Adding Layer      : Mechanical 1
+    Adding Layer      : Top Layer
+
+    Adding Layer      : Multi-Layer
 
 
 Used DCodes :
-    D132
+    D18
+    D19
+    D20
+    D21
+    D22
+    D23
+    D24
+    D25
+    D26
+    D27
+    D28
+    D29
+    D30
+    D31
+    D32
+    D33
+    D34
+    D35
+    D36
+    D37
+    D38
+    D39
+    D40
+    D41
+    D42
+    D43
+    D44
+    D45
+    D46
+    D47
+    D48
+    D49
+    D50
+    D51
+    D52
+    D53
+    D54
+    D55
+    D56
+    D57
+    D58
+    D59
+    D60
+    D61
+    D62
+    D63
+    D64
+    D65
+    D66
 *************************************************************
 
 *************************************************************
-Generating : Mechanical 7
-      File : EVT_SYS_CARRIER.GM7
+Generating : Bottom Pad Master
+      File : EVT_SYS_CARRIER.GPB
 
-    Adding Layer      : Mechanical 7
+    Adding Layer      : Bottom Layer
+
+    Adding Layer      : Multi-Layer
 
 
 Used DCodes :
-    D133
+    D28
+    D58
+    D59
+    D60
+    D61
+    D62
+    D63
+    D64
+    D65
+    D66
+*************************************************************
+
+*************************************************************
+Generating : Bottom Layer
+      File : EVT_SYS_CARRIER.GBL
+
+    Adding Layer      : Bottom Layer
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D12
+    D28
+    D58
+    D59
+    D60
+    D61
+    D62
+    D63
+    D64
+    D65
+    D66
+    D67
+    D68
+    D69
+    D70
+    D71
+    D110
+    D111
+    D112
+    D113
+    D114
+    D115
+    D116
+    D117
+    D118
+    D119
+    D120
+    D121
+    D122
+    D123
+    D124
+*************************************************************
+
+*************************************************************
+Generating : Mid-Layer 2
+      File : EVT_SYS_CARRIER.G2
+
+    Adding Layer      : Mid-Layer 2
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D12
+    D60
+    D67
+    D68
+    D70
+    D71
+    D106
+    D107
+    D108
+    D109
 *************************************************************
 
 *************************************************************
@@ -270,12 +392,19 @@ Generating : Mid-Layer 1
 
 
 Used DCodes :
+    D12
+    D58
+    D59
+    D60
     D62
     D64
-    D65
+    D67
     D68
     D69
-    D70
+    D71
+    D95
+    D96
+    D97
     D98
     D99
     D100
@@ -284,11 +413,6 @@ Used DCodes :
     D103
     D104
     D105
-    D106
-    D107
-    D108
-    D109
-    D110
 *************************************************************
 
 *************************************************************
@@ -301,8 +425,7 @@ Generating : Top Layer
 
 
 Used DCodes :
-    D11
-    D17
+    D12
     D18
     D19
     D20
@@ -380,133 +503,5 @@ Used DCodes :
     D92
     D93
     D94
-    D95
-    D96
-    D97
-*************************************************************
-
-*************************************************************
-Generating : Top Solder
-      File : EVT_SYS_CARRIER.GTS
-
-    Adding Layer      : Top Solder
-
-    Adding Layer      : Top Layer
-
-    Adding Layer      : Multi-Layer
-
-
-Used DCodes :
-    D10
-    D17
-    D18
-    D19
-    D20
-    D21
-    D22
-    D23
-    D24
-    D25
-    D26
-    D27
-    D28
-    D29
-    D30
-    D31
-    D32
-    D33
-    D34
-    D35
-    D36
-    D37
-    D38
-    D39
-    D40
-    D41
-    D42
-    D43
-    D44
-    D45
-    D46
-    D47
-    D48
-    D49
-    D50
-    D51
-    D52
-    D53
-    D54
-    D55
-    D56
-    D57
-    D58
-    D59
-    D60
-    D61
-    D62
-    D63
-    D64
-    D65
-    D66
-    D67
-    D68
-    D69
-    D70
-*************************************************************
-
-*************************************************************
-Generating : Bottom Solder
-      File : EVT_SYS_CARRIER.GBS
-
-    Adding Layer      : Bottom Solder
-
-    Adding Layer      : Bottom Layer
-
-    Adding Layer      : Multi-Layer
-
-
-Used DCodes :
-    D41
-    D55
-    D56
-    D57
-    D58
-    D59
-    D60
-    D61
-    D62
-    D63
-    D64
-    D65
-    D66
-    D67
-    D68
-    D69
-    D70
-*************************************************************
-
-*************************************************************
-Generating : Bottom Paste
-      File : EVT_SYS_CARRIER.GBP
-
-    Adding Layer      : Bottom Paste
-
-    Adding Layer      : Bottom Layer
-
-    Adding Layer      : Multi-Layer
-
-
-Used DCodes :
-    D41
-*************************************************************
-
-*************************************************************
-Generating : Bottom Overlay
-      File : EVT_SYS_CARRIER.GBO
-
-    Adding Layer      : Bottom Overlay
-
-
-Used DCodes :
 *************************************************************
 

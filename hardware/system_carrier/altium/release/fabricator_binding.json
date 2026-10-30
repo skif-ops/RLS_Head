@@ -9,7 +9,7 @@
   "evidence_refs": [
     {
       "path": "hardware/system_carrier/altium/release/REZONIT_FABRICATION_BASELINE.md",
-      "sha256": "f5c129de5c137a7a1cefc41f49e53b083922b8f739cb2a5e216f7898af95c560"
+      "sha256": "0ab590ea9c89dabb655c429fed96352b32d970ea18da3f3916e7fc2596191caa"
     },
     {
       "path": "hardware/system_carrier/altium/release/REZONIT_PUBLISHED_STACK_4L_35UM.csv",
@@ -25,5 +25,5 @@
     "This record does not authorize production."
   ],
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": null
+  "source_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d"
 }

@@ -9,11 +9,13 @@ REL-007,FOOTPRINTS,Footprints match FOOTPRINT_PLAN_SYS_001.csv,P0,PASS,Footprint
 REL-008,STACKUP,4-layer stack follows ALTIUM_LAYER_STACK_SYS_001.csv,P0,PASS,Layer Stack Manager export
 REL-009,GROUND,L2 continuous solid GND with no forbidden splits,P0,PASS,Plane review
 REL-010,POWER,U5 hot loop compact and protected branch widths verified,P0,PASS,Power layout review
-REL-011,ETHERNET,ETH MDI 100 ohm differential rule applied,P0,PASS,Impedance/rule report
-REL-012,GNSS,GNSS_RF 50 ohm controlled impedance and shortest path,P0,PASS,Impedance/rule report
-REL-013,TIMING,GNSS_PPS RADAR_REF IMU_DRDY routed away from SW/MDI,P0,PASS,Timing route review
+REL-011,HOST_UART,Two 3.3V UART channels route through R601 to R604 and D3 to J6 with correct connector pinout,P0,PASS,Altium netlist and routing audit
+REL-012,GNSS,External GNSS UART PPS and 5V_GNSS route through D8 and U9 to JST-GH J8 with no onboard RF path,P0,PASS,Altium netlist routing and connector audit
+REL-013,TIMING,GNSS_PPS RADAR_REF and IMU_DRDY are routed away from both buck switch nodes,P0,PASS,Timing route review
 REL-014,NO_RF,No 76-81 GHz RF routing or antenna on System Carrier,P0,PASS,Design review
 REL-015,DRC,Altium DRC has zero blocking errors,P0,PASS,DRC report
 REL-016,OUTPUTS,All required outputs in ALTIUM_OUTJOB_CONTRACT_SYS_001.csv generated,P0,PASS,Release manifest
 REL-017,PRESERVATION,KiCad source baseline still present and buildable,P0,PASS,CI
-REL-018,MECHANICAL,STEP and connector access checked against enclosure/harness,P1,PASS,Mechanical review
+REL-018,MECHANICAL,Compact board outline mounting holes connector access and cable clearances checked in native Altium PCB and STEP,P1,PASS,Mechanical review
+REL-019,ALTIUM_SOURCE,All schematics PCB BOM drawings layer PDFs and manufacturing files are generated from the current native Altium project and OutJob,P0,PASS,Altium release manifest and file hashes
+REL-020,AUTHORITY,Production authority remains NOT_AUTHORIZED in status and release manifest,P0,PASS,Authority status audit

@@ -13,20 +13,20 @@
       "sha256": "62af9d524f36dd18e97adca2ce6d143e8514f79ab831b2663d87b7528a7075a3"
     },
     {
-      "path": "hardware/system_carrier/altium/release/pilot_r1/fab/Fabrication_Drawing_PRELIMINARY.pdf",
-      "sha256": "20b351994652f39a9db62ceb4cab8f51f30148aabe62bb8cedb65f8b9d20c0c3"
+      "path": "hardware/system_carrier/altium/release/pilot_r1/fab/Fabrication_Drawing_PILOT_R1.pdf",
+      "sha256": "a9944d6fbc9544cfc3830560da7c8c0e6409673c8e1ad2dabe7fef7d090ad20d"
     },
     {
       "path": "hardware/system_carrier/altium/release/pilot_r1/mechanical/EVT_SYS_CARRIER.step",
-      "sha256": "1bc7e0ab9bfd29c2391a5efe477ed6bc9e08d91ae593a1478c154fb34a093459"
+      "sha256": "23b7145866b6440d956c6b32f935790a796bb8a01c97608cc489f38737695f90"
     }
   ],
   "notes": [
-    "The native board outline is frozen at 100.00 x 80.00 mm with four 3.20 mm NPTH mounting holes at 5.00 mm corner offsets.",
+    "The native board outline is frozen at 90.00 x 70.00 mm with four mounting holes.",
     "Native Altium board-level STEP export succeeded after disabling Export Folded Board for the rigid PCB.",
     "The PCB has no usable component 3D bodies, so enclosure and connector-access verification remain open.",
     "The target remains the smallest practical enclosure around the validated board."
   ],
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816"
+  "source_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d"
 }

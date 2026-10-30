@@ -1,21 +1,21 @@
 {
-  "contract_designator_count": 92,
+  "contract_designator_count": 83,
   "errors": [],
   "input_sha256": {
-    "bom_contract": "3a3bf81063029143b8ea4ffb524fec3ec18984f1e0b828ee45b39fab787e9068",
-    "native_bom": "bb9ae52d3826707d673c7fc43ce1e1856c942b8ed46bdea8566d23d2ac69f063"
+    "bom_contract": "b489427e443d0e9af58f9c33c250a27a40f71cd47144a84955cb7729af2b011e",
+    "native_bom": "725c0a2a7d25dbf15dff74aca92da9086bf401851536077553085ff459cedfd2"
   },
-  "native_designator_count": 92,
+  "native_designator_count": 83,
   "notes": [
     "The native Altium BOM remains the source for designators, MPNs, footprints and quantities.",
     "Manufacturer, population and procurement fields are joined from BOM_SYS_CARRIER_LAYOUT_004.csv.",
     "Optional GNSS active-antenna bias parts are DNP in the base pilot variant."
   ],
-  "output_designator_count": 92,
-  "output_sha256": "65856736f177702b61c117f66229736dcbf7fcd5ed760a40043e0e0ea6c30c96",
+  "output_designator_count": 83,
+  "output_sha256": "002be6bd5845144bcb6b2ddc70dbeab3538cd4fe6da18dc63fdb53a8939979b9",
   "pilot_disposition_counts": {
-    "DNP": 5,
-    "FIT": 84,
+    "DNP": 2,
+    "FIT": 78,
     "PCB_ONLY": 3
   },
   "schema": "ALTIUM-PILOT-BOM-ENRICHMENT-001",

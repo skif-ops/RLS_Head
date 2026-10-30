@@ -1,6 +1,6 @@
 {
-  "approved_schematic_sha256": "5941fb8d9a36092d06f2ff164514ed53c41ccc44a18829ca7ce8cf2aac1cd10d",
-  "current_schematic_sha256": "5941fb8d9a36092d06f2ff164514ed53c41ccc44a18829ca7ce8cf2aac1cd10d",
+  "approved_schematic_sha256": "85b458cc95d32704a9a9dced80f2f8514bf2f9d3065e0f91c18ab57091dc9166",
+  "current_schematic_sha256": "85b458cc95d32704a9a9dced80f2f8514bf2f9d3065e0f91c18ab57091dc9166",
   "equivalence_ready": true,
   "equivalence_schematic_stale": false,
   "evidence": {
@@ -24,7 +24,7 @@
     },
     "manifest": {
       "path": "hardware/system_carrier/altium/release/manifest.json",
-      "present": false
+      "present": true
     },
     "mechanical_review": {
       "path": "hardware/system_carrier/altium/release/mechanical_review.json",
@@ -41,12 +41,12 @@
     "native_pcb": {
       "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
       "present": true,
-      "sha256": "ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816"
+      "sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d"
     },
     "native_schematic": {
       "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
       "present": true,
-      "sha256": "5941fb8d9a36092d06f2ff164514ed53c41ccc44a18829ca7ce8cf2aac1cd10d"
+      "sha256": "85b458cc95d32704a9a9dced80f2f8514bf2f9d3065e0f91c18ab57091dc9166"
     },
     "outjob_release_manifest": {
       "path": "hardware/system_carrier/altium/release/outjob_release_manifest.json",
@@ -61,13 +61,11 @@
       "status": "PENDING"
     }
   },
-  "final_native_pcb_sha256": "ec04f945b1e617438fc465fea1b5fa28c55ba87d0374be4110528dbac0a24816",
+  "final_native_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d",
   "invalid_artifacts": [],
   "manifest_errors": [],
-  "manifest_ready": false,
-  "missing_artifacts": [
-    "manifest"
-  ],
+  "manifest_ready": true,
+  "missing_artifacts": [],
   "next_action": "CLOSE_NON_PASS_RELEASE_REVIEWS",
   "non_pass_artifacts": [
     "dfm_result",
