@@ -4,7 +4,7 @@
   "errors": [],
   "input_sha256": {
     "kicad_netlist_baseline": "07130e7962254bf594c01baa49455f3234b3126c996c28baae8b5ee25354ee5a",
-    "pad_net_inventory": "43a3461471e11b12bc0f3fc5b83f85a4e4a9234104d4c17f4013420c7270d443"
+    "pad_net_inventory": "4d121072405bb86f00c1739c3401303216f7f31c854937ffdf547e5079e32d2a"
   },
   "native_connectivity_group_count": 54,
   "native_endpoint_count": 295,

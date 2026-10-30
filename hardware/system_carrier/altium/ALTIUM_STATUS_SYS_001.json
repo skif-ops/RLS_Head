@@ -10,7 +10,7 @@
     "fabricator_stack_bound": true,
     "impedance_start_values_ready": false,
     "import_package_ready": true,
-    "native_pcb_sha256": "0dacc26bbba8b95c0c1bc591546ef879edb8815cb134b4c30d1742d85fdcc1fd",
+    "native_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d",
     "native_pcbdoc": true,
     "native_schdoc": true,
     "placement_rooms_ready": true,

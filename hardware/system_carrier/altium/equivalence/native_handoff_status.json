@@ -16,31 +16,31 @@
     "compile_report": {
       "path": "hardware/system_carrier/altium/equivalence/compile_report.json",
       "present": true,
-      "sha256": "4a328812b9735e29e8ec62ec3329bc83aa636659a7fe9bae5e7ef7c5c96a677f",
+      "sha256": "519deba2738454720e7b186da00d46881c3d2ed5af1ebd1ae4330fcbe298b5b2",
       "size": 979
     },
     "compile_report_raw": {
       "path": "hardware/system_carrier/altium/equivalence/compile_report_raw.txt",
       "present": true,
-      "sha256": "2356faf530a846fc6e513770a07b7ff71d42d7aec99fe89bae078ef2f3ef5362",
+      "sha256": "27331d6c58c3850a55f7d5c13d9486040f8e5cf8d835235124d9855e5ef629f9",
       "size": 288
     },
     "component_inventory": {
       "path": "hardware/system_carrier/altium/equivalence/component_inventory.csv",
       "present": true,
-      "sha256": "3cefaac8cf9962e3fbcdaa7384992c4b72713f6d6fded2145e74c6627f2123db",
-      "size": 3916
+      "sha256": "1845a69b0b4e6bfc0564343f3cce4ac61791d2306d0ea849ec8b6d61743855f7",
+      "size": 3920
     },
     "connector_validation_result": {
       "path": "hardware/system_carrier/altium/equivalence/connector_validation_result.json",
       "present": true,
-      "sha256": "af3a298ba20f7fc4d3733bee40236b001adf551df06370e5e25e4f746fc928a2",
+      "sha256": "2e3ae2c6f664868d921b4289a596272586e30ed125bdf3e5c08e19e600099714",
       "size": 881
     },
     "footprint_report": {
       "path": "hardware/system_carrier/altium/equivalence/footprint_report.json",
       "present": true,
-      "sha256": "a26b2342a0c91fb0e81bd223744ede053f811f6f7a64601058f9de4f5dd3cc90",
+      "sha256": "e12d60242fd6836456cb058697a5fe4c57694d0200b474b9fdec74f7cf8eaab3",
       "size": 664
     },
     "hierarchy_export": {
@@ -52,7 +52,7 @@
     "hierarchy_validation_result": {
       "path": "hardware/system_carrier/altium/equivalence/hierarchy_validation_result.json",
       "present": true,
-      "sha256": "348dd18c512f25d13c2adca98a4ca8972b8c737d5a8eead85a120ed957fd2d3c",
+      "sha256": "8e18b92facfa12fca4cbd146150ccff915270aed35049d7fdb414ada871b32fc",
       "size": 778
     },
     "import_log": {
@@ -100,19 +100,19 @@
     "manifest": {
       "path": "hardware/system_carrier/altium/equivalence/manifest.json",
       "present": true,
-      "sha256": "3e981bc40c7036ed587f9036c94ccd7f2b2f263650966dc3870b1f4bb9323fa9",
+      "sha256": "d05f06a3f963bdc6b1467ae17e2f8c3f6a8b90af4e7ac65bca2f320bedc40c21",
       "size": 7276
     },
     "native_audit_result": {
       "path": "hardware/system_carrier/altium/equivalence/native_audit_result.json",
       "present": true,
-      "sha256": "fc863e50b7006c3630d5b1ad32162866470e800d3a88e2603817559324e7bf83",
+      "sha256": "0894f381f0bced80c7a52517fd6276ebaa3d7a358794980c2aa7648870014f55",
       "size": 2453
     },
     "native_file_preflight": {
       "path": "hardware/system_carrier/altium/equivalence/native_file_preflight.json",
       "present": true,
-      "sha256": "62a19e34ea6af433a75e07058466c6bae158fda31040a819ca6b2d601aaa036e",
+      "sha256": "a9cd92511d8890ca0c135a75906eca0f358217f9d47a586be0527cdd8d40f5e0",
       "size": 1170
     },
     "net_inventory": {
@@ -124,38 +124,38 @@
     "netlist_export": {
       "path": "hardware/system_carrier/altium/equivalence/netlist_export.csv",
       "present": true,
-      "sha256": "43a3461471e11b12bc0f3fc5b83f85a4e4a9234104d4c17f4013420c7270d443",
-      "size": 10704
+      "sha256": "4d121072405bb86f00c1739c3401303216f7f31c854937ffdf547e5079e32d2a",
+      "size": 8837
     },
     "netlist_validation_result": {
       "path": "hardware/system_carrier/altium/equivalence/netlist_validation_result.json",
       "present": true,
-      "sha256": "9f3b097e2908ae3964e64635854c80b0e45711c140d6982638198aa1312c8ec5",
+      "sha256": "1d936a0ea2d00154ac5ac62c5dfa7948d2f5108c0769314f1d846dce36a56ea6",
       "size": 831
     },
     "no_mmwave_review": {
       "path": "hardware/system_carrier/altium/equivalence/no_mmwave_review.json",
       "present": true,
-      "sha256": "d5e370081723fd91f2b8e1879f3e7964548482831094cdad27754c0bc6fd3fcb",
+      "sha256": "6df467c087fe441ed3aea325b9a686a89bd774bed5f75fb27c37e417aa42a5d5",
       "size": 1295
     },
     "no_mmwave_review_result": {
       "path": "hardware/system_carrier/altium/equivalence/no_mmwave_review_result.json",
       "present": true,
-      "sha256": "353f78b3ba0be4a2c96ed34e1da6d44015f2f7917611d53a5e29fbcde76f08b8",
+      "sha256": "22f9821788faf3cd3e83b6dac932e3f99fd41b32e60ff7976b7d0ce5b8508e07",
       "size": 953
     },
     "pad_net_inventory": {
       "path": "hardware/system_carrier/altium/equivalence/pad_net_inventory.csv",
       "present": true,
-      "sha256": "43a3461471e11b12bc0f3fc5b83f85a4e4a9234104d4c17f4013420c7270d443",
-      "size": 10704
+      "sha256": "4d121072405bb86f00c1739c3401303216f7f31c854937ffdf547e5079e32d2a",
+      "size": 8837
     },
     "pcb": {
       "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
       "present": true,
-      "sha256": "0dacc26bbba8b95c0c1bc591546ef879edb8815cb134b4c30d1742d85fdcc1fd",
-      "size": 1864192
+      "sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d",
+      "size": 1740800
     },
     "project": {
       "path": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
@@ -166,8 +166,8 @@
     "rule_inventory": {
       "path": "hardware/system_carrier/altium/equivalence/rule_inventory.csv",
       "present": true,
-      "sha256": "193a831dc1beb1e26508a4a3ea1fcbfd6d2b1b31b10c9c428bac12dd59ef2480",
-      "size": 3412
+      "sha256": "a46a1bd4f972ed2ac56451ce770ce2eed50b1a0880047b46141c834032e89f2b",
+      "size": 3174
     },
     "schematic": {
       "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
@@ -178,13 +178,13 @@
     "script_runtime_receipt": {
       "path": "hardware/system_carrier/altium/equivalence/script_runtime_receipt.json",
       "present": true,
-      "sha256": "de48964e4c87f7fdc425f3583273c76f5e3a05704cd3e8500ef4d38d0546122c",
+      "sha256": "2d9d110f937dce47d94551745af31b37a2dc3bc9bc06700c743b69a2e6040a61",
       "size": 2225
     },
     "script_runtime_result": {
       "path": "hardware/system_carrier/altium/equivalence/script_runtime_result.json",
       "present": true,
-      "sha256": "d02449ee97ee6ad74b3fdcf9fa36d6b9c10b6faf5f1776e4bb25f03ea7cce329",
+      "sha256": "9b55802966bd93cbd8540856b41d0ac6e57e289c570bb647a3f9290dce297075",
       "size": 1883
     }
   },

@@ -7,9 +7,9 @@
     "hardware/system_carrier/altium/equivalence/mechanical_inventory.csv"
   ],
   "input_sha256": {
-    "component_inventory": "3cefaac8cf9962e3fbcdaa7384992c4b72713f6d6fded2145e74c6627f2123db",
+    "component_inventory": "1845a69b0b4e6bfc0564343f3cce4ac61791d2306d0ea849ec8b6d61743855f7",
     "net_inventory": "b14d28a0a736d78997136fb041094dda21ddcabd7e6156f69c3797a5f3a9d0ce",
-    "pcb": "0dacc26bbba8b95c0c1bc591546ef879edb8815cb134b4c30d1742d85fdcc1fd"
+    "pcb": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d"
   },
   "no_76_81ghz_antenna": true,
   "no_76_81ghz_components": true,

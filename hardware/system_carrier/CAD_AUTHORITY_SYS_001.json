@@ -46,7 +46,7 @@
   "board_id": "EVT-SYS-CARRIER",
   "delete_kicad_sources": false,
   "equivalence_gate_required": true,
-  "equivalence_result_sha256": "fc0ef2947e8bb7b4bbabafcc91cff5b1b3bb778999ed977bdcccff7fa6018d8d",
+  "equivalence_result_sha256": "99ff7b3cbc877538440fc17157064e3bdf4b97d6980d8ac0e982733424768459",
   "evt_impedance_model": {
     "controlled_impedance_required": false,
     "production_binding_required": false,
@@ -71,7 +71,7 @@
   ],
   "hardware_revision": "A",
   "native_document_status": "NATIVE_EQUIVALENCE_PASS",
-  "native_pcb_sha256": "0dacc26bbba8b95c0c1bc591546ef879edb8815cb134b4c30d1742d85fdcc1fd",
+  "native_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d",
   "native_schematic_sha256": "85b458cc95d32704a9a9dced80f2f8514bf2f9d3065e0f91c18ab57091dc9166",
   "notes": [
     "KiCad electrical sources remain permanently retained.",
