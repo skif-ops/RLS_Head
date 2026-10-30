@@ -9,24 +9,24 @@
   "reviewer": "Codex computer use operator on user-authorized workstation",
   "evidence_refs": [
     {
-      "path": "hardware/system_carrier/altium/release/COMPACT_ENCLOSURE_TARGET.md",
-      "sha256": "62af9d524f36dd18e97adca2ce6d143e8514f79ab831b2663d87b7528a7075a3"
+      "path": "hardware/system_carrier/altium/release/pilot_r1/documentation/COMPACT_ENCLOSURE_TARGET.md",
+      "sha256": "e43bd93ac27ad06f217605d2a5b1ecaed9f60d6319fba76f1dd2e4fe6e186f34"
     },
     {
       "path": "hardware/system_carrier/altium/release/pilot_r1/fab/Fabrication_Drawing_PILOT_R1.pdf",
-      "sha256": "a9944d6fbc9544cfc3830560da7c8c0e6409673c8e1ad2dabe7fef7d090ad20d"
+      "sha256": "e866be1d79ce7f957d8b793e6735e63ca200b154a364c4deedf4e5fa613f61cd"
     },
     {
       "path": "hardware/system_carrier/altium/release/pilot_r1/mechanical/EVT_SYS_CARRIER.step",
-      "sha256": "23b7145866b6440d956c6b32f935790a796bb8a01c97608cc489f38737695f90"
+      "sha256": "f9b679014e7aa51cf3ab8378cc22850e85a13db444456163f7746dd728206dd0"
     }
   ],
   "notes": [
     "The native board outline is frozen at 90.00 x 70.00 mm with four mounting holes.",
     "Native Altium board-level STEP export succeeded after disabling Export Folded Board for the rigid PCB.",
-    "The PCB has no usable component 3D bodies, so enclosure and connector-access verification remain open.",
-    "The target remains the smallest practical enclosure around the validated board."
+    "The PCB has no usable component 3D bodies, so enclosure and connector-access verification remain open outside the current pilot scope.",
+    "Enclosure manufacture is deferred and does not block preparation of the pilot package."
   ],
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d"
+  "source_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea"
 }

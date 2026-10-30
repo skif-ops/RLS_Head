@@ -4,9 +4,9 @@
   "scope_status": "PARTIAL_3D_BOARD_ASSEMBLY",
   "exported_on": "2026-10-30",
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d",
+  "source_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
   "step_path": "hardware/system_carrier/altium/release/pilot_r1/mechanical/EVT_SYS_CARRIER.step",
-  "step_sha256": "23b7145866b6440d956c6b32f935790a796bb8a01c97608cc489f38737695f90",
+  "step_sha256": "f9b679014e7aa51cf3ab8378cc22850e85a13db444456163f7746dd728206dd0",
   "step_size_bytes": 65412,
   "exporter": {
     "application": "Altium Designer",

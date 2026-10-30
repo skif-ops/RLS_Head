@@ -9,4 +9,4 @@ DFM-007,CONNECTOR,JST_GH_1P25_ASSEMBLY_CLEARANCE,ALTIUM_3D_AND_ASSEMBLY_CHECK,OP
 DFM-008,CONNECTOR,MICROFIT_3P0_ASSEMBLY_CLEARANCE,ALTIUM_3D_AND_ASSEMBLY_CHECK,OPEN,P0,Verify J1 J4 J5 J6 mating direction cable access and nearby component clearance
 DFM-009,ASSEMBLY,min_component_spacing,FAB_ASSEMBLY_TO_CONFIRM,OPEN,P1,Use IPC-class typical rules until assembler contract
 DFM-010,MECHANICAL,board_thickness,1.60mm,LOCKED_FOR_PILOT,P0,Pilot board thickness fixed to the accepted Rezonit baseline
-DFM-011,MECHANICAL,compact_outline,90x70mm_candidate,ECO_VALIDATE,P0,Reduce below the previous 100x80 mm envelope only after native placement routing and DRC preserve all edge and mounting clearances
+DFM-011,MECHANICAL,compact_outline,90x70mm,LOCKED_FOR_PILOT,P0,Current native placement routing DRC and connection-integrity evidence are bound to the 90x70 mm outline

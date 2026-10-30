@@ -3,89 +3,91 @@
   "status": "PARTIAL",
   "required_outputs_complete": true,
   "source_is_native_altium": true,
+  "all_schematics_from_native_altium": true,
+  "all_production_outputs_from_native_altium": false,
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d",
+  "source_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
   "outputs": [
     {
       "output_id": "OUT-001",
       "path": "hardware/system_carrier/altium/release/pilot_r1/fab/Gerber_X2_with_Legacy_Profile.zip",
-      "sha256": "5e91f94bf072b6cf9339ee2a7b7c100b4ffabe886acb53409d56143f78e039cb",
+      "sha256": "7c7018321ecc6fcae09976738bb576f30c5d8cedbe0e6aa988f7de9531927311",
       "status": "PASS",
-      "notes": "Current native Gerber X2 output for four copper layers, legend, solder mask, paste, board profile and PTH/NPTH drill plots, plus a legacy GKO fallback profile."
+      "notes": "Current native Gerber X2 output for four copper layers, legend, solder mask, paste and board profile, plus a legacy GKO fallback profile. Drill authority is provided separately by NC Drill."
     },
     {
       "output_id": "OUT-002",
       "path": "hardware/system_carrier/altium/release/pilot_r1/fab/NC_Drill.zip",
-      "sha256": "6a21068a7cc0c745aa630ce31855b296d60d012cd4312871496a79841d758429",
+      "sha256": "b575f4e8500edd024de2c723e7b725aca55c38453ee6c576f3e3ec77a07fe0b3",
       "status": "PASS",
-      "notes": "146 holes across 9 tools."
+      "notes": "272 holes across 10 tools and two layer pairs."
     },
     {
       "output_id": "OUT-003",
       "path": "hardware/system_carrier/altium/release/pilot_r1/fab/EVT_SYS_CARRIER.cvg",
-      "sha256": "c56db3a43ee38bbcbc69fa964b25eb38db5ba63beb47999c91bbb1bb1cc452a1",
+      "sha256": "495ac88933cfb5dc0c8760625e8e984aacddee03a9aed8ea425356ade8090e44",
       "status": "PASS",
-      "notes": "Native Altium IPC-2581 Revision B XML. Structural checks confirm 83 components, 30 packages, 21 layers, 146 holes and 55 named nets."
+      "notes": "Native Altium IPC-2581 Revision B XML. Structural checks confirm 83 components, 30 packages, 23 layers, 272 holes and 55 named nets."
     },
     {
       "output_id": "OUT-005",
       "path": "hardware/system_carrier/altium/release/pilot_r1/assembly/Pick_Place.zip",
-      "sha256": "388e70757e755cfe2516dcff09c939fb5dc9ef059f65267dba76a7ce52c98328",
+      "sha256": "b46a8f7c801a10f2916562aae3d20a4277b9dc1460a7c12a90eda526f70044de",
       "status": "PASS",
       "notes": "83 top-side components and no bottom-side population."
     },
     {
       "output_id": "OUT-006",
       "path": "hardware/system_carrier/altium/release/pilot_r1/assembly/BOM.csv",
-      "sha256": "002be6bd5845144bcb6b2ddc70dbeab3538cd4fe6da18dc63fdb53a8939979b9",
+      "sha256": "9a84b4ccdc0faa99808d0b16aa55be5b3c880f44aaec356288b244f370ed4933",
       "status": "PASS",
       "notes": "83 native Altium designators and MPNs enriched from the locked BOM contract. Population is 78 FIT, 2 DNP and 3 PCB_ONLY."
     },
     {
       "output_id": "OUT-007",
       "path": "hardware/system_carrier/altium/release/pilot_r1/assembly/AssemblyDrawing.pdf",
-      "sha256": "d78d47823149d16e430c1d6b52c3aa0d5ca4c226779274378da16877047c8143",
+      "sha256": "1b778dac382ced4f501001828a4c908c23e11ffde2867a09e9eaad66abaf9189",
       "status": "PASS",
       "notes": "Two-page native Altium assembly drawing. Top population is shown."
     },
     {
       "output_id": "OUT-008",
       "path": "hardware/system_carrier/altium/release/pilot_r1/assembly/AssemblyDrawing.pdf",
-      "sha256": "d78d47823149d16e430c1d6b52c3aa0d5ca4c226779274378da16877047c8143",
+      "sha256": "1b778dac382ced4f501001828a4c908c23e11ffde2867a09e9eaad66abaf9189",
       "status": "PASS",
       "notes": "Bottom view is intentionally empty because the board has no bottom population."
     },
     {
       "output_id": "OUT-009",
       "path": "hardware/system_carrier/altium/release/pilot_r1/fab/Fabrication_Drawing_PILOT_R1.pdf",
-      "sha256": "a9944d6fbc9544cfc3830560da7c8c0e6409673c8e1ad2dabe7fef7d090ad20d",
+      "sha256": "e866be1d79ce7f957d8b793e6735e63ca200b154a364c4deedf4e5fa613f61cd",
       "status": "PARTIAL",
-      "notes": "Native five-page color fabrication plot set. A released Draftsman drawing remains a production-release hold."
+      "notes": "Supplemental two-page pilot fabrication basis bound to the current PcbDoc. The native five-page color plot is supplied separately; a released Draftsman drawing remains a production-release hold."
     },
     {
       "output_id": "OUT-010",
       "path": "hardware/system_carrier/altium/release/pilot_r1/mechanical/EVT_SYS_CARRIER.step",
-      "sha256": "23b7145866b6440d956c6b32f935790a796bb8a01c97608cc489f38737695f90",
+      "sha256": "f9b679014e7aa51cf3ab8378cc22850e85a13db444456163f7746dd728206dd0",
       "status": "PARTIAL",
       "notes": "Direct native Altium STEP export of the current 90.00 x 70.00 mm board contains one board solid and hole geometry. Populated component and enclosure 3D remain outside the pilot scope."
     },
     {
       "output_id": "OUT-S01",
       "path": "hardware/system_carrier/altium/release/pilot_r1/fab/PCB_Layer_Reference_COLOR.pdf",
-      "sha256": "a9944d6fbc9544cfc3830560da7c8c0e6409673c8e1ad2dabe7fef7d090ad20d",
+      "sha256": "a5a0c41128136d55a190f9407f4ed2c2d63fb308936141e7a9b7cd19c139c08c",
       "status": "PASS",
       "notes": "Supplemental five-page native color layer reference."
     },
     {
       "output_id": "OUT-011",
       "path": "hardware/system_carrier/altium/release/pilot_r1/documentation/Schematic_Prints.pdf",
-      "sha256": "62d0be6baa7571bb16b4bb0d932175f0c293c621bce12a93533e123b3e4f6b80",
+      "sha256": "224996d172e4894410c983e30c005ad1b20917618a7b2a7e739091353e0b40bc",
       "status": "PASS"
     },
     {
       "output_id": "OUT-012",
       "path": "hardware/system_carrier/altium/release/pilot_r1/validation/native_drc.drc",
-      "sha256": "40c106d731c5e2b42468d2c3c9449d7d14b23c52212a42af6bb5f97a29cbf16c",
+      "sha256": "69d49e37bd4a81dc6ebb9f10d8cbcd3d840acce280a368724ac65ff8756e6a8e",
       "status": "PASS"
     },
     {
@@ -103,16 +105,23 @@
     {
       "output_id": "OUT-015",
       "path": "hardware/system_carrier/altium/release/pilot_r1/validation/footprint_comparison.html",
-      "sha256": "6f852e457240989209529ddbe1c2921495ba86c79a6c1bbba3de70f97e0a3b20",
+      "sha256": "787ec568dbde596e01687227f34364a8cc5e45f758d2bd9520305ba00701be9f",
       "status": "PASS",
       "notes": "All 83 components are matched."
     },
     {
       "output_id": "OUT-016",
       "path": "hardware/system_carrier/altium/release/pilot_r1/validation/connection_integrity_result.json",
-      "sha256": "7545ac7fd9df3be0496fa098a122e899ba185092a29bf7e57ac2da935b72caa2",
+      "sha256": "9d2abd58d03f69842f8d4dd62d9f96da77c6068214d839f288579195c458af08",
       "status": "PASS",
       "notes": "No objects outside the board and no unrouted, topology or antenna violations."
+    },
+    {
+      "output_id": "OUT-017",
+      "path": "hardware/system_carrier/altium/release/pilot_r1/FILE_HASHES.json",
+      "sha256": "54220c0aaa33eb99b73b896c0f4272b1d63b37ff28cfa4231779cc72fa38ac1b",
+      "status": "PASS",
+      "notes": "Package file inventory with SHA-256 and size for all 86 payload files."
     }
   ],
   "missing_required_output_ids": [],

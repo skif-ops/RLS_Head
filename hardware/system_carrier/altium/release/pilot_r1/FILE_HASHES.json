@@ -2,42 +2,42 @@
   "schema": "EVT-SYS-CARRIER-PILOT-FILE-HASHES-001",
   "algorithm": "SHA-256",
   "generated_on": "2026-10-30",
-  "file_count": 80,
+  "file_count": 86,
   "files": [
     {
       "path": "assembly/AssemblyDrawing.pdf",
-      "sha256": "d78d47823149d16e430c1d6b52c3aa0d5ca4c226779274378da16877047c8143",
+      "sha256": "1b778dac382ced4f501001828a4c908c23e11ffde2867a09e9eaad66abaf9189",
       "size_bytes": 657741
     },
     {
       "path": "assembly/BOM_NATIVE.csv",
-      "sha256": "725c0a2a7d25dbf15dff74aca92da9086bf401851536077553085ff459cedfd2",
-      "size_bytes": 5454
+      "sha256": "b465e84afbb08f6d2812e85795464e9c73b3a315cd202a0b4aae7a2e380e838d",
+      "size_bytes": 1785
     },
     {
       "path": "assembly/BOM.csv",
-      "sha256": "002be6bd5845144bcb6b2ddc70dbeab3538cd4fe6da18dc63fdb53a8939979b9",
-      "size_bytes": 10085
+      "sha256": "9a84b4ccdc0faa99808d0b16aa55be5b3c880f44aaec356288b244f370ed4933",
+      "size_bytes": 11586
     },
     {
       "path": "assembly/Pick Place for EVT_SYS_CARRIER.csv",
-      "sha256": "b55505a7da92bd94032297e8f627a0f86c0eda0f0a39644775db68aeeb55e97e",
+      "sha256": "9a19f70973d862a12465a788b0ff1d0b94d3dd50ee0c1dc5e86e84bf2798cc23",
       "size_bytes": 7511
     },
     {
       "path": "assembly/Pick Place for EVT_SYS_CARRIER.txt",
-      "sha256": "b0b16e5859b898fc84490cdef37becbea00ea83ab3068cff5ad3812558e582c9",
+      "sha256": "3f23675eae0a43c11c93870670d559695f35d208ad1c7203427bd65491b92350",
       "size_bytes": 11866
     },
     {
       "path": "assembly/Pick_Place.zip",
-      "sha256": "388e70757e755cfe2516dcff09c939fb5dc9ef059f65267dba76a7ce52c98328",
+      "sha256": "b46a8f7c801a10f2916562aae3d20a4277b9dc1460a7c12a90eda526f70044de",
       "size_bytes": 3985
     },
     {
       "path": "contracts/ALTIUM_DFM_PROFILE_SYS_001.csv",
-      "sha256": "e5c23a689bd1e8f8aba1b8a663d786a14886c48f0a6422063ed1271c93261bca",
-      "size_bytes": 1405
+      "sha256": "dff70b4c6f4ddb9695fa5d978a3be5d795731893a2844da12d03a756bc7af151",
+      "size_bytes": 1373
     },
     {
       "path": "contracts/ALTIUM_EVT_STACKUP_SYS_002.csv",
@@ -51,18 +51,18 @@
     },
     {
       "path": "contracts/ALTIUM_OUTJOB_CONTRACT_SYS_001.csv",
-      "sha256": "1263cf7f0c53253be771c95d9d92039cac4f17f31b4de6e07869de5e81283587",
-      "size_bytes": 2328
+      "sha256": "08d57fc8b95864937087d62e060f8447c89ac292bcc6bcbd68bce5b0d002b375",
+      "size_bytes": 2357
     },
     {
       "path": "contracts/ALTIUM_RELEASE_CHECKLIST_SYS_001.csv",
-      "sha256": "6b0a2ef82be3e917ec7205c2f2ead9218907855023f20409cb939bc8fac3680f",
-      "size_bytes": 2238
+      "sha256": "df546fe6d28216ef1608fd4acb442f1c458b451955ee3ae375de40aae4bf060f",
+      "size_bytes": 2307
     },
     {
       "path": "documentation/COMPACT_ENCLOSURE_TARGET.md",
-      "sha256": "62af9d524f36dd18e97adca2ce6d143e8514f79ab831b2663d87b7528a7075a3",
-      "size_bytes": 1605
+      "sha256": "e43bd93ac27ad06f217605d2a5b1ecaed9f60d6319fba76f1dd2e4fe6e186f34",
+      "size_bytes": 1637
     },
     {
       "path": "documentation/REZONIT_FABRICATION_BASELINE.md",
@@ -76,18 +76,18 @@
     },
     {
       "path": "documentation/Schematic_Prints.pdf",
-      "sha256": "62d0be6baa7571bb16b4bb0d932175f0c293c621bce12a93533e123b3e4f6b80",
-      "size_bytes": 1068959
+      "sha256": "224996d172e4894410c983e30c005ad1b20917618a7b2a7e739091353e0b40bc",
+      "size_bytes": 1068967
     },
     {
       "path": "fab/EVT_SYS_CARRIER.cvg",
-      "sha256": "c56db3a43ee38bbcbc69fa964b25eb38db5ba63beb47999c91bbb1bb1cc452a1",
-      "size_bytes": 4017819
+      "sha256": "495ac88933cfb5dc0c8760625e8e984aacddee03a9aed8ea425356ade8090e44",
+      "size_bytes": 5044624
     },
     {
       "path": "fab/Fabrication_Drawing_PILOT_R1.pdf",
-      "sha256": "a9944d6fbc9544cfc3830560da7c8c0e6409673c8e1ad2dabe7fef7d090ad20d",
-      "size_bytes": 1878620
+      "sha256": "e866be1d79ce7f957d8b793e6735e63ca200b154a364c4deedf4e5fa613f61cd",
+      "size_bytes": 82213
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER-macro.APR_LIB",
@@ -96,98 +96,98 @@
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.apr",
-      "sha256": "325a4eb762518fcdda25318e8df07a0d0b96b35dae7732712973bbe9ccb9e696",
-      "size_bytes": 5925
+      "sha256": "94f1f5eb4269e39af8d0be7723eec99b2290050f6c7e964b1137a1345406e6d9",
+      "size_bytes": 6300
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.EXTREP",
-      "sha256": "2de72a3f8496b55ac2eecaca87e96b1a34f3d2a52e88000d835cab1db936a75b",
+      "sha256": "d7b559443168437dbb560a10d24c4bfba2ec9315a781440cc05ff56f7c120ff2",
       "size_bytes": 1595
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.G1",
-      "sha256": "3c2c28789d2af4782c34872f727c6f5b005c402f70077d8077c98a09354b8e9e",
-      "size_bytes": 45108
+      "sha256": "ed0b6fd7fac84ec8dd1c975f7b4a1a78b4c29e7dd23d04e2db7ac71e522dfaf5",
+      "size_bytes": 72066
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.G2",
-      "sha256": "0566320424e049909c9d943ce5ec36e22c237b7bc7785af4fe360558eb38ba2e",
-      "size_bytes": 4506
+      "sha256": "f045723b375975138ffc119b5823459dcc196c1da2ce5b8514a683b5037a72d8",
+      "size_bytes": 71112
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.GBL",
-      "sha256": "1a0ddb04545c2f344c0c5d3ef557969d6c74922111586dc108fe973227da08c2",
-      "size_bytes": 8205
+      "sha256": "bd2829d4a11cdd49497b6e5e964730185b3f0ea3551ab414a62378c34f211971",
+      "size_bytes": 14190
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.GBO",
-      "sha256": "d7dbd57531e750a553c571a293cdf1f878212a845d9e76c081a2f0418a18ea5e",
+      "sha256": "aa9d939041bf11db6c2942190751aa7e8452aecf7a03608de6d638bd5a1e8e6f",
       "size_bytes": 307
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.GBP",
-      "sha256": "3f1224cf9b3f6cc70c80589c1539e545f7337970f65f12392a7f7f7096b1f5ab",
+      "sha256": "cec85843872749b7f5e03dd3ff9e7127b6eed14508de038cd3eb5206f7a5e88b",
       "size_bytes": 755
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.GBS",
-      "sha256": "e1c74244a65aa6f6c05a2fbd45fefb690f0a1a70bb66a745ccb8f77ea34fccc3",
-      "size_bytes": 5816
+      "sha256": "3d7a3f755d668768d0e8b0ea48e9ca0ecf7359eabd55e6b1570fc4b62812a6f7",
+      "size_bytes": 8919
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.GKO",
-      "sha256": "0f0eae361939455bd824b6dd960d44a565b084d77cf6f2e5fe4efe079fb9ef30",
+      "sha256": "985a862134f49c497b410c79d1d92ae4cb87fc82ed0021017ccd74b73aa042fe",
       "size_bytes": 310
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.GM1",
-      "sha256": "1bd2b240d2852ded2d3f76ffe5ee0e4e68f96119402e9022d076ac876d63e814",
+      "sha256": "1ad8b35081730ea49e9ad110ceab2d5c30913d782d34c85c94d5f18b155e119e",
       "size_bytes": 1169
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.GM15",
-      "sha256": "5f46f4269e81cd41fe233799615e0d07ec8acc9f0745f4fd58b492b4785930c0",
+      "sha256": "c976e8bcbe0de43f132914e3383b5b48cf5db9833a7ec193821e96e48954bdf7",
       "size_bytes": 736
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.GM7",
-      "sha256": "b479106e10f35371012fb8bcfa256b4e1eb715af2ed8d436e5f3f0ea9f1091d3",
+      "sha256": "dd065893b18af13b5436116fa5dc73b5c598a5fc25aa8176d6b58771ab7e5025",
       "size_bytes": 1392
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.GPB",
-      "sha256": "56ca952c426717b48265823b92113948a1a8964ea50577ef3f955bcc0da07dc3",
+      "sha256": "29641c1db17e8b697240399899c977e0f0d5d57a41377fcc22cc725a1ebdc2ab",
       "size_bytes": 2867
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.GPT",
-      "sha256": "7901d1bfb8445ab6969c92ffc155c2a52129eb90ec5e20a305fb586141c33554",
+      "sha256": "992a1e33d18a18cd887dcb6c86f1541a70579df2261d706f6aeb968591bbdaad",
       "size_bytes": 24602
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.GTL",
-      "sha256": "55181f8863f1b23f54e95850658a8fb209d9bb574da7d7bef848ce8f6f96ce47",
-      "size_bytes": 37614
+      "sha256": "1b5d61a05f639bf854031ebb3d6ef03a6a4e9e5c0508b206c8fd34d573789fd6",
+      "size_bytes": 51016
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.GTO",
-      "sha256": "6e8d34fafd327503bcbc53578444420dd9be907e315ae1fa1d0efd747fb3b729",
+      "sha256": "9e359a3a7a2b00409ea0818c776c8a749c737e4db41af0a21417d207c9705b28",
       "size_bytes": 38764
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.GTP",
-      "sha256": "73443288611902d112ed7c2252c4bcb5c019b05d56fbea224450a8ee9bd56882",
+      "sha256": "ded3198f1eb56c722285128aee8db15cdb013b600cb10f00e04ba75ea5b6c116",
       "size_bytes": 28388
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.GTS",
-      "sha256": "eef623a2ed38c715642a4646bd36535b52c77e8dd03946eda85ea5fe60d24ab1",
-      "size_bytes": 30874
+      "sha256": "0f8df4d8959836be81bb3434bb9ad576ec6d269f5aa381590ead4d66be9a45b5",
+      "size_bytes": 34080
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.REP",
-      "sha256": "de42d0c78bcd4ae295f20fb2f1a211c461d84d29b8c18f543103aea1e4cb62cb",
-      "size_bytes": 7493
+      "sha256": "f98156f2f4da1c96597992ae6c3ab28054c2f528c75233cde81a1cc739da7dd6",
+      "size_bytes": 7588
     },
     {
       "path": "fab/gerber_legacy/EVT_SYS_CARRIER.RUL",
@@ -196,118 +196,148 @@
     },
     {
       "path": "fab/Gerber_X2_with_Legacy_Profile.zip",
-      "sha256": "5e91f94bf072b6cf9339ee2a7b7c100b4ffabe886acb53409d56143f78e039cb",
-      "size_bytes": 56398
+      "sha256": "7c7018321ecc6fcae09976738bb576f30c5d8cedbe0e6aa988f7de9531927311",
+      "size_bytes": 85046
     },
     {
       "path": "fab/gerber_x2/EVT_SYS_CARRIER_Copper_Signal_1.gbr",
-      "sha256": "2573c4384a2b573f74438f2cecfa84fc3f97df41b8d4050deb24658705c0216c",
-      "size_bytes": 53941
+      "sha256": "a651103ec737554eb8a62a67f288f58c766d2468d70a5f6c0cf6d6f71171e7c3",
+      "size_bytes": 84940
     },
     {
       "path": "fab/gerber_x2/EVT_SYS_CARRIER_Copper_Signal_2.gbr",
-      "sha256": "46d4ac709759af4c07f5eb0e1c9068ced8d90a2c64dcee5c3130f33b3766cf29",
-      "size_bytes": 9778
+      "sha256": "d90727efece70c16bc74b47074763865d88d502635e67fcea5f3efd1a2649705",
+      "size_bytes": 83597
     },
     {
       "path": "fab/gerber_x2/EVT_SYS_CARRIER_Copper_Signal_Bot.gbr",
-      "sha256": "da63d8af33b8ecc75e5f0520cab9dc0991604fe65964b3a84c8a7df3fbacc148",
-      "size_bytes": 12777
+      "sha256": "1a35feda1bb94e76db3584befd2676946fa916b7ff38dcb7e2dd5a25c36bc085",
+      "size_bytes": 15488
     },
     {
       "path": "fab/gerber_x2/EVT_SYS_CARRIER_Copper_Signal_Top.gbr",
-      "sha256": "5cdf96d30ecfb212737820a7d48c6cb846ac4316cb08a479802be547b1514cfa",
-      "size_bytes": 48436
+      "sha256": "034937830eb3a0ea94985d9148f4d5852fe156fda815d66dd0a91575bbb6d32f",
+      "size_bytes": 54660
     },
     {
       "path": "fab/gerber_x2/EVT_SYS_CARRIER_Legend_Bot.gbr",
-      "sha256": "3787fd2bf22e6e9afff6ec2c6577ec9fafad643cf6aec9862df677cc0c439892",
+      "sha256": "f073cdec043bae705cfb7d55ae9075a98ca4012e54933d30a6988e7725ad9d0b",
       "size_bytes": 341
     },
     {
       "path": "fab/gerber_x2/EVT_SYS_CARRIER_Legend_Top.gbr",
-      "sha256": "2a31cdd798969798264047e367ec9b4bbaac08f480f34b94eb157d6ce112f04b",
-      "size_bytes": 48216
-    },
-    {
-      "path": "fab/gerber_x2/EVT_SYS_CARRIER_NPTH_Drill.gbr",
-      "sha256": "d3b7f9d7fd0cd3b5f30d28e36ea906265de32d4df417bccc1bedca58b115c16e",
-      "size_bytes": 768
+      "sha256": "c45fb82111b6bd591f3bc586a81937c6a31c4d52173bc21e3b587250fecac90a",
+      "size_bytes": 43121
     },
     {
       "path": "fab/gerber_x2/EVT_SYS_CARRIER_Paste_Bot.gbr",
-      "sha256": "10999f320107413ee29dbe7af4e64b1f54f58cfaf65478254ecd051c1c88532f",
-      "size_bytes": 816
+      "sha256": "668283ceaa917f8bef575cd5f5a205453631ba3a227fe4e6f5ef62dce5ffb6c3",
+      "size_bytes": 815
     },
     {
       "path": "fab/gerber_x2/EVT_SYS_CARRIER_Paste_Top.gbr",
-      "sha256": "1b1326246ffe2db281df1050318279075d5fcd17258f673e91f9093c9b17ec78",
-      "size_bytes": 37390
+      "sha256": "9cd5d8a99ecb672b0c2356677ed92cfd22a32b1e1a5353339ae24d0c4afa9367",
+      "size_bytes": 37522
     },
     {
       "path": "fab/gerber_x2/EVT_SYS_CARRIER_Profile.gbr",
-      "sha256": "bc12ebb85c19210ae2bb9f860391741bbb5f76267d354aebf249203378f4dd6f",
-      "size_bytes": 649
-    },
-    {
-      "path": "fab/gerber_x2/EVT_SYS_CARRIER_PTH_Drill.gbr",
-      "sha256": "c319fe40759c3f28e5a0a3816be65d843bcf783fafac60a72e70d737cdae0af5",
-      "size_bytes": 5237
+      "sha256": "27fbdcb08445707977b2505e5308c5264067c83618e8ff669c0482fe23834991",
+      "size_bytes": 639
     },
     {
       "path": "fab/gerber_x2/EVT_SYS_CARRIER_Soldermask_Bot.gbr",
-      "sha256": "92765bff943bee55444fa4810abeb59dd4c157869c42b291819a20959fcb6a16",
-      "size_bytes": 7140
+      "sha256": "5b36c8fb2146ff4392d2d5e06be7d2bccce6adb99cda89b2702313754000cec1",
+      "size_bytes": 9659
     },
     {
       "path": "fab/gerber_x2/EVT_SYS_CARRIER_Soldermask_Top.gbr",
-      "sha256": "da5878e1f52a8d5d1f11a1a9d1008c2ebbf6029ee565f7f39c7dc5562b3d718c",
-      "size_bytes": 33261
+      "sha256": "b8e1252705a805093d457964b750b55feab736f637b2c837c42f6b7f4a6adac6",
+      "size_bytes": 35860
     },
     {
       "path": "fab/NC_Drill.zip",
-      "sha256": "6a21068a7cc0c745aa630ce31855b296d60d012cd4312871496a79841d758429",
-      "size_bytes": 2033
+      "sha256": "b575f4e8500edd024de2c723e7b725aca55c38453ee6c576f3e3ec77a07fe0b3",
+      "size_bytes": 3168
     },
     {
       "path": "fab/nc_drill/EVT_SYS_CARRIER.DRR",
-      "sha256": "88eff76ab66c8a58badab60c6d39f6388a3585ae83e9273b0ccbc8200b84b77a",
-      "size_bytes": 2074
+      "sha256": "80918abe5f82671051c84df0cb5e65e64204f5446c209b256e2cce7c626beb56",
+      "size_bytes": 3103
     },
     {
       "path": "fab/nc_drill/EVT_SYS_CARRIER.LDP",
-      "sha256": "eba8ba884aeb78bfbff6e53900994cf97f15b6e679d45688925e43fdfa2f11e4",
-      "size_bytes": 275
+      "sha256": "03f8402180df9d442924f5481ce2e18bc608fb5a66dceea5b4a94668f1f87b25",
+      "size_bytes": 360
+    },
+    {
+      "path": "fab/nc_drill/EVT_SYS_CARRIER.TX1",
+      "sha256": "dc90f52b78d119f96031bae16714b1d7e5a14a6b8295be8d7d3ba4e2008f9e68",
+      "size_bytes": 196
     },
     {
       "path": "fab/nc_drill/EVT_SYS_CARRIER.TXT",
-      "sha256": "60ec3e26dbe3379b5cc1d43f099489828348ff8bf028fb397884e71f1df96086",
-      "size_bytes": 2593
+      "sha256": "39eaee81b6e9966bacaeb72e3c46dc65efa86560c3dca80907a1cc33dbfe9fd9",
+      "size_bytes": 4760
     },
     {
       "path": "fab/PCB_Layer_Reference_COLOR.pdf",
-      "sha256": "a9944d6fbc9544cfc3830560da7c8c0e6409673c8e1ad2dabe7fef7d090ad20d",
-      "size_bytes": 1878620
+      "sha256": "a5a0c41128136d55a190f9407f4ed2c2d63fb308936141e7a9b7cd19c139c08c",
+      "size_bytes": 2018689
     },
     {
       "path": "fab/profile/EVT_SYS_CARRIER.GKO",
-      "sha256": "0f0eae361939455bd824b6dd960d44a565b084d77cf6f2e5fe4efe079fb9ef30",
+      "sha256": "985a862134f49c497b410c79d1d92ae4cb87fc82ed0021017ccd74b73aa042fe",
       "size_bytes": 310
     },
     {
       "path": "mechanical/EVT_SYS_CARRIER.step",
-      "sha256": "23b7145866b6440d956c6b32f935790a796bb8a01c97608cc489f38737695f90",
+      "sha256": "f9b679014e7aa51cf3ab8378cc22850e85a13db444456163f7746dd728206dd0",
       "size_bytes": 65412
     },
     {
       "path": "PILOT_PACKAGE_STATUS.json",
-      "sha256": "85ed21ee32233744d2d1939ce98866dab76821fc29506e23d124bfa513b85630",
+      "sha256": "9fafb26d62c62055e9c29f4173562363dc635c09d0bbd18209cfcaa78b91ae6a",
       "size_bytes": 3970
     },
     {
       "path": "README.md",
-      "sha256": "581b75af7798c19ff756e6007f26b4582572e4cf1551ccd6a745063c72e315de",
-      "size_bytes": 3826
+      "sha256": "5322391754147ed27d086773858b20705b03f0f0787a70dbb07508bd4d1e6db4",
+      "size_bytes": 3834
+    },
+    {
+      "path": "source/10_POWER_INPUT.SchDoc",
+      "sha256": "c8660fb866a79f5a24f4c9406e07516ecd06b51e85dadbfaec5c00a4c17de5b0",
+      "size_bytes": 192512
+    },
+    {
+      "path": "source/20_MCU_CORE.SchDoc",
+      "sha256": "8a3369acd4f30a5372f3bfba1734fefab78266ae24fb62f783385d91bf0ecfab",
+      "size_bytes": 303616
+    },
+    {
+      "path": "source/30_TIME_GNSS.SchDoc",
+      "sha256": "f6c9bc2ba8967bdfa6ac13577d8dcfd6095f116042b0e061a1a4348055a596bd",
+      "size_bytes": 39936
+    },
+    {
+      "path": "source/40_IMU.SchDoc",
+      "sha256": "142f3031c6f2dce5f6a3beae1c7f59175646dcd9648c358e08f4af89a817a780",
+      "size_bytes": 47104
+    },
+    {
+      "path": "source/50_RADAR_IO_CAN.SchDoc",
+      "sha256": "c55b333822d309308a272878fe4bb946210d4731a860c78cdedfaa7e4b4643e6",
+      "size_bytes": 65024
+    },
+    {
+      "path": "source/60_HOST_UART.SchDoc",
+      "sha256": "4a8abebc24b317a2f91c7ebc9577ab63e4bd4a2bf699fee2c9ef5ac0f2bf87d6",
+      "size_bytes": 63488
+    },
+    {
+      "path": "source/70_DEBUG_BOOT.SchDoc",
+      "sha256": "0f08fcc621197013d81272293b818c4721d4a6e3e4d418c70b52acff8ebb8bf0",
+      "size_bytes": 27648
     },
     {
       "path": "source/Assembly.OutJob",
@@ -316,13 +346,13 @@
     },
     {
       "path": "source/EVT_SYS_CARRIER.PcbDoc",
-      "sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d",
-      "size_bytes": 1740800
+      "sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
+      "size_bytes": 1973248
     },
     {
       "path": "source/EVT_SYS_CARRIER.PrjPcb",
-      "sha256": "2ac0c72b76a25834d04f805525d446bb4a2400c34eef6d62f91a6bb04ce04c9e",
-      "size_bytes": 45726
+      "sha256": "fad9c83d708f2346c32505613820151cac237ac1d35e4f40dc8f958d843a76de",
+      "size_bytes": 45190
     },
     {
       "path": "source/EVT_SYS_CARRIER.SchDoc",
@@ -336,12 +366,12 @@
     },
     {
       "path": "validation/altium_equivalence_result.json",
-      "sha256": "99ff7b3cbc877538440fc17157064e3bdf4b97d6980d8ac0e982733424768459",
+      "sha256": "85bb872103b08c38ea1f04c42112b16ac4cb069f89242983dee82881a9d184d8",
       "size_bytes": 97706
     },
     {
       "path": "validation/bom_validation_result.json",
-      "sha256": "ff85530bdb975a099175e6be87ee9fcd2e37b8cdb75b41f7a0d69a6dd0d9b08c",
+      "sha256": "fc02cbdd690135b08e69dc72e252e68620dd353ff6656e060aa1709fdeab444b",
       "size_bytes": 669
     },
     {
@@ -356,42 +386,42 @@
     },
     {
       "path": "validation/connection_integrity_result.json",
-      "sha256": "7545ac7fd9df3be0496fa098a122e899ba185092a29bf7e57ac2da935b72caa2",
+      "sha256": "9d2abd58d03f69842f8d4dd62d9f96da77c6068214d839f288579195c458af08",
       "size_bytes": 722
     },
     {
       "path": "validation/footprint_comparison.html",
-      "sha256": "6f852e457240989209529ddbe1c2921495ba86c79a6c1bbba3de70f97e0a3b20",
-      "size_bytes": 45790
+      "sha256": "787ec568dbde596e01687227f34364a8cc5e45f758d2bd9520305ba00701be9f",
+      "size_bytes": 45792
     },
     {
       "path": "validation/ipc2581_status_report.txt",
-      "sha256": "2047ad8f95c2cde35b0f8b375130aa2a4212a66c29929c3e42481bb230d41e55",
-      "size_bytes": 234
+      "sha256": "61a087dc928685baa7f31022994f700879fba476ec9447f830175a0b46cc4a8a",
+      "size_bytes": 555
     },
     {
       "path": "validation/native_color_layer_pdf_result.json",
-      "sha256": "8b722545b1c78bcf9852974094a4474c164e604fbeeed499ae413f65ba8cfd7e",
+      "sha256": "7359444f8ed7280b8ccada3233d4d2b73f87c72b4ac899d5cb1f4bb1f809c09e",
       "size_bytes": 1646
     },
     {
       "path": "validation/native_drc.drc",
-      "sha256": "40c106d731c5e2b42468d2c3c9449d7d14b23c52212a42af6bb5f97a29cbf16c",
-      "size_bytes": 1873
+      "sha256": "69d49e37bd4a81dc6ebb9f10d8cbcd3d840acce280a368724ac65ff8756e6a8e",
+      "size_bytes": 1875
     },
     {
       "path": "validation/native_drc.html",
-      "sha256": "b279bb47ee7d94970eea8957f7fb465c36e5e39c3dedbb673ce084f8182c717d",
-      "size_bytes": 10956
+      "sha256": "8b0e51b354f1c13bbf1d9f41504c7763a6bf0c414445c3b86daafa974c64d6f9",
+      "size_bytes": 12247
     },
     {
       "path": "validation/native_ipc2581_export_result.json",
-      "sha256": "ce81450f6832e6c68d7ae5534b18e90300bd0cd09190b05778b522cf2b244d6f",
-      "size_bytes": 1609
+      "sha256": "76c5e7e652367c99bfeab5f39b5ab78319af649cc59ee7f12f05b7b5b100cc52",
+      "size_bytes": 1600
     },
     {
       "path": "validation/native_step_export_result.json",
-      "sha256": "516a7d482076d28b1333e89058b304e3a07b20539864155f53fad71f2a5c0867",
+      "sha256": "c518c14abedbd1f44a9f34e5eeaad23d949fdf72638373b5eab0af0812b2fdae",
       "size_bytes": 2024
     },
     {
@@ -401,8 +431,8 @@
     },
     {
       "path": "validation/pilot_bom_enrichment_result.json",
-      "sha256": "9d4da57d1003e0ba4e5389ab2adc748c140e4473cf29d19c1f781da0c7308543",
-      "size_bytes": 1199
+      "sha256": "a033980a2006197214d742228a31403a2affa0e96d07b83a767bb793b15665c9",
+      "size_bytes": 1353
     }
   ]
 }

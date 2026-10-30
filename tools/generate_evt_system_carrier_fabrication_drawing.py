@@ -178,13 +178,13 @@ def page_one(c: canvas.Canvas) -> None:
 
     ox = 83 * mm
     oy = 71 * mm
-    board_w = 100 * mm
-    board_h = 80 * mm
+    board_w = 90 * mm
+    board_h = 70 * mm
     c.setStrokeColor(NAVY)
     c.setLineWidth(0.55 * mm)
     c.roundRect(ox, oy, board_w, board_h, 3 * mm)
 
-    for hx, hy, name in [(5, 5, "H1"), (95, 5, "H2"), (5, 75, "H3"), (95, 75, "H4")]:
+    for hx, hy, name in [(5, 5, "H1"), (85, 5, "H2"), (5, 65, "H3"), (85, 65, "H4")]:
         x = ox + hx * mm
         y = oy + hy * mm
         c.setLineWidth(0.22 * mm)
@@ -201,14 +201,14 @@ def page_one(c: canvas.Canvas) -> None:
     c.line(ox + board_w, oy, ox + board_w, dim_y - 2 * mm)
     arrow(c, ox, dim_y, ox + board_w, dim_y)
     c.setFont(font(True), 9)
-    c.drawCentredString(ox + board_w / 2, dim_y + 2.5 * mm, "100.00")
+    c.drawCentredString(ox + board_w / 2, dim_y + 2.5 * mm, "90.00")
     c.line(ox, oy, dim_x - 2 * mm, oy)
     c.line(ox, oy + board_h, dim_x - 2 * mm, oy + board_h)
     arrow(c, dim_x, oy, dim_x, oy + board_h)
     c.saveState()
     c.translate(dim_x - 3 * mm, oy + board_h / 2)
     c.rotate(90)
-    c.drawCentredString(0, 0, "80.00")
+    c.drawCentredString(0, 0, "70.00")
     c.restoreState()
 
     c.setFont(font(), 7)
@@ -226,15 +226,15 @@ def page_one(c: canvas.Canvas) -> None:
     c.drawString(x, y, "PILOT FABRICATION NOTES")
     c.setFillColor(colors.black)
     notes = [
-        "1. Finished board outline: 100.00 x 80.00 mm with R3.00 corners.",
+        "1. Finished board outline: 90.00 x 70.00 mm with R3.00 corners.",
         "2. Project mechanical target: 1.60 mm. Working Rezonit baseline: published 1.50 mm TG150 four-layer construction; order data prevails.",
         "3. Four copper layers, 35 um base copper on every layer, FR-4 TG150 IPC-4101/99 working material.",
         "4. L1 components/signals; L2 solid GND; L3 power and slow signals; L4 secondary signals.",
         "5. Pilot finish request: ENIG, 0.075-0.125 um Au over 3-6 um Ni; green solder mask; white legend.",
-        "6. Controlled impedance targets: GNSS_RF 50 ohm and ETH_MDI 100 ohm differential, +/-10 percent target.",
-        "7. Rezonit published starting geometry and routed EVT geometry differ. Do not claim controlled impedance without CAM solver review and accepted PCB ECO.",
-        "8. Gerber X2 includes board profile and PTH/NPTH drill plots. Legacy RS-274X GKO is retained as a CAM fallback.",
-        "9. Use the NC drill report for plated and non-plated tool definitions. Finished hole sizes are specified on sheet 2.",
+        "6. External interfaces are two 3.3 V UART channels and a connectorized external GNSS module. Ethernet is not fitted on this revision.",
+        "7. No controlled-impedance route class is released for this carrier revision. Any order-specific impedance request requires CAM solver review and a controlled PCB ECO.",
+        "8. Gerber X2 includes the routed board profile. Legacy RS-274X GKO is retained as a CAM fallback; NC drill files remain the drill authority.",
+        "9. Use the NC drill reports for plated, non-plated and Top-to-L2 tool definitions. Finished hole sizes are specified on sheet 2.",
         "10. Electrical test is required. Submit single-board data; fabricator panelisation is permitted after CAM review.",
         "11. IPC-2581 Revision B and Gerber X2 are both supplied. Resolve any CAM disagreement against the native PcbDoc and this drawing.",
         "12. This pilot drawing supports quotation and CAM preflight. It does not grant production authority.",
@@ -245,10 +245,10 @@ def page_one(c: canvas.Canvas) -> None:
 
     summary = [
         ["Item", "Current evidence", "Pilot R1 state"],
-        ["Gerber X2", "4 copper, mask, paste, legend, profile, PTH/NPTH", "PASS"],
-        ["IPC-2581", "Revision B; 92 components, 20 layers, 172 holes", "PASS"],
+        ["Gerber X2", "4 copper, mask, paste, legend and profile", "PASS"],
+        ["IPC-2581", "Revision B; 83 components; current native export", "PASS"],
         ["Native DRC", "0 warnings, 0 violations, 0 unrouted", "PASS"],
-        ["Connections", "529 pads, 1639 tracks, 132 vias, 67 fills", "PASS"],
+        ["Connections", "483 pads, 1776 tracks, 241 vias, 60 fills", "PASS"],
         ["STEP", "Board solid and hole geometry; component 3D out of scope", "PASS SCOPE"],
     ]
     draw_table(
@@ -268,7 +268,7 @@ def page_two(c: canvas.Canvas, pcb_hash: str) -> None:
     width, height = landscape(A3)
     draw_header(
         c,
-        "EVT_SYS_CARRIER REV.A  |  STACKUP, IMPEDANCE, DFM AND DRILL SUMMARY",
+        "EVT_SYS_CARRIER REV.A  |  STACKUP, SIGNAL-INTEGRITY, DFM AND DRILL SUMMARY",
         "Pilot R1 uses the published Rezonit 4-layer, 35 um TG150 construction as a working baseline; order-specific values remain deferred.",
     )
 
@@ -303,27 +303,28 @@ def page_two(c: canvas.Canvas, pcb_hash: str) -> None:
 
     c.setFillColor(NAVY)
     c.setFont(font(True), 10)
-    c.drawString(18 * mm, height - 110 * mm, "CONTROLLED IMPEDANCE COMPARISON")
+    c.drawString(18 * mm, height - 110 * mm, "SIGNAL-INTEGRITY DISPOSITION")
     c.setFillColor(colors.black)
     impedance = [
-        ["Class", "Structure", "Target", "Rezonit published 1.50 mm start", "Routed EVT start", "Disposition"],
-        ["GNSS_RF", "L1 microstrip to L2", "50 ohm", "W 0.180 mm", "W 0.360 mm; analytical 49.93 ohm", "CAM SOLVER + ECO"],
-        ["ETH_MDI", "L1 edge-coupled pair to L2", "100 ohm diff", "W 0.150 / gap 0.300 mm", "W 0.260 / gap 0.200 mm; analytical 100.45 ohm", "CAM SOLVER + ECO"],
+        ["Interface", "Physical layer", "Current revision", "Fabricator action", "Disposition"],
+        ["HOST_UART_A/B", "3.3 V single-ended", "Two connectorized UART channels", "Check ordinary clearance and return path", "NO Z0 CONTROL"],
+        ["GNSS", "UART/PPS to external module", "No onboard GNSS RF route", "Check connector pinout and ESD placement", "NO RF Z0 CLASS"],
+        ["Ethernet", "Not fitted", "Removed from canonical requirement", "Do not add MDI artwork or impedance notes", "NOT APPLICABLE"],
     ]
     draw_table(
         c,
         impedance,
         18 * mm,
         height - 114 * mm,
-        [24 * mm, 42 * mm, 25 * mm, 49 * mm, 66 * mm, 35 * mm],
+        [34 * mm, 48 * mm, 58 * mm, 67 * mm, 34 * mm],
         font_size=6.6,
-        row_heights=9 * mm,
+        row_heights=8 * mm,
     )
     draw_paragraph(
         c,
-        "The website geometry is a starting value, not an order-bound solver result. The supplied artwork remains the validated EVT baseline. Any impedance geometry correction requires a controlled PCB ECO and repeated DRC/connection audit.",
+        "The published Rezonit construction is a working material baseline, not an order-bound impedance solution. The supplied artwork remains the validated EVT baseline. Any stack or routing change requires a controlled PCB ECO and repeated DRC and connection audit.",
         18 * mm,
-        height - 145 * mm,
+        height - 149 * mm,
         241 * mm,
         6.7,
         9,
@@ -336,19 +337,18 @@ def page_two(c: canvas.Canvas, pcb_hash: str) -> None:
     c.setFillColor(colors.black)
     drills = [
         ["Tool", "Finished hole", "Type", "Count"],
-        ["T1", "0.20 mm", "PTH", "8"],
-        ["T2", "0.25 mm", "PTH", "5"],
-        ["T3", "0.30 mm", "PTH", "121"],
-        ["T4", "0.40 mm", "PTH", "2"],
-        ["T5", "0.90 mm", "PTH", "8"],
+        ["T1", "0.18 mm", "PTH Top-L2", "1"],
+        ["T2", "0.20 mm", "PTH through", "133"],
+        ["T2", "0.20 mm", "PTH Top-L2", "2"],
+        ["T3", "0.25 mm", "PTH", "4"],
+        ["T4", "0.30 mm", "PTH", "103"],
+        ["T5", "0.40 mm", "PTH", "2"],
         ["T6", "0.991 mm", "PTH", "3"],
-        ["T7", "1.02 mm", "PTH", "10"],
-        ["T8", "1.10 mm", "PTH", "4"],
-        ["T9", "1.60 mm", "PTH", "2"],
-        ["T10", "3.00 mm", "PTH", "3"],
-        ["T11", "3.25 mm", "PTH", "2"],
-        ["T12", "3.20 mm", "NPTH", "4"],
-        ["", "TOTAL", "", "172"],
+        ["T7", "1.02 mm", "PTH", "16"],
+        ["T8", "3.00 mm", "PTH", "3"],
+        ["T9", "3.00 mm", "NPTH", "1"],
+        ["T10", "3.20 mm", "NPTH", "4"],
+        ["", "TOTAL", "", "272"],
     ]
     draw_table(
         c,
@@ -368,8 +368,8 @@ def page_two(c: canvas.Canvas, pcb_hash: str) -> None:
         ["Parameter", "Current design / output", "Rezonit published", "Pilot disposition"],
         ["Trace width", "0.15 mm minimum rule", "0.20 basic; 0.15 advanced", "ADVANCED"],
         ["Copper spacing", "0.20 mm minimum rule", "0.20 basic; 0.15 advanced", "PASS BASIC"],
-        ["PTH drill", "0.20 mm minimum in NC output", "0.30 basic; 0.20 high complexity", "ADVANCED"],
-        ["Via annular ring", "0.15 mm for 0.60/0.30 via", "0.15 basic; 0.10 advanced", "PASS BASIC"],
+        ["Drill", "0.18 mm Top-L2; 0.20 mm through minimum", "Order capability to be confirmed", "CAM REVIEW"],
+        ["Via annular ring", "Validate against current drill and pad tables", "0.15 basic; 0.10 advanced", "CAM REVIEW"],
         ["NPTH", "3.20 mm mounting holes", "0.50 mm published minimum", "PASS"],
         ["Solder mask", "Green; 0.025 mm expansion request", "0.10 mm bridge; 0.025 expansion", "CAM CHECK"],
     ]
@@ -390,7 +390,7 @@ def page_two(c: canvas.Canvas, pcb_hash: str) -> None:
     sources = [
         f"Native PcbDoc SHA-256: {pcb_hash}",
         "Native DRC: PASS, 0 warnings, 0 violations, 0 unrouted nets.",
-        "Connection integrity: PASS; all pads and routed copper remain inside the 100 x 80 mm outline.",
+        "Connection integrity: PASS; all pads and routed copper remain inside the 90 x 70 mm outline.",
         "Rezonit stack source: rezonit.ru/.../tipovye-sborki-i-konstruktsii-pechatnykh-plat/",
         "Rezonit finish/mask source: rezonit.ru published production capabilities table.",
         "Order-specific stack, finished copper and field-solver geometry take precedence when available.",

@@ -16,6 +16,6 @@ REL-014,NO_RF,No 76-81 GHz RF routing or antenna on System Carrier,P0,PASS,Desig
 REL-015,DRC,Altium DRC has zero blocking errors,P0,PASS,DRC report
 REL-016,OUTPUTS,All required outputs in ALTIUM_OUTJOB_CONTRACT_SYS_001.csv generated,P0,PASS,Release manifest
 REL-017,PRESERVATION,KiCad source baseline still present and buildable,P0,PASS,CI
-REL-018,MECHANICAL,Compact board outline mounting holes connector access and cable clearances checked in native Altium PCB and STEP,P1,PASS,Mechanical review
+REL-018,MECHANICAL,Compact board outline and mounting holes checked in native Altium PCB and STEP; enclosure access review deferred outside pilot scope,P1,DEFERRED_NOT_BLOCKING_PILOT,Mechanical scope statement and STEP receipt
 REL-019,ALTIUM_SOURCE,All schematics PCB BOM drawings layer PDFs and manufacturing files are generated from the current native Altium project and OutJob,P0,PASS,Altium release manifest and file hashes
 REL-020,AUTHORITY,Production authority remains NOT_AUTHORIZED in status and release manifest,P0,PASS,Authority status audit

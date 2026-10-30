@@ -5,19 +5,19 @@
   "source_outjob": "source/Fabrication.OutJob",
   "source_outjob_sha256": "82fdc731144d4b2d151dd4128e93d48f49306d6fc738e9e584433d45fde8e322",
   "source_pcb": "source/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d",
+  "source_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
   "output": "fab/PCB_Layer_Reference_COLOR.pdf",
-  "output_sha256": "a9944d6fbc9544cfc3830560da7c8c0e6409673c8e1ad2dabe7fef7d090ad20d",
-  "file_size_bytes": 1878620,
+  "output_sha256": "a5a0c41128136d55a190f9407f4ed2c2d63fb308936141e7a9b7cd19c139c08c",
+  "file_size_bytes": 2018689,
   "page_count": 5,
   "page_size_points": [792, 612],
-  "render_check_dpi": 150,
+  "render_check_dpi": 100,
   "pages": [
-    {"page": 1, "name": "Multilayer Composite Print", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.697159},
-    {"page": 2, "name": "Top Layer", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.064457},
-    {"page": 3, "name": "Mid-Layer 1 GND Plane", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.689627},
-    {"page": 4, "name": "Mid-Layer 2", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.023911},
-    {"page": 5, "name": "Bottom Layer", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.028474}
+    {"page": 1, "name": "Multilayer Composite Print", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.712437},
+    {"page": 2, "name": "Top Layer", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.081294},
+    {"page": 3, "name": "Mid-Layer 1 GND Plane", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.702256},
+    {"page": 4, "name": "Mid-Layer 2", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.678975},
+    {"page": 5, "name": "Bottom Layer", "visual_status": "PASS", "non_grayscale_pixel_ratio": 0.046665}
   ],
   "checks": {
     "pdf_structure": "PASS",

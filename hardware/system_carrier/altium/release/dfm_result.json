@@ -14,7 +14,7 @@
   ],
   "notes": [
     "DFM-010 is closed by the locked 1.60 mm EVT mechanical target.",
-    "DFM-001 through DFM-004 and the two impedance items DFM-007 and DFM-008 remain open until the Rezonit order is bound.",
+    "DFM-001 through DFM-004 and connector assembly-clearance items DFM-007 and DFM-008 remain open until the Rezonit order and assembly process are bound.",
     "Generic published capabilities are included for preparation but are not treated as a production binding."
   ],
   "profile_sha256": "e5c23a689bd1e8f8aba1b8a663d786a14886c48f0a6422063ed1271c93261bca",
@@ -22,5 +22,5 @@
     "DFM-010"
   ],
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d"
+  "source_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea"
 }

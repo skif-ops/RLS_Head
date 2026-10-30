@@ -41,7 +41,7 @@
     "native_pcb": {
       "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
       "present": true,
-      "sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d"
+      "sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea"
     },
     "native_schematic": {
       "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
@@ -61,7 +61,7 @@
       "status": "PENDING"
     }
   },
-  "final_native_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d",
+  "final_native_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
   "invalid_artifacts": [],
   "manifest_errors": [],
   "manifest_ready": true,

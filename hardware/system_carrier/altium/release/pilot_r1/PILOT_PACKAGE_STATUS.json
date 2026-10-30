@@ -20,16 +20,16 @@
     "height_mm": 70.0,
     "components": 83,
     "pads": 483,
-    "tracks": 1378,
+    "tracks": 1776,
     "fills": 60,
-    "vias": 115,
-    "holes": 146
+    "vias": 241,
+    "holes": 272
   },
   "source": {
     "schematic": "source/EVT_SYS_CARRIER.SchDoc",
     "schematic_sha256": "85b458cc95d32704a9a9dced80f2f8514bf2f9d3065e0f91c18ab57091dc9166",
     "pcb": "source/EVT_SYS_CARRIER.PcbDoc",
-    "pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d"
+    "pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea"
   },
   "required_outputs": [
     {"output_id": "OUT-001", "name": "Gerber X2", "status": "PASS"},

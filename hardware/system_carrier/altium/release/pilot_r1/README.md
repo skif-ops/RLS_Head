@@ -11,10 +11,10 @@ Production authority is `NOT_AUTHORIZED`.
 
 - Native Altium schematic, PCB, project and OutJob sources.
 - Gerber X2 and legacy RS-274X files for four copper layers, mask, legend,
-  paste, board profile and drill plots.
-- NC drill files for 146 holes across 9 tools.
+  paste and board profile.
+- NC drill files for 272 holes across 10 tools and two layer pairs.
 - Native Altium IPC-2581 Revision B export. Structural checks confirm 83
-  components, 30 packages, 21 layers, 146 holes and 55 named nets.
+  components, 30 packages, 23 layers, 272 holes and 55 named nets.
 - Pick-and-place data for 83 top-side components and no bottom-side parts.
 - Validated 83-designator BOM. The `PILOT_BASE_REV_A` variant contains 78
   fitted parts, 2 DNP parts and 3 PCB-only features.
@@ -85,4 +85,4 @@ The source schematic SHA-256 is
 `85b458cc95d32704a9a9dced80f2f8514bf2f9d3065e0f91c18ab57091dc9166`.
 
 The source PcbDoc SHA-256 is
-`35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d`.
+`156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea`.

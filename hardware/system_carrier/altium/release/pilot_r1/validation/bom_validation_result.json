@@ -4,7 +4,7 @@
   "expected_designator_count": 83,
   "input_sha256": {
     "bom_contract": "b489427e443d0e9af58f9c33c250a27a40f71cd47144a84955cb7729af2b011e",
-    "bom_export": "725c0a2a7d25dbf15dff74aca92da9086bf401851536077553085ff459cedfd2"
+    "bom_export": "b465e84afbb08f6d2812e85795464e9c73b3a315cd202a0b4aae7a2e380e838d"
   },
   "notes": [
     "The native Altium BOM export must contain Designator(s) and MPN/Manufacturer Part Number columns.",

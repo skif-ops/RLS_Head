@@ -6,12 +6,12 @@
   "routing_topology_violations": 0,
   "net_antennae_violations": 0,
   "source_report": "hardware/system_carrier/altium/release/pilot_r1/validation/native_drc.drc",
-  "source_report_sha256": "40c106d731c5e2b42468d2c3c9449d7d14b23c52212a42af6bb5f97a29cbf16c",
+  "source_report_sha256": "69d49e37bd4a81dc6ebb9f10d8cbcd3d840acce280a368724ac65ff8756e6a8e",
   "notes": [
     "Native Altium DRC completed with 0 violations and 0 waived violations.",
     "The disabled component-clearance rule is reported explicitly and contributes no violations.",
     "Production authority remains NOT_AUTHORIZED until every release review passes."
   ],
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "35f59c07ddb145f5cc46692d40d5f17ac8899e21b2412f1a75bb75427504797d"
+  "source_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea"
 }

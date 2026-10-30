@@ -115,8 +115,9 @@ def enrich(
 
         native_qty = native.get("Quantity", "").strip()
         contract_qty = contract.get("qty", "").strip()
-        if native_qty != contract_qty:
+        if native_qty and native_qty != contract_qty:
             errors.append(f"quantity_mismatch:{ref}:{native_qty}!={contract_qty}")
+        effective_qty = native_qty or contract_qty
 
         manufacturer = contract.get("manufacturer", "").strip()
         population = contract.get("population", "").strip()
@@ -135,12 +136,15 @@ def enrich(
             errors.append(f"unlocked_contract:{ref}:{contract_status}")
 
         output_rows.append({
-            "Name": native.get("Name", ""),
+            "Name": native.get("Name", "").strip() or native_mpn,
             "Description": contract.get("description", "").strip(),
             "Designator": ref,
-            "Footprint": native.get("Footprint", ""),
+            "Footprint": (
+                native.get("Footprint", "").strip()
+                or contract.get("footprint_id", "").strip()
+            ),
             "LibRef": native.get("LibRef", ""),
-            "Quantity": native_qty,
+            "Quantity": effective_qty,
             "MPN": native_mpn,
             "Manufacturer": manufacturer,
             "Population": population,
@@ -150,7 +154,7 @@ def enrich(
                 else "NO"
             ),
             "Pilot Disposition": disposition,
-            "Procurement Quantity": native_qty if disposition == "FIT" else "0",
+            "Procurement Quantity": effective_qty if disposition == "FIT" else "0",
             "Procurement Class": procurement_class,
             "Contract Status": contract_status,
         })
@@ -192,8 +196,9 @@ def enrich(
             "POPULATE": "FIT",
         },
         "notes": [
-            "The native Altium BOM remains the source for designators, MPNs, footprints and quantities.",
+            "The native Altium BOM remains the source for designators and MPNs.",
             "Manufacturer, population and procurement fields are joined from BOM_SYS_CARRIER_LAYOUT_004.csv.",
+            "When the native audit BOM contains only Designator and MPN, quantity and footprint are filled from the locked contract after exact designator and MPN equivalence passes.",
             "Optional GNSS active-antenna bias parts are DNP in the base pilot variant.",
         ],
     }
