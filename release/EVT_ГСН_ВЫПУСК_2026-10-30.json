@@ -1,24 +1,24 @@
 {
   "release_date": "2026-10-30",
   "revision": "R1",
-  "source_commit": "d780b6309cf86d2525f35830420908efbe09f1b9",
-  "created_utc": "2026-10-30T20:12:29.085302+00:00",
+  "source_commit": "2f50a0c6aa4ea9c66c26200669f5fb8c73882021",
+  "created_utc": "2026-10-30T20:28:56.251976+00:00",
   "production_authority": "NOT_AUTHORIZED",
   "archives": [
     {
       "name": "EVT_ГСН_полный_производственный_комплект_2026-10-30.zip",
-      "bytes": 17002622,
-      "sha256": "7d1d8f9c9e671b03892dc403aca5973b06fe728f5c4995d646f41ef4ea75fb65"
+      "bytes": 17003033,
+      "sha256": "a35f17e3f608441f8fe8eeaa38acc37e0d36a7cc6f1bc6d9fc4f3a4c6853af70"
     },
     {
       "name": "EVT_ГСН_заказ_ПП_и_монтажа_2026-10-30.zip",
-      "bytes": 2260554,
-      "sha256": "055c3ab2545e257c99f0bd25dc0182e90bd8e436f760fd8046d9ebeebec50be3"
+      "bytes": 2260647,
+      "sha256": "381ad0bb464323b26c4d1d650f38c4ffe0ee87a3ddb5e962bfd65fed473fe3e4"
     },
     {
       "name": "EVT_ГСН_ПМ_EVT_и_отчетные_материалы_2026-10-30.zip",
-      "bytes": 1663013,
-      "sha256": "f02d2837a025fbdc9b18b64d4056c2229ab58ccb4a91bca8f85a057220241580"
+      "bytes": 1663121,
+      "sha256": "f2848f17393c1938da7f1ca484ad94a79a76f37cf463383876b5b12accc3432e"
     }
   ]
 }
