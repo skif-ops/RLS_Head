@@ -11,16 +11,23 @@ NATIVE_BOM = (
 )
 
 
-def test_superseded_pilot_bom_is_rejected_after_uart_gnss_eco():
-    _, result = enrich(
+def test_current_pilot_bom_matches_uart_gnss_eco():
+    rows, result = enrich(
         system_root=SYSTEM,
         native_bom=NATIVE_BOM,
     )
 
-    assert result["status"] == "FAIL"
-    assert result["native_designator_count"] == 92
-    assert "extra_designators:C60,C61,C62,C63,C64,C65,C80,C81,C82,L80,R80,R81,R82,U3,U8,Y2" in result["errors"]
-    assert "missing_designators:C90,C91,C92,C93,L9,R90,U9" in result["errors"]
+    assert result["status"] == "PASS"
+    assert result["errors"] == []
+    assert result["native_designator_count"] == 83
+    assert result["contract_designator_count"] == 83
+    assert result["output_designator_count"] == 83
+    assert result["pilot_disposition_counts"] == {
+        "DNP": 2,
+        "FIT": 78,
+        "PCB_ONLY": 3,
+    }
+    assert len(rows) == 83
 
 
 def test_pilot_bom_enrichment_rejects_mpn_change(tmp_path):
