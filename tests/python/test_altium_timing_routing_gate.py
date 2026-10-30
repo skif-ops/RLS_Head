@@ -104,25 +104,27 @@ def _write_fixture(root: Path) -> None:
     )
     (routing / "timing_routing_review_a.png").write_bytes(b"png")
 
+    gnss_step = 10.0 / 22.0
     tracks = [
-        _track("GNSS_PPS", 10.0, 10.0, 11.0, 10.0),
-        _track("GNSS_PPS", 11.0, 10.0, 12.0, 10.0, layer=32),
-        _track("GNSS_PPS", 12.0, 10.0, 13.0, 10.0, layer=32),
-        _track("GNSS_PPS", 13.0, 10.0, 14.0, 10.0, layer=32),
-        _track("GNSS_PPS", 14.0, 10.0, 15.0, 10.0, layer=2),
-        _track("GNSS_PPS", 15.0, 10.0, 16.0, 10.0, layer=2),
-        _track("GNSS_PPS", 16.0, 10.0, 18.0, 10.0, layer=2),
-        _track("GNSS_PPS", 18.0, 10.0, 19.0, 10.0),
-        _track("GNSS_PPS", 19.0, 10.0, 20.0, 10.0),
+        _track(
+            "GNSS_PPS",
+            10.0 + index * gnss_step,
+            10.0,
+            10.0 + (index + 1) * gnss_step,
+            10.0,
+        )
+        for index in range(22)
     ]
     for index in range(6):
         tracks.append(_track("IMU_DRDY", 10.0 + index, 20.0, 11.0 + index, 20.0))
     tracks.extend(
         [
-            _track("RADAR_REF", 10.0, 30.0, 11.0, 30.0),
-            _track("RADAR_REF", 11.0, 30.0, 12.0, 30.0),
-            _track("RADAR_REF", 12.0, 30.0, 13.0, 30.0),
-            _track("RADAR_REF", 13.0, 30.0, 20.0, 30.0, layer=2),
+            _track("RADAR_REF", 10.0, 30.0, 12.0, 30.0),
+            _track("RADAR_REF", 12.0, 30.0, 14.0, 30.0),
+            _track("RADAR_REF", 14.0, 30.0, 15.0, 30.0),
+            _track("RADAR_REF", 15.0, 30.0, 16.0, 30.0, layer=3),
+            _track("RADAR_REF", 16.0, 30.0, 18.0, 30.0, layer=3),
+            _track("RADAR_REF", 18.0, 30.0, 20.0, 30.0, layer=3),
         ]
     )
     tracks.append(_track("BUCK_SW", 10.0, 50.0, 20.0, 50.0, width=0.5))
@@ -168,10 +170,7 @@ def _write_fixture(root: Path) -> None:
         [],
     )
     vias = [
-        _via("GNSS_PPS", 11.0, 10.0),
-        _via("GNSS_PPS", 14.0, 10.0),
-        _via("GNSS_PPS", 18.0, 10.0),
-        _via("RADAR_REF", 13.0, 30.0),
+        _via("RADAR_REF", 15.0, 30.0),
     ]
     _write_csv(
         audit / "via_inventory.csv",
