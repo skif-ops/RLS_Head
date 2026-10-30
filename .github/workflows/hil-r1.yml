@@ -390,7 +390,7 @@ jobs:
           assert data["status"] == "PASS"
           assert data["errors"] == []
           assert data["compact_candidate_validated"] is True
-          assert data["evt_routing_datums_locked"] is False
+          assert data["evt_routing_datums_locked"] is True
           assert data["production_mechanical_freeze"] is False
           assert data["minimum_mount_hole_edge_ligament_mm"] >= 3.0
           print("EVT mechanical routing datums PASS")
@@ -1044,7 +1044,7 @@ jobs:
           )
           assert data["status"] == "PASS"
           assert data["compact_candidate_validated"] is True
-          assert data["evt_routing_datums_locked"] is False
+          assert data["evt_routing_datums_locked"] is True
           assert data["production_mechanical_freeze"] is False
           print("EVT mechanical routing datum evidence READY")
           PY
