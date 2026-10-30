@@ -4,37 +4,42 @@
   "target": "STM32H753IIT6",
   "board": "EVT_SYS_CARRIER_R1",
   "configuration": "config/evt_carrier_firmware_v1.json",
-  "configuration_crc32c": "aa89a125",
+  "configuration_crc32c": "156c3c5e",
   "toolchain": "xPack GNU Arm Embedded GCC x86_64 14.2.1 20241119",
   "stm32cubeh7": "v1.13.0",
   "build_type": "Release",
   "flash_origin": "0x08000000",
-  "flash_used_bytes": 48000,
+  "flash_used_bytes": 52688,
   "ram_static_and_stack_bytes": 20368,
   "host_tests": {
-    "passed": 17,
+    "passed": 20,
     "failed": 0
+  },
+  "digital_twin": {
+    "status": "PASS",
+    "report": "digital_twin_report.json",
+    "scope": "CAN transport, HIL-R1, tracker, IMU/time uncertainty, GNSS quarantine, TargetState-V1 and CRC"
   },
   "artifacts": [
     {
       "file": "EVT_SYS_CARRIER_STM32H753_R1.elf",
-      "bytes": 1860168,
-      "sha256": "084b44325acb22bc1a03ca259965a6246186d4af2f742e343d4cff8a3c10dd48"
+      "bytes": 1868412,
+      "sha256": "ec46ecbefdfd4b450bbcb9bfed1d6c38240cd676d0c544da52ee24107f56af3c"
     },
     {
       "file": "EVT_SYS_CARRIER_STM32H753_R1.hex",
-      "bytes": 135064,
-      "sha256": "882eb496cbb558db517f3e807472bb53607acfe349a4e51bc706309e71678166"
+      "bytes": 148249,
+      "sha256": "e2a38a3669cfeb9bacc1fc9626539febb8dec77457f83c38aee8d1ae6a1be875"
     },
     {
       "file": "EVT_SYS_CARRIER_STM32H753_R1.bin",
-      "bytes": 48000,
-      "sha256": "42b6f0c5010b6fe5c61f44a251d176231f9268bd4a2ec12103ca6845f566210a"
+      "bytes": 52688,
+      "sha256": "c58bfcd582055824889e4676e16a1a3051be5dc9f8197a3c18e8bc5267bfb12c"
     },
     {
       "file": "EVT_SYS_CARRIER_STM32H753_R1.map",
-      "bytes": 259925,
-      "sha256": "dc3eb112c7c7aed57865fd867f41a40c404b89de6b4b0ed8c394e755ec882a94"
+      "bytes": 276892,
+      "sha256": "d4518edf75e28cd32d49d2bc30f8112d99ec7557019902dac4c4b2bf5bb592b5"
     }
   ],
   "bench_validation": "REQUIRED",

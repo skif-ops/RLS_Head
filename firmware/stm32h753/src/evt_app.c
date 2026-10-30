@@ -1,7 +1,9 @@
 #include "evt_app.h"
 
 #include "evt_board.h"
+#include "evt_fusion.h"
 #include "evt_gnss_parser.h"
+#include "evt_runtime_config.h"
 #include "evt_transport.h"
 #include "icm42688p.h"
 #include "rls/carrier_health.h"
@@ -16,7 +18,6 @@
 #include <string.h>
 
 #define EVT_STATUS_MAGIC 0x53545645u
-#define EVT_CONFIG_CRC32C 0xaa89a125u
 #define EVT_SOURCE_ID 0x45565431u
 
 evt_app_status_t g_evt_app_status
@@ -27,14 +28,17 @@ static uint32_t boot_id(void)
     return HAL_GetUIDw0() ^ HAL_GetUIDw1() ^ HAL_GetUIDw2() ^ HAL_GetTick();
 }
 
-static void initialize_status(uint32_t init_errors, uint32_t current_boot_id)
+static void initialize_status(
+    uint32_t init_errors,
+    uint32_t current_boot_id,
+    uint32_t config_crc32c)
 {
     memset(&g_evt_app_status, 0, sizeof(g_evt_app_status));
     g_evt_app_status.magic = EVT_STATUS_MAGIC;
     g_evt_app_status.version_major = 1u;
-    g_evt_app_status.version_minor = 0u;
+    g_evt_app_status.version_minor = 1u;
     g_evt_app_status.init_error_flags = init_errors;
-    g_evt_app_status.config_crc32c = EVT_CONFIG_CRC32C;
+    g_evt_app_status.config_crc32c = config_crc32c;
     g_evt_app_status.boot_id = current_boot_id;
 }
 
@@ -84,7 +88,9 @@ static void process_capture_events(
     *previous = current;
 }
 
-static void process_imu(rls_imu_service_t *imu)
+static void process_imu(
+    rls_imu_service_t *imu,
+    evt_fusion_context_t *fusion)
 {
     uint8_t burst[14];
     bool success;
@@ -94,9 +100,9 @@ static void process_imu(rls_imu_service_t *imu)
 
     icm42688p_sample_t sample;
     const bool decoded = success && icm42688p_decode_burst(burst, &sample);
-    (void)sample;
     (void)rls_imu_service_complete_transfer(imu, decoded);
     if (decoded) {
+        evt_fusion_note_imu(fusion, &sample, evt_board_time_us());
         g_evt_app_status.imu_samples++;
     } else {
         g_evt_app_status.imu_errors++;
@@ -140,7 +146,8 @@ static void process_gnss(
 
 static void process_radar(
     evt_transport_rx_t *transport,
-    HilRuntime *runtime)
+    HilRuntime *runtime,
+    evt_fusion_context_t *fusion)
 {
     uint8_t can_frame[EVT_CAN_FRAME_SIZE];
     while (evt_board_can_receive(can_frame)) {
@@ -156,12 +163,14 @@ static void process_radar(
         uint8_t response[TARGETSTATE_PACKET_SIZE];
         size_t response_length = 0u;
         const uint64_t now = evt_board_time_us();
-        const HilRuntimeResult runtime_result = hil_runtime_process_packet(
+        const HilRuntimeResult runtime_result = hil_runtime_process_packet_ex(
             runtime,
             packet,
             packet_length,
             now,
             now,
+            evt_fusion_apply,
+            fusion,
             response,
             sizeof(response),
             &response_length);
@@ -176,16 +185,17 @@ static void process_radar(
 static void update_health(
     rls_carrier_health_state_t *health,
     rls_gnss_service_t *gnss,
+    const evt_runtime_config_t *config,
     uint64_t now)
 {
     const rls_carrier_health_limits_t health_limits = {
-        .radar_timeout_us = 250000u,
-        .gnss_pps_timeout_us = 1500000u,
-        .imu_timeout_us = 20000u,
+        .radar_timeout_us = config->radar_timeout_us,
+        .gnss_pps_timeout_us = config->gnss_timeout_us,
+        .imu_timeout_us = config->imu_timeout_us,
     };
     const rls_gnss_limits_t gnss_limits = {
-        .uart_timeout_us = 2000000u,
-        .pps_timeout_us = 1500000u,
+        .uart_timeout_us = config->gnss_timeout_us + 500000u,
+        .pps_timeout_us = config->gnss_timeout_us,
     };
     rls_carrier_health_report_t health_report;
     rls_gnss_report_t gnss_report;
@@ -202,9 +212,16 @@ int evt_app_main(void)
 {
     const uint32_t init_errors = evt_board_initialize();
     const uint32_t current_boot_id = boot_id();
-    initialize_status(init_errors, current_boot_id);
+
+    evt_runtime_config_t config;
+    evt_runtime_config_default(&config);
+    const uint32_t config_crc32c = evt_runtime_config_crc32c(&config);
+    initialize_status(init_errors, current_boot_id, config_crc32c);
     if (init_errors != 0u) {
         evt_board_fatal(init_errors);
+    }
+    if (config_crc32c == 0u) {
+        evt_board_fatal(0x43464743u);
     }
 
     rls_carrier_health_state_t health;
@@ -214,13 +231,19 @@ int evt_app_main(void)
     evt_gnss_parser_t gnss_parser;
     evt_transport_rx_t transport;
     HilRuntime runtime;
+    evt_fusion_context_t fusion;
     rls_carrier_health_init(&health);
     rls_gnss_service_init(&gnss);
     rls_imu_service_init(&imu);
     evt_gnss_parser_init(&gnss_parser);
     evt_transport_rx_init(&transport);
     hil_runtime_init(&runtime, EVT_SOURCE_ID, current_boot_id);
-    if (!time_service_init(&disciplined_time, 0.1f, 0.5f, 100.0f)) {
+    if (!time_service_init(
+            &disciplined_time,
+            config.time_phase_sigma_us,
+            config.time_drift_sigma_ppm,
+            config.time_max_abs_rate_ppm)
+        || !evt_fusion_init(&fusion, &config)) {
         evt_board_fatal(0x54494d45u);
     }
 
@@ -244,16 +267,21 @@ int evt_app_main(void)
         process_capture_events(
             &captures, &health, &gnss, &imu,
             &gnss_spoof_suspect, &previous_pps);
-        process_imu(&imu);
+        process_imu(&imu, &fusion);
         process_gnss(
             &gnss_parser, &gnss, &disciplined_time,
             captures.timestamp_us[EVT_CAPTURE_GNSS_PPS],
             gnss_spoof_suspect, &observed_pps);
-        process_radar(&transport, &runtime);
-
         const uint64_t now = evt_board_time_us();
         if (now - last_health_update >= 100000u) {
-            update_health(&health, &gnss, now);
+            update_health(&health, &gnss, &config, now);
+            if ((g_evt_app_status.gnss_flags
+                    & (RLS_GNSS_PPS_STALE
+                        | RLS_GNSS_TIME_INVALID
+                        | RLS_GNSS_JAMMING
+                        | RLS_GNSS_SPOOFING)) != 0u) {
+                (void)time_service_mark_holdover(&disciplined_time);
+            }
             g_evt_app_status.transport_rejects = transport.rejected_frames;
             g_evt_app_status.can_bus_offs = evt_board_can_bus_off_count();
             g_evt_app_status.uart1_drops = evt_board_host_drop_count(0u);
@@ -261,6 +289,14 @@ int evt_app_main(void)
             g_evt_app_status.gnss_overflows = evt_board_gnss_overflow_count();
             last_health_update = now;
         }
+        evt_fusion_update_status(
+            &fusion,
+            now,
+            disciplined_time.state,
+            time_service_uncertainty_us(&disciplined_time, now),
+            g_evt_app_status.health_flags,
+            g_evt_app_status.gnss_flags);
+        process_radar(&transport, &runtime, &fusion);
         evt_board_watchdog_refresh();
     }
 }

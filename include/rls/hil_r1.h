@@ -211,8 +211,13 @@ typedef enum {
     HIL_RUNTIME_TIME_ERROR,
     HIL_RUNTIME_MEASUREMENT_ERROR,
     HIL_RUNTIME_TRACK_ERROR,
+    HIL_RUNTIME_TRANSFORM_ERROR,
     HIL_RUNTIME_SERIALIZE_ERROR
 } HilRuntimeResult;
+
+typedef bool (*HilTargetStateTransform)(
+    TargetStateV1 *state,
+    void *context);
 
 uint32_t crc32c_compute(const uint8_t *data, size_t length);
 
@@ -264,6 +269,18 @@ HilRuntimeResult hil_runtime_process_packet(
     size_t packet_len,
     uint64_t receive_time_us,
     uint64_t publish_time_us,
+    uint8_t *response,
+    size_t response_capacity,
+    size_t *response_len);
+
+HilRuntimeResult hil_runtime_process_packet_ex(
+    HilRuntime *rt,
+    const uint8_t *packet,
+    size_t packet_len,
+    uint64_t receive_time_us,
+    uint64_t publish_time_us,
+    HilTargetStateTransform transform,
+    void *transform_context,
     uint8_t *response,
     size_t response_capacity,
     size_t *response_len);

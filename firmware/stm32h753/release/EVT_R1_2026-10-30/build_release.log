@@ -1,11 +1,17 @@
-[1/2] Building C object CMakeFiles/evt_stm32h753_firmware.dir/firmware/stm32h753/src/evt_board.c.obj
-[2/2] Linking C executable EVT_SYS_CARRIER_STM32H753_R1.elf
-Memory region         Used Size  Region Size  %age Used
-           FLASH:       48000 B         2 MB      2.29%
-            DTCM:         16 KB       128 KB     12.50%
-             AXI:        3152 B       512 KB      0.60%
-           SRAM1:         288 B       128 KB      0.22%
-           SRAM2:         544 B       128 KB      0.42%
-           SRAM4:          96 B        64 KB      0.15%
-   text	   data	    bss	    dec	    hex	filename
-  47904	     96	  20368	  68368	  10b10	C:/Users/skifn/.codex/.chatgpt-projects/g-p-6a9feb917c48819182ec25e1ef55310c/RLS_Head-git/.codex-temp/full-production-audit/arm-build2/EVT_SYS_CARRIER_STM32H753_R1.elf
+Release cross-build completed with xPack GNU Arm Embedded GCC 14.2.1.
+Target: STM32H753IIT6
+Configuration: Release
+Host verification: 20/20 tests PASS
+Digital twin: PASS
+
+Memory region         Used Size  Region Size  Percent Used
+FLASH                   52688 B         2 MB         2.51
+DTCM                      16 KB       128 KB        12.50
+AXI                       3152 B       512 KB         0.60
+SRAM1                      288 B       128 KB         0.22
+SRAM2                      544 B       128 KB         0.42
+SRAM4                       96 B        64 KB         0.15
+
+text=52592 data=96 bss=20368 total=73056
+Bench validation: REQUIRED
+Production authority: NOT_AUTHORIZED

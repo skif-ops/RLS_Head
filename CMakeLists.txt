@@ -77,6 +77,14 @@ add_library(evt_gnss_parser STATIC
     firmware/stm32h753/src/evt_gnss_parser.c
 )
 
+add_library(evt_runtime_config STATIC
+    firmware/stm32h753/src/evt_runtime_config.c
+)
+
+add_library(evt_fusion STATIC
+    firmware/stm32h753/src/evt_fusion.c
+)
+
 target_include_directories(hil_r1 PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -145,6 +153,16 @@ target_include_directories(evt_gnss_parser PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/include
 )
 
+target_include_directories(evt_runtime_config PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/include
+)
+
+target_include_directories(evt_fusion PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/include
+)
+
 if(MSVC)
     target_compile_options(hil_r1 PRIVATE /W4 /WX)
     target_compile_options(hil_r2 PRIVATE /W4 /WX)
@@ -163,6 +181,8 @@ if(MSVC)
     target_compile_options(imu_service PRIVATE /W4 /WX)
     target_compile_options(evt_transport PRIVATE /W4 /WX)
     target_compile_options(evt_gnss_parser PRIVATE /W4 /WX)
+    target_compile_options(evt_runtime_config PRIVATE /W4 /WX)
+    target_compile_options(evt_fusion PRIVATE /W4 /WX)
 else()
     target_compile_options(hil_r1 PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(hil_r2 PRIVATE -Wall -Wextra -Wpedantic -Werror)
@@ -181,6 +201,8 @@ else()
     target_compile_options(imu_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(evt_transport PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(evt_gnss_parser PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(evt_runtime_config PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(evt_fusion PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_link_libraries(hil_r1 PUBLIC m)
     target_link_libraries(hil_r2 PUBLIC m)
 endif()
@@ -189,6 +211,8 @@ target_link_libraries(sys_err PUBLIC hil_r2)
 target_link_libraries(targetstate_uncertainty PUBLIC hil_r1 sys_err)
 target_link_libraries(targetstate_error_ledger PUBLIC targetstate_uncertainty)
 target_link_libraries(evidence_export PUBLIC measurement_session time_service carrier_health)
+target_link_libraries(evt_runtime_config PUBLIC hil_r1)
+target_link_libraries(evt_fusion PUBLIC evt_runtime_config targetstate_uncertainty time_service carrier_health gnss_service)
 
 if(NOT MSVC)
     target_link_libraries(hil_r2_evidence PUBLIC m)
@@ -429,6 +453,39 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
         target_compile_options(test_evt_gnss_parser PRIVATE -Wall -Wextra -Wpedantic -Werror)
     endif()
     add_test(NAME evt_gnss_parser COMMAND test_evt_gnss_parser)
+
+    add_executable(test_evt_runtime_config
+        tests/test_evt_runtime_config.c
+    )
+    target_link_libraries(test_evt_runtime_config PRIVATE evt_runtime_config)
+    if(MSVC)
+        target_compile_options(test_evt_runtime_config PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_evt_runtime_config PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+    add_test(NAME evt_config_redundancy COMMAND test_evt_runtime_config)
+
+    add_executable(test_evt_fusion
+        tests/test_evt_fusion.c
+    )
+    target_link_libraries(test_evt_fusion PRIVATE evt_fusion)
+    if(MSVC)
+        target_compile_options(test_evt_fusion PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_evt_fusion PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+    add_test(NAME evt_fusion_degradation COMMAND test_evt_fusion)
+
+    add_executable(test_evt_digital_twin
+        tests/test_evt_digital_twin.c
+    )
+    target_link_libraries(test_evt_digital_twin PRIVATE evt_transport evt_fusion hil_r1)
+    if(MSVC)
+        target_compile_options(test_evt_digital_twin PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_evt_digital_twin PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+    add_test(NAME evt_end_to_end_digital_twin COMMAND test_evt_digital_twin)
 endif()
 
 if(HIL_BUILD_STM32H753_SMOKE)
@@ -588,6 +645,8 @@ if(EVT_BUILD_STM32H753_FIRMWARE)
         imu_service
         evt_transport
         evt_gnss_parser
+        evt_runtime_config
+        evt_fusion
         m
         c
         nosys

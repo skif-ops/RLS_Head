@@ -995,6 +995,31 @@ HilRuntimeResult hil_runtime_process_packet(
     size_t response_capacity,
     size_t *response_len)
 {
+    return hil_runtime_process_packet_ex(
+        rt,
+        packet,
+        packet_len,
+        receive_time_us,
+        publish_time_us,
+        NULL,
+        NULL,
+        response,
+        response_capacity,
+        response_len);
+}
+
+HilRuntimeResult hil_runtime_process_packet_ex(
+    HilRuntime *rt,
+    const uint8_t *packet,
+    size_t packet_len,
+    uint64_t receive_time_us,
+    uint64_t publish_time_us,
+    HilTargetStateTransform transform,
+    void *transform_context,
+    uint8_t *response,
+    size_t response_capacity,
+    size_t *response_len)
+{
     if (rt == NULL || packet == NULL || response == NULL || response_len == NULL) {
         return HIL_RUNTIME_PARSE_ERROR;
     }
@@ -1144,6 +1169,10 @@ HilRuntimeResult hil_runtime_process_packet(
             publish_time_us,
             &target_state)) {
         return HIL_RUNTIME_TIME_ERROR;
+    }
+
+    if (transform != NULL && !transform(&target_state, transform_context)) {
+        return HIL_RUNTIME_TRANSFORM_ERROR;
     }
 
     if (!targetstate_v1_serialize(
