@@ -12,7 +12,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 
 from tools.evt_visualizer import __version__
-from tools.evt_visualizer.demo import build_demo_packet
+from tools.evt_visualizer.demo import TrackingTwin, build_tracking_packet
 from tools.evt_visualizer.stream import DecodedPacket, TargetStateStreamDecoder
 
 try:
@@ -55,6 +55,13 @@ class SourceWorker(threading.Thread):
     def emit_bytes(self, decoder: TargetStateStreamDecoder, data: bytes) -> None:
         for packet in decoder.feed(data):
             self.output.put(("packet", packet))
+        self.output.put((
+            "decoder",
+            {
+                "rejected_candidates": decoder.rejected_candidates,
+                "discarded_bytes": decoder.discarded_bytes,
+            },
+        ))
 
 
 class SerialWorker(SourceWorker):
@@ -71,6 +78,9 @@ class SerialWorker(SourceWorker):
                 bytesize=serial.EIGHTBITS,
                 parity=serial.PARITY_NONE,
                 stopbits=serial.STOPBITS_ONE,
+                xonxoff=False,
+                rtscts=False,
+                dsrdtr=False,
                 timeout=0.1,
             ) as connection:
                 self.output.put(("status", f"Подключено: {self.port}, {BAUD_RATE} {SERIAL_FORMAT}"))
@@ -87,14 +97,14 @@ class SerialWorker(SourceWorker):
 class DemoWorker(SourceWorker):
     def run(self) -> None:
         decoder = TargetStateStreamDecoder()
-        started = time.monotonic()
+        twin = TrackingTwin()
         sequence = 1
-        self.output.put(("status", "Демонстрационный режим"))
+        self.output.put(("status", "Цифровой двойник: одна цель 130-190 км/ч, собственный привод радара"))
         while not self.stop_event.wait(0.08):
-            elapsed = time.monotonic() - started
-            for track_id in (1, 2, 3):
-                self.emit_bytes(decoder, build_demo_packet(sequence, elapsed, track_id))
-                sequence += 1
+            state = twin.step(0.08)
+            self.emit_bytes(decoder, build_tracking_packet(sequence, state))
+            self.output.put(("twin", state.as_event()))
+            sequence += 1
         self.output.put(("stopped", None))
 
 
@@ -137,11 +147,14 @@ class EvtVisualizer(tk.Tk):
         self.history: dict[int, deque] = defaultdict(lambda: deque(maxlen=40))
         self.packet_count = 0
         self.sequence_gaps = 0
+        self.rejected_candidates = 0
+        self.discarded_bytes = 0
         self.last_sequence: int | None = None
         self.record_csv = None
         self.record_binary = None
         self.record_writer = None
         self.record_count = 0
+        self.twin_state: dict | None = None
 
         self._configure_style()
         self._build_controls()
@@ -170,7 +183,7 @@ class EvtVisualizer(tk.Tk):
         header = ttk.Frame(self)
         header.pack(fill="x", padx=16, pady=(14, 8))
         ttk.Label(header, text="EVT ГСН Визуализатор", style="Title.TLabel").pack(side="left")
-        ttk.Label(header, text="TargetState V1 | USB-UART 3,3 В | 921600 8N1").pack(side="left", padx=18)
+        ttk.Label(header, text="TargetState V1 | телеметрия без внешних команд | USB-UART 3,3 В").pack(side="left", padx=18)
 
         controls = ttk.Frame(self, style="Panel.TFrame")
         controls.pack(fill="x", padx=16, pady=(0, 10))
@@ -189,15 +202,15 @@ class EvtVisualizer(tk.Tk):
         self.record_button.grid(row=0, column=6, padx=4)
         ttk.Button(controls, text="Подключение", command=self._show_connection_help).grid(row=0, column=7, padx=4)
         ttk.Label(controls, text="Дальность", style="Metric.TLabel").grid(row=0, column=8, padx=(14, 4))
-        self.range_var = tk.StringVar(value="200")
+        self.range_var = tk.StringVar(value="300")
         range_box = ttk.Combobox(controls, textvariable=self.range_var, values=("25", "50", "100", "200", "300", "500"), width=6, state="readonly")
         range_box.grid(row=0, column=9, padx=4)
         ttk.Label(controls, text="м", style="Metric.TLabel").grid(row=0, column=10, sticky="w")
 
         body = ttk.Frame(self)
         body.pack(fill="both", expand=True, padx=16, pady=(0, 10))
-        body.columnconfigure(0, weight=3)
-        body.columnconfigure(1, weight=2)
+        body.columnconfigure(0, weight=1, minsize=420)
+        body.columnconfigure(1, weight=1, minsize=500)
         body.rowconfigure(0, weight=1)
 
         self.canvas = tk.Canvas(body, bg="#081018", highlightthickness=1, highlightbackground="#2B3D4F")
@@ -211,15 +224,22 @@ class EvtVisualizer(tk.Tk):
 
         metrics = ttk.Frame(side, style="Panel.TFrame")
         metrics.grid(row=1, column=0, sticky="ew", padx=12)
-        for column in range(4):
+        for column in range(5):
             metrics.columnconfigure(column, weight=1)
         self.metric_vars = {
             "packets": tk.StringVar(value="0"),
             "tracks": tk.StringVar(value="0"),
             "gaps": tk.StringVar(value="0"),
+            "rejected": tk.StringVar(value="0"),
             "record": tk.StringVar(value="0"),
         }
-        labels = (("Пакеты", "packets"), ("Цели", "tracks"), ("Пропуски", "gaps"), ("Записано", "record"))
+        labels = (
+            ("Пакеты", "packets"),
+            ("Цели", "tracks"),
+            ("Пропуски", "gaps"),
+            ("CRC/формат", "rejected"),
+            ("Записано", "record"),
+        )
         for index, (label, key) in enumerate(labels):
             cell = ttk.Frame(metrics, style="Panel.TFrame")
             cell.grid(row=0, column=index, sticky="ew", padx=4, pady=4)
@@ -228,8 +248,8 @@ class EvtVisualizer(tk.Tk):
 
         columns = ("id", "range", "azimuth", "speed", "snr", "quality")
         self.table = ttk.Treeview(side, columns=columns, show="headings", selectmode="browse")
-        headings = {"id": "ID", "range": "Дальность", "azimuth": "Азимут", "speed": "Скорость", "snr": "SNR", "quality": "Качество"}
-        widths = {"id": 48, "range": 86, "azimuth": 76, "speed": 82, "snr": 62, "quality": 76}
+        headings = {"id": "ID", "range": "Дальность", "azimuth": "Азимут", "speed": "Полная скорость", "snr": "SNR", "quality": "Качество"}
+        widths = {"id": 48, "range": 86, "azimuth": 76, "speed": 110, "snr": 62, "quality": 80}
         for key in columns:
             self.table.heading(key, text=headings[key])
             self.table.column(key, width=widths[key], anchor="center", stretch=True)
@@ -238,7 +258,13 @@ class EvtVisualizer(tk.Tk):
         details = ttk.Frame(side, style="Panel.TFrame")
         details.grid(row=3, column=0, sticky="ew", padx=12, pady=(0, 12))
         self.details_var = tk.StringVar(value="Выберите цель в таблице")
-        ttk.Label(details, textvariable=self.details_var, style="Metric.TLabel", justify="left").pack(anchor="w")
+        ttk.Label(
+            details,
+            textvariable=self.details_var,
+            style="Metric.TLabel",
+            justify="left",
+            wraplength=480,
+        ).pack(anchor="w")
         self.table.bind("<<TreeviewSelect>>", self._show_selected)
 
         self.status_var = tk.StringVar(value="Готово. Выберите COM-порт или запустите демо.")
@@ -362,6 +388,17 @@ class EvtVisualizer(tk.Tk):
                 self._handle_packet(payload)
             elif event == "status":
                 self.status_var.set(payload)
+            elif event == "twin":
+                self.twin_state = payload
+                self.status_var.set(
+                    f"Цифровой двойник | цель {payload['full_speed_km_h']:.1f} км/ч | "
+                    f"собственный привод: команда {payload['mount_command_azimuth_deg']:+.1f}°, "
+                    f"факт {payload['mount_actual_azimuth_deg']:+.1f}° | внешний выход: только телеметрия"
+                )
+            elif event == "decoder":
+                self.rejected_candidates = payload["rejected_candidates"]
+                self.discarded_bytes = payload["discarded_bytes"]
+                self.metric_vars["rejected"].set(str(self.rejected_candidates))
             elif event == "error":
                 self.status_var.set(payload)
                 messagebox.showerror("EVT ГСН Визуализатор", payload)
@@ -449,11 +486,12 @@ class EvtVisualizer(tk.Tk):
         for item in current - wanted:
             self.table.delete(item)
         for track_id, state in sorted(self.tracks.items()):
+            full_speed_km_h = math.sqrt(sum(value * value for value in state["velocity_m_s"])) * 3.6
             values = (
                 track_id,
                 f"{state['range_m']:.1f} м",
                 f"{state['azimuth_deg']:+.1f}°",
-                f"{state['range_rate_m_s']:+.1f} м/с",
+                f"{full_speed_km_h:.0f} км/ч",
                 f"{state['snr_db']:.1f} дБ",
                 f"{state['track_quality']:.2f}",
             )
@@ -464,6 +502,7 @@ class EvtVisualizer(tk.Tk):
                 self.table.insert("", "end", iid=key, values=values)
         if selected_id and self.table.exists(selected_id):
             self.table.selection_set(selected_id)
+            self._show_selected()
 
     def _show_selected(self, _event=None) -> None:
         selected = self.table.selection()
@@ -472,12 +511,25 @@ class EvtVisualizer(tk.Tk):
         state = self.tracks.get(int(selected[0]))
         if state is None:
             return
-        self.details_var.set(
+        full_speed_km_h = math.sqrt(sum(value * value for value in state["velocity_m_s"])) * 3.6
+        details = (
             f"ID {state['track_id']} | sequence {state['sequence']}\n"
-            f"Высота угла: {state['elevation_deg']:+.2f}° | SNR: {state['snr_db']:.1f} дБ\n"
+            f"Полная скорость: {full_speed_km_h:.1f} км/ч | радиальная: {state['range_rate_m_s']:+.1f} м/с\n"
+            f"Азимут: {state['azimuth_deg']:+.2f}° | SNR: {state['snr_db']:.1f} дБ\n"
             f"Достоверность: {state['confidence']:.3f} | Возраст: {state['measurement_age_ms']:.1f} мс\n"
             f"Radar status: 0x{state['radar_status']:08X} | Flags: 0x{state['track_flags']:08X}"
         )
+        if self.twin_state is not None:
+            details += (
+                f"\nСобственный привод: команда {self.twin_state['mount_command_azimuth_deg']:+.2f}°, "
+                f"факт {self.twin_state['mount_actual_azimuth_deg']:+.2f}°, "
+                f"ошибка {self.twin_state['mount_error_deg']:+.2f}°"
+                f"\nРезонансный запас: {self.twin_state['resonance_margin']:.1f}x | "
+                f"fn {self.twin_state['mount_natural_frequency_hz']:.1f} Гц | "
+                f"полоса {self.twin_state['command_bandwidth_hz']:.1f} Гц"
+                f"\n{self.twin_state['model_status']}. Внешний выход: только телеметрия."
+            )
+        self.details_var.set(details)
 
     def _on_close(self) -> None:
         self._stop_source()
