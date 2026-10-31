@@ -1,6 +1,6 @@
 {
   "schema": "DOCUMENT-RELEASE-REGISTRY-001",
-  "latest_document_version": "1.0.1",
+  "latest_document_version": "1.1.0",
   "entries": [
     {
       "version": "1.0.0",
@@ -39,6 +39,31 @@
           "name": "EVT_ГСН_документы_v1.0.1_2026-10-31.zip",
           "bytes": 517651,
           "sha256": "165dde82aa381e87357110661f28acef0c944520ac41babe26913ee36a0397c6"
+        }
+      ]
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-10-31",
+      "scope": "DOCUMENT_STYLE_AND_EVT_METHOD_UPDATE",
+      "baseline_version": "1.0.1",
+      "source_commit": "a953ea622948d8e24c9e06a529f70cc21cbdaa06",
+      "changes": [
+        "Полная унификация оформления всех DOCX",
+        "Добавлена пошаговая методика первого включения и стендовой проверки",
+        "Требования оформления приняты для последующих документов"
+      ],
+      "production_authority": "NOT_AUTHORIZED",
+      "archives": [
+        {
+          "name": "EVT_ГСН_документы_v1.1.0_2026-10-31.zip",
+          "bytes": 579087,
+          "sha256": "59b65bc397113fab2738ed0f8212156efabda8f776b634aa546b05f0c6d69fa3"
+        },
+        {
+          "name": "EVT_ГСН_ПМ_EVT_и_отчетные_материалы_v1.1.0_2026-10-31.zip",
+          "bytes": 131883,
+          "sha256": "2788f763261165eeb11ce0f10d44945ca112cd4032165ecdfca45a7090ead608"
         }
       ]
     }
