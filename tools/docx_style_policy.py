@@ -18,6 +18,7 @@ BODY_SIZE_HALF_POINTS = "28"
 TABLE_SIZE_HALF_POINTS = "24"
 FIRST_LINE_TWIPS = "709"
 SINGLE_LINE_TWIPS = "240"
+BLACK = "000000"
 FORBIDDEN_DASHES = "\u2013\u2014"
 
 STORY_PATTERN = re.compile(
@@ -62,6 +63,18 @@ def _set_bold(r_pr: etree._Element, enabled: bool) -> None:
         node.set(W + "val", "1" if enabled else "0")
 
 
+def _set_black(r_pr: etree._Element) -> None:
+    color = _child(r_pr, "color")
+    for key in list(color.attrib):
+        del color.attrib[key]
+    color.set(W + "val", BLACK)
+
+
+def _remove_child(parent: etree._Element, local_name: str) -> None:
+    for node in parent.findall(W + local_name):
+        parent.remove(node)
+
+
 def _set_paragraph_properties(
     paragraph: etree._Element,
     in_table: bool,
@@ -74,9 +87,11 @@ def _set_paragraph_properties(
     ind.set(W + "left", "0")
     ind.set(W + "right", "0")
     if in_table:
-        ind.attrib.pop(W + "firstLine", None)
+        ind.set(W + "firstLine", "0")
+        ind.set(W + "firstLineChars", "0")
     else:
         ind.set(W + "firstLine", FIRST_LINE_TWIPS)
+        _remove_child(p_pr, "pBdr")
 
     spacing = _child(p_pr, "spacing")
     for key in list(spacing.attrib):
@@ -89,6 +104,7 @@ def _set_paragraph_properties(
 
     mark_r_pr = _child(p_pr, "rPr")
     _set_fonts(mark_r_pr)
+    _set_black(mark_r_pr)
     _set_size(
         mark_r_pr,
         TABLE_SIZE_HALF_POINTS if in_table else BODY_SIZE_HALF_POINTS,
@@ -140,6 +156,7 @@ def _in_table(node: etree._Element) -> bool:
 def _format_style(style: etree._Element, heading: bool, table_style: bool) -> None:
     r_pr = _child(style, "rPr")
     _set_fonts(r_pr)
+    _set_black(r_pr)
     _set_size(
         r_pr,
         TABLE_SIZE_HALF_POINTS if table_style else BODY_SIZE_HALF_POINTS,
@@ -148,6 +165,7 @@ def _format_style(style: etree._Element, heading: bool, table_style: bool) -> No
         _set_bold(r_pr, True)
     if style.get(W + "type") == "paragraph":
         p_pr = _child(style, "pPr")
+        _remove_child(p_pr, "pBdr")
         ind = _child(p_pr, "ind")
         ind.set(W + "left", "0")
         ind.set(W + "right", "0")
@@ -194,6 +212,7 @@ def _format_story(
         for run in paragraph.findall(".//w:r", NS):
             r_pr = _child(run, "rPr")
             _set_fonts(r_pr)
+            _set_black(r_pr)
             _set_size(r_pr, half_points)
             if heading:
                 _set_bold(r_pr, True)
@@ -294,6 +313,14 @@ def _run_is_formatted(
         return False
     if any(key.lower().endswith("theme") for key in fonts.attrib):
         return False
+    color = r_pr.find("w:color", NS)
+    if color is None or color.get(W + "val", "").upper() != BLACK:
+        return False
+    if any(
+        key.lower().endswith(("themecolor", "themetint", "themeshade"))
+        for key in color.attrib
+    ):
+        return False
     for name in ("sz", "szCs"):
         node = r_pr.find("w:" + name, NS)
         if node is None or node.get(W + "val") != half_points:
@@ -314,6 +341,26 @@ def audit_docx(data: bytes) -> dict:
         roots = [(name, etree.fromstring(source.read(name))) for name in names]
 
     failures = []
+    style_count = 0
+    for index, style in enumerate(styles.findall("w:style", NS), start=1):
+        style_count += 1
+        r_pr = style.find("w:rPr", NS)
+        if r_pr is None:
+            failures.append(f"styles.xml:style{index}:missing run property")
+        else:
+            color = r_pr.find("w:color", NS)
+            if color is None or color.get(W + "val", "").upper() != BLACK:
+                failures.append(f"styles.xml:style{index}:text color")
+            elif any(
+                key.lower().endswith(("themecolor", "themetint", "themeshade"))
+                for key in color.attrib
+            ):
+                failures.append(f"styles.xml:style{index}:theme text color")
+        if (
+            style.get(W + "type") == "paragraph"
+            and style.find("w:pPr/w:pBdr", NS) is not None
+        ):
+            failures.append(f"styles.xml:style{index}:paragraph border")
     paragraph_count = 0
     table_paragraph_count = 0
     heading_count = 0
@@ -338,11 +385,22 @@ def audit_docx(data: bytes) -> dict:
                 failures.append(f"{part_name}:p{index}:missing paragraph property")
                 continue
             if in_table:
-                indent_ok = ind.get(W + "firstLine") is None
+                indent_ok = (
+                    ind.get(W + "left") == "0"
+                    and ind.get(W + "right") == "0"
+                    and ind.get(W + "firstLine") == "0"
+                    and ind.get(W + "firstLineChars") == "0"
+                )
             else:
-                indent_ok = ind.get(W + "firstLine") == FIRST_LINE_TWIPS
+                indent_ok = (
+                    ind.get(W + "left") == "0"
+                    and ind.get(W + "right") == "0"
+                    and ind.get(W + "firstLine") == FIRST_LINE_TWIPS
+                )
             if not indent_ok:
                 failures.append(f"{part_name}:p{index}:indent")
+            if not in_table and paragraph.find("w:pPr/w:pBdr", NS) is not None:
+                failures.append(f"{part_name}:p{index}:paragraph border")
             if not (
                 spacing.get(W + "before") == "0"
                 and spacing.get(W + "after") == "0"
@@ -367,6 +425,7 @@ def audit_docx(data: bytes) -> dict:
         failures.append(f"forbidden dash characters:{dash_count}")
     return {
         "status": "PASS" if not failures else "FAIL",
+        "styles": style_count,
         "paragraphs": paragraph_count,
         "table_paragraphs": table_paragraph_count,
         "headings": heading_count,
