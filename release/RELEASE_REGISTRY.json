@@ -1,0 +1,46 @@
+{
+  "schema": "DOCUMENT-RELEASE-REGISTRY-001",
+  "latest_document_version": "1.0.1",
+  "entries": [
+    {
+      "version": "1.0.0",
+      "date": "2026-10-30",
+      "scope": "LEGACY_BASELINE",
+      "retrospective_version_alias": true,
+      "original_revision": "R1",
+      "source_commit": "2f50a0c6aa4ea9c66c26200669f5fb8c73882021",
+      "archives": [
+        {
+          "name": "EVT_ГСН_полный_производственный_комплект_2026-10-30.zip",
+          "bytes": 17003033,
+          "sha256": "a35f17e3f608441f8fe8eeaa38acc37e0d36a7cc6f1bc6d9fc4f3a4c6853af70"
+        },
+        {
+          "name": "EVT_ГСН_заказ_ПП_и_монтажа_2026-10-30.zip",
+          "bytes": 2260647,
+          "sha256": "381ad0bb464323b26c4d1d650f38c4ffe0ee87a3ddb5e962bfd65fed473fe3e4"
+        },
+        {
+          "name": "EVT_ГСН_ПМ_EVT_и_отчетные_материалы_2026-10-30.zip",
+          "bytes": 1663121,
+          "sha256": "f2848f17393c1938da7f1ca484ad94a79a76f37cf463383876b5b12accc3432e"
+        }
+      ]
+    },
+    {
+      "version": "1.0.1",
+      "date": "2026-10-31",
+      "scope": "DOCUMENT_FORMATTING_ONLY",
+      "baseline_version": "1.0.0",
+      "source_commit": "d504aca781ddc3e983740ac17258149bcc2026d8",
+      "production_authority": "NOT_AUTHORIZED",
+      "archives": [
+        {
+          "name": "EVT_ГСН_документы_v1.0.1_2026-10-31.zip",
+          "bytes": 517651,
+          "sha256": "165dde82aa381e87357110661f28acef0c944520ac41babe26913ee36a0397c6"
+        }
+      ]
+    }
+  ]
+}
