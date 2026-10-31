@@ -1,0 +1,36 @@
+{
+  "contract_designator_count": 83,
+  "errors": [],
+  "input_sha256": {
+    "bom_contract": "b489427e443d0e9af58f9c33c250a27a40f71cd47144a84955cb7729af2b011e",
+    "native_bom": "b465e84afbb08f6d2812e85795464e9c73b3a315cd202a0b4aae7a2e380e838d"
+  },
+  "native_designator_count": 83,
+  "notes": [
+    "The native Altium BOM remains the source for designators and MPNs.",
+    "Manufacturer, population and procurement fields are joined from BOM_SYS_CARRIER_LAYOUT_004.csv.",
+    "When the native audit BOM contains only Designator and MPN, quantity and footprint are filled from the locked contract after exact designator and MPN equivalence passes.",
+    "Optional GNSS active-antenna bias parts are DNP in the base pilot variant."
+  ],
+  "output_designator_count": 83,
+  "output_sha256": "9a84b4ccdc0faa99808d0b16aa55be5b3c880f44aaec356288b244f370ed4933",
+  "pilot_disposition_counts": {
+    "DNP": 2,
+    "FIT": 78,
+    "PCB_ONLY": 3
+  },
+  "schema": "ALTIUM-PILOT-BOM-ENRICHMENT-001",
+  "status": "PASS",
+  "variant_policy": {
+    "DNP_DEFAULT": "DNP",
+    "DNP_OPTION": "DNP",
+    "PCB_ONLY": "PCB_ONLY",
+    "POPULATE": "FIT",
+    "name": "PILOT_BASE_REV_A"
+  },
+  "verified_checks": {
+    "designator_set_equivalence": "PASS",
+    "manufacturer_population_complete": "PASS",
+    "mpn_equivalence": "PASS"
+  }
+}

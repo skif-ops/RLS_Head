@@ -12,5 +12,5 @@ def test_authoritative_symbol_pin_contract_passes():
     assert result["status"] == "PASS"
     assert result["errors"] == []
     assert result["refs"] == [
-        "U2", "U3", "U4", "U5", "U6", "U7", "U8"
+        "U2", "U4", "U5", "U6", "U7", "U9"
     ]

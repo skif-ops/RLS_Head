@@ -84,24 +84,6 @@ def validate(system_root: str | Path) -> dict:
         width = parse_float(outline["width_mm"], field="board width")
         height = parse_float(outline["height_mm"], field="board height")
 
-    quiet = next(
-        (
-            row
-            for row in mechanical
-            if str(row.get("kind", "")).strip() == "KEEPOUT"
-            and str(row.get("id", "")).strip() == "GNSS_QUIET_ZONE"
-        ),
-        None,
-    )
-    if quiet is None:
-        errors.append("missing_gnss_quiet_zone")
-        qx = qy = qw = qh = 0.0
-    else:
-        qx = parse_float(quiet["x_mm"], field="quiet x")
-        qy = parse_float(quiet["y_mm"], field="quiet y")
-        qw = parse_float(quiet["width_mm"], field="quiet width")
-        qh = parse_float(quiet["height_mm"], field="quiet height")
-
     edge_rule = next(
         (
             row
@@ -187,12 +169,6 @@ def validate(system_root: str | Path) -> dict:
             return (math.nan, math.nan)
         return (float(x), float(y))
 
-    def inside_quiet(ref: str) -> bool:
-        x, y = point(ref)
-        if math.isnan(x) or math.isnan(y):
-            return False
-        return qx <= x <= qx + qw and qy <= y <= qy + qh
-
     def require_order(name: str, refs: tuple[str, ...]) -> None:
         xs = [point(ref)[0] for ref in refs]
         if any(math.isnan(value) for value in xs):
@@ -233,21 +209,6 @@ def validate(system_root: str | Path) -> dict:
                 f"edge_access:{ref}:{distance:.3f}>{edge_limit:.3f}"
             )
 
-    # GNSS corridor is the only hard-placement domain allowed inside the
-    # quiet region.
-    for ref in ("J8", "D8", "U8"):
-        if not inside_quiet(ref):
-            errors.append(f"gnss_outside_quiet_zone:{ref}")
-
-    for ref, row in placement.items():
-        if (
-            str(row.get("lock_level", "")).strip() == "HARD"
-            and str(row.get("zone", "")).strip() != "ZONE_GNSS"
-            and row.get("x") is not None
-            and inside_quiet(ref)
-        ):
-            errors.append(f"non_gnss_in_quiet_zone:{ref}")
-
     require_order(
         "POWER_CHAIN",
         ("J1", "D1", "U6", "U5", "L1", "U7", "J5"),
@@ -257,21 +218,13 @@ def validate(system_root: str | Path) -> dict:
         ("U4", "D4", "J4"),
     )
     require_order(
-        "ETH_CORRIDOR",
-        ("U3", "D3", "J6"),
+        "UART_CORRIDOR",
+        ("D3", "J6"),
     )
     require_order(
         "GNSS_CORRIDOR",
-        ("J8", "D8", "U8"),
+        ("J8", "D8", "U9", "L9"),
     )
-
-    # 50 MHz source should remain geometrically between MCU and PHY.
-    u1x, u1y = point("U1")
-    y2x, y2y = point("Y2")
-    u3x, u3y = point("U3")
-    if not any(math.isnan(v) for v in (u1x, y2x, u3x)):
-        if not min(u1x, u3x) < y2x < max(u1x, u3x):
-            errors.append("eth_50m_source_not_between_mcu_phy")
 
     def distance(a: str, b: str) -> float:
         ax, ay = point(a)
@@ -286,13 +239,6 @@ def validate(system_root: str | Path) -> dict:
     imu_to_l1 = distance("U2", "L1")
     if not math.isnan(imu_to_l1) and imu_to_l1 < 20.0:
         errors.append(f"imu_too_close_to_buck:{imu_to_l1:.3f}")
-
-    y2_to_u1 = distance("Y2", "U1")
-    y2_to_u3 = distance("Y2", "U3")
-    if not math.isnan(y2_to_u1) and y2_to_u1 > 20.0:
-        errors.append(f"eth_50m_to_mcu_too_long:{y2_to_u1:.3f}")
-    if not math.isnan(y2_to_u3) and y2_to_u3 > 20.0:
-        errors.append(f"eth_50m_to_phy_too_long:{y2_to_u3:.3f}")
 
     mount_holes = [
         row
@@ -312,20 +258,8 @@ def validate(system_root: str | Path) -> dict:
         "edge_limit_mm": edge_limit,
         "edge_ref_count": len(edge_refs),
         "hard_position_count": len(hard_positions),
-        "gnss_quiet_zone": {
-            "x_mm": qx,
-            "y_mm": qy,
-            "width_mm": qw,
-            "height_mm": qh,
-        },
         "imu_to_buck_mm": (
             None if math.isnan(imu_to_l1) else round(imu_to_l1, 3)
-        ),
-        "eth_50m_to_mcu_mm": (
-            None if math.isnan(y2_to_u1) else round(y2_to_u1, 3)
-        ),
-        "eth_50m_to_phy_mm": (
-            None if math.isnan(y2_to_u3) else round(y2_to_u3, 3)
         ),
         "notes": [
             (

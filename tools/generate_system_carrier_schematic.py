@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
+import os
 import re
 import shutil
 from pathlib import Path
@@ -27,9 +29,24 @@ SHEETS = [
     ("TIME_GNSS", "30_TIME_GNSS.kicad_sch"),
     ("IMU", "40_IMU.kicad_sch"),
     ("RADAR_IO_CAN", "50_RADAR_IO_CAN.kicad_sch"),
-    ("ETHERNET", "60_ETHERNET.kicad_sch"),
+    ("HOST_UART", "60_HOST_UART.kicad_sch"),
     ("DEBUG_BOOT", "70_DEBUG_BOOT.kicad_sch"),
 ]
+
+# Move symbols and their pin-derived labels together when sizing child pages.
+SHEET_ORIGIN_MM = (0.0, 0.0)
+SHEET_GRID_SCALE = (1.0, 1.0)
+CURRENT_SHEET_NAME = ""
+
+CHILD_PAGE_LAYOUT = {
+    "POWER_INPUT": ("A4", (80.01, 49.53), (1.0, 1.0)),
+    "MCU_CORE": ("A3", (30.48, 40.64), (1.0, 1.0)),
+    "TIME_GNSS": ("A5", (10.0, 8.0), (1.35, 1.25)),
+    "IMU": ("A5", (10.0, 8.0), (1.6, 1.3)),
+    "RADAR_IO_CAN": ("A5", (10.0, 8.0), (1.25, 1.25)),
+    "HOST_UART": ("A5", (10.0, 8.0), (1.4, 1.25)),
+    "DEBUG_BOOT": ("A5", (10.0, 8.0), (1.7, 1.35)),
+}
 
 PLACEHOLDER_LIB = "Connector_Generic:Conn_01x08"
 
@@ -38,12 +55,108 @@ SYMBOL_LIBRARIES = {
     "Device": "${KICAD9_SYMBOL_DIR}/Device.kicad_sym",
     "Connector_Generic": "${KICAD9_SYMBOL_DIR}/Connector_Generic.kicad_sym",
     "Connector": "${KICAD9_SYMBOL_DIR}/Connector.kicad_sym",
-    "RF_GPS": "${KICAD9_SYMBOL_DIR}/RF_GPS.kicad_sym",
     "Switch": "${KICAD9_SYMBOL_DIR}/Switch.kicad_sym",
     "power": "${KICAD9_SYMBOL_DIR}/power.kicad_sym",
     "MCU_ST_STM32H7": "${KICAD9_SYMBOL_DIR}/MCU_ST_STM32H7.kicad_sym",
-    "Interface_Ethernet": "${KICAD9_SYMBOL_DIR}/Interface_Ethernet.kicad_sym",
 }
+
+# Contract names for Altium native patterns use KiCad stock geometry as an
+# import bridge. Native pad geometry still requires the separate Altium audit.
+ALTIUM_IMPORT_BRIDGES = {
+    "Molex_43650-0200_RA_THT_2P": (
+        "Connector_Molex",
+        "Molex_Micro-Fit_3.0_43650-0200_1x02_P3.00mm_Horizontal",
+    ),
+    "Molex_43045-0600_RA_THT_6P": (
+        "Connector_Molex",
+        "Molex_Micro-Fit_3.0_43045-0600_2x03_P3.00mm_Horizontal",
+    ),
+    "Hirose_UFL_R_SMT_K": (
+        "Connector_Coaxial",
+        "U.FL_Hirose_U.FL-R-SMT-1_Vertical",
+    ),
+    "TagConnect_TC2030_NL": (
+        "Connector",
+        "Tag-Connect_TC2030-IDC-NL_2x03_P1.27mm_Vertical",
+    ),
+    "Coilcraft_XFL4020_4x4": (
+        "Inductor_SMD",
+        "L_Coilcraft_XxL4020",
+    ),
+    "ESwitch_TL3301_GullWing_6x6": (
+        "Button_Switch_SMD",
+        "SW_Push_1P1T_NO_E-Switch_TL3301NxxxxxG",
+    ),
+}
+
+
+def find_stock_footprints() -> Path:
+    candidates = [
+        os.environ.get("KICAD_FOOTPRINT_DIR", ""),
+        os.environ.get("KICAD9_FOOTPRINT_DIR", ""),
+        os.environ.get("KICAD10_FOOTPRINT_DIR", ""),
+        "/usr/share/kicad/footprints",
+        str(
+            Path(os.environ.get("ProgramFiles", "C:/Program Files"))
+            / "KiCad/10.0/share/kicad/footprints"
+        ),
+    ]
+    for candidate in candidates:
+        if candidate and (Path(candidate) / "Capacitor_SMD.pretty").is_dir():
+            return Path(candidate)
+    raise FileNotFoundError("KiCad stock footprint libraries not found")
+
+
+def stage_import_footprints(
+    output_dir: Path,
+    assignments: dict[str, str],
+) -> dict:
+    stock_root = find_stock_footprints()
+    records: list[dict[str, str | bool]] = []
+    for identifier in sorted(set(assignments.values())):
+        library, name = identifier.split(":", 1)
+        if library == "SystemCarrier_Local":
+            continue
+        bridge = library == "SystemCarrier_Altium"
+        source_library, source_name = (
+            ALTIUM_IMPORT_BRIDGES[name]
+            if bridge
+            else (library, name)
+        )
+        source = stock_root / f"{source_library}.pretty" / f"{source_name}.kicad_mod"
+        if not source.is_file():
+            raise FileNotFoundError(f"Missing KiCad footprint: {source}")
+        content = source.read_bytes()
+        if bridge:
+            original = f'(footprint "{source_name}"'.encode()
+            alias = f'(footprint "{name}"'.encode()
+            if not content.startswith(original):
+                raise ValueError(f"Unexpected KiCad footprint header: {source}")
+            content = alias + content[len(original):]
+        target = output_dir / f"{library}.pretty" / f"{name}.kicad_mod"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(content)
+        records.append(
+            {
+                "footprint_id": identifier,
+                "source_library": source_library,
+                "source_name": source_name,
+                "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                "staged_sha256": hashlib.sha256(content).hexdigest(),
+                "altium_import_bridge": bridge,
+            }
+        )
+    manifest = {
+        "schema": "SYSTEM-CARRIER-FOOTPRINT-IMPORT-STAGING-001",
+        "status": "STAGED_FOR_IMPORT",
+        "stock_footprint_root": str(stock_root),
+        "records": records,
+        "native_geometry_audit_required": True,
+    }
+    (output_dir / "footprint_import_staging.json").write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    return manifest
 
 
 def write_symbol_library_table(output_dir: Path) -> None:
@@ -83,6 +196,25 @@ def load_symbol_pin_contract(
         return list(reader)
 
 
+def load_footprint_assignments(path: Path) -> dict[str, str]:
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        rows = csv.DictReader(handle)
+        if rows.fieldnames is None or not {"ref", "footprint_id"}.issubset(
+            rows.fieldnames
+        ):
+            raise ValueError("FOOTPRINT_ASSIGNMENT_SYS_002.csv missing columns")
+        assignments: dict[str, str] = {}
+        for row in rows:
+            reference = str(row["ref"] or "").strip()
+            footprint = str(row["footprint_id"] or "").strip()
+            if not reference or not footprint or ":" not in footprint:
+                raise ValueError(f"Invalid footprint assignment: {reference}")
+            if reference in assignments:
+                raise ValueError(f"Duplicate footprint assignment: {reference}")
+            assignments[reference] = footprint
+    return assignments
+
+
 def apply_symbol_pin_contract(
     sch,
     rows: list[dict[str, str]],
@@ -91,7 +223,7 @@ def apply_symbol_pin_contract(
 ) -> dict[str, int]:
     direct_prefixes = (
         "IMU_",
-        "ETH_",
+        "HOST_UART",
         "CAN_",
         "GNSS_",
         "RADAR_",
@@ -183,6 +315,21 @@ def load_assigned_mcu_gpio(pinmap_path: Path) -> set[str]:
             for row in reader
             if str(row.get("mcu_pin", "")).strip()
         }
+
+
+def load_bom_mpn(bom_path: Path) -> dict[str, str]:
+    with bom_path.open("r", encoding="utf-8-sig", newline="") as handle:
+        rows = csv.DictReader(handle)
+        if rows.fieldnames is None:
+            raise ValueError("BOM_SYS_CARRIER_LAYOUT_004.csv missing header")
+        result: dict[str, str] = {}
+        for row in rows:
+            reference = str(row.get("ref", "")).strip()
+            mpn = str(row.get("value_or_mpn", "")).strip()
+            if not reference or not mpn or reference in result:
+                raise ValueError(f"Invalid BOM reference or MPN: {reference}")
+            result[reference] = mpn
+    return result
 
 
 def validate_mcu_pinmap_against_symbol(
@@ -289,18 +436,89 @@ def add_pin_label(
     reference: str,
     pin_number: str,
 ) -> None:
-    if sch.get_component_pin_position(
+    pin = sch.get_component_pin_position(
         reference,
         pin_number,
-    ) is None:
+    )
+    if pin is None:
         raise ValueError(
             f"missing pin:{reference}:{pin_number}"
         )
 
-    sch.add_label(
-        net_name,
-        pin=(reference, pin_number),
+    # Vertical power parts need label stubs clear of their values.
+    if reference in {
+        "R61", "R62", "R63", "R71", "R72", "R73", "R1", "R2",
+        "R5P", "R6F", "R7F", "R90", "C1", "C2", "C3", "C4",
+        "C90", "C91", "C92", "C93", "L1", "L9",
+    }:
+        component = sch.components.get(reference)
+        direction = -1.0 if pin.y < component.position.y else 1.0
+        end = (pin.x, pin.y + direction * 5.08)
+        sch.wires.add(start=(pin.x, pin.y), end=end)
+        sch.add_label(net_name, position=end)
+        return
+
+    if reference == "J1":
+        end = (pin.x - 7.62, pin.y)
+        sch.wires.add(start=(pin.x, pin.y), end=end)
+        sch.labels.add(net_name, end, justify_h="right")
+        sch._sync_labels_to_data()
+        return
+
+    # These power labels need room outside their symbol bodies.
+    if reference in {"D1", "U5", "U6", "U7", "U9"}:
+        component = sch.components.get(reference)
+        dx = pin.x - component.position.x
+        dy = pin.y - component.position.y
+        if abs(dx) >= abs(dy):
+            end = (pin.x + (10.16 if dx >= 0 else -10.16), pin.y)
+            justify_h = "left" if dx >= 0 else "right"
+        else:
+            end = (pin.x, pin.y + (10.16 if dy >= 0 else -10.16))
+            justify_h = "left"
+        sch.wires.add(start=(pin.x, pin.y), end=end)
+        sch.labels.add(net_name, end, justify_h=justify_h)
+        sch._sync_labels_to_data()
+        return
+
+    if CURRENT_SHEET_NAME == "MCU_CORE":
+        add_oriented_label_at_pin(sch, net_name, reference, pin_number)
+    elif CURRENT_SHEET_NAME == "POWER_INPUT":
+        sch.add_label(net_name, pin=(reference, pin_number))
+    else:
+        add_pin_label_stub(sch, net_name, reference, pin_number, stub=5.08)
+
+
+def add_oriented_label_at_pin(
+    sch, net_name: str, reference: str, pin_number: str
+) -> None:
+    component = sch.components.get(reference)
+    pin = sch.get_component_pin_position(reference, pin_number)
+    if component is None or pin is None:
+        raise ValueError(f"missing pin:{reference}:{pin_number}")
+    definition = next(
+        (item for item in component.pins if str(item.number) == pin_number),
+        None,
     )
+    if definition is None:
+        raise ValueError(f"missing pin definition:{reference}:{pin_number}")
+    horizontal = (definition.rotation + component.rotation) % 180 == 0
+    direction = (
+        1.0 if pin.x >= component.position.x else -1.0
+    ) if horizontal else (
+        1.0 if pin.y >= component.position.y else -1.0
+    )
+    sch.labels.add(
+        net_name,
+        (pin.x, pin.y),
+        rotation=0 if horizontal else 90,
+        justify_h=(
+            "left" if direction > 0 else "right"
+        ) if horizontal else (
+            "right" if direction > 0 else "left"
+        ),
+    )
+    sch._sync_labels_to_data()
 
 
 def add_pin_label_stub(
@@ -309,7 +527,8 @@ def add_pin_label_stub(
     reference: str,
     pin_number: str,
     *,
-    stub: float = 1.27,
+    stub: float = 5.08,
+    size: float = 1.27,
 ) -> None:
     pin = sch.get_component_pin_position(
         reference,
@@ -326,31 +545,43 @@ def add_pin_label_stub(
             f"missing component:{reference}"
         )
 
-    center = component.position
-    dx = pin.x - center.x
-    dy = pin.y - center.y
+    pin_definition = next(
+        (item for item in component.pins if str(item.number) == pin_number),
+        None,
+    )
+    if pin_definition is None:
+        raise ValueError(f"missing pin definition:{reference}:{pin_number}")
 
-    if abs(dx) >= abs(dy):
-        direction = 1.0 if dx >= 0 else -1.0
+    horizontal = (pin_definition.rotation + component.rotation) % 180 == 0
+    if horizontal:
+        direction = 1.0 if pin.x >= component.position.x else -1.0
         end = (
             pin.x + direction * stub,
             pin.y,
         )
+        rotation = 0
+        justify_h = "left" if direction > 0 else "right"
     else:
-        direction = 1.0 if dy >= 0 else -1.0
+        direction = 1.0 if pin.y >= component.position.y else -1.0
         end = (
             pin.x,
             pin.y + direction * stub,
         )
+        rotation = 90
+        justify_h = "left" if direction < 0 else "right"
 
     sch.wires.add(
         start=(pin.x, pin.y),
         end=end,
     )
-    sch.add_label(
+    sch.labels.add(
         net_name,
-        position=end,
+        end,
+        rotation=rotation,
+        justify_h=justify_h,
+        size=size,
     )
+    sch._sync_labels_to_data()
 
 
 def add_labels_by_pin_name(
@@ -384,7 +615,10 @@ def add_labels_by_pin_name(
 
 
 def pos(x_grid: int, y_grid: int) -> tuple[float, float]:
-    return (1.27 * x_grid, 1.27 * y_grid)
+    return (
+        1.27 * x_grid * SHEET_GRID_SCALE[0] + SHEET_ORIGIN_MM[0],
+        1.27 * y_grid * SHEET_GRID_SCALE[1] + SHEET_ORIGIN_MM[1],
+    )
 
 
 def add_local_symbol(
@@ -479,14 +713,7 @@ def add_tps25947_dvdt_labels(
     if component is None:
         raise ValueError(f"missing component:{reference}")
 
-    dvdt_pin = (
-        component.position.x - 12.70,
-        component.position.y,
-    )
-    sch.add_label(
-        net_name,
-        position=dvdt_pin,
-    )
+    add_pin_label(sch, net_name, reference, "7")
 
     cap_pin = sch.get_component_pin_position(
         capacitor_reference,
@@ -510,10 +737,10 @@ def add_tps25947_ground_label(
     if component is None:
         raise ValueError(f"missing component:{reference}")
 
-    pin = (
-        component.position.x + 12.70,
-        component.position.y,
-    )
+    ground_pin = sch.get_component_pin_position(reference, "8")
+    if ground_pin is None:
+        raise ValueError(f"missing pin:{reference}:8")
+    pin = (ground_pin.x, ground_pin.y)
     end = (
         pin[0] + 1.27,
         pin[1],
@@ -529,50 +756,60 @@ def add_tps25947_ground_label(
 
 
 def populate_power(sch, placeholders: list[dict]) -> None:
+    def power_pos(x_grid: int, y_grid: int) -> tuple[float, float]:
+        return (32.0 + (x_grid - 18) * 3.9, 34.0 + (y_grid - 18) * 2.65)
+
     sch.add_text(
         "POWER_INPUT — Rev A authoritative capture\n"
-        "TPS259470A protection + fixed 3.3V TPS62132",
-        position=pos(20, 10),
-        size=1.27,
+        "TPS259470A protection + fixed 3.3V and external GNSS 5V rails",
+        position=(70.0, 20.0),
+        size=1.5,
     )
 
-    sch.components.add("Connector_Generic:Conn_01x02", "J1", "12V_IN", pos(18, 24))
-    sch.components.add("Device:D_TVS", "D1", "SMAJ15CA", pos(26, 18))
-    add_local_symbol(sch, "U6", "TPS259470ARPWR", "TPS259470ARPWR_SYS", pos(43, 24), placeholders)
-    add_local_symbol(sch, "U5", "TPS62132RGTR", "TPS62132RGTR_3V3", pos(60, 24), placeholders)
-    add_local_symbol(sch, "U7", "TPS259470ARPWR", "TPS259470ARPWR_RADAR", pos(43, 42), placeholders)
+    sch.components.add("Connector_Generic:Conn_01x02", "J1", "12V_IN", power_pos(22, 24))
+    sch.components.add("Device:D_TVS", "D1", "SMAJ15CA", power_pos(26, 18))
+    add_local_symbol(sch, "U6", "TPS259470ARPWR", "SYS_EFUSE", power_pos(39, 24), placeholders)
+    add_local_symbol(sch, "U5", "TPS62132RGTR", "3V3_BUCK", power_pos(64, 17), placeholders)
+    add_local_symbol(sch, "U9", "TPS62133RGTR", "5V_GNSS_BUCK", power_pos(64, 46), placeholders)
+    add_local_symbol(sch, "U7", "TPS259470ARPWR", "RADAR_EFUSE", power_pos(39, 42), placeholders)
 
-    sch.components.add("Device:L", "L1", "2.2uH", pos(72, 24))
-    sch.components.add("Device:C", "C1", "10uF/25V", pos(55, 36))
-    sch.components.add("Device:C", "C2", "22uF/6.3V", pos(76, 36))
-    sch.components.add("Device:C", "C3", "3.3nF", pos(64, 36))
-    sch.components.add("Device:C", "C4", "100nF/25V", pos(58, 40))
-    sch.components.add("Device:R", "R1", "665R 1%", pos(39, 34))
-    sch.components.add("Device:R", "R2", "1.05k 1%", pos(39, 52))
-    sch.components.add("Device:R", "R5P", "100k 1% PG_PU", pos(68, 34))
-    sch.components.add("Device:R", "R6F", "10k 1% FLT_PU", pos(48, 34))
-    sch.components.add("Device:R", "R7F", "10k 1% FLT_PU", pos(48, 52))
+    sch.components.add("Device:L", "L1", "2.2uH", power_pos(78, 17))
+    sch.components.add("Device:L", "L9", "2.2uH", power_pos(78, 46))
+    sch.components.add("Device:C", "C1", "10uF/25V", power_pos(55, 36))
+    sch.components.add("Device:C", "C2", "22uF/6.3V", power_pos(76, 36))
+    sch.components.add("Device:C", "C3", "3.3nF", power_pos(64, 36))
+    sch.components.add("Device:C", "C4", "100nF/25V", power_pos(58, 40))
+    sch.components.add("Device:R", "R1", "665R 1%", power_pos(39, 34))
+    sch.components.add("Device:R", "R2", "1.05k 1%", power_pos(39, 52))
+    sch.components.add("Device:R", "R5P", "100k 1% PG_PU", power_pos(68, 34))
+    sch.components.add("Device:C", "C90", "10uF/25V", power_pos(52, 60))
+    sch.components.add("Device:C", "C91", "22uF/10V", power_pos(76, 60))
+    sch.components.add("Device:C", "C92", "3.3nF", power_pos(64, 60))
+    sch.components.add("Device:C", "C93", "100nF/25V", power_pos(58, 60))
+    sch.components.add("Device:R", "R90", "100k 1% PG_PU", power_pos(68, 58))
+    sch.components.add("Device:R", "R6F", "10k 1% FLT_PU", power_pos(48, 34))
+    sch.components.add("Device:R", "R7F", "10k 1% FLT_PU", power_pos(48, 52))
 
     for ref, value, p in [
-        ("R61", "470k 1%", pos(25, 30)), ("R62", "36.0k 1%", pos(29, 34)), ("R63", "41.2k 1%", pos(33, 38)),
-        ("R71", "470k 1%", pos(25, 48)), ("R72", "16.9k 1%", pos(29, 52)), ("R73", "43.7k 1%", pos(33, 56)),
+        ("R61", "470k 1%", power_pos(25, 26)), ("R62", "36.0k 1%", power_pos(29, 30)), ("R63", "41.2k 1%", power_pos(33, 34)),
+        ("R71", "470k 1%", power_pos(25, 48)), ("R72", "16.9k 1%", power_pos(29, 52)), ("R73", "43.7k 1%", power_pos(33, 56)),
     ]:
         sch.components.add("Device:R", ref, value, p)
 
-    sch.components.add("Device:C", "C6D", "3.3nF", pos(43, 36))
-    sch.components.add("Device:C", "C7D", "3.3nF", pos(43, 54))
+    sch.components.add("Device:C", "C6D", "3.3nF", power_pos(43, 36))
+    sch.components.add("Device:C", "C7D", "3.3nF", power_pos(43, 54))
     sch.components.add(
         "power:PWR_FLAG",
         "#FLG0201",
         "PWR_FLAG",
-        pos(20, 28),
+        power_pos(20, 28),
     )
     add_pin_label(sch, "VIN_RAW", "#FLG0201", "1")
     sch.components.add(
         "power:PWR_FLAG",
         "#FLG0202",
         "PWR_FLAG",
-        pos(15, 70),
+        (30.0, 170.0),
     )
     add_pin_label(sch, "GND", "#FLG0202", "1")
 
@@ -637,7 +874,7 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "U5_PG", "U5", "4")
     add_pin_label(sch, "U5_PG", "R5P", "1")
     add_pin_label(sch, "3V3", "R5P", "2")
-    for pin in ("5","6","15","16","EP"):
+    for pin in ("5","6","15","16","17"):
         if sch.get_component_pin_position("U5", pin) is not None:
             add_pin_label(sch, "GND", "U5", pin)
     for pin in ("7","8"):
@@ -657,6 +894,32 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "GND", "C2", "2")
     add_pin_label(sch, "VIN_PROTECTED", "C4", "1")
     add_pin_label(sch, "GND", "C4", "2")
+
+    for pin in ("1", "2", "3"):
+        add_pin_label(sch, "BUCK5_SW", "U9", pin)
+    add_pin_label(sch, "BUCK5_SW", "L9", "1")
+    add_pin_label(sch, "U9_PG", "U9", "4")
+    add_pin_label(sch, "U9_PG", "R90", "1")
+    add_pin_label(sch, "5V_GNSS", "R90", "2")
+    for pin in ("5", "6", "15", "16", "17"):
+        if sch.get_component_pin_position("U9", pin) is not None:
+            add_pin_label(sch, "GND", "U9", pin)
+    for pin in ("7", "8"):
+        p = sch.get_component_pin_position("U9", pin)
+        if p is not None:
+            sch.no_connects.add(position=(p.x, p.y))
+    add_pin_label(sch, "U9_SS_LOCAL", "U9", "9")
+    add_pin_label(sch, "U9_SS_LOCAL", "C92", "1")
+    add_pin_label(sch, "GND", "C92", "2")
+    for pin in ("10", "11", "12", "13"):
+        add_pin_label(sch, "VIN_PROTECTED", "U9", pin)
+    add_pin_label(sch, "5V_GNSS", "U9", "14")
+    add_pin_label(sch, "VIN_PROTECTED", "C90", "1")
+    add_pin_label(sch, "GND", "C90", "2")
+    add_pin_label(sch, "5V_GNSS", "C91", "1")
+    add_pin_label(sch, "GND", "C91", "2")
+    add_pin_label(sch, "VIN_PROTECTED", "C93", "1")
+    add_pin_label(sch, "GND", "C93", "2")
 
 
 def populate_mcu(
@@ -678,7 +941,7 @@ def populate_mcu(
             "MCU_ST_STM32H7:STM32H753IITx",
             "U1",
             "STM32H753IIT6",
-            pos(52, 35),
+            pos(180, 87),
             footprint="Package_QFP:LQFP-176_24x24mm_P0.5mm",
             MPN="STM32H753IIT6",
         )
@@ -687,34 +950,34 @@ def populate_mcu(
             sch,
             "U1",
             "STM32H753IIT6",
-            pos(52, 35),
+            pos(180, 87),
             placeholders,
         )
 
-    sch.components.add("Device:C", "C10", "2.2uF", pos(27, 25))
-    sch.components.add("Device:C", "C11", "2.2uF", pos(27, 33))
-    sch.components.add("Device:C", "C12", "4.7uF", pos(27, 41))
-    sch.components.add("Device:C", "C13", "100nF", pos(83, 26))
-    sch.components.add("Device:R", "R10", "10k 1%", pos(83, 38))
+    sch.components.add("Device:C", "C10", "2.2uF", pos(25, 75))
+    sch.components.add("Device:C", "C11", "2.2uF", pos(25, 90))
+    sch.components.add("Device:C", "C12", "4.7uF", pos(25, 105))
+    sch.components.add("Device:C", "C13", "100nF", pos(80, 50))
+    sch.components.add("Device:R", "R10", "10k 1%", pos(80, 80))
     sch.components.add(
         "Connector_Generic:Conn_01x06",
         "J10",
         "TC2030_SWD",
-        pos(83, 52),
+        pos(80, 100),
     )
     add_local_symbol(
         sch,
         "Y1",
         "ECS-2520S33-250-FN-TR",
-        "ECS-2520S33-250-FN-TR",
-        pos(25, 12),
+        "25MHz_OSC",
+        pos(30, 25),
         placeholders,
     )
     sch.components.add(
         "Device:C",
         "C15",
         "100nF",
-        pos(34, 12),
+        pos(45, 55),
     )
 
     # One 100nF capacitor per STM32 VDD pin, plus USB supply and NRST filter.
@@ -724,8 +987,8 @@ def populate_mcu(
     )
     for index, pin_number in enumerate(vdd_pins):
         ref = f"C{100 + index}"
-        x = 92 if index < 7 else 100
-        y = 16 + 4 * (index % 7)
+        x = 100 if index < 7 else 120
+        y = 20 + 8 * (index % 7)
         sch.components.add(
             "Device:C",
             ref,
@@ -740,7 +1003,7 @@ def populate_mcu(
         "Device:C",
         "C114",
         "100nF VDD33_USB",
-        pos(92, 48),
+        pos(100, 85),
         Decouples_U1_Pin="114",
     )
     add_pin_label(sch, "3V3", "C114", "1")
@@ -750,7 +1013,7 @@ def populate_mcu(
         "Device:C",
         "C115",
         "100nF NRST",
-        pos(100, 48),
+        pos(120, 85),
         Filters_U1_Pin="31",
     )
     add_pin_label(sch, "NRST", "C115", "1")
@@ -758,15 +1021,15 @@ def populate_mcu(
     tp1 = sch.components.add(
         "Connector:TestPoint",
         "TP1",
-        "DEBUG_TX",
-        pos(88, 58),
+        "HOST_UART1_TX",
+        pos(100, 105),
         footprint="TestPoint:TestPoint_Pad_D1.0mm",
     )
     tp2 = sch.components.add(
         "Connector:TestPoint",
         "TP2",
-        "DEBUG_RX",
-        pos(88, 62),
+        "HOST_UART1_RX",
+        pos(120, 105),
         footprint="TestPoint:TestPoint_Pad_D1.0mm",
     )
     tp1.in_bom = False
@@ -782,26 +1045,26 @@ def populate_mcu(
         "Device:L_Ferrite",
         "FB1",
         "BLM18BD601SH1",
-        pos(30, 18),
+        pos(65, 35),
         MPN="BLM18BD601SH1",
     )
     sch.components.add(
         "Device:C",
         "C14",
         "1uF",
-        pos(36, 22),
+        pos(65, 65),
     )
     sch.components.add(
         "power:PWR_FLAG",
         "#FLG0101",
         "PWR_FLAG",
-        pos(22, 18),
+        pos(45, 110),
     )
     sch.components.add(
         "power:PWR_FLAG",
         "#FLG0103",
         "PWR_FLAG",
-        pos(40, 18),
+        pos(75, 110),
     )
 
     # Bind every assigned MCU signal directly to the authoritative net name.
@@ -816,11 +1079,7 @@ def populate_mcu(
             physical
             and net_name
             and net_name not in hierarchy_nets
-            and net_name not in {
-                "MCU_HSE_25M",
-                "DEBUG_TX",
-                "DEBUG_RX",
-            }
+            and net_name != "MCU_HSE_25M"
         ):
             add_pin_label(
                 sch,
@@ -837,10 +1096,8 @@ def populate_mcu(
     add_pin_label(sch, "GND", "Y1", "2")
     add_pin_label(sch, "MCU_HSE_25M", "Y1", "3")
     add_pin_label(sch, "MCU_HSE_25M", "U1", "29")
-    add_pin_label(sch, "DEBUG_TX", "U1", "147")
-    add_pin_label(sch, "DEBUG_TX", "TP1", "1")
-    add_pin_label(sch, "DEBUG_RX", "U1", "150")
-    add_pin_label(sch, "DEBUG_RX", "TP2", "1")
+    add_pin_label(sch, "HOST_UART1_TX", "TP1", "1")
+    add_pin_label(sch, "HOST_UART1_RX", "TP2", "1")
     add_pin_label(sch, "3V3", "Y1", "4")
     add_pin_label(sch, "3V3", "C15", "1")
     add_pin_label(sch, "GND", "C15", "2")
@@ -940,112 +1197,52 @@ def populate_mcu(
 
 def populate_time_gnss(sch, placeholders: list[dict]) -> None:
     sch.add_text(
-        "TIME_GNSS — NEO-M9N timing and RF entry\n"
-        "P0 GNSS_PPS -> STM32 PA0/TIM2_CH1",
-        position=pos(18, 9),
-        size=1.27,
+        "TIME_GNSS — external simpleRTK3B Pro / mosaic-X5 interface\n"
+        "Optional untrusted GNSS aiding: 5V, USART3 and 3.3V PPS",
+        position=(82.0, 18.0),
+        size=1.5,
     )
 
-    try:
-        sch.components.add(
-            "RF_GPS:NEO-M9N",
-            "U8",
-            "NEO-M9N-00B",
-            pos(50, 32),
-            footprint="SystemCarrier_Local:NEO-M9N_LCC24_12.2x16mm",
-            MPN="NEO-M9N-00B",
-        )
-    except Exception:
-        add_placeholder(sch, "U8", "NEO-M9N-00B", pos(50, 32), placeholders)
-
-    sch.components.add(
-        "Device:D_TVS", "D8", "ESD0P2RF-02LS", pos(72, 28),
-        footprint="SystemCarrier_Local:ESD0P2RF-02LS_PG-TSSLP-2-1",
-        MPN="ESD0P2RF-02LS",
-    )
-    sch.components.add("Connector_Generic:Conn_01x02", "J8", "GNSS_UFL", pos(86, 28))
-    sch.components.add("Device:C", "C80", "100nF", pos(36, 42))
-    sch.components.add("Device:C", "C81", "10uF", pos(42, 42))
-    sch.components.add("Device:L", "L80", "27nH DNP_OPTION", pos(72, 42))
-    sch.components.add("Device:R", "R80", "10R 0.25W DNP_OPTION", pos(64, 48))
-    sch.components.add("Device:C", "C82", "100nF DNP_OPTION", pos(78, 48))
-    sch.components.add("Device:R", "R81", "100k 1% VUSB_PD", pos(57, 48))
-    sch.components.add("Device:R", "R82", "0R V_BCKP", pos(57, 53))
-    sch.components.add(
-        "power:PWR_FLAG",
-        "#FLG0301",
-        "PWR_FLAG",
-        pos(64, 53),
+    add_local_symbol(
+        sch,
+        "D8",
+        "TPD4E05U06DQAR",
+        "UART_PPS_ESD",
+        pos(45, 34),
+        placeholders,
     )
     sch.components.add(
-        "power:PWR_FLAG",
-        "#FLG0302",
-        "PWR_FLAG",
-        pos(64, 48),
+        "Connector_Generic:Conn_01x06",
+        "J8",
+        "EXT_GNSS_PIXHAWK",
+        pos(96, 44),
+        MPN="SM06B-GHS-TB(LF)(SN)",
     )
 
-    # Main supply decoupling.
-    add_pin_label_stub(sch, "3V3", "C80", "1")
-    add_pin_label_stub(sch, "GND", "C80", "2")
-    add_pin_label_stub(sch, "3V3", "C81", "1")
-    add_pin_label_stub(sch, "GND", "C81", "2")
-
-    # Backup-domain and unused USB supply requirements.
-    for ref, pin in (
-        ("U8", "22"),
-        ("R82", "1"),
-        ("#FLG0301", "1"),
-    ):
-        add_pin_label(
-            sch,
-            "GNSS_BCKP_LOCAL",
-            ref,
-            pin,
-        )
-    add_pin_label_stub(sch, "3V3", "R82", "2")
-
-    for ref, pin in (
-        ("U8", "7"),
-        ("R81", "1"),
-        ("#FLG0302", "1"),
-    ):
-        add_pin_label(
-            sch,
-            "GNSS_VUSB_LOCAL",
-            ref,
-            pin,
-        )
-    add_pin_label_stub(sch, "GND", "R81", "2")
-
-    # Internal straps intentionally left open by contract.
-    for pin in ("2", "8"):
-        p = sch.get_component_pin_position("U8", pin)
+    for pin, net in {
+        "1": "GNSS_RX_EXT",
+        "2": "GNSS_TX_EXT",
+        "4": "GNSS_PPS",
+    }.items():
+        add_pin_label_stub(sch, net, "D8", pin)
+    add_pin_label_stub(sch, "GND", "D8", "3")
+    add_pin_label_stub(sch, "GND", "D8", "8")
+    for pin in ("5", "6", "7", "9", "10"):
+        p = sch.get_component_pin_position("D8", pin)
         if p is not None:
             sch.no_connects.add(position=(p.x, p.y))
 
-    # RF path: RF_IN / U.FL signal on GNSS_RF, with shunt ESD.
-    add_pin_label_stub(sch, "GNSS_RF", "U8", "11")
-    add_pin_label_stub(sch, "GNSS_RF", "J8", "1")
-    add_pin_label_stub(sch, "GND", "J8", "2")
-    add_pin_label_stub(sch, "GNSS_RF", "D8", "1")
-    add_pin_label_stub(sch, "GND", "D8", "2")
-
-    # Optional active-antenna bias-T:
-    # VCC_RF -> 10R -> filtered node -> 27nH -> GNSS_RF,
-    # with 100nF from filtered node to GND.
-    add_pin_label_stub(sch, "GNSS_VCC_RF", "U8", "9")
-    add_pin_label_stub(sch, "GNSS_VCC_RF", "R80", "1")
-    add_pin_label_stub(sch, "GNSS_BIAS_FILTER", "R80", "2")
-    add_pin_label_stub(sch, "GNSS_BIAS_FILTER", "L80", "1")
-    add_pin_label_stub(sch, "GNSS_RF", "L80", "2")
-    add_pin_label_stub(sch, "GNSS_BIAS_FILTER", "C82", "1")
-    add_pin_label_stub(sch, "GND", "C82", "2")
+    event_pin = sch.get_component_pin_position("J8", "5")
+    if event_pin is not None:
+        sch.no_connects.add(position=(event_pin.x, event_pin.y))
 
     sch.add_text(
-        "R82 ties V_BCKP to 3V3 for EVT. R81 pulls unused V_USB to GND.\n"
-        "L80/R80/C82 implement the optional active-antenna VCC_RF bias-T.",
-        position=pos(18, 62),
-        size=1.0,
+        "J8 Pixhawk adapter: 1 5V, 2 receiver RX,\n"
+        "3 receiver TX, 4 PPS, 5 event NC, 6 GND.\n"
+        "D8 protects UART/PPS. The receiver may be absent\n"
+        "or quarantined without stopping carrier operation.",
+        position=(55.0, 95.0),
+        size=1.1,
     )
 
 
@@ -1053,15 +1250,15 @@ def populate_imu(sch, placeholders: list[dict]) -> None:
     sch.add_text(
         "IMU — ICM-42688-P SPI2 + hardware DRDY\n"
         "P0 IMU_DRDY -> STM32 PB11/TIM2_CH4",
-        position=pos(18, 9),
-        size=1.27,
+        position=(82.0, 18.0),
+        size=1.5,
     )
 
     add_local_symbol(
         sch,
         "U2",
         "ICM-42688-P",
-        "ICM-42688-P",
+        "IMU",
         pos(52, 31),
         placeholders,
     )
@@ -1085,10 +1282,11 @@ def populate_imu(sch, placeholders: list[dict]) -> None:
     add_pin_label_stub(sch, "GND", "C22", "2")
 
     sch.add_text(
-        "C20/C21 are VDD decoupling; C22 is the dedicated VDDIO 10nF bypass.\n"
-        "Pin7 RESV and pin9 FSYNC are tied to GND per the Rev.A pin contract.",
-        position=pos(18, 61),
-        size=1.0,
+        "C20/C21: VDD decoupling. C22: 10nF VDDIO.\n"
+        "Pin7 RESV and pin9 FSYNC connect to GND\n"
+        "per the Rev.A pin contract.",
+        position=(55.0, 95.0),
+        size=1.1,
     )
 
 
@@ -1096,36 +1294,38 @@ def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
     sch.add_text(
         "RADAR_IO_CAN — external AWR2944-class EVM interface\n"
         "CAN-FD control/metadata + P0 RADAR_REF timestamp + protected 12V",
-        position=pos(18, 9),
-        size=1.27,
+        position=(82.0, 18.0),
+        size=1.5,
     )
 
     add_local_symbol(
-        sch, "U4", "TCAN3404DRBRQ1", "TCAN3404DRBRQ1",
+        sch, "U4", "TCAN3404DRBRQ1", "CAN_FD",
         pos(50, 30), placeholders
     )
     add_local_symbol(
-        sch, "D4", "ESD2CANFD24DBZRQ1", "ESD2CANFD24-Q1",
-        pos(68, 30), placeholders
+        sch, "D4", "ESD2CANFD24DBZRQ1", "CAN_ESD",
+        pos(100, 30), placeholders
     )
 
-    sch.components.add("Connector_Generic:Conn_01x06", "J4", "RADAR_IO", pos(86, 32))
-    sch.components.add("Connector_Generic:Conn_01x02", "J5", "RADAR_PWR", pos(86, 50))
-    sch.components.add("Device:R", "R40", "120R 1% DNP_DEFAULT", pos(70, 45))
+    sch.components.add("Connector_Generic:Conn_01x06", "J4", "RADAR_IO", pos(116, 32))
+    sch.components.add("Connector_Generic:Conn_01x02", "J5", "RADAR_PWR", pos(116, 50))
+    sch.components.add("Device:R", "R40", "120R", pos(88, 53))
     sch.components.add("Device:C", "C40", "100nF", pos(42, 42))
-    sch.components.add("Device:R", "R41", "10k 1% STB_PD", pos(52, 46))
-    sch.components.add("Device:R", "R42", "10k 1% SHDN_PD", pos(59, 46))
+    sch.components.add("Device:R", "R41", "10k", pos(52, 46))
+    sch.components.add("Device:R", "R42", "10k", pos(59, 46))
 
     # Transceiver local power and exposed-pad ground.
     add_pin_label_stub(sch, "3V3", "C40", "1")
     add_pin_label_stub(sch, "GND", "C40", "2")
-    if sch.get_component_pin_position("U4", "EP") is not None:
-        add_pin_label_stub(sch, "GND", "U4", "EP")
+    if sch.get_component_pin_position("U4", "9") is not None:
+        add_pin_label_stub(sch, "GND", "U4", "9")
 
     # Deterministic normal mode defaults.
-    sch.add_wire_between_pins("U4", "8", "R41", "1")
+    add_pin_label_stub(sch, "STB_PD", "U4", "8")
+    add_pin_label_stub(sch, "STB_PD", "R41", "1")
     add_pin_label_stub(sch, "GND", "R41", "2")
-    sch.add_wire_between_pins("U4", "5", "R42", "1")
+    add_pin_label_stub(sch, "SHDN_PD", "U4", "5")
+    add_pin_label_stub(sch, "SHDN_PD", "R42", "1")
     add_pin_label_stub(sch, "GND", "R42", "2")
 
     # CAN bus and ESD.
@@ -1137,7 +1337,6 @@ def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
     add_pin_label_stub(sch, "RADAR_CANL", "J4", "1")
     add_pin_label_stub(sch, "GND", "J4", "2")
     add_pin_label_stub(sch, "RADAR_CANH", "J4", "3")
-    add_pin_label_stub(sch, "RADAR_REF", "J4", "4")
     add_pin_label_stub(sch, "GND", "J4", "5")
     p = sch.get_component_pin_position("J4", "6")
     if p is not None:
@@ -1148,215 +1347,93 @@ def populate_radar_io_can(sch, placeholders: list[dict]) -> None:
     add_pin_label_stub(sch, "RADAR_CANL", "R40", "2")
 
     # Protected radar power connector.
-    add_pin_label_stub(sch, "RADAR_12V", "J5", "1")
     add_pin_label_stub(sch, "GND", "J5", "2")
 
     sch.add_text(
-        "R40 is DNP by default and populated only when the carrier is the CAN endpoint.\n"
-        "R41/R42 force normal mode defaults. J4 pin6 remains NC by Rev.A contract.",
-        position=pos(18, 62),
-        size=1.0,
+        "R40 120R 1% is DNP by default.\n"
+        "Populate only at the CAN endpoint.\n"
+        "R41/R42 10k 1% select normal mode.\n"
+        "J4 pin6 is NC by Rev.A contract.",
+        position=(55.0, 96.0),
+        size=1.1,
     )
 
 
-def populate_ethernet(sch, placeholders: list[dict]) -> None:
+def populate_host_uart(sch, placeholders: list[dict]) -> None:
     sch.add_text(
-        "ETHERNET — LAN8742A RMII instrumentation link\n"
-        "External 50 MHz clock + integrated 10/100BASE-T MagJack",
-        position=pos(18, 9),
-        size=1.27,
+        "HOST_UART — two independent 3.3V UART interfaces\n"
+        "USART2 on PD5/PD6 + USART1 on PA9/PA10; TX/RX/GND only",
+        position=(82.0, 18.0),
+        size=1.5,
     )
 
-    try:
-        sch.components.add(
-            "Interface_Ethernet:LAN8742A",
-            "U3",
-            "LAN8742Ai-CZ-TR",
-            pos(48, 31),
-            MPN="LAN8742Ai-CZ-TR",
-        )
-    except Exception:
-        add_placeholder(
-            sch,
-            "U3",
-            "LAN8742Ai-CZ-TR",
-            pos(48, 31),
-            placeholders,
-        )
-
-    add_local_symbol(
-        sch,
-        "Y2",
-        "ECS-2520S33-500-FN-TR",
-        "ECS-2520S33-500-FN-TR",
-        pos(28, 22),
-        placeholders,
-    )
     add_local_symbol(
         sch,
         "D3",
         "TPD4E05U06DQAR",
-        "TPD4E05U06DQAR",
-        pos(72, 40),
+        "DUAL_UART_ESD",
+        pos(62, 39),
         placeholders,
     )
     sch.components.add(
-        "Connector:RJ45_Bel_SI-60062-F",
+        "Connector_Generic:Conn_01x06",
         "J6",
-        "SI-60182-F",
-        pos(88, 31),
-        footprint="Connector_RJ:RJ45_Bel_SI-60062-F",
-        MPN="SI-60182-F",
-        Compatibility_Basis="Bel_SI-60182-F_vs_SI-60062-F_verified",
+        "HOST_UART_2X",
+        pos(96, 38),
+        MPN="43045-0600",
     )
 
-    sch.components.add("Device:R", "R600", "12.1k 1%", pos(42, 45))
-    for ref, y in [("R601", 42), ("R602", 52), ("R603", 62), ("R604", 72)]:
-        sch.components.add("Device:R", ref, "49.9R 1%", pos(68, y))
+    sch.components.add("Device:R", "R600", "10k", pos(50, 31))
+    sch.components.add("Device:R", "R605", "10k", pos(50, 57))
+    for ref, x, y in [
+        ("R601", 45, 25), ("R602", 45, 38),
+        ("R603", 45, 51), ("R604", 45, 64),
+    ]:
+        sch.components.add("Device:R", ref, "33R", pos(x, y))
 
-    sch.components.add("Device:C", "C60", "1uF", pos(50, 45))
-    sch.components.add("Device:C", "C61", "470pF C0G", pos(56, 45))
-    sch.components.add("Device:C", "C62", "100nF", pos(36, 45), Decouples_U3_Pin="1")
-    sch.components.add("Device:C", "C63", "22nF C0G", pos(82, 54))
-    sch.components.add("Device:C", "C64", "100nF", pos(38, 48), Decouples_U3_Pin="9")
-    sch.components.add("Device:C", "C65", "100nF", pos(40, 51), Decouples_U3_Pin="19")
-    sch.components.add("Device:R", "R605", "10k 1% NRST_PD", pos(58, 51))
-    sch.components.add(
-        "power:PWR_FLAG",
-        "#FLG0601",
-        "PWR_FLAG",
-        pos(54, 45),
-    )
-    sch.components.add(
-        "power:PWR_FLAG",
-        "#FLG0602",
-        "PWR_FLAG",
-        pos(94, 50),
-    )
+    for ref in ("R600", "R605", "R601", "R602", "R603", "R604"):
+        sch.components.get(ref).rotation = 270
 
-    # LAN8742 power and mandatory local bias/support network.
-    for pin in ("9", "19"):
-        add_pin_label_stub(sch, "3V3", "U3", pin)
-    if sch.get_component_pin_position("U3", "25") is not None:
-        add_pin_label_stub(sch, "GND", "U3", "25")
+    series_nets = {
+        "R601": ("HOST_UART1_TX", "HOST_UART1_TX_EXT"),
+        "R602": ("HOST_UART1_RX", "HOST_UART1_RX_EXT"),
+        "R603": ("HOST_UART2_TX", "HOST_UART2_TX_EXT"),
+        "R604": ("HOST_UART2_RX", "HOST_UART2_RX_EXT"),
+    }
+    for ref, (mcu_net, connector_net) in series_nets.items():
+        add_pin_label_stub(sch, connector_net, ref, "2")
 
-    sch.add_wire_between_pins("U3", "24", "R600", "1")
-    add_pin_label_stub(sch, "GND", "R600", "2")
+    add_pin_label_stub(sch, "HOST_UART1_RX", "R600", "1")
+    add_pin_label_stub(sch, "HOST_UART2_RX", "R605", "1")
+    add_pin_label_stub(sch, "3V3", "R605", "2")
 
-    sch.add_wire_between_pins("U3", "6", "C60", "1")
-    sch.add_wire_between_pins("C60", "1", "#FLG0601", "1")
-    add_pin_label_stub(sch, "GND", "C60", "2")
+    add_pin_label_stub(sch, "GND", "D3", "3")
+    add_pin_label_stub(sch, "GND", "D3", "8")
 
-    # Local 3V3 decoupling / analog filter caps.
-    add_pin_label_stub(sch, "3V3", "C62", "1")
-    # C62.2 receives the authoritative hierarchical GND label later.
-    add_pin_label_stub(sch, "3V3", "C64", "1")
-    add_pin_label_stub(sch, "GND", "C64", "2")
-    add_pin_label_stub(sch, "3V3", "C65", "1")
-    add_pin_label_stub(sch, "GND", "C65", "2")
-    add_pin_label_stub(sch, "3V3", "C61", "1")
-    add_pin_label_stub(sch, "GND", "C61", "2")
+    channel_pins = {
+        "HOST_UART1_TX_EXT": ("1", "2"),
+        "HOST_UART1_RX_EXT": ("2", "3"),
+        "HOST_UART2_TX_EXT": ("4", "5"),
+        "HOST_UART2_RX_EXT": ("5", "6"),
+    }
+    for net_name, (esd_pin, connector_pin) in channel_pins.items():
+        add_pin_label_stub(sch, net_name, "D3", esd_pin, stub=7.62, size=1.0)
+        add_pin_label_stub(sch, net_name, "J6", connector_pin, stub=7.62, size=1.0)
 
-    # Internal strap/default pins and unused outputs.
-    for pin in ("2", "3", "4", "10", "14"):
-        p = sch.get_component_pin_position("U3", pin)
+    for pin in ("6", "7", "9", "10"):
+        p = sch.get_component_pin_position("D3", pin)
         if p is not None:
             sch.no_connects.add(position=(p.x, p.y))
 
-    # PHY controlled reset pulldown.
-    add_pin_label_stub(sch, "ETH_NRST", "R605", "1")
-    add_pin_label_stub(sch, "GND", "R605", "2")
-
-    # 50 MHz oscillator.
-    add_pin_label_stub(sch, "GND", "Y2", "2")
-    add_pin_label_stub(sch, "ETH_50M", "Y2", "3")
-    add_pin_label_stub(sch, "3V3", "Y2", "4")
-    p = sch.get_component_pin_position("Y2", "1")
-    if p is not None:
-        sch.no_connects.add(position=(p.x, p.y))
-
-    # Name MDI nets at the PHY side. D3/J6 remain physically wired.
-    for pin, net in {
-        "20": "ETH_TXN",
-        "21": "ETH_TXP",
-        "22": "ETH_RXN",
-        "23": "ETH_RXP",
-    }.items():
-        add_pin_label_stub(sch, net, "U3", pin)
-
-    # ESD channels use short outward stubs and labels. This avoids
-    # long through-symbol wires while keeping the U3/D3/J6 nets identical.
-    def add_d3_signal_stub(
-        pin_number: str,
-        net_name: str,
-        dx: float,
-    ) -> None:
-        p = sch.get_component_pin_position("D3", pin_number)
-        if p is None:
-            raise ValueError(f"missing D3 pin:{pin_number}")
-        end = (p.x + dx, p.y)
-        sch.wires.add(start=(p.x, p.y), end=end)
-        sch.add_label(net_name, position=end)
-
-    add_d3_signal_stub("1", "ETH_TXP", -1.27)
-    add_d3_signal_stub("2", "ETH_TXN", 1.27)
-    add_d3_signal_stub("4", "ETH_RXP", 1.27)
-    add_d3_signal_stub("5", "ETH_RXN", -1.27)
-
-    def add_d3_ground_stub(pin_number: str, dx: float) -> None:
-        p = sch.get_component_pin_position("D3", pin_number)
-        if p is None:
-            raise ValueError(f"missing D3 pin:{pin_number}")
-        end = (p.x + dx, p.y)
-        sch.wires.add(start=(p.x, p.y), end=end)
-        sch.add_label("GND", position=end)
-
-    add_d3_ground_stub("3", -2.54)
-    add_d3_ground_stub("8", 2.54)
-
-    # Four 49.9-ohm MDI terminations to analog 3.3V rail.
-    for ref, net in {
-        "R601": "ETH_TXP",
-        "R602": "ETH_TXN",
-        "R603": "ETH_RXP",
-        "R604": "ETH_RXN",
-    }.items():
-        add_pin_label_stub(sch, net, ref, "1")
-        add_pin_label_stub(sch, "3V3", ref, "2")
-
-    # MagJack PHY-side pairs are wired explicitly through D3 above.
-
-    # MagJack PHY-side data pairs join the same named nets.
-    for pin, net in {
-        "1": "ETH_TXP",
-        "3": "ETH_TXN",
-        "4": "ETH_RXP",
-        "6": "ETH_RXN",
-    }.items():
-        add_pin_label_stub(sch, net, "J6", pin)
-
-    # TX/RX center taps tied together and AC-shunted to ground.
-    add_pin_label_stub(sch, "ETH_CT", "J6", "2")
-    add_pin_label_stub(sch, "ETH_CT", "J6", "5")
-    add_pin_label_stub(sch, "ETH_CT", "C63", "1")
-    add_pin_label_stub(sch, "GND", "C63", "2")
-
-    # SI-60182-F P8 is the external Bob-Smith/EMI return and SH is
-    # the panel/shield domain. Tie both to the external chassis net.
-    sch.add_wire_between_pins("J6", "8", "J6", "SH")
-    sch.add_wire_between_pins("J6", "8", "#FLG0602", "1")
-
-    # LEDs are not used in Rev.A firmware/harness; leave them explicit NC.
-    for pin in ("L1", "L2", "L3", "L4"):
-        p = sch.get_component_pin_position("J6", pin)
-        if p is not None:
-            sch.no_connects.add(position=(p.x, p.y))
+    add_pin_label_stub(sch, "GND", "J6", "4")
 
     sch.add_text(
-        "R60 = PHY RBIAS. R61-R64 = 49.9R MDI terminations to 3V3.\n"
-        "C60 = VDDCR. C63 = 22nF center-tap AC shunt.\n"
-        "MagJack LED/shield service pins remain unresolved until the exact SI-60182-F drawing is bound.",
-        position=pos(18, 64),
+        "J6: 1 GND, 2 U1 TX, 3 U1 RX,\n"
+        "4 GND, 5 U2 TX, 6 U2 RX.\n"
+        "R601-R604: 33R series. R600/R605: 10k RX pull-ups.\n"
+        "D3 protects all four signal lines.\n"
+        "No supply voltage is exported.",
+        position=(45.0, 119.0),
         size=1.0,
     )
 
@@ -1367,28 +1444,29 @@ def populate_debug_boot(sch, placeholders: list[dict]) -> None:
     sch.add_text(
         "DEBUG_BOOT — SWD, reset and boot service access\n"
         "No vehicle actuation/control interfaces",
-        position=pos(18, 9),
-        size=1.27,
+        position=(82.0, 18.0),
+        size=1.5,
     )
 
     sch.components.add(
         "Switch:SW_Push",
         "SW1",
         "NRST",
-        pos(52, 30),
+        pos(35, 30),
     )
     sch.components.add(
         "Device:R",
         "R70",
-        "0R DNP_BOOT_OVERRIDE",
-        pos(52, 42),
+        "0R",
+        pos(80, 48),
     )
 
     sch.add_text(
-        "Primary Tag-Connect SWD connector remains captured with MCU_CORE.\n"
-        "SW1 pulls NRST low; R70 is a DNP service override only.",
-        position=pos(18, 61),
-        size=1.0,
+        "Primary Tag-Connect SWD remains on MCU_CORE.\n"
+        "SW1 pulls NRST low. R70 is a DNP\n"
+        "service override only.",
+        position=(55.0, 95.0),
+        size=1.1,
     )
 
 def populate_text_sheet(sch, title: str, notes: list[str]) -> None:
@@ -1557,10 +1635,18 @@ def add_child_hierarchy_labels(
             row["anchor_pin"]
         ).strip()
 
+        position_pin_number = pin_number
+        if CURRENT_SHEET_NAME == "HOST_UART" and reference in {
+            "R600", "R601", "R602", "R603", "R604"
+        }:
+            # kicad-sch-api 0.5.6 returns the opposite graphical endpoint for
+            # vertically rotated two-pin resistors.
+            position_pin_number = "2" if pin_number == "1" else "1"
+
         position = (
             sch.get_component_pin_position(
                 reference,
-                pin_number,
+                position_pin_number,
             )
         )
         if position is None:
@@ -1568,6 +1654,109 @@ def add_child_hierarchy_labels(
                 "hierarchy anchor missing:"
                 f"{reference}:{pin_number}:{net_name}"
             )
+
+        # Keep the child port on a short wire. KiCad treats a label placed
+        # directly on a pin as connected, but Altium's KiCad importer can
+        # leave that same imported port detached from its component pin.
+        component = sch.components.get(reference)
+        if component is None:
+            raise ValueError(f"hierarchy component missing:{reference}")
+        legacy_layout = CURRENT_SHEET_NAME in {"POWER_INPUT", "MCU_CORE"}
+        if legacy_layout:
+            dx = position.x - component.position.x
+            dy = position.y - component.position.y
+            stub = 25.4 if reference in {"U6", "U7"} else (
+                12.7 if reference == "J1" else 1.27
+            )
+            if CURRENT_SHEET_NAME == "MCU_CORE":
+                definition = next(
+                    (pin for pin in component.pins if str(pin.number) == pin_number),
+                    None,
+                )
+                if definition is None:
+                    raise ValueError(
+                        f"missing hierarchy pin:{reference}:{pin_number}"
+                    )
+                horizontal = (
+                    definition.rotation + component.rotation
+                ) % 180 == 0
+                if horizontal:
+                    stub = 25.4
+            else:
+                horizontal = abs(dx) >= abs(dy)
+            if horizontal:
+                label_position = (
+                    position.x + (stub if dx >= 0 else -stub),
+                    position.y,
+                )
+            else:
+                label_position = (
+                    position.x,
+                    position.y + (stub if dy >= 0 else -stub),
+                )
+        else:
+            pin_definition = next(
+                (pin for pin in component.pins if str(pin.number) == pin_number),
+                None,
+            )
+            if pin_definition is None:
+                raise ValueError(f"missing hierarchy pin:{reference}:{pin_number}")
+            horizontal = (pin_definition.rotation + component.rotation) % 180 == 0
+            direction = (
+                1.0 if position.x >= component.position.x else -1.0
+            ) if horizontal else (
+                1.0 if position.y >= component.position.y else -1.0
+            )
+            stub = (
+                66.04
+                if horizontal
+                and direction < 0
+                and reference in {
+                    "U2", "J8", "U4", "R601", "R602", "R603", "R604"
+                }
+                else 20.32 if horizontal and reference in {"J4", "J5", "J6"}
+                else 35.56 if horizontal
+                else 20.32
+            )
+            if horizontal:
+                label_position = (position.x + direction * stub, position.y)
+            else:
+                label_position = (position.x, position.y + direction * stub)
+        sch.wires.add(
+            start=(position.x, position.y),
+            end=label_position,
+        )
+
+        # Keep the imported PCB net name bound to the hierarchy contract.
+        # Ports alone can compile to generic NetU1_* names when Altium is
+        # configured to avoid using port names as global net identifiers.
+        if legacy_layout:
+            net_label_position = (
+                (position.x - 6.35, position.y)
+                if reference == "J1" else (position.x, position.y)
+            )
+            if CURRENT_SHEET_NAME == "MCU_CORE":
+                add_oriented_label_at_pin(
+                    sch, net_name, reference, pin_number
+                )
+            else:
+                sch.add_label(net_name, position=net_label_position)
+        else:
+            net_label_position = (
+                (position.x + direction * 5.08, position.y)
+                if horizontal else (position.x, position.y + direction * 5.08)
+            )
+            sch.labels.add(
+                net_name,
+                net_label_position,
+                rotation=0 if horizontal else 90,
+                justify_h=(
+                    "left" if direction > 0 else "right"
+                ) if horizontal else (
+                    "right" if direction > 0 else "left"
+                ),
+            )
+            sch._sync_labels_to_data()
 
         shape = {
             "input": HierarchicalLabelShape.INPUT,
@@ -1585,23 +1774,18 @@ def add_child_hierarchy_labels(
             sch.add_hierarchical_label(
                 text=net_name,
                 label_type=pin_type,
-                position=(
-                    position.x,
-                    position.y,
-                ),
+                position=label_position,
             )
         except TypeError:
             sch.add_hierarchical_label(
                 text=net_name,
-                position=(
-                    position.x,
-                    position.y,
-                ),
+                position=label_position,
                 shape=shape,
             )
 
 
 def build(output_dir: Path) -> dict:
+    global SHEET_ORIGIN_MM, SHEET_GRID_SCALE, CURRENT_SHEET_NAME
     output_dir.mkdir(parents=True, exist_ok=True)
 
     repo_root = Path(__file__).resolve().parents[1]
@@ -1644,17 +1828,6 @@ def build(output_dir: Path) -> dict:
         local_fp_output,
         dirs_exist_ok=True,
     )
-    (output_dir / "fp-lib-table").write_text(
-        "(fp_lib_table\n"
-        "  (lib (name \"SystemCarrier_Local\") "
-        "(type \"KiCad\") "
-        "(uri \"${KIPRJMOD}/SystemCarrier_Local.pretty\") "
-        "(options \"\") "
-        "(descr \"RLS Head System Carrier local footprints\"))\n"
-        ")\n",
-        encoding="utf-8",
-    )
-
     write_symbol_library_table(output_dir)
 
     symbol_cache = ksa.library.get_symbol_cache()
@@ -1680,6 +1853,37 @@ def build(output_dir: Path) -> dict:
         / "system_carrier"
         / "SYMBOL_PIN_CONTRACT_SYS_001.csv"
     )
+    footprint_assignments = load_footprint_assignments(
+        repo_root
+        / "hardware"
+        / "system_carrier"
+        / "FOOTPRINT_ASSIGNMENT_SYS_002.csv"
+    )
+    bom_mpn = load_bom_mpn(
+        repo_root
+        / "hardware"
+        / "system_carrier"
+        / "BOM_SYS_CARRIER_LAYOUT_004.csv"
+    )
+    footprint_staging = stage_import_footprints(
+        output_dir, footprint_assignments
+    )
+    footprint_libraries = {
+        identifier.split(":", 1)[0]
+        for identifier in footprint_assignments.values()
+    }
+    fp_table = ["(fp_lib_table"]
+    for library in sorted(footprint_libraries):
+        fp_table.append(
+            f'  (lib (name "{library}") (type "KiCad") '
+            f'(uri "${{KIPRJMOD}}/{library}.pretty") '
+            '(options "") (descr "System Carrier import footprint"))'
+        )
+    fp_table.append(")")
+    (output_dir / "fp-lib-table").write_text(
+        "\n".join(fp_table) + "\n", encoding="utf-8"
+    )
+    assigned_footprint_refs: set[str] = set()
 
     hierarchy_interface_path = (
         repo_root
@@ -1692,6 +1896,7 @@ def build(output_dir: Path) -> dict:
     )
 
     main = ksa.create_schematic(PROJECT_NAME)
+    main.set_paper_size("A2")
     parent_uuid = main.uuid
     placeholders: list[dict] = []
     mcu_unused_gpio_no_connect_count = 0
@@ -1709,10 +1914,10 @@ def build(output_dir: Path) -> dict:
         col = index % 2
         row = index // 2
         sheet_position = (
-            30.48 + 101.6 * col,
-            25.4 + 50.8 * row,
+            45.72 + 294.64 * col,
+            40.64 + 91.44 * row,
         )
-        sheet_size = (88.9, 38.1)
+        sheet_size = (190.5, 76.2)
 
         sheet_uuid = main.sheets.add_sheet(
             name=name,
@@ -1745,10 +1950,7 @@ def build(output_dir: Path) -> dict:
                 pin_type
             )
             by_type_count[pin_type] += 1
-            offset = (
-                2.54
-                * by_type_count[pin_type]
-            )
+            offset = 3.81 * by_type_count[pin_type]
 
             main.sheets.add_sheet_pin(
                 sheet_uuid,
@@ -1768,7 +1970,7 @@ def build(output_dir: Path) -> dict:
                     offset,
                 )
             )
-            stub = 5.08
+            stub = 20.32 if edge in {"left", "right"} else 5.08
             if edge == "left":
                 label_position = (
                     root_position[0] - stub,
@@ -1793,24 +1995,39 @@ def build(output_dir: Path) -> dict:
                 start=root_position,
                 end=label_position,
             )
-            main.add_label(
-                str(
-                    item["net_name"]
-                ).strip(),
-                position=label_position,
+            net_name = str(item["net_name"]).strip()
+            main.labels.add(
+                net_name,
+                label_position,
+                rotation=0 if edge in {"left", "right"} else 90,
+                justify_h=(
+                    "right" if edge == "left" else "left"
+                ) if edge in {"left", "right"} else (
+                    "right" if edge == "top" else "left"
+                ),
+                size=1.5,
             )
+            main._sync_labels_to_data()
+
+            for sheet in main._data["sheets"]:
+                if sheet["uuid"] == sheet_uuid:
+                    sheet["pins"][-1]["size"] = 1.5
+                    break
 
     main.add_text(
         "EVT System Carrier\n"
         "External radar front-end: TI AWR2944PEVM\n"
         "Carrier contains no 76–81 GHz RF routing",
-        position=pos(18, 8),
-        size=1.27,
+        position=(45.72, 17.78),
+        size=1.8,
     )
     main.save(str(output_dir / f"{PROJECT_NAME}.kicad_sch"))
 
     for name, filename in SHEETS:
+        CURRENT_SHEET_NAME = name
         child = ksa.create_schematic(PROJECT_NAME)
+        paper_size, SHEET_ORIGIN_MM, SHEET_GRID_SCALE = CHILD_PAGE_LAYOUT[name]
+        child.set_paper_size(paper_size)
         child.set_hierarchy_context(parent_uuid, sheet_uuids[name])
 
         sheet_hierarchy_rows = hierarchy_rows_for_sheet(
@@ -1849,8 +2066,8 @@ def build(output_dir: Path) -> dict:
                 child,
                 placeholders,
             )
-        elif name == "ETHERNET":
-            populate_ethernet(
+        elif name == "HOST_UART":
+            populate_host_uart(
                 child,
                 placeholders,
             )
@@ -1861,10 +2078,9 @@ def build(output_dir: Path) -> dict:
             )
 
         contract_refs_by_sheet = {
-            "TIME_GNSS": {"U8"},
             "IMU": {"U2"},
             "RADAR_IO_CAN": {"U4"},
-            "ETHERNET": {"U3"},
+            "HOST_UART": {"D3"},
         }
         if name in contract_refs_by_sheet:
             apply_symbol_pin_contract(
@@ -1879,6 +2095,49 @@ def build(output_dir: Path) -> dict:
             sheet_hierarchy_rows,
         )
 
+        for component in child.components:
+            reference = component.reference
+            for property_name in tuple(component.properties):
+                if property_name in {
+                    "Reference", "Value", "Footprint",
+                    "Datasheet", "Description",
+                } or property_name.startswith("__"):
+                    continue
+                component.add_property(
+                    property_name,
+                    component.get_property(property_name, ""),
+                    hidden=True,
+                )
+            capture_status = component.get_property("Capture_Status")
+            if capture_status:
+                component.add_property(
+                    "Capture_Status", capture_status, hidden=True
+                )
+            if component.get_property("hierarchy_path"):
+                component.add_property(
+                    "hierarchy_path",
+                    component.get_property("hierarchy_path"),
+                    hidden=True,
+                )
+            if reference.startswith("#FLG"):
+                continue
+            if reference not in footprint_assignments:
+                raise ValueError(f"Missing footprint contract: {reference}")
+            if reference in assigned_footprint_refs:
+                raise ValueError(f"Duplicate schematic reference: {reference}")
+            expected_mpn = bom_mpn.get(reference)
+            if expected_mpn is None:
+                raise ValueError(f"Missing BOM reference: {reference}")
+            imported_mpn = component.get_property("MPN", "")
+            if imported_mpn and imported_mpn != expected_mpn:
+                raise ValueError(
+                    f"BOM MPN mismatch: {reference}:"
+                    f"{imported_mpn}!={expected_mpn}"
+                )
+            component.add_property("MPN", expected_mpn, hidden=True)
+            component.footprint = footprint_assignments[reference]
+            assigned_footprint_refs.add(reference)
+
         child_path = output_dir / filename
         child.save(str(child_path))
         normalize_serialized_hierarchy_shapes(
@@ -1887,6 +2146,19 @@ def build(output_dir: Path) -> dict:
                 hierarchy_rows,
                 name,
             ),
+        )
+
+    missing_footprint_refs = set(footprint_assignments) - assigned_footprint_refs
+    if missing_footprint_refs:
+        raise ValueError(
+            "Footprint assignments absent from schematic: "
+            + ", ".join(sorted(missing_footprint_refs))
+        )
+    missing_bom_refs = set(bom_mpn) - assigned_footprint_refs
+    if missing_bom_refs:
+        raise ValueError(
+            "BOM references absent from schematic: "
+            + ", ".join(sorted(missing_bom_refs))
         )
 
     (output_dir / f"{PROJECT_NAME}.kicad_pro").write_text(
@@ -1920,6 +2192,12 @@ def build(output_dir: Path) -> dict:
         "local_symbol_library": local_symbol_path.name,
         "local_symbol_manifest": local_symbol_manifest,
         "local_footprint_library": "SystemCarrier_Local.pretty",
+        "footprint_assignment_count": len(assigned_footprint_refs),
+        "staged_footprint_count": len(footprint_staging["records"]),
+        "altium_import_bridge_count": sum(
+            bool(record["altium_import_bridge"])
+            for record in footprint_staging["records"]
+        ),
         "fp_lib_table": "fp-lib-table",
         "sym_lib_table": "sym-lib-table",
         "symbol_library_bindings": dict(SYMBOL_LIBRARIES),
@@ -1932,7 +2210,7 @@ def build(output_dir: Path) -> dict:
         "notes": [
             "This is an authoritative generated CAD scaffold, not Review A.",
             "POWER_INPUT and MCU_CORE contain initial capture content.",
-            "Local U2/U4/U5/U6/U7/Y1/Y2/D3/D4 symbols are generated from authoritative pin contracts.",
+            "Local U2/U4/U5/U6/U7/U9/Y1/D3/D4/D8 symbols are generated from authoritative pin contracts.",
             "Remaining placeholder symbols must be replaced before CARRIER_REVIEW_A.",
             "Real KiCad ERC is generated in CI and may contain expected capture-stage violations.",
         ],

@@ -13,35 +13,37 @@ ECO:
 - L3: power distribution + slow signals;
 - L4: secondary signals.
 
-The ground plane must remain continuous below RMII, Ethernet MDI, timing
-capture lines, CAN and GNSS RF.
+The ground plane must remain continuous below UART, timing capture lines,
+CAN and the external GNSS connector interface.
 
 ## Critical routing domains
 
 ### Power
 
 - TPS62132 input/SW/output current loops must be physically compact.
+- TPS62133 input/SW/output current loops must be physically compact.
 - U6/U7 eFuse programming components stay adjacent to their devices.
 - RADAR_12V is sized for the 3 A EVT allocation and kept short.
 - STM32 VCAP and VDD decoupling take placement priority over routing
   convenience.
 
-### Ethernet
+### Host UART
 
-- PHY-to-MagJack MDI is a 100-ohm differential domain.
-- ESD sits on the connector side of the MDI path.
-- RMII stays over solid ground; avoid unnecessary layer changes.
+- Route both UART pairs over continuous ground.
+- Place D3 directly behind J6 and keep the connector-side stubs short.
+- Keep the four 33-ohm series resistors close to the MCU-side source path.
 
 ### GNSS
 
-- U.FL-to-ESD-to-NEO-M9N is a 50-ohm controlled-impedance path.
-- GNSS ESD ground return must be extremely short.
-- Keep buck SW, 25/50 MHz clocks, RMII and CAN away from the RF entry.
+- Place JST-GH J8 at an accessible board edge.
+- Place D8 directly behind J8 with a short ground return.
+- Route 5V_GNSS, UART and PPS only; there is no carrier GNSS RF trace.
+- Keep PPS and UART away from BUCK_SW and BUCK5_SW.
 
 ### Timing
 
 GNSS_PPS, RADAR_REF and IMU_DRDY remain deterministic timestamp lines.
-Keep them away from the buck switch node and Ethernet MDI pair.
+Keep them away from both buck switch nodes and high-current paths.
 
 ### IMU
 

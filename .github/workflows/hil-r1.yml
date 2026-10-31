@@ -321,18 +321,18 @@ jobs:
           assert data["status"] == "PASS"
           assert data["primary_cad"] == "Altium Designer"
           assert data["preserve_kicad"] is True
-          assert data["source_rule_count"] == data["mapped_rule_count"] == 24
+          assert data["source_rule_count"] == data["mapped_rule_count"] == 25
           assert data["layer_count"] == 4
-          assert data["outjob_contract_count"] == 14
-          assert data["required_output_count"] == 13
-          assert data["release_checklist_count"] == 18
+          assert data["outjob_contract_count"] == 17
+          assert data["required_output_count"] == 16
+          assert data["release_checklist_count"] == 20
           assert data["board_planning_count"] == 8
-          assert data["dfm_profile_count"] == 10
+          assert data["dfm_profile_count"] == 11
           assert data["implementation_step_count"] == 15
-          assert data["impedance_model_count"] == 2
-          assert data["power_width_model_count"] == 4
-          assert data["diff_pair_count"] == 3
-          assert data["rule_query_count"] == 10
+          assert data["impedance_model_count"] == 0
+          assert data["power_width_model_count"] == 5
+          assert data["diff_pair_count"] == 1
+          assert data["rule_query_count"] == 9
           assert data["room_count"] == 7
           assert data["equivalence_check_count"] == 11
           native_sch = Path(
@@ -369,8 +369,6 @@ jobs:
           assert data["edge_ref_count"] >= 6
           assert data["hard_position_count"] >= 20
           assert data["imu_to_buck_mm"] >= 20.0
-          assert data["eth_50m_to_mcu_mm"] <= 20.0
-          assert data["eth_50m_to_phy_mm"] <= 20.0
           print("Altium placement geometry PASS")
           PY
 
@@ -391,6 +389,7 @@ jobs:
           )
           assert data["status"] == "PASS"
           assert data["errors"] == []
+          assert data["compact_candidate_validated"] is True
           assert data["evt_routing_datums_locked"] is True
           assert data["production_mechanical_freeze"] is False
           assert data["minimum_mount_hole_edge_ligament_mm"] >= 3.0
@@ -411,8 +410,8 @@ jobs:
           assert data["status"] == "PASS"
           assert data["errors"] == []
           assert data["stack_total_mm"] == 1.6
-          assert len(data["models"]) == 2
-          assert data["production_binding_required"] is True
+          assert data["model_count"] == 0
+          assert data["production_binding_required"] is False
           print("Altium provisional impedance model PASS")
           PY
 
@@ -433,8 +432,8 @@ jobs:
           assert data["errors"] == []
           assert data["evt_routing_stack_locked"] is True
           assert data["production_stack_locked"] is False
-          assert data["production_binding_required"] is True
-          assert data["field_solver_required"] is True
+          assert data["production_binding_required"] is False
+          assert data["field_solver_required"] is False
           assert data["stack_total_mm"] == 1.6
           print("EVT routing stack lock PASS")
           PY
@@ -452,7 +451,7 @@ jobs:
           assert data["schema"] == "ALTIUM-POWER-WIDTH-GATE-001"
           assert data["status"] == "PASS"
           assert data["errors"] == []
-          assert len(data["models"]) == 4
+          assert len(data["models"]) == 5
           assert data["production_review_required"] is True
           print("Altium provisional power-width model PASS")
           PY
@@ -493,9 +492,9 @@ jobs:
           assert data["schema"] == "ALTIUM-RULE-SCOPE-GATE-001"
           assert data["status"] == "PASS"
           assert data["errors"] == []
-          assert data["rule_count"] == 10
-          assert data["differential_pair_count"] == 3
-          assert data["differential_pair_class_count"] == 2
+          assert data["rule_count"] == 9
+          assert data["differential_pair_count"] == 1
+          assert data["differential_pair_class_count"] == 1
           print("Altium rule scopes and differential pairs PASS")
           PY
 
@@ -754,23 +753,24 @@ jobs:
   system-carrier-cad:
     name: System Carrier generated KiCad scaffold
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/kicad/kicad:9.0.9@sha256:e638b79b0321f29395a5b783e94bb9f3c73303e8da15da27b8f5cb4b67a37729
+      options: --user 0
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install KiCad 9 and schematic generator
+      - name: Install schematic generator in KiCad 9 image
         run: |
-          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
-          sudo apt-get update
-          sudo apt-get install -y --install-recommends kicad
-          python -m pip install --upgrade "kicad-sch-api==0.5.6"
-          kicad-cli version
+          kicad_version="$(kicad-cli version)"
+          case "$kicad_version" in 9.*) ;; *) echo "KiCad 9 required, got $kicad_version" >&2; exit 1 ;; esac
+          apt-get update
+          apt-get install -y --no-install-recommends python3-venv
+          python3 -m venv /opt/carrier-python
+          /opt/carrier-python/bin/python -m pip install --upgrade "kicad-sch-api==0.5.6"
+          echo /opt/carrier-python/bin >> "$GITHUB_PATH"
+          echo "$kicad_version"
 
       - name: Generate System Carrier schematic scaffold
         run: |
@@ -863,6 +863,11 @@ jobs:
           assert manifest["status"] == "CAD_SCAFFOLD_READY"
           assert validation["status"] == "PASS"
           assert validation["placeholder_count"] == 0
+          assert validation["verified_footprint_count"] == 83
+          assert validation["verified_bom_mpn_count"] == 83
+          assert manifest["footprint_assignment_count"] == 83
+          assert manifest["staged_footprint_count"] == 21
+          assert manifest["altium_import_bridge_count"] == 5
           assert erc["source"] == "EVT_SYS_CARRIER.kicad_sch"
 
           violations = sum(
@@ -988,8 +993,8 @@ jobs:
           assert data["status"] == "PASS"
           assert data["errors"] == []
           assert data["mcu_vdd_decoupling_count"] == 14
-          assert data["board_width_mm"] == 100.0
-          assert data["board_height_mm"] == 80.0
+          assert data["board_width_mm"] == 90.0
+          assert data["board_height_mm"] == 70.0
           assert (
               data["physical_ref_count"]
               == data["bom_ref_count"]
@@ -1038,6 +1043,7 @@ jobs:
               ).read_text()
           )
           assert data["status"] == "PASS"
+          assert data["compact_candidate_validated"] is True
           assert data["evt_routing_datums_locked"] is True
           assert data["production_mechanical_freeze"] is False
           print("EVT mechanical routing datum evidence READY")
@@ -1058,7 +1064,8 @@ jobs:
               ).read_text()
           )
           assert data["status"] == "PASS"
-          assert data["production_binding_required"] is True
+          assert data["production_binding_required"] is False
+          assert data["model_count"] == 0
           print("Altium impedance evidence READY")
           PY
 
@@ -1080,7 +1087,7 @@ jobs:
           assert data["status"] == "PASS"
           assert data["evt_routing_stack_locked"] is True
           assert data["production_stack_locked"] is False
-          assert data["production_binding_required"] is True
+          assert data["production_binding_required"] is False
           print("EVT routing stack evidence READY")
           PY
 
@@ -1140,7 +1147,7 @@ jobs:
               ).read_text()
           )
           assert data["status"] == "PASS"
-          assert data["rule_count"] == 10
+          assert data["rule_count"] == 9
           print("Altium native rule-scope evidence READY")
           PY
 
@@ -1265,6 +1272,76 @@ jobs:
                   == "RUN_NATIVE_ALTIUM_IMPORT_AND_EQUIVALENCE"
               )
           print("Altium routing readiness:", data["status"])
+          PY
+
+      - name: Validate Altium connection integrity
+        run: |
+          python -m tools.altium_connection_integrity_gate \
+            --system-root hardware/system_carrier \
+            --output build-cad/system_carrier/altium_connection_integrity.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/"
+                  "altium_connection_integrity.json"
+              ).read_text()
+          )
+          native_pcb = Path(
+              "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+          ).is_file()
+          assert data["schema"] == "ALTIUM-CONNECTION-INTEGRITY-001"
+          assert data["production_authority"] == "NOT_AUTHORIZED"
+          if native_pcb:
+              assert data["status"] == "PASS"
+              assert data["outside_board_count"] == 0
+              assert data["endpoint_baseline_matches"] is True
+              assert data["inferred_free_pad_count"] == 0
+              assert data["free_pad_assignments"] == {}
+              assert data["unrouted_net_violations"] == 0
+              assert data["routing_topology_violations"] == 0
+              assert data["net_antennae_violations"] == 0
+              assert data["receipt_binding"] == "PASS"
+          else:
+              assert data["status"] == "NOT_APPLICABLE"
+          print("Altium connection integrity:", data["status"])
+          PY
+
+      - name: Validate Altium timing routing
+        run: |
+          python -m tools.altium_timing_routing_gate \
+            --system-root hardware/system_carrier \
+            --output build-cad/system_carrier/altium_timing_routing.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(
+              Path(
+                  "build-cad/system_carrier/"
+                  "altium_timing_routing.json"
+              ).read_text()
+          )
+          native_pcb = Path(
+              "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
+          ).is_file()
+          assert data["schema"] == "ALTIUM-TIMING-ROUTING-GATE-001"
+          assert data["production_authority"] == "NOT_AUTHORIZED"
+          if native_pcb:
+              assert data["status"] == "PASS"
+              assert data["summary_binding"] == "PASS"
+              assert data["drc"]["route_induced_markers"] == 0
+              assert all(
+                  route["connected"]
+                  and route["graph_component_count"] == 1
+                  and route["quiet_clearance_mm"] >= 1.0
+                  for route in data["routes"].values()
+              )
+          else:
+              assert data["status"] == "NOT_APPLICABLE"
+          print("Altium timing routing:", data["status"])
           PY
 
       - name: Evaluate native Altium handoff status
@@ -1396,6 +1473,21 @@ jobs:
               item["path"]
               for item in data["files"]
           }
+          assert "kicad_source/fp-lib-table" in package_paths
+          assert "kicad_source/sym-lib-table" in package_paths
+          packaged_footprint_count = sum(
+              path.endswith(".kicad_mod")
+              for path in package_paths
+          )
+          generated_footprint_count = sum(
+              1
+              for path in Path("build-cad/system_carrier").glob(
+                  "*.pretty/*.kicad_mod"
+              )
+              if path.is_file()
+          )
+          assert generated_footprint_count > 0
+          assert packaged_footprint_count == generated_footprint_count
           assert all(
               item["package_path"] in package_paths
               for item in data["source_bindings"]
@@ -1495,6 +1587,7 @@ jobs:
         with:
           name: system-carrier-altium-import
           path: build-cad/altium_import/**
+          include-hidden-files: true
 
       - name: Upload generated System Carrier CAD
         if: always()
@@ -1508,5 +1601,5 @@ jobs:
             build-cad/system_carrier/*.json
             build-cad/system_carrier/fp-lib-table
             build-cad/system_carrier/sym-lib-table
-            build-cad/system_carrier/SystemCarrier_Local.pretty/*.kicad_mod
+            build-cad/system_carrier/*.pretty/*.kicad_mod
 

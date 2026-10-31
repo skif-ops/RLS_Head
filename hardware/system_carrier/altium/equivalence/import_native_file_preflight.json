@@ -1,0 +1,34 @@
+{
+  "artifacts": {
+    "pcb": {
+      "cfb_major_version": 3,
+      "errors": [],
+      "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+      "sector_shift": 9,
+      "sector_size": 512,
+      "sha256": "853a1d37f848be8dce328e63070ad795c2d77a669ebe053431f70d6cf6d97da2",
+      "size": 1674752,
+      "status": "PASS"
+    },
+    "schematic": {
+      "cfb_major_version": 3,
+      "errors": [],
+      "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
+      "sector_shift": 9,
+      "sector_size": 512,
+      "sha256": "33a784a9d7a4c17cd4d372348dffeb7615c6affabdd14a1571c347639f30ca06",
+      "size": 58880,
+      "status": "PASS"
+    }
+  },
+  "errors": [],
+  "layout_authority": "NOT_AUTHORIZED",
+  "notes": [
+    "The schematic hash is the immediate 2026-10-28 KiCad Importer output.",
+    "The PCB hash is the retained native pre-ECO PCB base. Later native ECOs and the equivalence manifest bind the current prepared PCB.",
+    "Electrical and layout authority remain controlled by ALTIUM_EQUIVALENCE_GATE."
+  ],
+  "production_authority": "NOT_AUTHORIZED",
+  "schema": "ALTIUM-NATIVE-FILE-PREFLIGHT-001",
+  "status": "PASS"
+}

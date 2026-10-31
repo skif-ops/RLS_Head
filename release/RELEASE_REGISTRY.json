@@ -1,0 +1,96 @@
+{
+  "schema": "DOCUMENT-RELEASE-REGISTRY-001",
+  "latest_document_version": "1.1.1",
+  "entries": [
+    {
+      "version": "1.0.0",
+      "date": "2026-10-30",
+      "scope": "LEGACY_BASELINE",
+      "retrospective_version_alias": true,
+      "original_revision": "R1",
+      "source_commit": "2f50a0c6aa4ea9c66c26200669f5fb8c73882021",
+      "archives": [
+        {
+          "name": "EVT_ГСН_полный_производственный_комплект_2026-10-30.zip",
+          "bytes": 17003033,
+          "sha256": "a35f17e3f608441f8fe8eeaa38acc37e0d36a7cc6f1bc6d9fc4f3a4c6853af70"
+        },
+        {
+          "name": "EVT_ГСН_заказ_ПП_и_монтажа_2026-10-30.zip",
+          "bytes": 2260647,
+          "sha256": "381ad0bb464323b26c4d1d650f38c4ffe0ee87a3ddb5e962bfd65fed473fe3e4"
+        },
+        {
+          "name": "EVT_ГСН_ПМ_EVT_и_отчетные_материалы_2026-10-30.zip",
+          "bytes": 1663121,
+          "sha256": "f2848f17393c1938da7f1ca484ad94a79a76f37cf463383876b5b12accc3432e"
+        }
+      ]
+    },
+    {
+      "version": "1.0.1",
+      "date": "2026-10-31",
+      "scope": "DOCUMENT_FORMATTING_ONLY",
+      "baseline_version": "1.0.0",
+      "source_commit": "d504aca781ddc3e983740ac17258149bcc2026d8",
+      "production_authority": "NOT_AUTHORIZED",
+      "archives": [
+        {
+          "name": "EVT_ГСН_документы_v1.0.1_2026-10-31.zip",
+          "bytes": 517651,
+          "sha256": "165dde82aa381e87357110661f28acef0c944520ac41babe26913ee36a0397c6"
+        }
+      ]
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-10-31",
+      "scope": "DOCUMENT_STYLE_AND_EVT_METHOD_UPDATE",
+      "baseline_version": "1.0.1",
+      "source_commit": "a953ea622948d8e24c9e06a529f70cc21cbdaa06",
+      "changes": [
+        "Полная унификация оформления всех DOCX",
+        "Добавлена пошаговая методика первого включения и стендовой проверки",
+        "Требования оформления приняты для последующих документов"
+      ],
+      "production_authority": "NOT_AUTHORIZED",
+      "archives": [
+        {
+          "name": "EVT_ГСН_документы_v1.1.0_2026-10-31.zip",
+          "bytes": 579087,
+          "sha256": "59b65bc397113fab2738ed0f8212156efabda8f776b634aa546b05f0c6d69fa3"
+        },
+        {
+          "name": "EVT_ГСН_ПМ_EVT_и_отчетные_материалы_v1.1.0_2026-10-31.zip",
+          "bytes": 131883,
+          "sha256": "2788f763261165eeb11ce0f10d44945ca112cd4032165ecdfca45a7090ead608"
+        }
+      ]
+    },
+    {
+      "version": "1.1.1",
+      "date": "2026-10-31",
+      "scope": "DOCUMENT_FORMATTING_CORRECTION",
+      "baseline_version": "1.1.0",
+      "source_commit": "57e0d3e4fd052ed6c2f696ded5381da9f3bc0b7f",
+      "changes": [
+        "Установлены нулевые отступы слева, справа и первой строки во всех абзацах таблиц",
+        "Установлен черный цвет заголовков и подзаголовков вне таблиц",
+        "Удалены линии и границы под названием документа, заголовками и подзаголовками"
+      ],
+      "production_authority": "NOT_AUTHORIZED",
+      "archives": [
+        {
+          "name": "EVT_ГСН_документы_v1.1.1_2026-10-31.zip",
+          "bytes": 580937,
+          "sha256": "59dc10526bcb007cd8c62c148f8202009de58070436c932603beebedb5202d9c"
+        },
+        {
+          "name": "EVT_ГСН_ПМ_EVT_и_отчетные_материалы_v1.1.1_2026-10-31.zip",
+          "bytes": 132638,
+          "sha256": "146df7be5f0b93a60982692addf6c546c0a0db96a1e3a8584ac9b14156ad0481"
+        }
+      ]
+    }
+  ]
+}

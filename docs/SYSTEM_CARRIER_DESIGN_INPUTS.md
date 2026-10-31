@@ -46,22 +46,16 @@ The authoritative capture assignments are:
 - RADAR_REF -> PB10 / TIM2_CH3
 - IMU_DRDY -> PB11 / TIM2_CH4
 
-All three are P0 and intentionally share the TIM2 hardware time domain.
+RADAR_REF and IMU_DRDY are P0. Optional untrusted GNSS_PPS is P1. All three
+share the TIM2 hardware time domain.
 
-## Ethernet RMII mapping
+## Host UART mapping
 
-The selected alternate mapping avoids PB10/PB11 because those pins are
-reserved for timing capture:
+The two independent 3.3 V interfaces are:
 
-- REF_CLK PA1
-- MDIO PA2
-- MDC PC1
-- CRS_DV PA7
-- RXD0 PC4
-- RXD1 PC5
-- TX_EN PG11
-- TXD0 PG13
-- TXD1 PG14
+- HOST_UART1_TX: PD5 / USART2_TX
+- HOST_UART1_RX: PD6 / USART2_RX
+- HOST_UART2_TX: PA9 / USART1_TX
+- HOST_UART2_RX: PA10 / USART1_RX
 
-The 50 MHz oscillator is a star source to the MCU RMII REF_CLK input
-and the PHY reference-clock input.
+GNSS uses USART3 on PD8/PD9 and remains independent of both host UARTs.

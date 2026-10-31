@@ -1,0 +1,20 @@
+{
+  "errors": [],
+  "input_sha256": {
+    "component_inventory": "1845a69b0b4e6bfc0564343f3cce4ac61791d2306d0ea849ec8b6d61743855f7",
+    "net_inventory": "b14d28a0a736d78997136fb041094dda21ddcabd7e6156f69c3797a5f3a9d0ce",
+    "pcb": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
+    "review": "41c06294be75ebf71851575e7b698d3842534d57059d42aa4dbecdd31e5ba7ba"
+  },
+  "notes": [
+    "The review is deliberately human-signoff evidence bound to the exact native PcbDoc and machine inventories.",
+    "This check does not infer the absence of unnetted antenna geometry from names; review of the exact native pre-routing PcbDoc is mandatory before layout authority."
+  ],
+  "reason_codes": [],
+  "reviewer": "Codex computer use operator on user-authorized workstation",
+  "schema": "ALTIUM-NO-MMWAVE-REVIEW-RESULT-001",
+  "status": "PASS",
+  "verified_checks": {
+    "no_76_81GHz_rf_on_system_carrier": "PASS"
+  }
+}

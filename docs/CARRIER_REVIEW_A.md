@@ -1,108 +1,24 @@
 # System Carrier Review A
 
-This gate covers the non-RF System Carrier schematic only.
+This gate covers the current non-RF System Carrier electrical design. It does not authorize production or a 76-81 GHz RF implementation.
 
-It does not authorize production, an integrated radar RF PCB, vehicle
-guidance, or actuator/control functions.
+The retained KiCad project is the import and independent comparison baseline. The Altium project becomes the PCB implementation authority only after the current UART and external-GNSS ECO is imported, compiled, audited and passes `ALTIUM_EQUIVALENCE_GATE`.
 
-## Real artifact set
+Review A requires zero ERC errors and zero ERC warnings plus explicit PASS results for:
 
-The real Review A package is expected to bind the generated KiCad schematic
-to the authoritative Rev.A electrical inputs:
-
-```text
-hardware/system_carrier/
-├── BOM_SYS_CARRIER_003.csv
-├── PINMAP_SYS_001.csv
-├── FOOTPRINT_PLAN_SYS_001.csv
-├── PACKAGE_CONTRACT_SYS_001.csv
-└── review_a/
-    ├── EVT_SYS_CARRIER.kicad_sch
-    ├── erc.json
-    └── manifest.json
-```
-
-The generated CAD artifact may be used as the source of the real schematic
-and ERC package, but the Review A manifest must contain hashes of the exact
-artifacts being reviewed.
-
-## KiCad ERC
-
-For the pinned KiCad 9 toolchain:
-
-```bash
-kicad-cli sch erc \
-  --format json \
-  --severity-all \
-  --output hardware/system_carrier/review_a/erc.json \
-  hardware/system_carrier/review_a/EVT_SYS_CARRIER.kicad_sch
-```
-
-The Review A policy remains strict:
-
-- ERC errors allowed: 0;
-- ERC warnings allowed: 0.
-
-The validator parses `sheets[].violations[]` itself; a successful
-`kicad-cli` process is not equivalent to Review A PASS.
-
-## Altium transition after electrical capture
-
-The ERC-clean KiCad schematic remains the Review A electrical comparison baseline. PCB implementation now targets Altium Designer as defined by `docs/CAD_POLICY_ALTIUM.md` and `hardware/system_carrier/CAD_AUTHORITY_SYS_001.json`.
-
-Native Altium `SchDoc` / `PcbDoc` files must pass the Altium equivalence gate before they become authoritative for PCB implementation. The retained KiCad source is not deleted after conversion.
-
-## Review A P0 audits
-
-All must be explicitly PASS in the real manifest:
-
-- power;
-- clock;
-- reset/boot;
-- timing capture;
+- power, including U5 3V3 and U9 5V_GNSS;
+- clock, reset and boot;
+- GNSS PPS, RADAR_REF and IMU_DRDY timing capture;
 - IMU;
-- Ethernet;
-- CAN FD.
+- dual 3.3 V host UART;
+- external GNSS UART, PPS and connector power;
+- CAN-FD;
+- no Ethernet, onboard GNSS RF or 76-81 GHz carrier implementation.
 
-## Critical timing pinmap
+Critical capture pins are GNSS_PPS on PA0 / TIM2_CH1, RADAR_REF on PB10 / TIM2_CH3 and IMU_DRDY on PB11 / TIM2_CH4.
 
-| Signal | MCU pin | Timer capture |
-|---|---|---|
-| GNSS_PPS | PA0 | TIM2_CH1 |
-| RADAR_REF | PB10 | TIM2_CH3 |
-| IMU_DRDY | PB11 | TIM2_CH4 |
+Required BOM anchors are STM32H753IIT6, ICM-42688-P, TCAN3404DRBRQ1, TPS62132RGTR, TPS62133RGTR, TPS259470ARPWR, TPD4E05U06DQAR, Molex 43045-0600 and JST SM06B-GHS-TB(LF)(SN).
 
-## Required Rev.A BOM anchors
+All current schematic review and production PDFs must be compiled from the native Altium project. KiCad exports are not release documents.
 
-The Review A validator checks the currently selected architecture:
-
-- STM32H753IIT6;
-- ICM-42688-P;
-- LAN8742Ai-CZ-TR;
-- TCAN3404DRBRQ1;
-- TPS62132RGTR;
-- TPS259470ARPWR;
-- NEO-M9N-00B;
-- SI-60182-F.
-
-The obsolete TPS62130 and provisional P01-0006-01 are not valid Rev.A
-anchors.
-
-## Validator
-
-```bash
-python -m tools.carrier_review_a \
-  hardware/system_carrier/review_a/manifest.json \
-  --repository-root . \
-  --output carrier_review_a_result.json
-```
-
-Result statuses:
-
-- `TEST_READY` — synthetic CI fixture only;
-- `PASS` — real CAD review evidence with `CAD_REVIEW` evidence level;
-- `HOLD` — technically clean artifacts but insufficient evidence level;
-- `FAIL` — ERC/audit/pinmap/BOM failure;
-- `INVALID` — schema/hash/path/parse failure.
-
-A synthetic fixture can never close the real `CARRIER_REVIEW_A` item.
+Production authority remains `NOT_AUTHORIZED`.

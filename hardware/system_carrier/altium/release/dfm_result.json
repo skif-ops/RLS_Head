@@ -1,0 +1,26 @@
+{
+  "schema": "ALTIUM-DFM-RESULT-001",
+  "status": "PENDING",
+  "p0_open_items": 6,
+  "evidence_refs": [
+    {
+      "path": "hardware/system_carrier/altium/ALTIUM_DFM_PROFILE_SYS_001.csv",
+      "sha256": "e5c23a689bd1e8f8aba1b8a663d786a14886c48f0a6422063ed1271c93261bca"
+    },
+    {
+      "path": "hardware/system_carrier/altium/release/REZONIT_FABRICATION_BASELINE.md",
+      "sha256": "0ab590ea9c89dabb655c429fed96352b32d970ea18da3f3916e7fc2596191caa"
+    }
+  ],
+  "notes": [
+    "DFM-010 is closed by the locked 1.60 mm EVT mechanical target.",
+    "DFM-001 through DFM-004 and connector assembly-clearance items DFM-007 and DFM-008 remain open until the Rezonit order and assembly process are bound.",
+    "Generic published capabilities are included for preparation but are not treated as a production binding."
+  ],
+  "profile_sha256": "e5c23a689bd1e8f8aba1b8a663d786a14886c48f0a6422063ed1271c93261bca",
+  "closed_p0_ids": [
+    "DFM-010"
+  ],
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea"
+}

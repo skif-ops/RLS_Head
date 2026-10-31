@@ -1,23 +1,14 @@
 # System Carrier symbol-library table
 
-The generated KiCad Carrier project is self-contained at the project
-configuration level.
+The generated KiCad import project is self-contained at project configuration level. Its project-local `sym-lib-table` binds every library used by the current hierarchy:
 
-The generator writes a project-local `sym-lib-table` that explicitly binds
-every symbol library used by the generated schematic:
+- `SystemCarrier_Local`
+- `Device`
+- `Connector_Generic`
+- `Connector`
+- `Switch`
+- `MCU_ST_STM32H7`
 
-- SystemCarrier_Local;
-- Device;
-- Connector_Generic;
-- Connector;
-- RF_GPS;
-- Switch;
-- MCU_ST_STM32H7;
-- Interface_Ethernet.
+Stock libraries resolve through the installed KiCad symbol directory. The local library resolves through `${KIPRJMOD}`. The current table has no RF_GPS or Interface_Ethernet dependency.
 
-Stock libraries resolve through KiCad 9's `${KICAD9_SYMBOL_DIR}` path
-variable. The project-local library resolves through `${KIPRJMOD}`.
-
-This eliminates headless/ERC dependence on a user's global KiCad symbol
-library table. It changes no electrical connectivity and therefore must not
-be interpreted as Review A closure by itself.
+This table supports reproducible import and comparison. Production schematics are generated from Altium.

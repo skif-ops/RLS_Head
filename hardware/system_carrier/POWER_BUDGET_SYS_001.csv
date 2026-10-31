@@ -1,10 +1,9 @@
 rail,source,capacity,load,allocation,unit,criticality,notes
 12V_IN,external source,5.0,TOTAL_SYSTEM,5.0,A,P0,Minimum source capability for EVT
 RADAR_12V,U7 TPS259470A,3.18,AWR2944PEVM,3.0,A,P0,Branch designed above vendor >2.5A source requirement
+5V_GNSS,U9 TPS62133,3.0,simpleRTK3B_Pro,0.50,A,P1,External receiver vendor minimum is 0.30A; allocation includes margin
 3V3,U5 TPS62132,3.0,STM32H753,0.65,A,P0,Design allocation not measured consumption
-3V3,U5 TPS62132,3.0,LAN8742A_plus_magnetics,0.15,A,P1,Includes PHY transient margin
 3V3,U5 TPS62132,3.0,ICM-42688-P,0.03,A,P1,
-3V3,U5 TPS62132,3.0,NEO-M9N,0.20,A,P1,Includes startup margin
 3V3,U5 TPS62132,3.0,TCAN3404,0.10,A,P1,
-3V3,U5 TPS62132,3.0,oscillators_and_misc,0.17,A,P2,
+3V3,U5 TPS62132,3.0,oscillator_uart_esd_and_misc,0.12,A,P2,
 3V3,U5 TPS62132,3.0,reserve,1.50,A,P1,Unallocated headroom for EVT

@@ -1,0 +1,30 @@
+{
+  "schema": "ALTIUM-RETURN-PATH-SI-REVIEW-001",
+  "status": "PENDING",
+  "p0_open_findings": null,
+  "l2_ground_continuity_verified": false,
+  "timing_return_paths_verified": false,
+  "host_uart_routes_verified": false,
+  "gnss_connector_routes_verified": false,
+  "reviewer": "Codex computer use operator on user-authorized workstation",
+  "evidence_refs": [
+    {
+      "path": "hardware/system_carrier/altium/release/pilot_r1/validation/connection_integrity_result.json",
+      "sha256": "9d2abd58d03f69842f8d4dd62d9f96da77c6068214d839f288579195c458af08"
+    },
+    {
+      "path": "hardware/system_carrier/altium/release/pilot_r1/fab/PCB_Layer_Reference_COLOR.pdf",
+      "sha256": "a5a0c41128136d55a190f9407f4ed2c2d63fb308936141e7a9b7cd19c139c08c"
+    }
+  ],
+  "notes": [
+    "The compact-board routing and native DRC are current, but a dedicated return-path review has not yet been recorded.",
+    "Production authority remains NOT_AUTHORIZED until this review is completed."
+  ],
+  "power_hot_loop_verified": false,
+  "power_branch_widths_verified": false,
+  "five_volt_gnss_route_verified": false,
+  "no_mmwave_post_route_verified": false,
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea"
+}

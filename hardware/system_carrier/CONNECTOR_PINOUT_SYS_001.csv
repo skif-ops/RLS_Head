@@ -9,9 +9,18 @@ J_RADAR_IO,3,RADAR_CANH,BIDIR,CAN-FD,P1,Maps to AWR2944PEVM CAN-A J3 pin3
 J_RADAR_IO,4,RADAR_REF,IN,3V3 CMOS/open-drain,P0,Exact EVM GPIO/header source frozen after bench verification
 J_RADAR_IO,5,RADAR_REF_GND,RETURN,0V,P0,
 J_RADAR_IO,6,NC,NA,NA,P2,Reserved EVT spare; do not connect on Rev A
-J_GNSS_ANT,1,GNSS_RF,IN,50R RF,P0,U.FL signal pin to NEO-M9N RF_IN through ESD
-J_GNSS_ANT,GND,GNSS_RF_GND,RETURN,RF ground,P0,Stitch to ground plane around connector
-J_ETH,MDI,ETH_MDI,BIDIR,100BASE-TX,P1,Bel SI-60182-F integrated magnetics RJ45; KiCad SI-60062-F symbol/footprint representation verified against Bel drawings
+J_GNSS_EXT,1,5V_GNSS,OUT,5V protected,P1,Supply for external simpleRTK3B Pro; allocate at least 0.5A
+J_GNSS_EXT,2,GNSS_RX_EXT,OUT,3.3V CMOS,P1,Carrier USART3 TX to receiver RX
+J_GNSS_EXT,3,GNSS_TX_EXT,IN,3.3V CMOS only,P1,Receiver TX to carrier USART3 RX
+J_GNSS_EXT,4,GNSS_PPS,IN,3.3V CMOS only,P1,Receiver PPS to TIM2_CH1; untrusted until integrity checks pass
+J_GNSS_EXT,5,NC,NA,NA,P2,Receiver event input is intentionally unused
+J_GNSS_EXT,6,GND,RETURN,0V,P0,Receiver power and signal return
+J_HOST_UART,1,GND,RETURN,0V,P0,UART1 signal return
+J_HOST_UART,2,HOST_UART1_TX,OUT,3.3V CMOS,P1,Carrier USART2 TX through 33R and ESD
+J_HOST_UART,3,HOST_UART1_RX,IN,3.3V CMOS only,P1,Carrier USART2 RX through ESD and 33R; 10k pull-up
+J_HOST_UART,4,GND,RETURN,0V,P0,UART2 signal return
+J_HOST_UART,5,HOST_UART2_TX,OUT,3.3V CMOS,P1,Carrier USART1 TX through 33R and ESD
+J_HOST_UART,6,HOST_UART2_RX,IN,3.3V CMOS only,P1,Carrier USART1 RX through ESD and 33R; 10k pull-up
 J_SWD,1,VREF,OUT,3V3,P0,Target-reference voltage
 J_SWD,2,SWDIO,BIDIR,SWD,P0,
 J_SWD,3,GND,RETURN,0V,P0,

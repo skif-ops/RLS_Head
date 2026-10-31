@@ -15,7 +15,7 @@ EXPECTED_SHEETS = {
     "TIME_GNSS",
     "IMU",
     "RADAR_IO_CAN",
-    "ETHERNET",
+    "HOST_UART",
     "DEBUG_BOOT",
 }
 

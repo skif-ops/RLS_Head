@@ -85,12 +85,16 @@ def validate(system_root: str | Path) -> dict:
     if not isinstance(production, dict):
         errors.append("contract_production")
         production = {}
+    controlled_impedance_required = (
+        contract.get("controlled_impedance_required") is True
+    )
+    required_production_value = controlled_impedance_required
     for field in (
         "fabricator_binding_required",
         "field_solver_required",
         "impedance_coupon_or_fabricator_control_required",
     ):
-        if production.get(field) is not True:
+        if production.get(field) is not required_production_value:
             errors.append(f"production_requirement:{field}")
     if production.get("production_stack_locked") is not False:
         errors.append("production_stack_locked_must_be_false")
@@ -209,7 +213,13 @@ def validate(system_root: str | Path) -> dict:
         for row in impedance_rows
         if str(row.get("net_class", "")).strip()
     }
-    for net_class in ("GNSS_RF", "ETH_MDI"):
+    if not controlled_impedance_required:
+        if impedance_contract:
+            errors.append("contract_impedance_not_empty")
+        if impedance_rows:
+            errors.append("impedance_rows_not_allowed")
+
+    for net_class in impedance_contract if controlled_impedance_required else ():
         expected = impedance_contract.get(net_class)
         if not isinstance(expected, dict):
             errors.append(f"contract_impedance:{net_class}")
@@ -266,12 +276,13 @@ def validate(system_root: str | Path) -> dict:
         for row in rule_rows
         if str(row.get("rule_id", "")).strip()
     }
-    expected_rule_values = {
-        "RV-019": (0.26, "mm"),
-        "RV-020": (0.20, "mm"),
-        "RV-021": (0.36, "mm"),
-        "RV-022": (0.18, "mm"),
-    }
+    expected_rule_values = {"RV-022": (0.18, "mm")}
+    if controlled_impedance_required:
+        expected_rule_values.update({
+            "RV-019": (0.26, "mm"),
+            "RV-020": (0.20, "mm"),
+            "RV-021": (0.36, "mm"),
+        })
     for rule_id, (expected_value, expected_unit) in expected_rule_values.items():
         row = rules.get(rule_id)
         if row is None:
@@ -287,13 +298,16 @@ def validate(system_root: str | Path) -> dict:
         if str(row.get("unit", "")).strip() != expected_unit:
             errors.append(f"rule_unit:{rule_id}")
 
-    impedance_result = validate_impedance(root)
-    if impedance_result.get("status") != "PASS":
-        errors.append("impedance_gate_not_pass")
-        errors.extend(
-            "impedance_gate:" + str(item)
-            for item in impedance_result.get("errors", [])
-        )
+    if controlled_impedance_required:
+        impedance_result = validate_impedance(root)
+        if impedance_result.get("status") != "PASS":
+            errors.append("impedance_gate_not_pass")
+            errors.extend(
+                "impedance_gate:" + str(item)
+                for item in impedance_result.get("errors", [])
+            )
+    else:
+        impedance_result = {"models": []}
 
     status = "PASS" if not errors else "FAIL"
     return {
@@ -303,22 +317,21 @@ def validate(system_root: str | Path) -> dict:
         "warnings": sorted(set(warnings)),
         "evt_routing_stack_locked": status == "PASS",
         "production_stack_locked": False,
-        "production_binding_required": True,
-        "field_solver_required": True,
+        "production_binding_required": bool(
+            production.get("fabricator_binding_required")
+        ),
+        "field_solver_required": bool(production.get("field_solver_required")),
+        "controlled_impedance_required": controlled_impedance_required,
         "stack_total_mm": round(total, 4),
         "impedance_models": impedance_result.get("models", []),
         "notes": [
+            "PASS locks the repository EVT routing stack baseline.",
             (
-                "PASS locks only the repository EVT routing stack and trace "
-                "geometry baseline; it does not bind a production fabricator."
+                "Source stack rows intentionally remain EVT_PROVISIONAL until "
+                "the native Altium layer stack is audited."
             ),
             (
-                "Source stack rows intentionally remain EVT_PROVISIONAL and "
-                "impedance rows EVT_CALCULATED to preserve production semantics."
-            ),
-            (
-                "Production release still requires selected-fabricator stack "
-                "binding and final field-solver/impedance control evidence."
+                "The current carrier requires no controlled-impedance structure."
             ),
         ],
     }

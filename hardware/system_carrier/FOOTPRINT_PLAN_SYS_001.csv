@@ -1,15 +1,14 @@
 ref,mpn,package_code,footprint_source,footprint_id,status,verification_basis,notes
 U1,STM32H753IIT6,LQFP176,KICAD_STOCK,Package_QFP:LQFP-176_24x24mm_P0.5mm,LOCKED,ST package and existing authoritative contract,Existing Rev.A lock
 U2,ICM-42688-P,LGA14,PROJECT_LOCAL,SystemCarrier_Local:ICM-42688-P_LGA14_2.5x3mm_P0.5mm,LOCKED,TDK DS-000347 package dimensions plus AN-000393 LGA land-pattern rule,0.475x0.25mm lands P0.5mm with 0.05mm solder-mask expansion
-U3,LAN8742Ai-CZ-TR,SQFN24_EP,KICAD_STOCK,Package_DFN_QFN:QFN-24-1EP_4x4mm_P0.5mm_EP2.6x2.6mm,LOCKED,Microchip 4x4mm P0.5mm center pad 2.6x2.6mm matches KiCad stock footprint,Stock symbol and footprint independently verified
-U4,TCAN3404DRBRQ1,DRB0008A,KICAD_STOCK,Package_SON:Texas_DRB0008A,LOCKED,TI DRB package code plus existing KiCad manufacturer footprint,Verify courtyard against assembly rules
+U4,TCAN3404DRBRQ1,DRB0008A,KICAD_STOCK,Package_DFN_QFN:Texas_DRB0008A,LOCKED,TI DRB package code plus existing KiCad manufacturer footprint,Verify courtyard against assembly rules
 U5,TPS62132RGTR,RGT0016,KICAD_STOCK,Package_DFN_QFN:VQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm,LOCKED,TI RGT0016C 3x3mm P0.5mm EP1.68x1.68mm matches KiCad stock footprint,Use non-via variant for baseline; thermal via decision remains PCB-level
+U9,TPS62133RGTR,RGT0016,KICAD_STOCK,Package_DFN_QFN:VQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm,LOCKED,TI RGT0016 package and fixed 5V device orderable match the verified U5 geometry,External GNSS supply
 U6,TPS259470ARPWR,RPW0010A,PROJECT_LOCAL,SystemCarrier_Local:TPS259470A_RPW0010A_VQFN-HR-10_2x2mm_P0.475mm,LOCKED,TI RPW0010A package/land-pattern drawing cross-checked with KiCad MR 4677,Shared verified local footprint
 U7,TPS259470ARPWR,RPW0010A,PROJECT_LOCAL,SystemCarrier_Local:TPS259470A_RPW0010A_VQFN-HR-10_2x2mm_P0.475mm,LOCKED,TI RPW0010A package/land-pattern drawing cross-checked with KiCad MR 4677,Same verified local footprint as U6
-U8,NEO-M9N-00B,NEO_M9N_LCC24,PROJECT_LOCAL,SystemCarrier_Local:NEO-M9N_LCC24_12.2x16mm,LOCKED,u-blox NEO-M9N integration manual suggested footprint and pin assignment,24x 1.0x0.8mm lands P1.1mm with 3.0mm center gap
-D8,ESD0P2RF-02LS,PG-TSSLP-2-1,PROJECT_LOCAL,SystemCarrier_Local:ESD0P2RF-02LS_PG-TSSLP-2-1,LOCKED,Infineon PG-TSSLP-2-1 package drawing copper/stencil footprint,Place immediately behind U.FL with minimum RF shunt path
+D8,TPD4E05U06DQAR,DQA0010A,KICAD_STOCK,Package_SON:USON-10_2.5x1.0mm_P0.5mm,LOCKED,TI DQA0010A package matches KiCad stock footprint,Place directly behind J8
 D3,TPD4E05U06DQAR,DQA0010A,KICAD_STOCK,Package_SON:USON-10_2.5x1.0mm_P0.5mm,LOCKED,TI DQA0010A 2.5x1.0mm P0.5mm land pattern matches KiCad stock footprint,Use straight-through routing orientation per high-speed ESD layout
 D4,ESD2CANFD24DBZRQ1,DBZ0003A,KICAD_STOCK,Package_TO_SOT_SMD:SOT-23,LOCKED,TI DBZ SOT-23-3 package,Confirm pin-1 orientation in symbol mapping
-J6,SI-60182-F,BEL_SI60182_THT,KICAD_STOCK,Connector_RJ:RJ45_Bel_SI-60062-F,LOCKED,Bel SI-60182-F drawing cross-check against Bel SI-60062-F KiCad stock geometry,Identical signal/post/shield/LED hole pattern; selected part keeps -40C..+85C rating
+J6,43045-0600,MICROFIT3_RA_2X3,ALTIUM_IMPORT_BRIDGE,SystemCarrier_Altium:Molex_43045-0600_RA_THT_6P,LOCKED,Molex drawing and KiCad stock Micro-Fit bridge,Same verified geometry as the radar I/O connector
+J8,SM06B-GHS-TB(LF)(SN),JST_GH_RA_1X06,KICAD_STOCK,Connector_JST:JST_GH_SM06B-GHS-TB_1x06-1MP_P1.25mm_Horizontal,LOCKED,JST GH series part and KiCad stock footprint,Detachable external GNSS cable; no solder required in service
 Y1,ECS-2520S33-250-FN-TR,ECS_2520S,KICAD_STOCK,Oscillator:Oscillator_SMD_ECS_2520MV-xxx-xx-4Pin_2.5x2.0mm,LOCKED,ECS-2520S suggested land pattern matches the KiCad ECS 2520 four-pad geometry after 90-degree orientation,25MHz STM32 HSE oscillator; place rotated 90 degrees to align the 0.9x0.8mm pad axes
-Y2,ECS-2520S33-500-FN-TR,ECS_2520S,KICAD_STOCK,Oscillator:Oscillator_SMD_ECS_2520MV-xxx-xx-4Pin_2.5x2.0mm,LOCKED,ECS-2520S family uses the same 2.5x2.0mm four-pad land pattern,50MHz RMII reference oscillator

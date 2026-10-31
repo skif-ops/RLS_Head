@@ -1,0 +1,38 @@
+{
+  "component_count": 92,
+  "errors": [
+    "missing_rules:R_3V3_TRUNK_WIDTH,R_CAN_DIFF,R_ETH_MDI_CLEARANCE,R_ETH_MDI_DIFF,R_GENERAL_CLEARANCE,R_GENERAL_WIDTH,R_GNSS_RF_WIDTH,R_RADAR_12V_WIDTH,R_TIMING_TO_SW_CLEARANCE,R_VIN_HIGH_CURRENT",
+    "symbol_pin_net_mismatch:U3.24:R_ETH_RBIAS_TO_GND!=NetR600_1,U3.6:C_ETH_VDDCR_TO_GND!=NetC60_1,U4.5:R_CAN_SHDN_TO_GND!=NetR42_1,U4.8:R_CAN_STB_TO_GND!=NetR41_1,U5.4:R_U5_PG_TO_3V3!=U5_PG,U5.9:C_U5_SS_TO_GND!=U5_SS_LOCAL,U6.1:SYS_UVLO_DIV!=U6_UVLO_LOCAL,U6.2:SYS_OVLO_DIV!=U6_OVLO_LOCAL,U6.7:C_U6_DVDT_TO_GND!=U6_DVDT,U6.9:R_U6_ILIM_TO_GND!=U6_ILIM_LOCAL,U7.1:RADAR_UVLO_DIV!=U7_UVLO_LOCAL,U7.2:RADAR_OVLO_DIV!=U7_OVLO_LOCAL,U7.7:C_U7_DVDT_TO_GND!=U7_DVDT,U7.9:R_U7_ILIM_TO_GND!=U7_ILIM_LOCAL,U8.22:3V3_VIA_R_GNSS_BCKP!=GNSS_BCKP_LOCAL,U8.7:GND_VIA_100K_IF_USB_UNUSED!=GNSS_VUSB_LOCAL"
+  ],
+  "expected_component_count": 92,
+  "expected_layer_stack_count": 4,
+  "input_sha256": {
+    "component_inventory": "fb462ec58348928fd6f1ad25f555afddcbb30e5b001fd876be43075a317e9003",
+    "layer_stack_inventory": "cbdf4c20e487668a5b1e67abfa8e4d3bcd8dc4015688fc52b0e1d6e9cfa662ec",
+    "net_inventory": "8e66f63a7b8d8d9fc073c7e05f28db63b24ad5552bd243b70a0da54da2e08fcf",
+    "pad_net_inventory": "ec91ccdd4f53c7ca441e76adab3059b68549d1f43150d02847f873b04df88277",
+    "rule_inventory": "2c5cca4264c78fb5aea5a95668a91452f7b4e8c7f049e49da085848e3b436f82"
+  },
+  "layer_stack_count": 4,
+  "net_count": 67,
+  "notes": [
+    "PASS cross-checks native components, P0/P1 net names, rule names/families, MCU pin-to-net assignments, direct symbol pin contracts and the four-layer copper stack.",
+    "Exact footprint equivalence, hierarchy/port semantics, connector aggregate semantics and full rule scope/value equivalence remain controlled by dedicated evidence.",
+    "The full ALTIUM_EQUIVALENCE_GATE still controls layout authority."
+  ],
+  "pad_record_count": 512,
+  "pinmap_checked_count": 29,
+  "required_p0_p1_net_count": 32,
+  "required_rule_count": 10,
+  "rule_count": 35,
+  "schema": "ALTIUM-NATIVE-AUDIT-RESULT-001",
+  "status": "FAIL",
+  "symbol_pin_checked_count": 81,
+  "verified_checks": {
+    "native_pcb_audit": "FAIL",
+    "pinmap_equivalence": "PASS",
+    "rules_equivalence": "FAIL",
+    "stackup_equivalence": "PASS"
+  },
+  "warnings": []
+}

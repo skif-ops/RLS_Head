@@ -1,0 +1,15 @@
+Class	Document	Source	Message	Time	Date	No.
+
+[Warning]	EVT_SYS_CARRIER.SchDoc	Compiler	BOOT0 contains Input Sheet Entry and Unspecified Sheet Entry objects (Sheet Entry MCU_CORE-BOOT0(Input), Sheet Entry DEBUG_BOOT-BOOT0(Passive)).	11:37:43	23.10.2026	1
+[Warning]	EVT_SYS_CARRIER.SchDoc	Compiler	Net BOOT0 has no driving source (Pin R10-1, Pin R70-1, Pin U1-166)	11:37:43	23.10.2026	2
+[Warning]	30_TIME_GNSS.SchDoc	Compiler	Net GNSS_RF has no driving source (Pin D8-1, Pin J8-1, Pin L80-2, Pin U8-11)	11:37:43	23.10.2026	3
+[Warning]	50_RADAR_IO_CAN.SchDoc	Compiler	Net NetR41_1 has no driving source (Pin R41-1, Pin U4-8)	11:37:43	23.10.2026	4
+[Warning]	50_RADAR_IO_CAN.SchDoc	Compiler	Net NetR42_1 has no driving source (Pin R42-1, Pin U4-5)	11:37:43	23.10.2026	5
+[Warning]	EVT_SYS_CARRIER.SchDoc	Compiler	Net NRST has no driving source (Pin C115-1, Pin SW1-1, Pin U1-31)	11:37:43	23.10.2026	6
+[Warning]	EVT_SYS_CARRIER.SchDoc	Compiler	Net RADAR_REF has no driving source (Pin J4-4, Pin U1-79)	11:37:43	23.10.2026	7
+[Warning]	10_POWER_INPUT.SchDoc	Compiler	Net U5_SS_LOCAL has no driving source (Pin C3-1, Pin U5-9)	11:37:43	23.10.2026	8
+[Warning]	10_POWER_INPUT.SchDoc	Compiler	Net U6_OVLO_LOCAL has no driving source (Pin R62-2, Pin R63-1, Pin U6-2)	11:37:43	23.10.2026	9
+[Warning]	10_POWER_INPUT.SchDoc	Compiler	Net U6_UVLO_LOCAL has no driving source (Pin R61-2, Pin R62-1, Pin U6-1)	11:37:43	23.10.2026	10
+[Warning]	10_POWER_INPUT.SchDoc	Compiler	Net U7_OVLO_LOCAL has no driving source (Pin R72-2, Pin R73-1, Pin U7-2)	11:37:43	23.10.2026	11
+[Warning]	10_POWER_INPUT.SchDoc	Compiler	Net U7_UVLO_LOCAL has no driving source (Pin R71-2, Pin R72-1, Pin U7-1)	11:37:43	23.10.2026	12
+[Info]	EVT_SYS_CARRIER_CI616.PrjPcb	Compiler	Compile successful, no errors found.	11:37:43	23.10.2026	13

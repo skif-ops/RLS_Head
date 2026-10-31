@@ -1,3 +1,24 @@
+# Package source-binding compares working-tree bytes with Linux CI outputs.
+.github/workflows/hil-r1.yml text eol=lf
+hardware/system_carrier/** text=auto eol=lf
+hardware/system_carrier/altium/import_attempts/ci587_2026-10-21_evt_locks/equivalence_diagnostic/* -text
+# Equivalence receipts bind exact native-export bytes by SHA-256.
+hardware/system_carrier/altium/equivalence/* binary
+# Native DRC exporter padding is bound by the connection-integrity receipt.
+hardware/system_carrier/altium/routing/connection_audit/connection_drc_report.drc whitespace=-trailing-space
+# Manufacturing packages bind exact exporter bytes and their SHA-256 values.
+hardware/system_carrier/altium/release/pilot_r1/** -text whitespace=cr-at-eol
+hardware/system_carrier/altium/release/pilot_r1/**/*.pdf binary
+hardware/system_carrier/altium/release/pilot_r1/**/*.zip binary
+hardware/system_carrier/altium/release/pilot_r1/**/*.step whitespace=-trailing-space
+hardware/system_carrier/altium/release/*.pdf binary
+hardware/system_carrier/altium/release/*.zip binary
+tools/generate_system_carrier_schematic.py text eol=lf
+tools/generate_system_carrier_symbols.py text eol=lf
+tools/kicad_netlist_baseline.py text eol=lf
+tools/validate_system_carrier_cad_scaffold.py text eol=lf
+tests/fixtures/** text eol=lf
+
 # Native Altium binary containers: never apply text conversion or textual merge/diff.
 *.SchDoc binary
 *.PcbDoc binary
@@ -11,5 +32,5 @@
 *.intlib binary
 
 # Altium project files are INI-style text.
-*.PrjPcb text
-*.prjpcb text
+*.PrjPcb text eol=lf
+*.prjpcb text eol=lf

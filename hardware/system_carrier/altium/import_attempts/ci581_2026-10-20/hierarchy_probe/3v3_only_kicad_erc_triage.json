@@ -1,0 +1,16 @@
+{
+  "by_ref": {},
+  "by_severity": {},
+  "by_sheet": {},
+  "by_type": {},
+  "delta": null,
+  "notes": [
+    "This report is diagnostic only. It does not waive or suppress ERC findings."
+  ],
+  "schema": "SYSTEM-CARRIER-ERC-TRIAGE-001",
+  "sheet_type": [],
+  "source_kicad_version": "10.0.6",
+  "status": "READY",
+  "total_violations": 0,
+  "violations": []
+}

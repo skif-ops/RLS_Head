@@ -423,8 +423,12 @@ def test_carrier_job_pack_uses_current_rev_a_bom(tmp_path):
     ).read_text(encoding="utf-8")
 
     assert "TPS62132RGTR" in bom
-    assert "NEO-M9N-00B" in bom
-    assert "SI-60182-F" in bom
+    assert "TPS62133RGTR" in bom
+    assert "SM06B-GHS-TB(LF)(SN)" in bom
+    assert "NEO-M9N-00B" not in bom
+    assert "LAN8742Ai-CZ-TR" not in bom
+    assert "SI-60182-F" not in bom
+    assert "43045-0600" in bom
     assert "TPS62130ARGTR" not in bom
     assert "P01-0006-01" not in bom
 

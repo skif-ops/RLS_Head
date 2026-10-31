@@ -1,0 +1,174 @@
+{
+  "artifacts": [
+    {
+      "id": "project",
+      "path": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
+      "sha256": "59284024bdb3184601c17657c14d78c81da3352848f81fbe023bc74b25fc41bd"
+    },
+    {
+      "id": "schematic",
+      "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
+      "sha256": "85b458cc95d32704a9a9dced80f2f8514bf2f9d3065e0f91c18ab57091dc9166"
+    },
+    {
+      "id": "pcb",
+      "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+      "sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea"
+    },
+    {
+      "id": "native_file_preflight",
+      "path": "hardware/system_carrier/altium/equivalence/native_file_preflight.json",
+      "sha256": "7858a6bf2425a0f5c86f2d0c813d61b48dd787b37d15bdf6c02006ae3c8e6b41"
+    },
+    {
+      "id": "import_native_file_preflight",
+      "path": "hardware/system_carrier/altium/equivalence/import_native_file_preflight.json",
+      "sha256": "73a65c8d80c92001aac1ce8567067262527a66234889016b603c07cef5d4a6e3"
+    },
+    {
+      "id": "import_package_manifest",
+      "path": "hardware/system_carrier/altium/equivalence/import_package_manifest.json",
+      "sha256": "ca12e70880c24395287148ab8dab13379995f013d9c39f8a6adc15d7d8519135"
+    },
+    {
+      "id": "import_package_verification",
+      "path": "hardware/system_carrier/altium/equivalence/import_package_verification.json",
+      "sha256": "adc309c161679dd82f65cc7581d527fd4db6fb50a1ca6d36639a653c28329015"
+    },
+    {
+      "id": "import_receipt",
+      "path": "hardware/system_carrier/altium/equivalence/import_receipt.json",
+      "sha256": "b066db520f7818e4675c1b63dfc9f9a1a565269e8da04513be0f82672e4bc351"
+    },
+    {
+      "id": "import_log",
+      "path": "hardware/system_carrier/altium/equivalence/import_log.txt",
+      "sha256": "339f592df3367b33e111bc330ff88e9909a89e12f1888ca2d3afc45184af46d0"
+    },
+    {
+      "id": "compile_report_raw",
+      "path": "hardware/system_carrier/altium/equivalence/compile_report_raw.txt",
+      "sha256": "27331d6c58c3850a55f7d5c13d9486040f8e5cf8d835235124d9855e5ef629f9"
+    },
+    {
+      "id": "compile_report",
+      "path": "hardware/system_carrier/altium/equivalence/compile_report.json",
+      "sha256": "519deba2738454720e7b186da00d46881c3d2ed5af1ebd1ae4330fcbe298b5b2"
+    },
+    {
+      "id": "bom_export",
+      "path": "hardware/system_carrier/altium/equivalence/bom_export.csv",
+      "sha256": "b465e84afbb08f6d2812e85795464e9c73b3a315cd202a0b4aae7a2e380e838d"
+    },
+    {
+      "id": "bom_validation_result",
+      "path": "hardware/system_carrier/altium/equivalence/bom_validation_result.json",
+      "sha256": "fc02cbdd690135b08e69dc72e252e68620dd353ff6656e060aa1709fdeab444b"
+    },
+    {
+      "id": "connector_validation_result",
+      "path": "hardware/system_carrier/altium/equivalence/connector_validation_result.json",
+      "sha256": "2e3ae2c6f664868d921b4289a596272586e30ed125bdf3e5c08e19e600099714"
+    },
+    {
+      "id": "kicad_netlist_baseline",
+      "path": "hardware/system_carrier/altium/equivalence/kicad_netlist_baseline.csv",
+      "sha256": "07130e7962254bf594c01baa49455f3234b3126c996c28baae8b5ee25354ee5a"
+    },
+    {
+      "id": "netlist_validation_result",
+      "path": "hardware/system_carrier/altium/equivalence/netlist_validation_result.json",
+      "sha256": "1d936a0ea2d00154ac5ac62c5dfa7948d2f5108c0769314f1d846dce36a56ea6"
+    },
+    {
+      "id": "netlist_export",
+      "path": "hardware/system_carrier/altium/equivalence/netlist_export.csv",
+      "sha256": "4d121072405bb86f00c1739c3401303216f7f31c854937ffdf547e5079e32d2a"
+    },
+    {
+      "id": "footprint_report",
+      "path": "hardware/system_carrier/altium/equivalence/footprint_report.json",
+      "sha256": "e12d60242fd6836456cb058697a5fe4c57694d0200b474b9fdec74f7cf8eaab3"
+    },
+    {
+      "id": "component_inventory",
+      "path": "hardware/system_carrier/altium/equivalence/component_inventory.csv",
+      "sha256": "1845a69b0b4e6bfc0564343f3cce4ac61791d2306d0ea849ec8b6d61743855f7"
+    },
+    {
+      "id": "net_inventory",
+      "path": "hardware/system_carrier/altium/equivalence/net_inventory.csv",
+      "sha256": "b14d28a0a736d78997136fb041094dda21ddcabd7e6156f69c3797a5f3a9d0ce"
+    },
+    {
+      "id": "rule_inventory",
+      "path": "hardware/system_carrier/altium/equivalence/rule_inventory.csv",
+      "sha256": "a46a1bd4f972ed2ac56451ce770ce2eed50b1a0880047b46141c834032e89f2b"
+    },
+    {
+      "id": "pad_net_inventory",
+      "path": "hardware/system_carrier/altium/equivalence/pad_net_inventory.csv",
+      "sha256": "4d121072405bb86f00c1739c3401303216f7f31c854937ffdf547e5079e32d2a"
+    },
+    {
+      "id": "layer_stack_inventory",
+      "path": "hardware/system_carrier/altium/equivalence/layer_stack_inventory.csv",
+      "sha256": "cbdf4c20e487668a5b1e67abfa8e4d3bcd8dc4015688fc52b0e1d6e9cfa662ec"
+    },
+    {
+      "id": "hierarchy_export",
+      "path": "hardware/system_carrier/altium/equivalence/hierarchy_export.csv",
+      "sha256": "7ea7b3fea89d594161c8cf6bec7cfdd9e89cceaf7173e32d34f60ecf3f7318c9"
+    },
+    {
+      "id": "hierarchy_validation_result",
+      "path": "hardware/system_carrier/altium/equivalence/hierarchy_validation_result.json",
+      "sha256": "8e18b92facfa12fca4cbd146150ccff915270aed35049d7fdb414ada871b32fc"
+    },
+    {
+      "id": "script_runtime_receipt",
+      "path": "hardware/system_carrier/altium/equivalence/script_runtime_receipt.json",
+      "sha256": "115a07fa2f2d32c7d7193a59833ddf74639920fb8c5a643d3d9d3a1b3704eb06"
+    },
+    {
+      "id": "script_runtime_result",
+      "path": "hardware/system_carrier/altium/equivalence/script_runtime_result.json",
+      "sha256": "71c2c64549c85ec4c6e5be077e3814c5cfe2cda1d8872c1effe8bfa7a9b8af52"
+    },
+    {
+      "id": "no_mmwave_review",
+      "path": "hardware/system_carrier/altium/equivalence/no_mmwave_review.json",
+      "sha256": "41c06294be75ebf71851575e7b698d3842534d57059d42aa4dbecdd31e5ba7ba"
+    },
+    {
+      "id": "no_mmwave_review_result",
+      "path": "hardware/system_carrier/altium/equivalence/no_mmwave_review_result.json",
+      "sha256": "17311e68ef1752636a6d60b645d58412d948645010f9916131dc5663a0a84a4c"
+    },
+    {
+      "id": "native_audit_result",
+      "path": "hardware/system_carrier/altium/equivalence/native_audit_result.json",
+      "sha256": "30ad2e6c098a80177df25013a223f9b174adebf160966f8c559600b30c5fab75"
+    }
+  ],
+  "board_id": "EVT-SYS-CARRIER",
+  "checks": {
+    "bom_designator_mpn_equivalence": "PASS",
+    "connector_pinout_equivalence": "PASS",
+    "footprint_equivalence": "PASS",
+    "hierarchy_equivalence": "PASS",
+    "native_pcb_audit": "PASS",
+    "netlist_equivalence": "PASS",
+    "no_76_81GHz_rf_on_system_carrier": "PASS",
+    "pinmap_equivalence": "PASS",
+    "rules_equivalence": "PASS",
+    "stackup_equivalence": "PASS"
+  },
+  "evidence_level": "NATIVE_ALTIUM",
+  "hardware_revision": "A",
+  "preserve_kicad": true,
+  "primary_cad": "Altium Designer",
+  "review_a_status": "PASS",
+  "schema": "ALTIUM-EQUIVALENCE-MANIFEST-001",
+  "synthetic_fixture": false
+}

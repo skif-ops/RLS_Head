@@ -1,0 +1,49 @@
+{
+  "component_count": 83,
+  "differential_pair_count": 1,
+  "errors": [],
+  "expected_component_count": 83,
+  "expected_layer_stack_count": 4,
+  "gnd_l2_plane_count": 1,
+  "input_sha256": {
+    "class_inventory": "0a3b8425d93717c881cb21c3f3e977933a375049875ecc8232f2ba704cb6ab48",
+    "component_inventory": "1845a69b0b4e6bfc0564343f3cce4ac61791d2306d0ea849ec8b6d61743855f7",
+    "diff_pair_inventory": "ad8876730b481c2a4e3aab0b6112058a87e5bfd06da250d8f7312c3e37c77e30",
+    "layer_stack_detail": "2fd7c02d5033959285473fd16dc6cd37593a3c7e1c75b96ee7aa8a323984718d",
+    "layer_stack_inventory": "cbdf4c20e487668a5b1e67abfa8e4d3bcd8dc4015688fc52b0e1d6e9cfa662ec",
+    "mechanical_inventory": "2ca8b90ad3b8a55cb69c8e2fdb4ef5e4594faf63731c936436704ed57f683899",
+    "net_inventory": "b14d28a0a736d78997136fb041094dda21ddcabd7e6156f69c3797a5f3a9d0ce",
+    "pad_net_inventory": "4d121072405bb86f00c1739c3401303216f7f31c854937ffdf547e5079e32d2a",
+    "polygon_inventory": "43697cf0486ab5dd5b6bb75179b5ac8da0f748addfbf0abaeb8b471abdeacc02",
+    "rule_constraint_inventory": "e69b462df963630f4452822d80dfabe062d18b5a66437d05205f57e2bcbce0b0",
+    "rule_inventory": "a46a1bd4f972ed2ac56451ce770ce2eed50b1a0880047b46141c834032e89f2b"
+  },
+  "layer_stack_count": 4,
+  "mounting_hole_count": 4,
+  "net_count": 54,
+  "notes": [
+    "PASS cross-checks native components, P0/P1 net names, rule names/families and values, MCU pin-to-net assignments, direct symbol pin contracts, four-layer copper stack, board outline, mounting holes and the solid GND polygon bound to the complete L2 board outline.",
+    "Exact footprint equivalence, hierarchy/port semantics, connector aggregate semantics and rule priority remain controlled by dedicated evidence.",
+    "The full ALTIUM_EQUIVALENCE_GATE still controls layout authority."
+  ],
+  "pad_record_count": 466,
+  "pinmap_checked_count": 21,
+  "polygon_count": 2,
+  "required_class_count": 9,
+  "required_p0_p1_net_count": 31,
+  "required_rule_count": 9,
+  "rule_count": 45,
+  "schema": "ALTIUM-NATIVE-AUDIT-RESULT-001",
+  "status": "PASS",
+  "symbol_pin_checked_count": 51,
+  "symbol_pin_semantic_deferred_count": 14,
+  "verified_checks": {
+    "mechanical_equivalence": "PASS",
+    "native_pcb_audit": "PASS",
+    "pair_class_equivalence": "PASS",
+    "pinmap_equivalence": "PASS",
+    "rules_equivalence": "PASS",
+    "stackup_equivalence": "PASS"
+  },
+  "warnings": []
+}

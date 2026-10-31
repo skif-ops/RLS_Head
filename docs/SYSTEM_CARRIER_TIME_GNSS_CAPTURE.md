@@ -1,20 +1,17 @@
 # System Carrier TIME_GNSS capture
 
-Rev.A `TIME_GNSS` capture now contains the carrier-side GNSS timing and
-antenna-entry scaffold:
+Rev.A `TIME_GNSS` contains the detachable external receiver interface:
 
-- NEO-M9N-00B symbol placeholder;
-- ESD0P2RF-02LS RF protection placeholder;
-- GNSS antenna connector;
-- local 100 nF + 10 uF supply decoupling;
-- GNSS UART nets;
-- P0 GNSS PPS net for TIM2 capture;
-- optional active-antenna bias-T population (27 nH / 10 ohm / 100 nF).
+- JST-GH J8 with 5V_GNSS, UART, PPS and GND;
+- TPD4E05U06 protection for UART and PPS;
+- P1 optional GNSS PPS for TIM2 capture;
+- no carrier-side GNSS RF path or antenna connector.
 
-The GNSS module and RF ESD symbols remain `SYMBOL_PENDING` until validated
-KiCad symbols are introduced. The optional bias network is DNP by default.
+The selected external receiver is simpleRTK3B Pro based on mosaic-X5. It can
+be removed or quarantined without stopping carrier operation.
 
 This sheet is timing/navigation instrumentation only and contains no radar
 RF or control-actuation circuitry.
 
-USB is unused on Rev.A; V_USB is pulled to GND through 100 kΩ per the u-blox integration guidance.
+J8 uses a detachable cable, so receiver installation and replacement require
+no soldering on the System Carrier.

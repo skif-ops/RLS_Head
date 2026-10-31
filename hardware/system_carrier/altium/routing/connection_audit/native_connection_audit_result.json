@@ -1,0 +1,531 @@
+{
+  "candidate_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "candidate_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
+  "counts": {
+    "fill": 60,
+    "pad": 306,
+    "polygon": 2,
+    "track": 780,
+    "via": 241
+  },
+  "disconnected_pad_components": {},
+  "disconnected_pad_nets": [],
+  "disconnected_power_nets": [],
+  "disconnected_signal_nets": [],
+  "drc": {
+    "net_antennae_violations": 0,
+    "pcb_file": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+    "routing_topology_violations": 0,
+    "unrouted_net_violations": 0
+  },
+  "errors": [],
+  "evidence_sha256": {
+    "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
+    "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Design Rule Check - EVT_SYS_CARRIER.drc": "dbddb5164d7de7be8e9f6bcd75ce8c109301c59438c44b870406abe33fe92f64",
+    "hardware/system_carrier/altium/routing/connection_audit/fill_inventory.csv": "dbe92cca21127e1b326d671526e8c925a95288a66a60b852e9b426cf2662959a",
+    "hardware/system_carrier/altium/routing/connection_audit/pad_geometry.csv": "1a00cf4252959689404853fc430b769c7bcd0412813cfc2b6513a0641fd057ea",
+    "hardware/system_carrier/altium/routing/connection_audit/polygon_inventory.csv": "0507f1589071b9275fb74a3f27270522257d5cdb3729ae841a89affd6867f9e7",
+    "hardware/system_carrier/altium/routing/connection_audit/track_inventory.csv": "cf153fb3ea153a66f3dcfbcfd0f9c7a272bfed699aa982eaf10f77b8171dc1ec",
+    "hardware/system_carrier/altium/routing/connection_audit/via_inventory.csv": "565329bce9f76bfecc2a5f1ffb1f8a7fac16655f78a3b59663ef195f8f6a6de3"
+  },
+  "missing_target_nets": [],
+  "net_results": {
+    "3V3": {
+      "connected": true,
+      "node_count": 195,
+      "pad_component_count": 1,
+      "pad_count": 53
+    },
+    "5V_GNSS": {
+      "connected": true,
+      "node_count": 17,
+      "pad_component_count": 1,
+      "pad_count": 5
+    },
+    "BOOT0": {
+      "connected": true,
+      "node_count": 22,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "BUCK5_SW": {
+      "connected": true,
+      "node_count": 9,
+      "pad_component_count": 1,
+      "pad_count": 4
+    },
+    "BUCK_SW": {
+      "connected": true,
+      "node_count": 5,
+      "pad_component_count": 1,
+      "pad_count": 4
+    },
+    "CAN_RX": {
+      "connected": true,
+      "node_count": 18,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "CAN_TX": {
+      "connected": true,
+      "node_count": 16,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "GND": {
+      "connected": true,
+      "node_count": 298,
+      "pad_component_count": 1,
+      "pad_count": 100
+    },
+    "GNSS_PPS": {
+      "connected": true,
+      "node_count": 25,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "GNSS_RX_EXT": {
+      "connected": true,
+      "node_count": 17,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "GNSS_TX_EXT": {
+      "connected": true,
+      "node_count": 30,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "HOST_UART1_RX": {
+      "connected": true,
+      "node_count": 48,
+      "pad_component_count": 1,
+      "pad_count": 4
+    },
+    "HOST_UART1_RX_EXT": {
+      "connected": true,
+      "node_count": 24,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "HOST_UART1_TX": {
+      "connected": true,
+      "node_count": 35,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "HOST_UART1_TX_EXT": {
+      "connected": true,
+      "node_count": 14,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "HOST_UART2_RX": {
+      "connected": true,
+      "node_count": 22,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "HOST_UART2_RX_EXT": {
+      "connected": true,
+      "node_count": 26,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "HOST_UART2_TX": {
+      "connected": true,
+      "node_count": 32,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "HOST_UART2_TX_EXT": {
+      "connected": true,
+      "node_count": 20,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "IMU_DRDY": {
+      "connected": true,
+      "node_count": 8,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "IMU_MISO": {
+      "connected": true,
+      "node_count": 27,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "IMU_MOSI": {
+      "connected": true,
+      "node_count": 14,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "IMU_NSS": {
+      "connected": true,
+      "node_count": 14,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "IMU_SCK": {
+      "connected": true,
+      "node_count": 14,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "MCU_HSE_25M": {
+      "connected": true,
+      "node_count": 5,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "NRST": {
+      "connected": true,
+      "node_count": 51,
+      "pad_component_count": 1,
+      "pad_count": 4
+    },
+    "RADAR_12V": {
+      "connected": true,
+      "node_count": 18,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "RADAR_CANH": {
+      "connected": true,
+      "node_count": 27,
+      "pad_component_count": 1,
+      "pad_count": 4
+    },
+    "RADAR_CANL": {
+      "connected": true,
+      "node_count": 22,
+      "pad_component_count": 1,
+      "pad_count": 4
+    },
+    "RADAR_EFUSE_FLT": {
+      "connected": true,
+      "node_count": 21,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "RADAR_REF": {
+      "connected": true,
+      "node_count": 9,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "SHDN_PD": {
+      "connected": true,
+      "node_count": 8,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "STB_PD": {
+      "connected": true,
+      "node_count": 11,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "SWCLK": {
+      "connected": true,
+      "node_count": 21,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "SWDIO": {
+      "connected": true,
+      "node_count": 14,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "SWO": {
+      "connected": true,
+      "node_count": 13,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "SYS_EFUSE_FLT": {
+      "connected": true,
+      "node_count": 19,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "U5_PG": {
+      "connected": true,
+      "node_count": 3,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "U5_SS_LOCAL": {
+      "connected": true,
+      "node_count": 4,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "U6_DVDT": {
+      "connected": true,
+      "node_count": 8,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "U6_ILIM_LOCAL": {
+      "connected": true,
+      "node_count": 8,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "U6_OVLO_LOCAL": {
+      "connected": true,
+      "node_count": 16,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "U6_UVLO_LOCAL": {
+      "connected": true,
+      "node_count": 10,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "U7_DVDT": {
+      "connected": true,
+      "node_count": 14,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "U7_ILIM_LOCAL": {
+      "connected": true,
+      "node_count": 7,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "U7_OVLO_LOCAL": {
+      "connected": true,
+      "node_count": 9,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "U7_UVLO_LOCAL": {
+      "connected": true,
+      "node_count": 9,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "U9_PG": {
+      "connected": true,
+      "node_count": 7,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "U9_SS_LOCAL": {
+      "connected": true,
+      "node_count": 6,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "VCAP1_LOCAL": {
+      "connected": true,
+      "node_count": 6,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "VCAP2_LOCAL": {
+      "connected": true,
+      "node_count": 5,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "VDDA_FILTERED": {
+      "connected": true,
+      "node_count": 22,
+      "pad_component_count": 1,
+      "pad_count": 5
+    },
+    "VIN_PROTECTED": {
+      "connected": true,
+      "node_count": 51,
+      "pad_component_count": 1,
+      "pad_count": 15
+    },
+    "VIN_RAW": {
+      "connected": true,
+      "node_count": 15,
+      "pad_component_count": 1,
+      "pad_count": 4
+    }
+  },
+  "orphan_copper_component_count": 0,
+  "orphan_copper_components": [],
+  "outside_board": [],
+  "outside_board_count": 0,
+  "power_stitch_net_count": 2,
+  "production_authority": "NOT_AUTHORIZED",
+  "route_plan_geometry_diagnostic": {
+    "expected_track_count": 221,
+    "expected_via_count": 55,
+    "gate": "DIAGNOSTIC_ONLY",
+    "matched_track_count": 81,
+    "matched_via_count": 45,
+    "missing_tracks": [
+      "top:GNSS_TX_EXT:1:0",
+      "top:GNSS_PPS:1:0",
+      "top:NRST:2:0",
+      "top:NRST:3:0",
+      "top:CAN_TX:1:0",
+      "top:RADAR_CANH:1:0",
+      "top:RADAR_CANL:1:0",
+      "top:HOST_UART2_RX:1:0",
+      "top:HOST_UART1_TX_EXT:0:0",
+      "top:HOST_UART1_TX_EXT:1:0",
+      "top:HOST_UART1_RX_EXT:0:0",
+      "top:HOST_UART1_RX_EXT:1:0",
+      "top:HOST_UART2_RX_EXT:0:0",
+      "top:HOST_UART2_RX_EXT:1:0",
+      "top:HOST_UART2_RX_EXT:2:0",
+      "top:HOST_UART2_RX_EXT:2:1",
+      "top:HOST_UART2_RX_EXT:2:2",
+      "top:HOST_UART2_RX_EXT:2:3",
+      "top:HOST_UART2_RX_EXT:2:4",
+      "layer:NRST:1:0",
+      "layer:NRST:1:1",
+      "layer:HOST_UART1_RX_EXT:3:0",
+      "layer:HOST_UART1_RX_EXT:3:1",
+      "layer:HOST_UART1_RX_EXT:3:2",
+      "layer:HOST_UART1_RX_EXT:3:3",
+      "layer:RADAR_CANH:4:0",
+      "layer:RADAR_CANH:4:1",
+      "layer:RADAR_CANH:4:2",
+      "layer:RADAR_CANH:4:3",
+      "layer:RADAR_CANH:6:0",
+      "layer:RADAR_CANH:6:1",
+      "layer:RADAR_CANH:6:2",
+      "layer:RADAR_CANH:6:3",
+      "layer:HOST_UART1_RX:7:0",
+      "layer:HOST_UART1_RX:7:1",
+      "layer:HOST_UART1_RX:7:2",
+      "layer:HOST_UART1_RX:7:3",
+      "layer:HOST_UART1_TX_EXT:9:2",
+      "layer:HOST_UART2_TX_EXT:10:0",
+      "layer:HOST_UART2_TX_EXT:10:1",
+      "layer:HOST_UART2_TX_EXT:10:2",
+      "layer:HOST_UART2_TX_EXT:10:3",
+      "layer:HOST_UART2_TX_EXT:10:4",
+      "layer:HOST_UART2_TX_EXT:10:5",
+      "layer:HOST_UART2_TX_EXT:10:6",
+      "layer:HOST_UART2_TX_EXT:10:7",
+      "layer:HOST_UART2_TX_EXT:10:8",
+      "layer:HOST_UART2_RX_EXT:11:0",
+      "layer:HOST_UART2_RX_EXT:11:1",
+      "layer:HOST_UART2_RX_EXT:11:2",
+      "layer:HOST_UART2_RX_EXT:11:3",
+      "layer:HOST_UART1_RX_EXT:12:0",
+      "layer:HOST_UART1_RX_EXT:12:1",
+      "layer:HOST_UART1_RX_EXT:12:2",
+      "layer:HOST_UART1_RX_EXT:12:3",
+      "layer:HOST_UART1_RX_EXT:12:4",
+      "layer:RADAR_CANH:14:0",
+      "layer:RADAR_CANH:14:1",
+      "layer:RADAR_CANH:14:2",
+      "layer:RADAR_CANH:14:3",
+      "layer:RADAR_CANH:14:4",
+      "layer:HOST_UART2_TX_EXT:15:0",
+      "layer:HOST_UART2_TX_EXT:15:1",
+      "layer:HOST_UART2_TX_EXT:15:2",
+      "layer:HOST_UART2_TX_EXT:15:3",
+      "layer:HOST_UART2_TX_EXT:15:4",
+      "layer:HOST_UART2_TX_EXT:15:5",
+      "layer:HOST_UART2_TX_EXT:15:6",
+      "layer:HOST_UART2_TX_EXT:15:7",
+      "layer:HOST_UART2_RX:16:0",
+      "layer:HOST_UART2_RX:16:1",
+      "layer:HOST_UART2_RX:16:2",
+      "layer:HOST_UART2_RX:16:3",
+      "layer:HOST_UART2_RX:17:0",
+      "layer:HOST_UART2_RX:17:1",
+      "layer:HOST_UART2_RX:17:2",
+      "layer:HOST_UART2_RX:17:3",
+      "layer:HOST_UART2_RX:17:4",
+      "layer:GNSS_PPS:19:0",
+      "layer:GNSS_PPS:19:1",
+      "layer:GNSS_PPS:19:2",
+      "layer:GNSS_TX_EXT:20:0",
+      "layer:GNSS_TX_EXT:20:1",
+      "layer:GNSS_TX_EXT:20:2",
+      "layer:GNSS_TX_EXT:20:3",
+      "layer:NRST:21:0",
+      "layer:NRST:21:1",
+      "layer:NRST:21:2",
+      "layer:HOST_UART2_RX:22:0",
+      "layer:HOST_UART2_RX:22:1",
+      "layer:HOST_UART2_RX:22:2",
+      "layer:HOST_UART2_RX:22:3",
+      "layer:HOST_UART2_RX:22:4",
+      "layer:HOST_UART1_RX:24:0",
+      "layer:HOST_UART1_RX:24:1",
+      "layer:HOST_UART1_RX:24:2",
+      "layer:HOST_UART1_RX:24:3",
+      "layer:HOST_UART1_RX:24:4",
+      "layer:HOST_UART2_TX:25:0",
+      "layer:HOST_UART2_TX:25:1",
+      "layer:HOST_UART2_TX:27:0",
+      "layer:HOST_UART2_TX:27:1",
+      "layer:HOST_UART2_TX:27:2",
+      "layer:HOST_UART2_TX:27:3",
+      "layer:HOST_UART2_TX:27:4",
+      "layer:HOST_UART2_TX:27:5",
+      "layer:HOST_UART2_TX:27:6",
+      "layer:HOST_UART2_TX:27:7",
+      "layer:HOST_UART1_TX:28:0",
+      "layer:HOST_UART1_TX:28:1",
+      "layer:HOST_UART1_TX:28:2",
+      "layer:HOST_UART1_TX:28:3",
+      "layer:HOST_UART1_TX:29:0",
+      "layer:RADAR_REF:30:0",
+      "layer:RADAR_REF:30:1",
+      "layer:CAN_TX:31:0",
+      "layer:CAN_TX:31:1",
+      "layer:CAN_TX:31:2",
+      "layer:CAN_TX:31:3",
+      "layer:CAN_TX:31:4",
+      "layer:CAN_TX:31:5",
+      "layer:CAN_RX:32:0",
+      "layer:CAN_RX:32:1",
+      "layer:CAN_RX:32:2",
+      "layer:CAN_RX:32:3",
+      "layer:CAN_RX:32:4",
+      "layer:CAN_RX:32:5",
+      "layer:GNSS_PPS:33:0",
+      "layer:GNSS_PPS:33:1",
+      "layer:GNSS_PPS:33:2",
+      "layer:NRST:34:0",
+      "layer:NRST:34:1",
+      "layer:HOST_UART1_TX:36:0",
+      "layer:HOST_UART1_TX:36:1",
+      "layer:HOST_UART1_RX:37:0",
+      "layer:HOST_UART1_RX:37:1",
+      "layer:HOST_UART1_RX:37:2",
+      "layer:GNSS_TX_EXT:38:0",
+      "layer:GNSS_TX_EXT:40:0",
+      "layer:GNSS_TX_EXT:40:1"
+    ],
+    "missing_vias": [
+      "via:CAN_TX:68.599988:29.974997",
+      "via:GNSS_PPS:2.150006:57.625005",
+      "via:GNSS_PPS:12.000000:56.500000",
+      "via:GNSS_PPS:38.000000:31.250000",
+      "via:GNSS_TX_EXT:13.000000:57.500000",
+      "via:HOST_UART1_RX_EXT:78.000000:54.500000",
+      "via:HOST_UART2_RX:75.300000:53.325000",
+      "via:HOST_UART2_RX:75.500000:53.250000",
+      "via:HOST_UART2_RX:75.750000:53.250000",
+      "via:HOST_UART2_RX_EXT:79.000000:53.000000"
+    ],
+    "reason": "The compact route plan contains superseded alternative branches; connectivity and native DRC are the release gates."
+  },
+  "schema": "PCB-A10-NATIVE-CONNECTION-AUDIT-001",
+  "signal_target_net_count": 17,
+  "status": "PASS",
+  "target_net_count": 19,
+  "unattached_target_pads": []
+}

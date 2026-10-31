@@ -146,7 +146,13 @@ def validate(system_root: str | Path) -> dict:
         for row in model_rows
         if str(row.get("net_or_class", "")).strip()
     }
-    expected_nets = {"VIN_RAW", "VIN_PROTECTED", "RADAR_12V", "3V3_TRUNK"}
+    expected_nets = {
+        "VIN_RAW",
+        "VIN_PROTECTED",
+        "RADAR_12V",
+        "3V3_TRUNK",
+        "5V_GNSS",
+    }
     if set(model_by_net) != expected_nets:
         errors.append("power_model_net_set")
     if set(net_contracts) != expected_nets:

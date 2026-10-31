@@ -77,8 +77,13 @@ def derive_audits(system: Path) -> tuple[dict[str, str], dict]:
 
     mcu_nets = hierarchy_nets(hierarchy_rows, "MCU_CORE")
     imu_nets = hierarchy_nets(hierarchy_rows, "IMU")
-    eth_nets = hierarchy_nets(hierarchy_rows, "ETHERNET")
+    time_gnss_nets = hierarchy_nets(hierarchy_rows, "TIME_GNSS")
+    host_uart_nets = hierarchy_nets(hierarchy_rows, "HOST_UART")
     can_nets = hierarchy_nets(hierarchy_rows, "RADAR_IO_CAN")
+    all_hierarchy_nets = {
+        str(row.get("net_name", "")).strip()
+        for row in hierarchy_rows
+    }
 
     reset_boot_ok = (
         contains_component(components, "R_BOOT0", "10k 1%")
@@ -107,22 +112,76 @@ def derive_audits(system: Path) -> tuple[dict[str, str], dict]:
         }.issubset(imu_nets)
     )
 
-    ethernet_ok = (
+    host_uart_ok = (
         design.get("bom", {}).get("status") == "PASS"
         and {
             "3V3",
             "GND",
-            "ETH_50M",
-            "ETH_MDIO",
-            "ETH_MDC",
-            "ETH_CRS_DV",
-            "ETH_RXD0",
-            "ETH_RXD1",
-            "ETH_TX_EN",
-            "ETH_TXD0",
-            "ETH_TXD1",
-            "ETH_NRST",
-        }.issubset(eth_nets)
+            "HOST_UART1_TX",
+            "HOST_UART1_RX",
+            "HOST_UART2_TX",
+            "HOST_UART2_RX",
+        }.issubset(host_uart_nets)
+    )
+
+    external_gnss_ok = (
+        design.get("bom", {}).get("status") == "PASS"
+        and contains_component(
+            components,
+            "J_GNSS_EXT",
+            "SM06B-GHS-TB(LF)(SN)",
+        )
+        and contains_component(
+            components,
+            "D_GNSS_EXT",
+            "TPD4E05U06DQAR",
+        )
+        and {
+            "5V_GNSS",
+            "GND",
+            "GNSS_PPS",
+            "GNSS_RX_EXT",
+            "GNSS_TX_EXT",
+        }.issubset(time_gnss_nets)
+    )
+
+    obsolete_nets = {
+        "GNSS_RF",
+        "GNSS_VCC_RF",
+        "GNSS_VUSB_LOCAL",
+        "GNSS_BCKP_LOCAL",
+        "GNSS_BIAS_FILTER",
+    }
+    obsolete_net_present = any(
+        net in obsolete_nets
+        or net.startswith("ETH_")
+        or net.startswith("RMII_")
+        for net in all_hierarchy_nets
+    )
+    component_text = " ".join(
+        str(value).lower()
+        for row in components
+        for value in row.values()
+    )
+    obsolete_component_present = any(
+        token in component_text
+        for token in (
+            "ethernet",
+            "rmii",
+            "rj45",
+            "onboard gnss",
+            "gnss rf",
+        )
+    )
+    no_obsolete_interfaces_ok = (
+        {
+            "HOST_UART1_TX",
+            "HOST_UART1_RX",
+            "HOST_UART2_TX",
+            "HOST_UART2_RX",
+        }.issubset(host_uart_nets)
+        and not obsolete_net_present
+        and not obsolete_component_present
     )
 
     can_ok = (
@@ -151,8 +210,12 @@ def derive_audits(system: Path) -> tuple[dict[str, str], dict]:
         "reset_boot": "PASS" if reset_boot_ok else "FAIL",
         "timing_capture": "PASS" if timing_ok else "FAIL",
         "imu": "PASS" if imu_ok else "FAIL",
-        "ethernet": "PASS" if ethernet_ok else "FAIL",
+        "host_uart": "PASS" if host_uart_ok else "FAIL",
+        "external_gnss": "PASS" if external_gnss_ok else "FAIL",
         "can_fd": "PASS" if can_ok else "FAIL",
+        "no_obsolete_interfaces": (
+            "PASS" if no_obsolete_interfaces_ok else "FAIL"
+        ),
     }
 
     details = {
@@ -163,8 +226,10 @@ def derive_audits(system: Path) -> tuple[dict[str, str], dict]:
             "reset_boot": reset_boot_ok,
             "timing_capture": timing_ok,
             "imu": imu_ok,
-            "ethernet": ethernet_ok,
+            "host_uart": host_uart_ok,
+            "external_gnss": external_gnss_ok,
             "can_fd": can_ok,
+            "no_obsolete_interfaces": no_obsolete_interfaces_ok,
         },
     }
 

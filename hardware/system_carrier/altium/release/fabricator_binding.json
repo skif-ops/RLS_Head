@@ -1,0 +1,29 @@
+{
+  "schema": "ALTIUM-FABRICATOR-BINDING-001",
+  "status": "PUBLISHED_BASELINE_CAPTURED",
+  "fabricator": "Rezonit",
+  "stackup_bound": false,
+  "copper_weight_bound": false,
+  "min_trace_clearance_bound": false,
+  "via_rules_bound": false,
+  "evidence_refs": [
+    {
+      "path": "hardware/system_carrier/altium/release/REZONIT_FABRICATION_BASELINE.md",
+      "sha256": "0ab590ea9c89dabb655c429fed96352b32d970ea18da3f3916e7fc2596191caa"
+    },
+    {
+      "path": "hardware/system_carrier/altium/release/REZONIT_PUBLISHED_STACK_4L_35UM.csv",
+      "sha256": "f7ca95d95928badc369252852b6f6335d46e99abeaa51c4d4cf23457bbb5d281"
+    }
+  ],
+  "notes": [
+    "Rezonit is the selected candidate fabricator for the pilot.",
+    "The published 1.50 mm TG150 four-layer 35 um stack is the working baseline. The TG170 alternative and published process, mask, finish, mechanical and impedance starting data are also captured.",
+    "The requested 1.60 mm finished thickness and finished copper are pilot-order values to be verified against the selected Rezonit process.",
+    "Controlled impedance is not required because this ECO has no Ethernet MDI or onboard GNSS RF route.",
+    "Order-specific confirmation is not awaited before pilot archive preparation. Remaining order values are deferred corrections and do not block archive assembly.",
+    "This record does not authorize production."
+  ],
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea"
+}

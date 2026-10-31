@@ -1,9 +1,9 @@
 block_id,sheet_name,required_devices,inputs,outputs,criticality,notes
-00,TOP,J1;J_RADAR_PWR;J_RADAR_IO;J_ETH;J_GNSS_ANT,12V_IN;RADAR_IO;ETH;GNSS_RF,ALL_INTERNAL,P0,Top-level hierarchy only; no functional circuitry
+00,TOP,J1;J_RADAR_PWR;J_RADAR_IO;J_HOST_UART;J_GNSS_EXT,12V_IN;RADAR_IO;HOST_UART;GNSS_EXT,ALL_INTERNAL,P0,Top-level hierarchy only; no functional circuitry
 10,POWER_INPUT,U6;U7;U5;D_IN;L1,12V_IN,3V3;RADAR_12V,P0,System protection plus independent radar branch
 20,MCU_CORE,U1;Y1,3V3,MCU_BUSES;SWD;TIME_CAPTURE,P0,STM32H753 power clock reset boot and decoupling
-30,TIME_GNSS,U8;J_GNSS_ANT;D_GNSS,3V3;GNSS_RF,GNSS_PPS;GNSS_UART,P0,GNSS receiver antenna protection UART and TIMEPULSE
+30,TIME_GNSS,J_GNSS_EXT;D_GNSS_EXT,5V_GNSS;GNSS_UART,GNSS_PPS,P1,External simpleRTK3B Pro interface; GNSS is optional and untrusted
 40,IMU,U2,3V3;SPI2,IMU_DRDY,P1,ICM-42688-P SPI and hardware DRDY
 50,RADAR_IO_CAN,U4;D_CAN;J_RADAR_PWR;J_RADAR_IO,3V3;RADAR_12V;FDCAN1,RADAR_CAN;RADAR_REF,P0,External radar module power CAN-FD and timestamp reference only
-60,ETHERNET,U3;Y2;J_ETH;D_ETH,3V3;RMII,ETHERNET,P1,Host and instrumentation Ethernet
+60,HOST_UART,J_HOST_UART;D_UART,3V3;USART1;USART2,HOST_UART1;HOST_UART2,P1,Two independent 3.3V host UART interfaces
 70,DEBUG_BOOT,U1,3V3,SWD;NRST;BOOT0,P0,SWD reset boot straps and test points

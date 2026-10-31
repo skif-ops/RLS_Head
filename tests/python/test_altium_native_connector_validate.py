@@ -43,7 +43,7 @@ def test_native_connector_validator_passes_authoritative_fixture(tmp_path):
     assert result["status"] == "PASS"
     assert result["verified_checks"]["connector_pinout_equivalence"] == "PASS"
     assert result["logical_connector_pin_count"] > 0
-    assert result["aggregate_logical_pin_count"] == 1
+    assert result["aggregate_logical_pin_count"] == 0
     assert len(result["input_sha256"]["connector_native_map"]) == 64
 
 

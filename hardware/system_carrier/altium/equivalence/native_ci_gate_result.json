@@ -1,0 +1,32 @@
+{
+  "approved_prerouting_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
+  "approved_schematic_sha256": "85b458cc95d32704a9a9dced80f2f8514bf2f9d3065e0f91c18ab57091dc9166",
+  "current_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
+  "current_schematic_sha256": "85b458cc95d32704a9a9dced80f2f8514bf2f9d3065e0f91c18ab57091dc9166",
+  "equivalence_status": "PASS",
+  "errors": [],
+  "handoff_status": "READY_TO_RUN_EQUIVALENCE_GATE",
+  "layout_evolved_since_equivalence": false,
+  "native_pcbdoc_present": true,
+  "native_schdoc_present": true,
+  "notes": [
+    "POST_EQUIVALENCE keeps the equivalence-approved SchDoc fixed. The PcbDoc may evolve after layout authority; the full pre-routing equivalence gate is replayed only while PcbDoc still matches its approved pre-routing hash.",
+    "POST_PRODUCTION additionally requires a reproducible production-release PASS and synchronized production authority."
+  ],
+  "phase": "POST_EQUIVALENCE",
+  "production_authority_surfaces": {
+    "cad_authority": false,
+    "implementation_status": false,
+    "native_status": false
+  },
+  "production_authorized": false,
+  "production_release_status": null,
+  "production_result_active": false,
+  "production_result_pass": false,
+  "production_result_present": false,
+  "routing_authorized": true,
+  "routing_status": null,
+  "schema": "ALTIUM-NATIVE-CI-GATE-001",
+  "status": "PASS",
+  "warnings": []
+}

@@ -1,0 +1,10 @@
+Native IPC-2581 package receipt
+Source project: hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PrjPcb
+Source PCB: hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc
+Output: hardware/system_carrier/altium/release/pilot_r1/fab/EVT_SYS_CARRIER.cvg
+Exporter: Altium Designer 26.10.1, Fabrication.OutJob
+Observed output timestamp: 2026-10-30 21:20:41 Europe/Moscow
+Output bytes: 5044624
+Output SHA-256: 495ac88933cfb5dc0c8760625e8e984aacddee03a9aed8ea425356ade8090e44
+Structural validation: PASS
+Production authority: NOT_AUTHORIZED

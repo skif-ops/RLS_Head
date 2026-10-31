@@ -145,6 +145,7 @@ def test_native_transition_full_pass_syncs_routing_authority(
             "equivalence_gate_status": "NOT_RUN",
             "layout_authority": "NOT_AUTHORIZED",
             "production_authority": "NOT_AUTHORIZED",
+            "review_a_status": "REQUIRED_AFTER_ECO_IMPORT",
             "next_required_outputs": ["native/EVT_SYS_CARRIER.SchDoc"],
         },
     )
@@ -337,6 +338,7 @@ def test_native_transition_full_pass_syncs_routing_authority(
             "status": "PASS",
             "layout_authority": "AUTHORIZED",
             "production_authority": "NOT_AUTHORIZED",
+            "review_a_status": "PASS",
             "errors": [],
             "reason_codes": [],
             "integrity": {
@@ -364,6 +366,7 @@ def test_native_transition_full_pass_syncs_routing_authority(
     assert native_status["native_import_status"] == "NATIVE_FILES_READY"
     assert native_status["equivalence_gate_status"] == "PASS"
     assert native_status["layout_authority"] == "AUTHORIZED"
+    assert native_status["review_a_status"] == "PASS"
     assert len(native_status["native_pcb_sha256"]) == 64
     assert len(native_status["native_schematic_sha256"]) == 64
     assert len(native_status["equivalence_result_sha256"]) == 64

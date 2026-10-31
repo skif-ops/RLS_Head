@@ -1,0 +1,8 @@
+sequence,item,altium_layer,material,thickness_mm,copper_um,er_nominal,status,notes
+1,COPPER,L1 Top Layer,Copper,0.035,35,,EVT_PROVISIONAL,Top signal/component layer
+2,DIELECTRIC,L1-L2,FR-4 prepreg,0.180,,4.2,EVT_PROVISIONAL,Primary impedance dielectric to solid L2 GND
+3,COPPER,L2 Mid-Layer 1,Copper,0.035,35,,EVT_PROVISIONAL,Continuous solid GND plane
+4,DIELECTRIC,L2-L3,FR-4 core,1.100,,4.2,EVT_PROVISIONAL,Main core thickness
+5,COPPER,L3 Mid-Layer 2,Copper,0.035,35,,EVT_PROVISIONAL,Power and slow-signal layer
+6,DIELECTRIC,L3-L4,FR-4 prepreg,0.180,,4.2,EVT_PROVISIONAL,Bottom-side reference dielectric
+7,COPPER,L4 Bottom Layer,Copper,0.035,35,,EVT_PROVISIONAL,Bottom signal/component layer

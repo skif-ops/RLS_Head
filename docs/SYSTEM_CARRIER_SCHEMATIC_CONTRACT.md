@@ -13,7 +13,7 @@ Required sheets:
 4. TIME_GNSS
 5. IMU
 6. RADAR_IO_CAN
-7. ETHERNET
+7. HOST_UART
 8. DEBUG_BOOT
 
 The mmWave radar front-end remains external. No 76-81 GHz transmission line
@@ -73,28 +73,21 @@ The schematic must provide:
 
 ## GNSS
 
-NEO-M9N-00B remains on the carrier.
+GNSS is an external simpleRTK3B Pro receiver based on mosaic-X5. The carrier
+contains no GNSS RF path. J8 is JST `SM06B-GHS-TB(LF)(SN)` and provides 5 V,
+USART3 RX/TX, PPS and GND through a detachable cable. Pin 5 remains NC.
+TPD4E05U06 protects UART and PPS. TPS62133 generates 5V_GNSS.
 
-The antenna path is:
+## Host UART
 
-U.FL -> ultra-low-capacitance ESD -> 50-ohm RF_IN.
+J6 provides two independent 3.3 V UART interfaces:
 
-The PCB must provide an optional active-antenna bias-T footprint using
-VCC_RF, with 27 nH / 100 nF / 10 ohm reference values.
-
-V_BCKP is populated to 3V3 through a 0-ohm option for EVT; the layout must
-leave a test pad / alternate backed-rail option for a later revision.
-
-## Ethernet
-
-LAN8742A uses the internal 1.2-V regulator configuration:
-
-- RBIAS = 12.1 kOhm, 1%;
-- VDDCR local capacitor = 1 uF;
-- reference analog filtering including 470 pF;
-- 49.9-ohm MDI termination resistors;
-- hardware nRST available and asserted after power-up;
-- external 50-MHz RMII clock is retained.
+- USART2 on PD5/PD6;
+- USART1 on PA9/PA10;
+- 33 ohm series resistance on every signal;
+- 10 kohm pull-up on both RX inputs;
+- TPD4E05U06 protection on all four signal lines;
+- no power output on J6.
 
 ## CAN / radar harness
 

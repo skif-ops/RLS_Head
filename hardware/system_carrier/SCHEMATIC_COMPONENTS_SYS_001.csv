@@ -1,5 +1,11 @@
 block_id,ref_or_pattern,function,value_or_mpn,qty_rule,criticality,placement_rule,notes
 10,U5,3V3 buck,TPS62132RGTR,1,P0,Power sheet,Fixed 3.3V reduces feedback-network risk
+10,U9,External GNSS 5V buck,TPS62133RGTR,1,P1,Power sheet,Fixed 5V supply for detachable receiver
+10,L9,External GNSS buck inductor,XFL4020-222MEC 2.2uH,1,P1,Adjacent U9 SW,Same locked inductor geometry as L1
+10,C_U9_IN,External GNSS buck input capacitor,10uF 25V X7R/X5R,1,P1,Adjacent U9 PVIN/PGND,Plus 100nF high-frequency bypass
+10,C_U9_OUT,External GNSS buck output capacitor,22uF 10V X7R/X5R,1,P1,Adjacent U9 VOS/PGND,Verify effective capacitance after DC bias
+10,C_U9_SS,External GNSS buck soft-start capacitor,3.3nF C0G/X7R,1,P1,Adjacent U9 SS/TR,
+10,R_U9_PG,External GNSS power-good pull-up,100k 1%,1,P1,Near U9,Pull to 5V_GNSS
 10,L1,Buck inductor,XFL4020-222MEC 2.2uH,1,P0,Adjacent U5 SW,TI family reference value
 10,C_U5_IN,Buck input capacitor,10uF 25V X7R/X5R,1,P0,Adjacent PVIN/PGND,Plus 100nF high-frequency bypass
 10,C_U5_AVIN,AVIN bypass,100nF 25V X7R,1,P0,Adjacent AVIN/AGND,
@@ -23,27 +29,19 @@ block_id,ref_or_pattern,function,value_or_mpn,qty_rule,criticality,placement_rul
 20,C_VDDA_BULK,STM32 analog bulk,1uF X7R,1,P0,After FB1 at VDDA/VSSA,
 20,R_BOOT0,BOOT0 default strap,10k 1%,1,P0,Adjacent MCU,Pull down to GND
 20,C_NRST,NRST filter,100nF X7R,1,P1,Adjacent NRST,Reset switch/test pad may pull NRST low
-30,C_GNSS_HF,NEO-M9N VCC bypass,100nF X7R,1,P0,Adjacent U8 VCC,
-30,C_GNSS_BULK,NEO-M9N VCC bulk,10uF low-ESR,1,P0,Adjacent U8 VCC,Supports startup current transient
-30,R_GNSS_BCKP,Backup-domain population option,0R,1,P1,Near U8 V_BCKP,Default ties V_BCKP to 3V3; footprint permits future backed rail
-30,D_GNSS,GNSS RF ESD,ESD0P2RF-02LS,1,P0,Immediately behind J_GNSS_ANT,Keep RF shunt path extremely short
-30,L_GNSS_BIAS,Optional active-antenna bias-T,27nH Z_gt_500R_at_GNSS I_gt_300mA,1_optional,P1,At RF feed,VCC_RF source option
-30,C_GNSS_BIAS,Active-antenna bias supply filter,100nF X7R 16V,1_optional,P1,At bias-T,u-blox reference value
-30,R_GNSS_BIAS,Active-antenna short-current limiter,10R 0.25W,1_optional,P1,At bias-T,u-blox reference value
+30,J_GNSS_EXT,Detachable external GNSS interface,SM06B-GHS-TB(LF)(SN),1,P1,Board edge accessible,JST-GH cable connection requires no solder in service
+30,D_GNSS_EXT,External GNSS UART and PPS ESD,TPD4E05U06DQAR,1,P1,Immediately behind J_GNSS_EXT,Protect RX TX and PPS; fourth channel spare
 40,C_IMU_HF,IMU VDD bypass,100nF X7R,1,P1,Adjacent U2 VDD,
 40,C_IMU_BULK,IMU bulk,2.2uF X7R,1,P1,Adjacent U2 VDD,
 40,C_IMU_VDDIO,IMU VDDIO bypass,10nF X7R,1,P1,Adjacent U2 VDDIO,Required by ICM-42688-P typical SPI application
 50,R_CAN_TERM,CAN selectable termination,120R 1%,1,P1,At J_RADAR_IO,Populate through solder jumper/0R option only when carrier is bus endpoint
 50,C_CAN_VCC,CAN transceiver bypass,100nF X7R,1,P1,Adjacent U4 VCC,
-60,R_ETH_RBIAS,PHY bias,12.1k 1%,1,P0,Adjacent U3 RBIAS,Microchip mandatory value
-60,C_ETH_VDDCR,PHY core regulator capacitor,1uF X7R,1,P0,Adjacent U3 VDDCR,Follow LAN8742A internal-regulator reference
-60,C_ETH_CF,PHY analog filter capacitor,470pF C0G,1,P1,Adjacent PHY supply network,Follow LAN8742A reference
-60,R_ETH_TERM,PHY MDI termination,49.9R 1%,4,P0,PHY to magnetics,Follow LAN8742A reference diagram
-60,C_ETH_DECOUPLING,PHY local bypass,100nF X7R,one_per_supply_pin,P0,Adjacent supply pins,
+60,J_HOST_UART,Dual host UART connector,43045-0600,1,P1,Board edge accessible,Two independent 3.3V UARTs and two ground returns
+60,D_UART,Four-channel host UART ESD,TPD4E05U06DQAR,1,P1,Immediately behind J_HOST_UART,Protect all four signal lines
+60,R_UART_SERIES,UART source and receive damping,33R 1%,4,P1,Between MCU and ESD array,One series resistor per signal
+60,R_UART_RX_PULLUP,UART receive idle bias,10k 1%,2,P1,Near MCU,One pull-up per receive input
 70,J_SWD,Programming interface,Tag-Connect TC2030 footprint,1,P0,Board edge accessible,No permanent connector required
 10,R_U6_FLT_PU,System eFuse FLT pull-up,10k 1%,1,P0,Adjacent U6 FLT,Pull active-low open-drain FLT to 3V3
 10,R_U7_FLT_PU,Radar eFuse FLT pull-up,10k 1%,1,P0,Adjacent U7 FLT,Pull active-low open-drain FLT to 3V3
 50,R_CAN_STB,TCAN3404 standby default,10k 1%,1,P0,Adjacent U4 STB,Pull STB low for deterministic normal mode
 50,R_CAN_SHDN,TCAN3404 shutdown default,10k 1%,1,P1,Adjacent U4 SHDN,External pull-down reinforces normal-mode default
-60,R_ETH_NRST_PD,PHY reset hold-down,10k 1%,1,P0,Adjacent U3 nRST,Hold LAN8742A in reset until STM32 push-pull release after >=25ms
-30,R_GNSS_VUSB_PD,Unused GNSS USB supply pulldown,100k 1%,1,P1,Adjacent U8 V_USB,Required when USB interface is unused

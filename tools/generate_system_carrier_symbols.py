@@ -6,8 +6,8 @@ from pathlib import Path
 
 
 LIBRARY_NAME = "SystemCarrier_Local"
-CORE_TARGET_REFS = {"U2", "U4", "U5", "U6", "U7"}
-AUX_TARGET_REFS = {"Y1", "Y2", "D3", "D4"}
+CORE_TARGET_REFS = {"U2", "U4", "U5", "U6", "U7", "U9"}
+AUX_TARGET_REFS = {"Y1", "D3", "D4", "D8"}
 TARGET_REFS = CORE_TARGET_REFS | AUX_TARGET_REFS
 
 PIN_TYPE = {
@@ -39,9 +39,9 @@ REF_PREFIX = {
     "ICM-42688-P": "U",
     "TCAN3404DRBRQ1": "U",
     "TPS62132RGTR": "U",
+    "TPS62133RGTR": "U",
     "TPS259470ARPWR": "U",
     "ECS-2520S33-250-FN-TR": "Y",
-    "ECS-2520S33-500-FN-TR": "Y",
     "ESD2CANFD24DBZRQ1": "D",
     "TPD4E05U06DQAR": "D",
 }
@@ -130,13 +130,32 @@ def _symbol_text(
         ),
     )
 
-    left = pins[::2]
-    right = pins[1::2]
+    if name in {"TPS62132RGTR", "TPS62133RGTR"}:
+        by_number = {
+            str(row["pin_number"]).strip(): row
+            for row in pins
+        }
+        left = [
+            by_number[number]
+            for number in ("5", "7", "8", "9", "10", "11", "12", "13")
+        ]
+        right = [
+            by_number[number]
+            for number in ("1", "2", "3", "4", "14", "6", "15", "16", "17")
+        ]
+    else:
+        left = pins[::2]
+        right = pins[1::2]
     row_count = max(len(left), len(right), 1)
 
     pitch = 2.54
     half_height = max(10.16, (row_count + 1) * pitch / 2)
-    half_width = 10.16
+    # Power ICs need space for pin names on both sides of the body.
+    half_width = (
+        25.4 if name == "ICM-42688-P"
+        else 20.32 if name in {"TPS259470ARPWR", "TPS62132RGTR", "TPS62133RGTR"}
+        else 10.16
+    )
 
     lines: list[str] = []
     lines.append(
@@ -196,7 +215,7 @@ def _symbol_text(
         # Model one as the power-output source and the other duplicated
         # package contacts as passive to avoid false output-vs-output ERC.
         if (
-            name == "TPS62132RGTR"
+            name in {"TPS62132RGTR", "TPS62133RGTR"}
             and role == "POWER_SWITCH"
             and pin_num in {"2", "3"}
         ):

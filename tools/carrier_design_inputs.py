@@ -21,18 +21,23 @@ FILES = {
 REQUIRED_MPNS = {
     "STM32H753IIT6",
     "ICM-42688-P",
-    "LAN8742Ai-CZ-TR",
     "TCAN3404DRBRQ1",
     "TPS62132RGTR",
+    "TPS62133RGTR",
     "TPS259470ARPWR",
     "ECS-2520S33-250-FN-TR",
-    "ECS-2520S33-500-FN-TR",
-    "NEO-M9N-00B",
     "43650-0200",
     "43045-0600",
-    "U.FL-R-SMT-K(800)",
-    "ESD0P2RF-02LS",
-    "SI-60182-F",
+    "SM06B-GHS-TB(LF)(SN)",
+    "TPD4E05U06DQAR",
+}
+
+REQUIRED_BOM_REFS = {
+    "U9": "TPS62133RGTR",
+    "J6": "43045-0600",
+    "J8": "SM06B-GHS-TB(LF)(SN)",
+    "D3": "TPD4E05U06DQAR",
+    "D8": "TPD4E05U06DQAR",
 }
 
 REQUIRED_PINMAP = {
@@ -45,20 +50,12 @@ REQUIRED_PINMAP = {
     "IMU_MOSI": ("PB15", "95", "SPI2_MOSI"),
     "GNSS_TX": ("PD8", "96", "USART3_TX"),
     "GNSS_RX": ("PD9", "97", "USART3_RX"),
-    "DEBUG_TX": ("PD5", "147", "USART2_TX"),
-    "DEBUG_RX": ("PD6", "150", "USART2_RX"),
+    "HOST_UART1_TX": ("PD5", "147", "USART2_TX"),
+    "HOST_UART1_RX": ("PD6", "150", "USART2_RX"),
+    "HOST_UART2_TX": ("PA9", "120", "USART1_TX"),
+    "HOST_UART2_RX": ("PA10", "121", "USART1_RX"),
     "CAN_RX": ("PD0", "142", "FDCAN1_RX"),
     "CAN_TX": ("PD1", "143", "FDCAN1_TX"),
-    "ETH_RMII_REF_CLK": ("PA1", "41", "ETH_RMII_REF_CLK"),
-    "ETH_MDIO": ("PA2", "42", "ETH_MDIO"),
-    "ETH_MDC": ("PC1", "33", "ETH_MDC"),
-    "ETH_RMII_CRS_DV": ("PA7", "53", "ETH_RMII_CRS_DV"),
-    "ETH_RMII_RXD0": ("PC4", "54", "ETH_RMII_RXD0"),
-    "ETH_RMII_RXD1": ("PC5", "55", "ETH_RMII_RXD1"),
-    "ETH_RMII_TX_EN": ("PG11", "154", "ETH_RMII_TX_EN"),
-    "ETH_RMII_TXD0": ("PG13", "156", "ETH_RMII_TXD0"),
-    "ETH_RMII_TXD1": ("PG14", "157", "ETH_RMII_TXD1"),
-    "ETH_NRST": ("PE4", "3", "GPIO"),
     "SWDIO": ("PA13", "124", "SWDIO"),
     "SWCLK": ("PA14", "137", "SWCLK"),
     "MCU_HSE": ("PH0", "29", "OSC_IN"),
@@ -72,15 +69,16 @@ REQUIRED_NETS = {
     "IMU_SCK",
     "IMU_MISO",
     "IMU_MOSI",
-    "ETH_50M",
-    "ETH_MDIO",
-    "ETH_MDC",
-    "ETH_CRS_DV",
-    "ETH_RXD0",
-    "ETH_RXD1",
-    "ETH_TX_EN",
-    "ETH_TXD0",
-    "ETH_TXD1",
+    "GNSS_RX_EXT",
+    "GNSS_TX_EXT",
+    "HOST_UART1_TX",
+    "HOST_UART1_RX",
+    "HOST_UART2_TX",
+    "HOST_UART2_RX",
+    "HOST_UART1_TX_EXT",
+    "HOST_UART1_RX_EXT",
+    "HOST_UART2_TX_EXT",
+    "HOST_UART2_RX_EXT",
     "CAN_RX",
     "CAN_TX",
     "SWDIO",
@@ -89,17 +87,17 @@ REQUIRED_NETS = {
     "VIN_RAW",
     "VIN_PROTECTED",
     "3V3",
+    "5V_GNSS",
     "RADAR_12V",
     "RADAR_CANH",
     "RADAR_CANL",
 }
 
 REQUIRED_CLOCKS = {
-    "MCU_HSE_25M": 25_000_000,
-    "ETH_50M": 50_000_000,
-    "GNSS_PPS": 1,
-    "RADAR_REF": 0,
-    "IMU_DRDY": 0,
+    "MCU_HSE_25M": (25_000_000, "P0"),
+    "GNSS_PPS": (1, "P1"),
+    "RADAR_REF": (0, "P0"),
+    "IMU_DRDY": (0, "P0"),
 }
 
 REQUIRED_RADAR_INTERFACE_SIGNALS = {
@@ -116,6 +114,7 @@ REQUIRED_POWER_DEVICES = {
     "SMAJ15CA",
     "TPS259470ARPWR",
     "TPS62132RGTR",
+    "TPS62133RGTR",
 }
 
 
@@ -145,6 +144,18 @@ def validate_bom(path: Path) -> dict:
 
     missing = sorted(REQUIRED_MPNS - mpns)
 
+    by_ref = {
+        str(row.get("ref", "")).strip():
+            str(row.get("mpn", "")).strip()
+        for row in rows
+        if str(row.get("ref", "")).strip()
+    }
+    missing_refs = sorted(
+        f"{ref}:{mpn}"
+        for ref, mpn in REQUIRED_BOM_REFS.items()
+        if by_ref.get(ref) != mpn
+    )
+
     not_selected = sorted(
         str(row.get("mpn", "")).strip()
         for row in rows
@@ -153,9 +164,14 @@ def validate_bom(path: Path) -> dict:
     )
 
     return {
-        "status": "PASS" if not missing and not not_selected else "FAIL",
+        "status": (
+            "PASS"
+            if not missing and not missing_refs and not not_selected
+            else "FAIL"
+        ),
         "row_count": len(rows),
         "missing_mpns": missing,
+        "missing_refs": missing_refs,
         "not_selected": not_selected,
     }
 
@@ -215,9 +231,16 @@ def validate_pinmap(path: Path) -> dict:
                 f"mapping:{signal}:{actual}!={expected}"
             )
 
-        if signal in {"GNSS_PPS", "RADAR_REF", "IMU_DRDY"}:
-            if str(row.get("criticality", "")).strip() != "P0":
-                findings.append(f"criticality:{signal}")
+        expected_criticality = {
+            "GNSS_PPS": "P1",
+            "RADAR_REF": "P0",
+            "IMU_DRDY": "P0",
+        }.get(signal)
+        if expected_criticality is not None and (
+            str(row.get("criticality", "")).strip()
+            != expected_criticality
+        ):
+            findings.append(f"criticality:{signal}")
 
     return {
         "status": "PASS" if not findings else "FAIL",
@@ -236,7 +259,7 @@ def validate_clock_tree(path: Path) -> dict:
         clock_id = str(row.get("clock_id", "")).strip()
         grouped.setdefault(clock_id, []).append(row)
 
-    for clock_id, expected_hz in REQUIRED_CLOCKS.items():
+    for clock_id, (expected_hz, expected_criticality) in REQUIRED_CLOCKS.items():
         entries = grouped.get(clock_id, [])
         if not entries:
             findings.append(f"missing_clock:{clock_id}")
@@ -254,18 +277,8 @@ def validate_clock_tree(path: Path) -> dict:
                     f"frequency:{clock_id}:{hz}!={expected_hz}"
                 )
 
-            if str(entry.get("criticality", "")).strip() != "P0":
+            if str(entry.get("criticality", "")).strip() != expected_criticality:
                 findings.append(f"criticality:{clock_id}")
-
-    eth_entries = grouped.get("ETH_50M", [])
-    eth_targets = {
-        str(row.get("target", "")).strip()
-        for row in eth_entries
-    }
-
-    for target in {"STM32H753_PA1", "LAN8742A_REF_CLK"}:
-        if target not in eth_targets:
-            findings.append(f"eth_50m_target:{target}")
 
     return {
         "status": "PASS" if not findings else "FAIL",
@@ -297,6 +310,7 @@ def validate_power_tree(path: Path) -> dict:
     for pair in {
         ("VIN_RAW", "VIN_PROTECTED"),
         ("VIN_PROTECTED", "3V3"),
+        ("VIN_PROTECTED", "5V_GNSS"),
         ("VIN_PROTECTED", "RADAR_12V"),
     }:
         if pair not in transitions:

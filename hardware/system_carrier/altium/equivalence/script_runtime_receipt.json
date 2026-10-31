@@ -1,0 +1,42 @@
+{
+  "altium_version": "26.10.1 Trial",
+  "attestation_required": true,
+  "board_id": "EVT-SYS-CARRIER",
+  "input_sha256": {
+    "api_contract": "06638f8620c3a2fac52cd8f4e3403bb1a9fe887cedba7be052ea33b9f20815dd",
+    "hierarchy_audit_script": "7e75cad16b3600b5a3482dc3da6cbd6c0a06a0cd0a4df6befe2a9b3a345f0078",
+    "pcb": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
+    "pcb_audit_script": "df6e25f73cf32ce8fb614d82fedd57961f7160b904b4a888a5797ea8cafd81f6",
+    "project": "59284024bdb3184601c17657c14d78c81da3352848f81fbe023bc74b25fc41bd",
+    "schematic": "85b458cc95d32704a9a9dced80f2f8514bf2f9d3065e0f91c18ab57091dc9166",
+    "script_project": "dd12429671e6d4f574546ab1338ffd0b9507a0d2468cb1ec9f8d853cb979396f"
+  },
+  "notes": [
+    "Hashes are generated from the current canonical project, native documents, script sources/API contract and exporter outputs. They are not an execution PASS assertion.",
+    "After confirming the real Altium Designer run, the operator must explicitly set top-level status and both procedure status fields to PASS and record zero runtime errors/warnings before running the validator."
+  ],
+  "operator": "Codex computer use on user-authorized workstation",
+  "output_sha256": {
+    "component_inventory": "1845a69b0b4e6bfc0564343f3cce4ac61791d2306d0ea849ec8b6d61743855f7",
+    "hierarchy_export": "7ea7b3fea89d594161c8cf6bec7cfdd9e89cceaf7173e32d34f60ecf3f7318c9",
+    "layer_stack_inventory": "cbdf4c20e487668a5b1e67abfa8e4d3bcd8dc4015688fc52b0e1d6e9cfa662ec",
+    "net_inventory": "b14d28a0a736d78997136fb041094dda21ddcabd7e6156f69c3797a5f3a9d0ce",
+    "pad_net_inventory": "4d121072405bb86f00c1739c3401303216f7f31c854937ffdf547e5079e32d2a",
+    "rule_inventory": "a46a1bd4f972ed2ac56451ce770ce2eed50b1a0880047b46141c834032e89f2b"
+  },
+  "prepared_by": "tools.altium_script_runtime_receipt_prepare",
+  "procedures": {
+    "ExportNativeAudit": {
+      "runtime_errors": 0,
+      "runtime_warnings": 0,
+      "status": "PASS"
+    },
+    "ExportNativeHierarchy": {
+      "runtime_errors": 0,
+      "runtime_warnings": 0,
+      "status": "PASS"
+    }
+  },
+  "schema": "ALTIUM-SCRIPT-RUNTIME-RECEIPT-001",
+  "status": "PASS"
+}

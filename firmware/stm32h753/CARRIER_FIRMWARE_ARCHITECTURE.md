@@ -22,14 +22,18 @@ This firmware is for the non-RF measurement carrier.
    - no raw ADC transport through STM32.
 
 4. **GNSS interface**
-   - USART3 for navigation/status.
+   - USART3 for the detachable external mosaic-X5 receiver.
    - TIMEPULSE/PPS captured independently of UART parsing.
-   - expose jamming/spoofing flags when provided by the GNSS module.
+   - GNSS is optional and is never a boot or measurement dependency.
+   - navigation and PPS remain untrusted until integrity checks pass.
+   - expose receiver jamming and spoofing indicators.
+   - constellation groups and their use in PVT are configurable.
 
 5. **Host telemetry**
-   - Ethernet RMII for bench logging and evidence export.
+   - two independent 3.3 V UART links: USART2 and USART1.
    - binary framed telemetry with sequence number and monotonic timestamp.
    - loss counters and backpressure accounting.
+   - no Ethernet hardware or firmware dependency.
 
 6. **Health manager**
    - rail-good, watchdog, link-state, CAN error-state, GNSS validity, PPS age, IMU age, radar-ref age.
@@ -39,7 +43,7 @@ This firmware is for the non-RF measurement carrier.
 
 - interrupt handlers: capture timestamp / enqueue minimal event only;
 - high-priority task: radar/GNSS/IMU event correlation;
-- medium-priority task: CAN RX/TX, IMU SPI completion, telemetry packing;
+- medium-priority task: CAN RX/TX, IMU SPI completion, UART telemetry packing;
 - low-priority task: health report, statistics, non-critical diagnostics.
 
 No blocking I/O inside capture ISRs.
@@ -70,13 +74,12 @@ No blocking I/O inside capture ISRs.
 1. clock/reset/watchdog;
 2. GPIO and rail-good inputs;
 3. TIM2 timestamp domain;
-4. UART debug;
-5. GNSS UART + PPS;
+4. host UART1 and UART2;
+5. optional GNSS UART + PPS;
 6. IMU SPI + DRDY;
 7. CAN-FD radar link;
-8. Ethernet;
-9. health manager;
-10. integrated evidence logger.
+8. health manager;
+9. integrated evidence logger.
 
 ## EVT exit criteria
 
@@ -84,8 +87,8 @@ Firmware is ready for carrier Review A / bench when:
 
 - all three timestamp inputs are observed in one monotonic domain;
 - timestamp wrap handling is tested;
-- PPS loss/holdover is reported;
+- GNSS loss, spoofing quarantine and PPS holdover are reported without stopping radar, CAN, UART or logging;
 - IMU overrun and CAN bus-off recovery are tested;
-- Ethernet telemetry loss counters are exposed;
+- UART telemetry loss counters are exposed independently for both links;
 - watchdog recovery is demonstrated;
 - configuration hash is exported with every measurement session.

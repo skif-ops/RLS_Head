@@ -72,6 +72,7 @@ def validate(system_root: str | Path) -> dict:
     budget_rows = read_csv(budget_path)
 
     budget_capacity: dict[str, float] = {}
+    budget_allocation: dict[str, float] = {}
     for row in budget_rows:
         rail = str(row.get("rail", "")).strip()
         if not rail:
@@ -86,12 +87,24 @@ def validate(system_root: str | Path) -> dict:
             capacity,
             budget_capacity.get(rail, 0.0),
         )
+        try:
+            allocation = float(str(row.get("allocation", "")).strip())
+        except ValueError:
+            continue
+        budget_allocation[rail] = max(
+            allocation,
+            budget_allocation.get(rail, 0.0),
+        )
 
     expected_currents = {
         "VIN_RAW": budget_capacity.get("12V_IN", 0.0),
         "VIN_PROTECTED": budget_capacity.get("12V_IN", 0.0),
         "RADAR_12V": budget_capacity.get("RADAR_12V", 0.0),
         "3V3_TRUNK": budget_capacity.get("3V3", 0.0),
+        "5V_GNSS": budget_allocation.get(
+            "5V_GNSS",
+            budget_capacity.get("5V_GNSS", 0.0),
+        ),
     }
 
     results: list[dict] = []
@@ -174,6 +187,7 @@ def validate(system_root: str | Path) -> dict:
         "PWR-002",
         "PWR-003",
         "PWR-004",
+        "PWR-005",
     }:
         errors.append("model_set")
 
