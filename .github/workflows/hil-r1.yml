@@ -454,7 +454,7 @@ jobs:
           assert data["schema"] == "ALTIUM-POWER-WIDTH-GATE-001"
           assert data["status"] == "PASS"
           assert data["errors"] == []
-          assert len(data["models"]) == 5
+          assert len(data["models"]) == 6
           assert data["production_review_required"] is True
           print("Altium provisional power-width model PASS")
           PY
@@ -495,7 +495,7 @@ jobs:
           assert data["schema"] == "ALTIUM-RULE-SCOPE-GATE-001"
           assert data["status"] == "PASS"
           assert data["errors"] == []
-          assert data["rule_count"] == 9
+          assert data["rule_count"] == 10
           assert data["differential_pair_count"] == 1
           assert data["differential_pair_class_count"] == 1
           print("Altium rule scopes and differential pairs PASS")
@@ -1153,7 +1153,7 @@ jobs:
               ).read_text()
           )
           assert data["status"] == "PASS"
-          assert data["rule_count"] == 9
+          assert data["rule_count"] == 10
           print("Altium native rule-scope evidence READY")
           PY
 
