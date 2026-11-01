@@ -4,6 +4,7 @@ import argparse
 import csv
 import math
 import queue
+import socket
 import threading
 import time
 from collections import defaultdict, deque
@@ -90,6 +91,32 @@ class SerialWorker(SourceWorker):
                         self.emit_bytes(decoder, data)
         except Exception as exc:
             self.output.put(("error", f"Ошибка COM-порта {self.port}: {exc}"))
+        finally:
+            self.output.put(("stopped", None))
+
+
+class TcpWorker(SourceWorker):
+    def __init__(self, host: str, port: int, output: queue.Queue, stop_event: threading.Event) -> None:
+        super().__init__(output, stop_event)
+        self.host = host
+        self.port = port
+
+    def run(self) -> None:
+        decoder = TargetStateStreamDecoder()
+        try:
+            with socket.create_connection((self.host, self.port), timeout=3.0) as connection:
+                connection.settimeout(0.2)
+                self.output.put(("status", f"Подключено к цифровому двойнику: {self.host}:{self.port}"))
+                while not self.stop_event.is_set():
+                    try:
+                        data = connection.recv(8192)
+                    except socket.timeout:
+                        continue
+                    if not data:
+                        break
+                    self.emit_bytes(decoder, data)
+        except OSError as exc:
+            self.output.put(("error", f"Ошибка TCP {self.host}:{self.port}: {exc}"))
         finally:
             self.output.put(("stopped", None))
 
@@ -207,6 +234,19 @@ class EvtVisualizer(tk.Tk):
         range_box.grid(row=0, column=9, padx=4)
         ttk.Label(controls, text="м", style="Metric.TLabel").grid(row=0, column=10, sticky="w")
 
+        ttk.Label(controls, text="Цифровой двойник TCP", style="Metric.TLabel").grid(row=1, column=0, padx=(12, 4), pady=(0, 10))
+        self.tcp_host_var = tk.StringVar(value="127.0.0.1")
+        ttk.Entry(controls, textvariable=self.tcp_host_var, width=14).grid(row=1, column=1, padx=4, pady=(0, 10))
+        self.tcp_port_var = tk.StringVar(value="9750")
+        ttk.Entry(controls, textvariable=self.tcp_port_var, width=7).grid(row=1, column=2, padx=4, pady=(0, 10))
+        self.tcp_connect_button = ttk.Button(controls, text="Подключить к двойнику", command=self._toggle_tcp)
+        self.tcp_connect_button.grid(row=1, column=3, columnspan=2, padx=4, pady=(0, 10), sticky="ew")
+        ttk.Label(
+            controls,
+            text="Локальный поток TargetState V1. Точное значение ЭПР задается и отображается в программе двойника.",
+            style="Metric.TLabel",
+        ).grid(row=1, column=5, columnspan=6, padx=12, pady=(0, 10), sticky="w")
+
         body = ttk.Frame(self)
         body.pack(fill="both", expand=True, padx=16, pady=(0, 10))
         body.columnconfigure(0, weight=1, minsize=420)
@@ -267,7 +307,7 @@ class EvtVisualizer(tk.Tk):
         ).pack(anchor="w")
         self.table.bind("<<TreeviewSelect>>", self._show_selected)
 
-        self.status_var = tk.StringVar(value="Готово. Выберите COM-порт или запустите демо.")
+        self.status_var = tk.StringVar(value="Готово. Выберите COM-порт, подключите цифровой двойник TCP или запустите демо.")
         status = ttk.Label(self, textvariable=self.status_var, anchor="w")
         status.pack(fill="x", padx=16, pady=(0, 12))
 
@@ -280,7 +320,8 @@ class EvtVisualizer(tk.Tk):
             "J6.3 HOST_UART1_RX -> TX адаптера, если нужен обратный канал\n\n"
             "Параметры: 921600 бод, 8N1, уровни 3,3 В.\n"
             "VCC, 3V3 и 5V адаптера к плате не подключать.\n"
-            "Не использовать адаптер RS-232 или RS-485. Плата питается отдельно через J1.",
+            "Не использовать адаптер RS-232 или RS-485. Плата питается отдельно через J1.\n\n"
+            "Автономный цифровой двойник подключается без кабеля по TCP 127.0.0.1:9750.",
         )
 
     def _refresh_ports(self) -> None:
@@ -296,6 +337,7 @@ class EvtVisualizer(tk.Tk):
         self.stop_event = worker.stop_event
         self.worker = worker
         self.connect_button.configure(text="Отключить")
+        self.tcp_connect_button.configure(text="Отключить")
         worker.start()
 
     def _toggle_connection(self) -> None:
@@ -311,6 +353,22 @@ class EvtVisualizer(tk.Tk):
             return
         stop_event = threading.Event()
         self._start_worker(SerialWorker(port, self.events, stop_event))
+
+    def _toggle_tcp(self) -> None:
+        if self.worker is not None:
+            self._stop_source()
+            return
+        host = self.tcp_host_var.get().strip()
+        try:
+            port = int(self.tcp_port_var.get())
+        except ValueError:
+            messagebox.showerror("Цифровой двойник", "TCP-порт должен быть целым числом")
+            return
+        if not host or not 1 <= port <= 65535:
+            messagebox.showerror("Цифровой двойник", "Укажите адрес и TCP-порт 1..65535")
+            return
+        stop_event = threading.Event()
+        self._start_worker(TcpWorker(host, port, self.events, stop_event))
 
     def _start_demo(self) -> None:
         stop_event = threading.Event()
@@ -329,6 +387,7 @@ class EvtVisualizer(tk.Tk):
         self.worker = None
         self.stop_event = None
         self.connect_button.configure(text="Подключить")
+        self.tcp_connect_button.configure(text="Подключить к двойнику")
         self.status_var.set("Источник остановлен")
 
     def _toggle_recording(self) -> None:
@@ -406,6 +465,7 @@ class EvtVisualizer(tk.Tk):
                 self.worker = None
                 self.stop_event = None
                 self.connect_button.configure(text="Подключить")
+                self.tcp_connect_button.configure(text="Подключить к двойнику")
         self.after(50, self._process_events)
 
     def _handle_packet(self, packet: DecodedPacket) -> None:
@@ -540,6 +600,9 @@ class EvtVisualizer(tk.Tk):
 def main() -> None:
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("--demo", action="store_true")
+    parser.add_argument("--tcp", action="store_true")
+    parser.add_argument("--tcp-host", default="127.0.0.1")
+    parser.add_argument("--tcp-port", type=int, default=9750)
     parser.add_argument("--smoke-seconds", type=float, default=0.0)
     args, _unknown = parser.parse_known_args()
     try:
@@ -551,6 +614,10 @@ def main() -> None:
     app = EvtVisualizer()
     if args.demo:
         app.after(200, app._start_demo)
+    if args.tcp:
+        app.tcp_host_var.set(args.tcp_host)
+        app.tcp_port_var.set(str(args.tcp_port))
+        app.after(200, app._toggle_tcp)
     if args.smoke_seconds > 0:
         app.after(max(500, int(args.smoke_seconds * 1000)), app._on_close)
     app.mainloop()
