@@ -1,10 +1,10 @@
 {
   "errors": [],
   "input_sha256": {
-    "component_inventory": "1845a69b0b4e6bfc0564343f3cce4ac61791d2306d0ea849ec8b6d61743855f7",
-    "net_inventory": "b14d28a0a736d78997136fb041094dda21ddcabd7e6156f69c3797a5f3a9d0ce",
-    "pcb": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
-    "review": "41c06294be75ebf71851575e7b698d3842534d57059d42aa4dbecdd31e5ba7ba"
+    "component_inventory": "5ba2caad169488e25ff51c0e587fe9baa0ac540fa0c8455bb47aab2136d4d959",
+    "net_inventory": "ade206282e6f047e88bd154fb4aeb1394db8391b2fa632abc6e276929c39ba7d",
+    "pcb": "05a1fa1f765fbddee267de6ad66284ae352b3d187767db18df08d94b62ffd177",
+    "review": "0db95df63f94f40420e9354c92d2ac7a6ebe7f36bd322256da8cac8eb04977ef"
   },
   "notes": [
     "The review is deliberately human-signoff evidence bound to the exact native PcbDoc and machine inventories.",

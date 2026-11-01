@@ -7,17 +7,17 @@
     "hardware/system_carrier/altium/equivalence/mechanical_inventory.csv"
   ],
   "input_sha256": {
-    "component_inventory": "1845a69b0b4e6bfc0564343f3cce4ac61791d2306d0ea849ec8b6d61743855f7",
-    "net_inventory": "b14d28a0a736d78997136fb041094dda21ddcabd7e6156f69c3797a5f3a9d0ce",
-    "pcb": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea"
+    "component_inventory": "5ba2caad169488e25ff51c0e587fe9baa0ac540fa0c8455bb47aab2136d4d959",
+    "net_inventory": "ade206282e6f047e88bd154fb4aeb1394db8391b2fa632abc6e276929c39ba7d",
+    "pcb": "05a1fa1f765fbddee267de6ad66284ae352b3d187767db18df08d94b62ffd177"
   },
   "no_76_81ghz_antenna": true,
   "no_76_81ghz_components": true,
   "no_76_81ghz_nets": true,
   "no_76_81ghz_routing": true,
   "notes": [
-    "Reviewed the exact canonical post-routing native PcbDoc in Altium Designer 26.10.1 after return-path cleanup, together with the native component and net inventories.",
-    "The System Carrier contains radar power, control and interface connectivity only; no intentional 76-81 GHz components, nets, routing or antenna geometry are present."
+    "Reviewed the exact canonical 24 V native PcbDoc in Altium Designer 26.10.1 together with the native component and net inventories.",
+    "The System Carrier contains power, control and interface connectivity only. No intentional 76 to 81 GHz components, nets, routing or antenna geometry are present."
   ],
   "reviewer": "Codex computer use operator on user-authorized workstation",
   "schema": "ALTIUM-NO-MMWAVE-REVIEW-001",

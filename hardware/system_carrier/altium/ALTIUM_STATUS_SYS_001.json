@@ -2,15 +2,15 @@
   "altium": {
     "board_outline_frozen": false,
     "differential_pairs_defined": true,
-    "equivalence_gate": false,
+    "equivalence_gate": true,
     "evt_mechanical_routing_datums_locked": true,
     "evt_power_routing_locked": true,
     "evt_routing_stack_locked": true,
     "evt_stackup_provisional": true,
     "fabricator_stack_bound": true,
     "impedance_start_values_ready": false,
-    "import_package_ready": false,
-    "native_pcb_sha256": null,
+    "import_package_ready": true,
+    "native_pcb_sha256": "05a1fa1f765fbddee267de6ad66284ae352b3d187767db18df08d94b62ffd177",
     "native_pcbdoc": true,
     "native_schdoc": true,
     "placement_rooms_ready": true,
@@ -23,24 +23,21 @@
     "routing_started": false,
     "rule_query_contract_ready": true
   },
-  "blockers": [
-    "Import the validated 18V to 32V power-input ECO into native Altium documents",
-    "Compile the updated native project and rerun DRC, hierarchy, no-mmWave and equivalence gates"
-  ],
+  "blockers": [],
   "board_id": "EVT-SYS-CARRIER",
-  "current_phase": "POWER_INPUT_24V_ECO_PENDING_NATIVE_IMPORT",
+  "current_phase": "READY_FOR_ROUTING",
   "electrical_baseline": {
     "erc_errors": 0,
     "erc_warnings": 0,
     "source": "KiCad retained import and verification baseline",
-    "source_commit": null
+    "source_commit": "c39bf40895b38997c242dbd3e6d20b508110d9bd"
   },
   "hardware_revision": "A",
   "impedance_start": {
     "controlled_impedance_required": false,
     "reason": "No Ethernet MDI and no onboard GNSS RF path in the current ECO"
   },
-  "next_required_phase": "NATIVE_24V_ECO_IMPORT_COMPILE_AND_EQUIVALENCE",
+  "next_required_phase": "NATIVE_ALTIUM_PLACEMENT_AND_ROUTING",
   "power_width_start": {
     "allowed_temp_rise_c": 10,
     "copper_um": 35,
@@ -66,14 +63,12 @@
     "evt_mechanical_routing_datums_locked": true,
     "evt_power_routing_locked": true,
     "evt_routing_stack_locked": true,
-    "expected_status": "NOT_AUTHORIZED",
+    "expected_status": "READY_FOR_ROUTING",
     "production_fabricator_binding_required": false,
     "production_mechanical_freeze_required": false,
     "production_power_review_required": true,
-    "required_to_authorize": [
-      "ALTIUM_EQUIVALENCE_GATE PASS for the 18V to 32V input ECO"
-    ],
-    "routing_authorized": false
+    "required_to_authorize": [],
+    "routing_authorized": true
   },
   "rule_query_status": {
     "differential_pair_classes": 1,

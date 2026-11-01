@@ -1,4 +1,8 @@
 rule_name,layer_name,min_width_raw,preferred_width_raw,max_width_raw,min_gap_raw,preferred_gap_raw,max_gap_raw
+"R_V12_SYS_WIDTH","Top Layer",1181102,1181102,1968504,,,
+"R_V12_SYS_WIDTH","Mid-Layer 1",1181102,1181102,1968504,,,
+"R_V12_SYS_WIDTH","Mid-Layer 2",1181102,1181102,1968504,,,
+"R_V12_SYS_WIDTH","Bottom Layer",1181102,1181102,1968504,,,
 "R_5V_GNSS_WIDTH","Top Layer",196850,295276,590551,,,
 "R_5V_GNSS_WIDTH","Mid-Layer 1",196850,295276,590551,,,
 "R_5V_GNSS_WIDTH","Mid-Layer 2",196850,295276,590551,,,

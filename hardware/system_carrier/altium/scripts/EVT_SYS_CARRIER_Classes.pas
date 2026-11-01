@@ -170,6 +170,10 @@ Begin
     If UpperCase(ExtractFileExt(Board.FileName)) <> '.PCBDOC' Then Exit;
     If (EVTClassNet(Board, 'RADAR_CANH') = Nil) Or
        (EVTClassNet(Board, 'RADAR_CANL') = Nil) Or
+       (EVTClassNet(Board, 'VIN_RAW') = Nil) Or
+       (EVTClassNet(Board, 'VIN_PROTECTED_24V') = Nil) Or
+       (EVTClassNet(Board, 'V12_SYS') = Nil) Or
+       (EVTClassNet(Board, 'RADAR_12V') = Nil) Or
        (EVTClassNet(Board, 'GNSS_PPS') = Nil) Or
        (EVTClassNet(Board, 'RADAR_REF') = Nil) Or
        (EVTClassNet(Board, 'IMU_DRDY') = Nil) Or
@@ -193,8 +197,10 @@ Begin
     EVTBindPair(Board, 'DP_CAN', 'RADAR_CANH', 'RADAR_CANL');
     EVTBindClass(Board, 'DP_CAN', eClassMemberKind_DifferentialPair,
                  'DP_CAN', '', '');
+    EVTBindNetClass(Board, 'NC_POWER_24V',
+        'VIN_RAW;VIN_PROTECTED_24V');
     EVTBindNetClass(Board, 'NC_POWER_12V',
-        'VIN_RAW;VIN_PROTECTED;RADAR_12V');
+        'V12_SYS;RADAR_12V');
     EVTBindNetClass(Board, 'NC_POWER_3V3', '3V3;VDDA_FILTERED');
     EVTBindNetClass(Board, 'NC_POWER_5V_GNSS', '5V_GNSS');
     EVTBindNetClass(Board, 'NC_CAN', 'RADAR_CANH;RADAR_CANL');
@@ -207,8 +213,10 @@ Begin
     EVTBindNetClass(Board, 'NC_IMU_SPI',
         'IMU_NSS;IMU_SCK;IMU_MISO;IMU_MOSI');
     EVTRepairClass(Board, 'DP_CAN', 'DP_CAN');
+    EVTRepairClass(Board, 'NC_POWER_24V',
+        'VIN_RAW;VIN_PROTECTED_24V');
     EVTRepairClass(Board, 'NC_POWER_12V',
-        'VIN_RAW;VIN_PROTECTED;RADAR_12V');
+        'V12_SYS;RADAR_12V');
     EVTRepairClass(Board, 'NC_POWER_3V3', '3V3;VDDA_FILTERED');
     EVTRepairClass(Board, 'NC_POWER_5V_GNSS', '5V_GNSS');
     EVTRepairClass(Board, 'NC_CAN', 'RADAR_CANH;RADAR_CANL');

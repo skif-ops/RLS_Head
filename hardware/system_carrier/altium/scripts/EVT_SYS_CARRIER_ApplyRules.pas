@@ -199,12 +199,14 @@ Begin
             '0.15mm', '0.20mm', '0.50mm') Then Inc(Added);
     If EVTAddClearance(Board, 'R_TIMING_TO_SW_CLEARANCE',
             'InNetClass(''NC_TIMING'')',
-            'InNet(''BUCK_SW'') Or InNet(''BUCK5_SW'')', '1.00mm') Then Inc(Added);
+            'InNet(''U8_SW'') Or InNet(''BUCK_SW'') Or InNet(''BUCK5_SW'')', '1.00mm') Then Inc(Added);
     If EVTAddClearance(Board, 'R_UART_TO_SW_CLEARANCE',
             'InNetClass(''NC_HOST_UART'') Or InNetClass(''NC_GNSS_UART'')',
-            'InNet(''BUCK_SW'') Or InNet(''BUCK5_SW'')', '1.00mm') Then Inc(Added);
+            'InNet(''U8_SW'') Or InNet(''BUCK_SW'') Or InNet(''BUCK5_SW'')', '1.00mm') Then Inc(Added);
     If EVTAddWidth(Board, 'R_VIN_HIGH_CURRENT',
-            'InNet(''VIN_RAW'') Or InNet(''VIN_PROTECTED'')',
+            'InNet(''VIN_RAW'') Or InNet(''VIN_PROTECTED_24V'')',
+            '3.00mm', '3.00mm', '5.00mm') Then Inc(Added);
+    If EVTAddWidth(Board, 'R_V12_SYS_WIDTH', 'InNet(''V12_SYS'')',
             '3.00mm', '3.00mm', '5.00mm') Then Inc(Added);
     If EVTAddWidth(Board, 'R_RADAR_12V_WIDTH', 'InNet(''RADAR_12V'')',
             '1.50mm', '1.50mm', '3.00mm') Then Inc(Added);

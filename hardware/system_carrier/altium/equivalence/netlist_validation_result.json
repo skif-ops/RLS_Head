@@ -1,13 +1,13 @@
 {
-  "baseline_connectivity_group_count": 54,
-  "baseline_endpoint_count": 295,
+  "baseline_connectivity_group_count": 66,
+  "baseline_endpoint_count": 379,
   "errors": [],
   "input_sha256": {
-    "kicad_netlist_baseline": "07130e7962254bf594c01baa49455f3234b3126c996c28baae8b5ee25354ee5a",
-    "pad_net_inventory": "4d121072405bb86f00c1739c3401303216f7f31c854937ffdf547e5079e32d2a"
+    "kicad_netlist_baseline": "28db2f3284fd9810db3e6ab99d10aa47c6471b58a84ea57d211db4ef0455dbb5",
+    "pad_net_inventory": "992bf3677ac9ab13271543b9e6bdd45a5c97bdab833eebd3e8ab0b77860d022e"
   },
-  "native_connectivity_group_count": 54,
-  "native_endpoint_count": 295,
+  "native_connectivity_group_count": 66,
+  "native_endpoint_count": 379,
   "notes": [
     "KiCad's synthetic unconnected-(...) pins are excluded.",
     "Connectivity is compared as endpoint partitions, so equivalence does not depend on internal net naming.",
