@@ -474,11 +474,12 @@ def validate(root: str | Path) -> dict:
         "PWR-003",
         "PWR-004",
         "PWR-005",
+        "PWR-006",
     }:
         errors.append("power_width_model_set")
     if diff_pair_ids != {"DP_CAN"}:
         errors.append("diff_pair_set")
-    if len(rule_query_ids) != 9:
+    if len(rule_query_ids) != 10:
         errors.append("rule_query_count")
     if len(room_ids) != 7:
         errors.append("room_count")

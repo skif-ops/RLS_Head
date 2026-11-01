@@ -97,6 +97,7 @@ def validate(
     receipt_path = audit_dir / "connection_integrity_receipt.json"
     mechanical_path = altium / "ALTIUM_BOARD_MECHANICAL_SYS_001.csv"
     baseline_path = altium / "equivalence" / "pad_net_inventory.csv"
+    status_path = altium / "ALTIUM_STATUS_SYS_001.json"
 
     if not native_pcb.is_file():
         return {
@@ -107,6 +108,25 @@ def validate(
             "errors": [],
             "warnings": [],
         }
+
+    if status_path.is_file():
+        try:
+            implementation = json.loads(status_path.read_text(encoding="utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            implementation = {}
+        altium_status = implementation.get("altium", {})
+        if (
+            isinstance(altium_status, dict)
+            and altium_status.get("routing_started") is False
+        ):
+            return {
+                "schema": SCHEMA,
+                "status": "NOT_APPLICABLE",
+                "reason": "native_routing_not_started",
+                "production_authority": "NOT_AUTHORIZED",
+                "errors": [],
+                "warnings": [],
+            }
 
     errors: list[str] = []
     warnings: list[str] = []

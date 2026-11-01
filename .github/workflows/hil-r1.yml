@@ -321,7 +321,7 @@ jobs:
           assert data["status"] == "PASS"
           assert data["primary_cad"] == "Altium Designer"
           assert data["preserve_kicad"] is True
-          assert data["source_rule_count"] == data["mapped_rule_count"] == 25
+          assert data["source_rule_count"] == data["mapped_rule_count"] == 26
           assert data["layer_count"] == 4
           assert data["outjob_contract_count"] == 17
           assert data["required_output_count"] == 16
@@ -330,9 +330,9 @@ jobs:
           assert data["dfm_profile_count"] == 11
           assert data["implementation_step_count"] == 15
           assert data["impedance_model_count"] == 0
-          assert data["power_width_model_count"] == 5
+          assert data["power_width_model_count"] == 6
           assert data["diff_pair_count"] == 1
-          assert data["rule_query_count"] == 9
+          assert data["rule_query_count"] == 10
           assert data["room_count"] == 7
           assert data["equivalence_check_count"] == 11
           native_sch = Path(
@@ -390,7 +390,10 @@ jobs:
           assert data["status"] == "PASS"
           assert data["errors"] == []
           assert data["compact_candidate_validated"] is True
-          assert data["evt_routing_datums_locked"] is True
+          assert data["evt_routing_datums_locked"] is False
+          assert data["warnings"] == [
+              "compact_candidate_requires_native_drc_before_lock"
+          ]
           assert data["production_mechanical_freeze"] is False
           assert data["minimum_mount_hole_edge_ligament_mm"] >= 3.0
           print("EVT mechanical routing datums PASS")
@@ -1044,7 +1047,10 @@ jobs:
           )
           assert data["status"] == "PASS"
           assert data["compact_candidate_validated"] is True
-          assert data["evt_routing_datums_locked"] is True
+          assert data["evt_routing_datums_locked"] is False
+          assert data["warnings"] == [
+              "compact_candidate_requires_native_drc_before_lock"
+          ]
           assert data["production_mechanical_freeze"] is False
           print("EVT mechanical routing datum evidence READY")
           PY
@@ -1292,9 +1298,15 @@ jobs:
           native_pcb = Path(
               "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
           ).is_file()
+          routing_started = json.loads(
+              Path(
+                  "hardware/system_carrier/altium/"
+                  "ALTIUM_STATUS_SYS_001.json"
+              ).read_text()
+          )["altium"]["routing_started"]
           assert data["schema"] == "ALTIUM-CONNECTION-INTEGRITY-001"
           assert data["production_authority"] == "NOT_AUTHORIZED"
-          if native_pcb:
+          if native_pcb and routing_started:
               assert data["status"] == "PASS"
               assert data["outside_board_count"] == 0
               assert data["endpoint_baseline_matches"] is True
@@ -1327,9 +1339,15 @@ jobs:
           native_pcb = Path(
               "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
           ).is_file()
+          routing_started = json.loads(
+              Path(
+                  "hardware/system_carrier/altium/"
+                  "ALTIUM_STATUS_SYS_001.json"
+              ).read_text()
+          )["altium"]["routing_started"]
           assert data["schema"] == "ALTIUM-TIMING-ROUTING-GATE-001"
           assert data["production_authority"] == "NOT_AUTHORIZED"
-          if native_pcb:
+          if native_pcb and routing_started:
               assert data["status"] == "PASS"
               assert data["summary_binding"] == "PASS"
               assert data["drc"]["route_induced_markers"] == 0

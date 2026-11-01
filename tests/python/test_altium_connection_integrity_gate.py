@@ -174,3 +174,18 @@ def test_connection_integrity_ignores_exported_unowned_shadow_pad(tmp_path):
     assert result["status"] == "PASS"
     assert result["endpoint_baseline_matches"] is True
     assert result["baseline_shadow_pad_count"] == 1
+
+
+def test_connection_integrity_is_not_applicable_before_routing(tmp_path):
+    _write_fixture(tmp_path)
+    status_path = tmp_path / "altium" / "ALTIUM_STATUS_SYS_001.json"
+    status_path.write_text(
+        '{"altium": {"routing_started": false}}\n',
+        encoding="utf-8",
+    )
+
+    result = validate(tmp_path)
+
+    assert result["status"] == "NOT_APPLICABLE"
+    assert result["reason"] == "native_routing_not_started"
+    assert result["production_authority"] == "NOT_AUTHORIZED"

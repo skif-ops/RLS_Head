@@ -248,6 +248,21 @@ def test_timing_routing_accepts_native_report_without_zero_warning_line(tmp_path
     assert result["drc"]["counts"]["warnings"] == 0
 
 
+def test_timing_routing_is_not_applicable_before_routing(tmp_path):
+    _write_fixture(tmp_path)
+    status_path = tmp_path / "altium" / "ALTIUM_STATUS_SYS_001.json"
+    status_path.write_text(
+        '{"altium": {"routing_started": false}}\n',
+        encoding="utf-8",
+    )
+
+    result = validate(tmp_path)
+
+    assert result["status"] == "NOT_APPLICABLE"
+    assert result["reason"] == "native_routing_not_started"
+    assert result["production_authority"] == "NOT_AUTHORIZED"
+
+
 def test_timing_routing_rejects_disconnected_route(tmp_path):
     _write_fixture(tmp_path)
     assert validate(tmp_path, refresh_summary=True)["status"] == "PASS"

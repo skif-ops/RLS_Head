@@ -437,6 +437,7 @@ def validate(
     audit = altium / "routing" / "connection_audit"
     routing = altium / "routing"
     native_pcb = altium / "native" / "EVT_SYS_CARRIER.PcbDoc"
+    status_path = altium / "ALTIUM_STATUS_SYS_001.json"
     summary_path = routing / "timing_routing_drc_summary.json"
     evidence = {
         "native_pcb": native_pcb,
@@ -458,6 +459,23 @@ def validate(
             "production_authority": "NOT_AUTHORIZED",
             "errors": [],
         }
+    if status_path.is_file():
+        try:
+            implementation = json.loads(status_path.read_text(encoding="utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            implementation = {}
+        altium_status = implementation.get("altium", {})
+        if (
+            isinstance(altium_status, dict)
+            and altium_status.get("routing_started") is False
+        ):
+            return {
+                "schema": SCHEMA,
+                "status": "NOT_APPLICABLE",
+                "reason": "native_routing_not_started",
+                "production_authority": "NOT_AUTHORIZED",
+                "errors": [],
+            }
     errors = [f"missing:{name}" for name, path in evidence.items() if not path.is_file()]
     result: dict = {
         "schema": SCHEMA,
