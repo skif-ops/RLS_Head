@@ -270,7 +270,7 @@ def test_native_audit_validator_passes_complete_fixture(tmp_path):
     assert result["status"] == "PASS"
     assert result["errors"] == []
     assert result["component_count"] == result["expected_component_count"]
-    assert result["required_rule_count"] == 9
+    assert result["required_rule_count"] == 10
     assert result["pinmap_checked_count"] > 0
     assert result["symbol_pin_checked_count"] > 0
     assert result["symbol_pin_semantic_deferred_count"] > 0

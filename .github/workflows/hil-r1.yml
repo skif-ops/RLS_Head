@@ -863,10 +863,10 @@ jobs:
           assert manifest["status"] == "CAD_SCAFFOLD_READY"
           assert validation["status"] == "PASS"
           assert validation["placeholder_count"] == 0
-          assert validation["verified_footprint_count"] == 83
-          assert validation["verified_bom_mpn_count"] == 83
-          assert manifest["footprint_assignment_count"] == 83
-          assert manifest["staged_footprint_count"] == 21
+          assert validation["verified_footprint_count"] == 105
+          assert validation["verified_bom_mpn_count"] == 105
+          assert manifest["footprint_assignment_count"] == 105
+          assert manifest["staged_footprint_count"] == 26
           assert manifest["altium_import_bridge_count"] == 5
           assert erc["source"] == "EVT_SYS_CARRIER.kicad_sch"
 

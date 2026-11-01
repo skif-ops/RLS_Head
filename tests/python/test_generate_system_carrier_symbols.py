@@ -22,7 +22,7 @@ def test_generates_expected_local_symbols(tmp_path):
 
     assert result["schema"] == "SYSTEM-CARRIER-LOCAL-SYMBOL-LIBRARY-001"
     assert result["status"] == "GENERATED"
-    assert result["symbol_count"] == 8
+    assert result["symbol_count"] == 10
     assert output.is_file()
 
     names = {
@@ -31,17 +31,19 @@ def test_generates_expected_local_symbols(tmp_path):
     }
     assert names == {
         "ICM-42688-P",
+        "LM76005RNPR",
         "TCAN3404DRBRQ1",
         "TPS62132RGTR",
         "TPS62133RGTR",
         "TPS259470ARPWR",
+        "TPS26630RGER",
         "ECS-2520S33-250-FN-TR",
         "ESD2CANFD24DBZRQ1",
         "TPD4E05U06DQAR",
     }
 
 
-def test_shared_tps259470_symbol_covers_u6_u7(tmp_path):
+def test_power_protection_symbols_cover_u6_u7(tmp_path):
     output = tmp_path / "SystemCarrier_Local.kicad_sym"
 
     result = generate(
@@ -51,14 +53,21 @@ def test_shared_tps259470_symbol_covers_u6_u7(tmp_path):
         output=output,
     )
 
-    symbol = next(
+    radar_efuse = next(
         item
         for item in result["symbols"]
         if item["name"] == "TPS259470ARPWR"
     )
+    system_efuse = next(
+        item
+        for item in result["symbols"]
+        if item["name"] == "TPS26630RGER"
+    )
 
-    assert symbol["refs"] == ["U6", "U7"]
-    assert symbol["pin_count"] == 10
+    assert radar_efuse["refs"] == ["U7"]
+    assert radar_efuse["pin_count"] == 10
+    assert system_efuse["refs"] == ["U6"]
+    assert system_efuse["pin_count"] == 25
 
 
 def test_physical_pad_numbers_are_emitted(tmp_path):

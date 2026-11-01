@@ -7,11 +7,11 @@ from tools.altium_pilot_bom_enrich import enrich
 ROOT = Path(__file__).resolve().parents[2]
 SYSTEM = ROOT / "hardware/system_carrier"
 NATIVE_BOM = (
-    SYSTEM / "altium/release/pilot_r1/assembly/BOM_NATIVE.csv"
+    SYSTEM / "altium/equivalence/bom_export.csv"
 )
 
 
-def test_current_pilot_bom_matches_uart_gnss_eco():
+def test_current_pilot_bom_matches_power_input_24v_eco():
     rows, result = enrich(
         system_root=SYSTEM,
         native_bom=NATIVE_BOM,
@@ -19,15 +19,15 @@ def test_current_pilot_bom_matches_uart_gnss_eco():
 
     assert result["status"] == "PASS"
     assert result["errors"] == []
-    assert result["native_designator_count"] == 83
-    assert result["contract_designator_count"] == 83
-    assert result["output_designator_count"] == 83
+    assert result["native_designator_count"] == 105
+    assert result["contract_designator_count"] == 105
+    assert result["output_designator_count"] == 105
     assert result["pilot_disposition_counts"] == {
         "DNP": 2,
-        "FIT": 78,
+        "FIT": 100,
         "PCB_ONLY": 3,
     }
-    assert len(rows) == 83
+    assert len(rows) == 105
 
 
 def test_pilot_bom_enrichment_rejects_mpn_change(tmp_path):
