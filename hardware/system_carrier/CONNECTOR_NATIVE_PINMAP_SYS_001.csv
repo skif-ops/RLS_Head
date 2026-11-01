@@ -1,5 +1,5 @@
 connector,logical_pin,logical_signal,physical_ref,physical_pad,native_net,policy,criticality,notes
-J1_POWER,1,12V_IN,J1,1,VIN_RAW,CONNECT,P0,External 12V input becomes protected-design input net VIN_RAW
+J1_POWER,1,24V_IN,J1,1,VIN_RAW,CONNECT,P0,External 18V to 32V input becomes protected-design input net VIN_RAW
 J1_POWER,2,GND,J1,2,GND,CONNECT,P0,
 J_RADAR_PWR,1,RADAR_12V,J5,1,RADAR_12V,CONNECT,P0,
 J_RADAR_PWR,2,GND,J5,2,GND,CONNECT,P0,

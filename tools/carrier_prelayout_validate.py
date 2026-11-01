@@ -336,7 +336,11 @@ def validate(
     required_hard = {
         "J1",
         "D1",
+        "Q6",
+        "Q7",
         "U6",
+        "U8",
+        "L8",
         "U5",
         "L1",
         "U7",

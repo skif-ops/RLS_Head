@@ -28,8 +28,12 @@ REQUIRED_BLOCKS = {
 
 REQUIRED_COMPONENTS = {
     "U5": "TPS62132RGTR",
+    "U6": "TPS26630RGER",
+    "U8": "LM76005RNPR",
     "U9": "TPS62133RGTR",
-    "R_U6_ILIM": "665R 1%",
+    "Q6": "CSD19537Q3",
+    "L8": "XAL7070-103MEC 10uH",
+    "R_U6_ILIM": "4.02k 1%",
     "R_U7_ILIM": "1.05k 1%",
     "C_VCAP1;C_VCAP2": "2.2uF X7R ESR_lt_100mR",
     "R_BOOT0": "10k 1%",
@@ -39,7 +43,7 @@ REQUIRED_COMPONENTS = {
 }
 
 REQUIRED_CONNECTOR_SIGNALS = {
-    ("J1_POWER", "12V_IN"),
+    ("J1_POWER", "24V_IN"),
     ("J1_POWER", "GND"),
     ("J_RADAR_PWR", "RADAR_12V"),
     ("J_RADAR_PWR", "GND"),
@@ -186,7 +190,7 @@ def validate_power_budget(path: Path) -> dict:
 
         entry["allocation"] += allocation
 
-    for rail in {"12V_IN", "RADAR_12V", "5V_GNSS", "3V3"}:
+    for rail in {"24V_IN", "V12_SYS", "RADAR_12V", "5V_GNSS", "3V3"}:
         if rail not in by_rail:
             findings.append(f"missing_rail:{rail}")
 

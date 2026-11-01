@@ -1,10 +1,11 @@
 order,rule_name,rule_family,scope_1,scope_2,min_value,preferred_value,max_value,unit,gap_min_mm,gap_preferred_mm,gap_max_mm,priority,status,notes
-1,R_VIN_HIGH_CURRENT,Width,"InNet('VIN_RAW') Or InNet('VIN_PROTECTED')",All,3.00,3.00,5.00,mm,,,,100,EVT_CALCULATED,Minimum neck from power-width screening; pours preferred
-2,R_RADAR_12V_WIDTH,Width,"InNet('RADAR_12V')",All,1.50,1.50,3.00,mm,,,,99,EVT_CALCULATED,Minimum neck from 3.18A screening
-3,R_3V3_TRUNK_WIDTH,Width,"InNet('3V3')",All,1.50,1.50,3.00,mm,,,,98,EVT_CALCULATED,Use polygons for trunk; local neck-down allowed only at pins
-4,R_5V_GNSS_WIDTH,Width,"InNet('5V_GNSS')",All,0.50,0.75,1.50,mm,,,,97,EVT_BASELINE,Short supply route from U9 to J8
-5,R_TIMING_TO_SW_CLEARANCE,Clearance,"InNetClass('NC_TIMING')","InNet('BUCK_SW') Or InNet('BUCK5_SW')",1.00,1.00,1.00,mm,,,,96,EVT_BASELINE,P0 timing nets separated from both buck switch nodes
-6,R_UART_TO_SW_CLEARANCE,Clearance,"InNetClass('NC_HOST_UART') Or InNetClass('NC_GNSS_UART')","InNet('BUCK_SW') Or InNet('BUCK5_SW')",1.00,1.00,1.00,mm,,,,95,EVT_BASELINE,Host and GNSS serial routes separated from both buck switch nodes
-7,R_CAN_DIFF,DifferentialPairRouting,"InDifferentialPairClass('DP_CAN')",All,0.20,0.20,0.30,mm,0.20,0.20,0.30,94,EVT_BASELINE,CAN pair routing geometry; no controlled-impedance production claim
-8,R_GENERAL_CLEARANCE,Clearance,All,All,0.20,0.20,0.20,mm,,,,10,EVT_BASELINE,General baseline clearance
-9,R_GENERAL_WIDTH,Width,All,All,0.15,0.20,0.50,mm,,,,5,EVT_BASELINE,Default low-current signal width rule
+1,R_VIN_HIGH_CURRENT,Width,"InNet('VIN_RAW') Or InNet('VIN_PROTECTED_24V')",All,3.00,3.00,5.00,mm,,,,100,EVT_CALCULATED,Minimum neck from 4.5A input-path screening; pours preferred
+2,R_V12_SYS_WIDTH,Width,"InNet('V12_SYS')",All,3.00,3.00,5.00,mm,,,,99,EVT_CALCULATED,Minimum neck from 5A intermediate-bus screening; pours preferred
+3,R_RADAR_12V_WIDTH,Width,"InNet('RADAR_12V')",All,1.50,1.50,3.00,mm,,,,98,EVT_CALCULATED,Minimum neck from 3.18A screening
+4,R_3V3_TRUNK_WIDTH,Width,"InNet('3V3')",All,1.50,1.50,3.00,mm,,,,97,EVT_CALCULATED,Use polygons for trunk; local neck-down allowed only at pins
+5,R_5V_GNSS_WIDTH,Width,"InNet('5V_GNSS')",All,0.50,0.75,1.50,mm,,,,96,EVT_BASELINE,Short supply route from U9 to J8
+6,R_TIMING_TO_SW_CLEARANCE,Clearance,"InNetClass('NC_TIMING')","InNet('U8_SW') Or InNet('BUCK_SW') Or InNet('BUCK5_SW')",1.00,1.00,1.00,mm,,,,95,EVT_BASELINE,P0 timing nets separated from all buck switch nodes
+7,R_UART_TO_SW_CLEARANCE,Clearance,"InNetClass('NC_HOST_UART') Or InNetClass('NC_GNSS_UART')","InNet('U8_SW') Or InNet('BUCK_SW') Or InNet('BUCK5_SW')",1.00,1.00,1.00,mm,,,,94,EVT_BASELINE,Host and GNSS serial routes separated from all buck switch nodes
+8,R_CAN_DIFF,DifferentialPairRouting,"InDifferentialPairClass('DP_CAN')",All,0.20,0.20,0.30,mm,0.20,0.20,0.30,93,EVT_BASELINE,CAN pair routing geometry; no controlled-impedance production claim
+9,R_GENERAL_CLEARANCE,Clearance,All,All,0.20,0.20,0.20,mm,,,,10,EVT_BASELINE,General baseline clearance
+10,R_GENERAL_WIDTH,Width,All,All,0.15,0.20,0.50,mm,,,,5,EVT_BASELINE,Default low-current signal width rule

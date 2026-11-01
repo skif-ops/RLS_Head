@@ -40,13 +40,13 @@
     "differential_pair_count": 1,
     "production_drc_required": true,
     "query_language": "Altium PCB Query Language",
-    "rule_count": 9,
-    "status": "NATIVE_EQUIVALENCE_PASS"
+    "rule_count": 10,
+    "status": "POWER_INPUT_24V_ECO_NATIVE_INSTANTIATION_PENDING"
   },
   "board_id": "EVT-SYS-CARRIER",
   "delete_kicad_sources": false,
   "equivalence_gate_required": true,
-  "equivalence_result_sha256": "85bb872103b08c38ea1f04c42112b16ac4cb069f89242983dee82881a9d184d8",
+  "equivalence_result_sha256": null,
   "evt_impedance_model": {
     "controlled_impedance_required": false,
     "production_binding_required": false,
@@ -70,18 +70,18 @@
     "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc"
   ],
   "hardware_revision": "A",
-  "native_document_status": "NATIVE_EQUIVALENCE_PASS",
-  "native_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
-  "native_schematic_sha256": "85b458cc95d32704a9a9dced80f2f8514bf2f9d3065e0f91c18ab57091dc9166",
+  "native_document_status": "STALE_AFTER_POWER_INPUT_24V_ECO",
+  "native_pcb_sha256": null,
+  "native_schematic_sha256": null,
   "notes": [
     "KiCad electrical sources remain permanently retained.",
     "Native SchDoc/PcbDoc must be produced by Altium Designer, not fabricated by extension-only placeholder files.",
     "All new PCB implementation work targets Altium Designer.",
-    "The current native dual-UART and external-GNSS files passed import provenance, compile, DRC and equivalence checks; production authority remains separate.",
+    "The previous native dual-UART and external-GNSS baseline passed its gates, but it is stale after the 18V to 32V power-input ECO.",
     "All released schematics, PCB drawings, BOM and manufacturing outputs must be generated from the current native Altium project and OutJob."
   ],
-  "pcb_design_phase": "ALTIUM_NATIVE_ROUTING",
-  "pcb_layout_authority": "ALTIUM_AUTHORIZED",
+  "pcb_design_phase": "POWER_INPUT_24V_NATIVE_IMPORT_PENDING",
+  "pcb_layout_authority": "ALTIUM_NOT_AUTHORIZED",
   "prelayout_gate": {
     "board_envelope_mm": [
       90,
@@ -101,7 +101,7 @@
   "primary_project": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
   "production_release_authorized": false,
   "routing_readiness_gate": {
-    "current_expected_status": "READY_FOR_ROUTING",
+    "current_expected_status": "NOT_AUTHORIZED",
     "evt_mechanical_datum_required": true,
     "evt_mechanical_datum_status": "EVT_ROUTING_LOCKED",
     "evt_power_routing_required": true,

@@ -1,5 +1,5 @@
 connector,pin,signal,direction,voltage_or_standard,criticality,notes
-J1_POWER,1,12V_IN,IN,12V nominal,P0,Source capability >=5A
+J1_POWER,1,24V_IN,IN,18V to 32V continuous,P0,Source capability >=4.5A with current limiting for first power-up
 J1_POWER,2,GND,RETURN,0V,P0,
 J_RADAR_PWR,1,RADAR_12V,OUT,Protected 12V,P0,Toward AWR2944PEVM J12 harness
 J_RADAR_PWR,2,GND,RETURN,0V,P0,

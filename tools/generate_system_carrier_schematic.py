@@ -39,7 +39,7 @@ SHEET_GRID_SCALE = (1.0, 1.0)
 CURRENT_SHEET_NAME = ""
 
 CHILD_PAGE_LAYOUT = {
-    "POWER_INPUT": ("A4", (80.01, 49.53), (1.0, 1.0)),
+    "POWER_INPUT": ("A3", (30.48, 40.64), (1.0, 1.0)),
     "MCU_CORE": ("A3", (30.48, 40.64), (1.0, 1.0)),
     "TIME_GNSS": ("A5", (10.0, 8.0), (1.35, 1.25)),
     "IMU": ("A5", (10.0, 8.0), (1.6, 1.3)),
@@ -58,6 +58,7 @@ SYMBOL_LIBRARIES = {
     "Switch": "${KICAD9_SYMBOL_DIR}/Switch.kicad_sym",
     "power": "${KICAD9_SYMBOL_DIR}/power.kicad_sym",
     "MCU_ST_STM32H7": "${KICAD9_SYMBOL_DIR}/MCU_ST_STM32H7.kicad_sym",
+    "Transistor_FET": "${KICAD9_SYMBOL_DIR}/Transistor_FET.kicad_sym",
 }
 
 # Contract names for Altium native patterns use KiCad stock geometry as an
@@ -448,8 +449,11 @@ def add_pin_label(
     # Vertical power parts need label stubs clear of their values.
     if reference in {
         "R61", "R62", "R63", "R71", "R72", "R73", "R1", "R2",
+        "R800", "R801", "R802", "R803", "R804", "R805", "R806",
         "R5P", "R6F", "R7F", "R90", "C1", "C2", "C3", "C4",
-        "C90", "C91", "C92", "C93", "L1", "L9",
+        "C6D", "C6I", "C90", "C91", "C92", "C93", "L1", "L8", "L9",
+        "C800", "C801", "C802", "C803", "C804", "C805",
+        "C806", "C807", "C808", "C809",
     }:
         component = sch.components.get(reference)
         direction = -1.0 if pin.y < component.position.y else 1.0
@@ -466,7 +470,7 @@ def add_pin_label(
         return
 
     # These power labels need room outside their symbol bodies.
-    if reference in {"D1", "U5", "U6", "U7", "U9"}:
+    if reference in {"D1", "Q6", "Q7", "U5", "U6", "U7", "U8", "U9"}:
         component = sch.components.get(reference)
         dx = pin.x - component.position.x
         dy = pin.y - component.position.y
@@ -756,96 +760,157 @@ def add_tps25947_ground_label(
 
 
 def populate_power(sch, placeholders: list[dict]) -> None:
-    def power_pos(x_grid: int, y_grid: int) -> tuple[float, float]:
-        return (32.0 + (x_grid - 18) * 3.9, 34.0 + (y_grid - 18) * 2.65)
-
     sch.add_text(
-        "POWER_INPUT — Rev A authoritative capture\n"
-        "TPS259470A protection + fixed 3.3V and external GNSS 5V rails",
-        position=(70.0, 20.0),
+        "POWER_INPUT Rev B authoritative capture\n"
+        "18V to 32V input, protected 12V/5A intermediate bus",
+        position=(80.0, 18.0),
         size=1.5,
     )
 
-    sch.components.add("Connector_Generic:Conn_01x02", "J1", "12V_IN", power_pos(22, 24))
-    sch.components.add("Device:D_TVS", "D1", "SMAJ15CA", power_pos(26, 18))
-    add_local_symbol(sch, "U6", "TPS259470ARPWR", "SYS_EFUSE", power_pos(39, 24), placeholders)
-    add_local_symbol(sch, "U5", "TPS62132RGTR", "3V3_BUCK", power_pos(64, 17), placeholders)
-    add_local_symbol(sch, "U9", "TPS62133RGTR", "5V_GNSS_BUCK", power_pos(64, 46), placeholders)
-    add_local_symbol(sch, "U7", "TPS259470ARPWR", "RADAR_EFUSE", power_pos(39, 42), placeholders)
+    sch.components.add("Connector_Generic:Conn_01x02", "J1", "24V_IN", (25.0, 55.0))
+    sch.components.add("Device:D_TVS", "D1", "SMCJ36CA", (42.0, 35.0))
+    sch.components.add("Transistor_FET:CSD19537Q3", "Q6", "CSD19537Q3", (68.0, 55.0))
+    sch.components.add("Transistor_FET:BSS138", "Q7", "BSS138", (82.0, 82.0))
+    add_local_symbol(sch, "U6", "TPS26630RGER", "24V_SYS_EFUSE", (125.0, 55.0), placeholders)
+    add_local_symbol(sch, "U8", "LM76005RNPR", "24V_TO_12V_5A", (265.0, 55.0), placeholders)
+    sch.components.add("Device:L", "L8", "10uH XAL7070-103MEC", (370.0, 55.0))
+    add_local_symbol(sch, "U5", "TPS62132RGTR", "3V3_BUCK", (175.0, 145.0), placeholders)
+    add_local_symbol(sch, "U9", "TPS62133RGTR", "5V_GNSS_BUCK", (175.0, 220.0), placeholders)
+    add_local_symbol(sch, "U7", "TPS259470ARPWR", "RADAR_12V_EFUSE", (320.0, 180.0), placeholders)
+    sch.components.add("Device:L", "L1", "2.2uH", (235.0, 145.0))
+    sch.components.add("Device:L", "L9", "2.2uH", (235.0, 220.0))
 
-    sch.components.add("Device:L", "L1", "2.2uH", power_pos(78, 17))
-    sch.components.add("Device:L", "L9", "2.2uH", power_pos(78, 46))
-    sch.components.add("Device:C", "C1", "10uF/25V", power_pos(55, 36))
-    sch.components.add("Device:C", "C2", "22uF/6.3V", power_pos(76, 36))
-    sch.components.add("Device:C", "C3", "3.3nF", power_pos(64, 36))
-    sch.components.add("Device:C", "C4", "100nF/25V", power_pos(58, 40))
-    sch.components.add("Device:R", "R1", "665R 1%", power_pos(39, 34))
-    sch.components.add("Device:R", "R2", "1.05k 1%", power_pos(39, 52))
-    sch.components.add("Device:R", "R5P", "100k 1% PG_PU", power_pos(68, 34))
-    sch.components.add("Device:C", "C90", "10uF/25V", power_pos(52, 60))
-    sch.components.add("Device:C", "C91", "22uF/10V", power_pos(76, 60))
-    sch.components.add("Device:C", "C92", "3.3nF", power_pos(64, 60))
-    sch.components.add("Device:C", "C93", "100nF/25V", power_pos(58, 60))
-    sch.components.add("Device:R", "R90", "100k 1% PG_PU", power_pos(68, 58))
-    sch.components.add("Device:R", "R6F", "10k 1% FLT_PU", power_pos(48, 34))
-    sch.components.add("Device:R", "R7F", "10k 1% FLT_PU", power_pos(48, 52))
+    passive_parts = [
+        ("Device:R", "R1", "4.02k 1%", (120.0, 105.0)),
+        ("Device:R", "R61", "887k 1%", (90.0, 92.0)),
+        ("Device:R", "R62", "29.4k 1%", (105.0, 102.0)),
+        ("Device:R", "R63", "34.0k 1%", (105.0, 120.0)),
+        ("Device:R", "R6F", "10k 1% FLT_PU", (145.0, 108.0)),
+        ("Device:R", "R804", "499k 1%", (155.0, 92.0)),
+        ("Device:R", "R805", "56.0k 1%", (155.0, 118.0)),
+        ("Device:R", "R806", "100k 1%", (175.0, 92.0)),
+        ("Device:C", "C6D", "100nF", (132.0, 112.0)),
+        ("Device:C", "C6I", "100nF/100V", (80.0, 105.0)),
+        ("Device:C", "C800", "4.7uF/100V", (205.0, 115.0)),
+        ("Device:C", "C801", "4.7uF/100V", (235.0, 115.0)),
+        ("Device:C", "C802", "47nF/100V", (265.0, 115.0)),
+        ("Device:C", "C803", "2.2uF/10V", (295.0, 115.0)),
+        ("Device:C", "C804", "1uF/25V", (325.0, 115.0)),
+        ("Device:C", "C805", "470nF/25V", (355.0, 115.0)),
+        ("Device:C", "C806", "47uF/25V", (285.0, 140.0)),
+        ("Device:C", "C807", "47uF/25V", (315.0, 140.0)),
+        ("Device:C", "C808", "47uF/25V", (345.0, 140.0)),
+        ("Device:C", "C809", "47uF/25V", (375.0, 140.0)),
+        ("Device:R", "R800", "100k 1%", (300.0, 88.0)),
+        ("Device:R", "R801", "9.09k 1%", (325.0, 88.0)),
+        ("Device:R", "R802", "100k 1% RT", (215.0, 88.0)),
+        ("Device:R", "R803", "100k 1% PG_PU", (350.0, 88.0)),
+        ("Device:C", "C1", "10uF/25V", (145.0, 180.0)),
+        ("Device:C", "C2", "22uF/6.3V", (235.0, 180.0)),
+        ("Device:C", "C3", "3.3nF", (175.0, 180.0)),
+        ("Device:C", "C4", "100nF/25V", (160.0, 180.0)),
+        ("Device:R", "R5P", "100k 1% PG_PU", (205.0, 180.0)),
+        ("Device:R", "R2", "1.05k 1%", (335.0, 225.0)),
+        ("Device:R", "R7F", "10k 1% FLT_PU", (370.0, 225.0)),
+        ("Device:R", "R71", "470k 1%", (280.0, 215.0)),
+        ("Device:R", "R72", "16.9k 1%", (295.0, 230.0)),
+        ("Device:R", "R73", "43.7k 1%", (310.0, 245.0)),
+        ("Device:C", "C7D", "3.3nF", (340.0, 245.0)),
+        ("Device:C", "C90", "10uF/25V", (145.0, 250.0)),
+        ("Device:C", "C91", "22uF/10V", (235.0, 250.0)),
+        ("Device:C", "C92", "3.3nF", (175.0, 250.0)),
+        ("Device:C", "C93", "100nF/25V", (160.0, 250.0)),
+        ("Device:R", "R90", "100k 1% PG_PU", (205.0, 250.0)),
+    ]
+    for library, reference, value, position in passive_parts:
+        sch.components.add(library, reference, value, position)
 
-    for ref, value, p in [
-        ("R61", "470k 1%", power_pos(25, 26)), ("R62", "36.0k 1%", power_pos(29, 30)), ("R63", "41.2k 1%", power_pos(33, 34)),
-        ("R71", "470k 1%", power_pos(25, 48)), ("R72", "16.9k 1%", power_pos(29, 52)), ("R73", "43.7k 1%", power_pos(33, 56)),
-    ]:
-        sch.components.add("Device:R", ref, value, p)
-
-    sch.components.add("Device:C", "C6D", "3.3nF", power_pos(43, 36))
-    sch.components.add("Device:C", "C7D", "3.3nF", power_pos(43, 54))
-    sch.components.add(
-        "power:PWR_FLAG",
-        "#FLG0201",
-        "PWR_FLAG",
-        power_pos(20, 28),
-    )
-    add_pin_label(sch, "VIN_RAW", "#FLG0201", "1")
-    sch.components.add(
-        "power:PWR_FLAG",
-        "#FLG0202",
-        "PWR_FLAG",
-        (30.0, 170.0),
-    )
-    add_pin_label(sch, "GND", "#FLG0202", "1")
-
+    add_power_flag(sch, "#FLG0201", "VIN_RAW", (35.0, 75.0))
+    add_power_flag(sch, "#FLG0202", "GND", (35.0, 255.0))
+    add_power_flag(sch, "#FLG0203", "U6_IN_BLOCKED", (55.0, 125.0))
+    add_power_flag(sch, "#FLG0204", "U8_BOOT", (75.0, 125.0))
+    add_power_flag(sch, "#FLG0205", "V12_SYS", (95.0, 125.0))
     add_pin_label(sch, "VIN_RAW", "J1", "1")
-    # J1.2 receives the authoritative hierarchical GND label later.
     add_pin_label(sch, "VIN_RAW", "D1", "1")
     add_pin_label(sch, "GND", "D1", "2")
 
-    for pin, net in {"5":"VIN_RAW","6":"VIN_PROTECTED"}.items():
-        add_pin_label(sch, net, "U6", pin)
-    add_tps25947_ground_label(sch, "U6")
-    add_pin_label(sch, "VIN_RAW", "R61", "1")
-    for ref, pin in (("R61", "2"), ("U6", "1"), ("R62", "1")):
-        add_pin_label(sch, "U6_UVLO_LOCAL", ref, pin)
-    for ref, pin in (("R62", "2"), ("U6", "2"), ("R63", "1")):
-        add_pin_label(sch, "U6_OVLO_LOCAL", ref, pin)
-    add_pin_label(sch, "GND", "R63", "2")
-    add_pin_label(sch, "U6_ILIM_LOCAL", "U6", "9")
-    add_pin_label(sch, "U6_ILIM_LOCAL", "R1", "1")
-    add_pin_label(sch, "GND", "R1", "2")
-    add_tps25947_dvdt_labels(
-        sch, "U6", "C6D", "U6_DVDT"
-    )
-    add_stock_pin_stub_label(
-        sch, "GND", "C6D", "2", dx=1.27
-    )
-    add_pin_label(sch, "SYS_EFUSE_FLT", "R6F", "1")
-    add_pin_label(sch, "3V3", "R6F", "2")
-    for pin in ("3","10"):
-        p=sch.get_component_pin_position("U6", pin)
-        if p is not None:
-            sch.no_connects.add(position=(p.x,p.y))
+    # Q6 source pins 1, 2 and 3 are stacked at one symbol connection point.
+    add_pin_label(sch, "VIN_RAW", "Q6", "1")
+    add_pin_label(sch, "U6_BGATE", "Q6", "4")
+    add_pin_label(sch, "U6_IN_BLOCKED", "Q6", "5")
+    add_pin_label(sch, "U6_DRV", "Q7", "1")
+    add_pin_label(sch, "VIN_RAW", "Q7", "2")
+    add_pin_label(sch, "U6_BGATE", "Q7", "3")
 
-    add_pin_label(sch, "VIN_PROTECTED", "U7", "5")
+    for pin in ("1", "2"):
+        add_pin_label(sch, "U6_IN_BLOCKED", "U6", pin)
+    for pin, net in {
+        "3": "U6_BGATE", "4": "U6_DRV", "5": "VIN_RAW",
+        "6": "U6_UVLO_LOCAL", "7": "U6_OVP_LOCAL", "8": "GND",
+        "9": "U6_DVDT", "10": "U6_ILIM_LOCAL", "11": "GND",
+        "15": "U6_PGTH_LOCAL", "16": "U8_ENABLE",
+        "17": "VIN_PROTECTED_24V", "18": "VIN_PROTECTED_24V",
+        "24": "VIN_PROTECTED_24V", "25": "GND",
+    }.items():
+        add_pin_label(sch, net, "U6", pin)
+    for pin in ("12", "13", "19", "20", "21", "22", "23"):
+        position = sch.get_component_pin_position("U6", pin)
+        if position is not None:
+            sch.no_connects.add(position=(position.x, position.y))
+    for ref, pin, net in [
+        ("R61", "1", "VIN_RAW"), ("R61", "2", "U6_UVLO_LOCAL"),
+        ("R62", "1", "U6_UVLO_LOCAL"), ("R62", "2", "U6_OVP_LOCAL"),
+        ("R63", "1", "U6_OVP_LOCAL"), ("R63", "2", "GND"),
+        ("R1", "1", "U6_ILIM_LOCAL"), ("R1", "2", "GND"),
+        ("C6D", "1", "U6_DVDT"), ("C6D", "2", "GND"),
+        ("C6I", "1", "VIN_RAW"), ("C6I", "2", "GND"),
+        ("R6F", "1", "SYS_EFUSE_FLT"), ("R6F", "2", "3V3"),
+        ("R804", "1", "VIN_PROTECTED_24V"), ("R804", "2", "U6_PGTH_LOCAL"),
+        ("R805", "1", "U6_PGTH_LOCAL"), ("R805", "2", "GND"),
+        ("R806", "1", "U8_ENABLE"), ("R806", "2", "VIN_PROTECTED_24V"),
+    ]:
+        add_pin_label(sch, net, ref, pin)
+
+    for pin in ("1", "2", "3", "4", "5"):
+        add_pin_label(sch, "U8_SW", "U8", pin)
+    for pin, net in {
+        "6": "U8_BOOT", "8": "U8_VCC", "9": "V12_SYS",
+        "10": "U8_RT_LOCAL", "12": "U8_FB_LOCAL", "13": "GND",
+        "14": "GND", "15": "GND", "16": "U8_PGOOD", "17": "GND",
+        "18": "U8_ENABLE", "19": "GND", "20": "VIN_PROTECTED_24V",
+        "21": "VIN_PROTECTED_24V", "22": "VIN_PROTECTED_24V",
+        "24": "GND", "25": "GND", "26": "GND", "27": "GND",
+        "28": "GND", "29": "GND", "30": "GND", "31": "GND",
+    }.items():
+        add_pin_label(sch, net, "U8", pin)
+    for pin in ("7", "11", "23"):
+        position = sch.get_component_pin_position("U8", pin)
+        if position is not None:
+            sch.no_connects.add(position=(position.x, position.y))
+    add_pin_label(sch, "U8_SW", "L8", "1")
+    add_pin_label(sch, "V12_SYS", "L8", "2")
+    for ref in ("C800", "C801", "C802"):
+        add_pin_label(sch, "VIN_PROTECTED_24V", ref, "1")
+        add_pin_label(sch, "GND", ref, "2")
+    for ref, top in (("C803", "U8_VCC"), ("C804", "V12_SYS")):
+        add_pin_label(sch, top, ref, "1")
+        add_pin_label(sch, "GND", ref, "2")
+    add_pin_label(sch, "U8_BOOT", "C805", "1")
+    add_pin_label(sch, "U8_SW", "C805", "2")
+    for ref in ("C806", "C807", "C808", "C809"):
+        add_pin_label(sch, "V12_SYS", ref, "1")
+        add_pin_label(sch, "GND", ref, "2")
+    for ref, pin, net in [
+        ("R800", "1", "V12_SYS"), ("R800", "2", "U8_FB_LOCAL"),
+        ("R801", "1", "U8_FB_LOCAL"), ("R801", "2", "GND"),
+        ("R802", "1", "U8_RT_LOCAL"), ("R802", "2", "GND"),
+        ("R803", "1", "U8_PGOOD"), ("R803", "2", "3V3"),
+    ]:
+        add_pin_label(sch, net, ref, pin)
+
+    add_pin_label(sch, "V12_SYS", "U7", "5")
     add_tps25947_ground_label(sch, "U7")
-    add_pin_label(sch, "VIN_PROTECTED", "R71", "1")
+    add_pin_label(sch, "V12_SYS", "R71", "1")
     for ref, pin in (("R71", "2"), ("U7", "1"), ("R72", "1")):
         add_pin_label(sch, "U7_UVLO_LOCAL", ref, pin)
     for ref, pin in (("R72", "2"), ("U7", "2"), ("R73", "1")):
@@ -854,71 +919,44 @@ def populate_power(sch, placeholders: list[dict]) -> None:
     add_pin_label(sch, "U7_ILIM_LOCAL", "U7", "9")
     add_pin_label(sch, "U7_ILIM_LOCAL", "R2", "1")
     add_pin_label(sch, "GND", "R2", "2")
-    add_tps25947_dvdt_labels(
-        sch, "U7", "C7D", "U7_DVDT"
-    )
-    add_stock_pin_stub_label(
-        sch, "GND", "C7D", "2", dx=1.27
-    )
+    add_tps25947_dvdt_labels(sch, "U7", "C7D", "U7_DVDT")
+    add_stock_pin_stub_label(sch, "GND", "C7D", "2", dx=1.27)
     add_pin_label(sch, "RADAR_EFUSE_FLT", "R7F", "1")
     add_pin_label(sch, "3V3", "R7F", "2")
-    for pin in ("3","10"):
-        p=sch.get_component_pin_position("U7", pin)
-        if p is not None:
-            sch.no_connects.add(position=(p.x,p.y))
+    for pin in ("3", "10"):
+        position = sch.get_component_pin_position("U7", pin)
+        if position is not None:
+            sch.no_connects.add(position=(position.x, position.y))
 
-    for pin in ("1","2","3"):
-        add_pin_label(sch, "BUCK_SW", "U5", pin)
-    add_pin_label(sch, "BUCK_SW", "L1", "1")
-    # L1.2 receives the authoritative hierarchical 3V3 label later.
-    add_pin_label(sch, "U5_PG", "U5", "4")
-    add_pin_label(sch, "U5_PG", "R5P", "1")
-    add_pin_label(sch, "3V3", "R5P", "2")
-    for pin in ("5","6","15","16","17"):
-        if sch.get_component_pin_position("U5", pin) is not None:
-            add_pin_label(sch, "GND", "U5", pin)
-    for pin in ("7","8"):
-        p=sch.get_component_pin_position("U5", pin)
-        if p is not None:
-            sch.no_connects.add(position=(p.x,p.y))
-    add_pin_label(sch, "U5_SS_LOCAL", "U5", "9")
-    add_pin_label(sch, "U5_SS_LOCAL", "C3", "1")
-    add_pin_label(sch, "GND", "C3", "2")
-    for pin in ("10","11","12","13"):
-        add_pin_label(sch, "VIN_PROTECTED", "U5", pin)
-    add_pin_label(sch, "3V3", "U5", "14")
-
-    add_pin_label(sch, "VIN_PROTECTED", "C1", "1")
-    add_pin_label(sch, "GND", "C1", "2")
-    add_pin_label(sch, "3V3", "C2", "1")
-    add_pin_label(sch, "GND", "C2", "2")
-    add_pin_label(sch, "VIN_PROTECTED", "C4", "1")
+    for device, switch_net, in_cap, out_cap, ss_cap, pg_res, output_net, inductor in (
+        ("U5", "BUCK_SW", "C1", "C2", "C3", "R5P", "3V3", "L1"),
+        ("U9", "BUCK5_SW", "C90", "C91", "C92", "R90", "5V_GNSS", "L9"),
+    ):
+        for pin in ("1", "2", "3"):
+            add_pin_label(sch, switch_net, device, pin)
+        add_pin_label(sch, switch_net, inductor, "1")
+        add_pin_label(sch, f"{device}_PG", device, "4")
+        add_pin_label(sch, f"{device}_PG", pg_res, "1")
+        add_pin_label(sch, output_net, pg_res, "2")
+        for pin in ("5", "6", "15", "16", "17"):
+            add_pin_label(sch, "GND", device, pin)
+        for pin in ("7", "8"):
+            position = sch.get_component_pin_position(device, pin)
+            if position is not None:
+                sch.no_connects.add(position=(position.x, position.y))
+        add_pin_label(sch, f"{device}_SS_LOCAL", device, "9")
+        add_pin_label(sch, f"{device}_SS_LOCAL", ss_cap, "1")
+        add_pin_label(sch, "GND", ss_cap, "2")
+        for pin in ("10", "11", "12", "13"):
+            add_pin_label(sch, "V12_SYS", device, pin)
+        add_pin_label(sch, output_net, device, "14")
+        add_pin_label(sch, "V12_SYS", in_cap, "1")
+        add_pin_label(sch, "GND", in_cap, "2")
+        add_pin_label(sch, output_net, out_cap, "1")
+        add_pin_label(sch, "GND", out_cap, "2")
+    add_pin_label(sch, "V12_SYS", "C4", "1")
     add_pin_label(sch, "GND", "C4", "2")
-
-    for pin in ("1", "2", "3"):
-        add_pin_label(sch, "BUCK5_SW", "U9", pin)
-    add_pin_label(sch, "BUCK5_SW", "L9", "1")
-    add_pin_label(sch, "U9_PG", "U9", "4")
-    add_pin_label(sch, "U9_PG", "R90", "1")
-    add_pin_label(sch, "5V_GNSS", "R90", "2")
-    for pin in ("5", "6", "15", "16", "17"):
-        if sch.get_component_pin_position("U9", pin) is not None:
-            add_pin_label(sch, "GND", "U9", pin)
-    for pin in ("7", "8"):
-        p = sch.get_component_pin_position("U9", pin)
-        if p is not None:
-            sch.no_connects.add(position=(p.x, p.y))
-    add_pin_label(sch, "U9_SS_LOCAL", "U9", "9")
-    add_pin_label(sch, "U9_SS_LOCAL", "C92", "1")
-    add_pin_label(sch, "GND", "C92", "2")
-    for pin in ("10", "11", "12", "13"):
-        add_pin_label(sch, "VIN_PROTECTED", "U9", pin)
-    add_pin_label(sch, "5V_GNSS", "U9", "14")
-    add_pin_label(sch, "VIN_PROTECTED", "C90", "1")
-    add_pin_label(sch, "GND", "C90", "2")
-    add_pin_label(sch, "5V_GNSS", "C91", "1")
-    add_pin_label(sch, "GND", "C91", "2")
-    add_pin_label(sch, "VIN_PROTECTED", "C93", "1")
+    add_pin_label(sch, "V12_SYS", "C93", "1")
     add_pin_label(sch, "GND", "C93", "2")
 
 
@@ -1970,7 +2008,11 @@ def build(output_dir: Path) -> dict:
                     offset,
                 )
             )
-            stub = 20.32 if edge in {"left", "right"} else 5.08
+            stub = (
+                12.7 if edge == "left"
+                else 20.32 if edge == "right"
+                else 5.08
+            )
             if edge == "left":
                 label_position = (
                     root_position[0] - stub,

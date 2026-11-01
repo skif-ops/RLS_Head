@@ -4,7 +4,7 @@ PCB-A02,MECHANICS,Apply locked EVT board outline mounting holes connector edge d
 PCB-A03,STACKUP,Instantiate the ALTIUM_EVT_ROUTING_STACK_LOCK baseline and later bind final dielectric/copper data to selected fabricator,EVT mechanical routing datum locked and EVT routing stack gate PASS,EVT routing stack locked,P0
 PCB-A04,RULES,Instantiate Altium rules/net classes from SYS-001 contracts,Stackup defined,All P0/P1 rule scopes present,P0
 PCB-A05,PLACEMENT,Place functional zones inside the compact candidate outline while preserving mounting and connector clearances,EVT mechanical ECO open,Placement Review A and compact-outline feasibility PASS,P0
-PCB-A06,POWER,Route VIN_RAW VIN_PROTECTED 3V3 5V_GNSS RADAR_12V and compact U5 U6 U7 U9 loops,Placement Review A PASS and ALTIUM_EVT_POWER_ROUTING_GATE PASS,Power routing review PASS,P0
+PCB-A06,POWER,Route VIN_RAW VIN_PROTECTED_24V V12_SYS 3V3 5V_GNSS RADAR_12V and compact U6 Q6 Q7 U8 L8 U5 U7 U9 loops,Placement Review A PASS and ALTIUM_EVT_POWER_ROUTING_GATE PASS,Power routing review PASS,P0
 PCB-A07,GNSS,Route external GNSS UART PPS and 5V_GNSS from MCU and U9 through D8 to J8,Rules and placement loaded,External GNSS connector routing review PASS,P0
 PCB-A08,HOST_UART,Route two host UART channels from MCU through R601 to R604 and D3 to J6,Rules and placement loaded,Host UART routing review PASS,P0
 PCB-A09,TIMING,Route GNSS_PPS RADAR_REF IMU_DRDY with quiet return paths,Power and connector routing stable,Timing routing review PASS,P0

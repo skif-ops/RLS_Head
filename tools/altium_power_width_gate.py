@@ -97,8 +97,9 @@ def validate(system_root: str | Path) -> dict:
         )
 
     expected_currents = {
-        "VIN_RAW": budget_capacity.get("12V_IN", 0.0),
-        "VIN_PROTECTED": budget_capacity.get("12V_IN", 0.0),
+        "VIN_RAW": budget_capacity.get("24V_IN", 0.0),
+        "VIN_PROTECTED_24V": budget_capacity.get("24V_IN", 0.0),
+        "V12_SYS": budget_capacity.get("V12_SYS", 0.0),
         "RADAR_12V": budget_capacity.get("RADAR_12V", 0.0),
         "3V3_TRUNK": budget_capacity.get("3V3", 0.0),
         "5V_GNSS": budget_allocation.get(
@@ -188,6 +189,7 @@ def validate(system_root: str | Path) -> dict:
         "PWR-003",
         "PWR-004",
         "PWR-005",
+        "PWR-006",
     }:
         errors.append("model_set")
 

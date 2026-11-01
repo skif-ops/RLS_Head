@@ -1,10 +1,14 @@
 ref,x_mm,y_mm,edge,side,zone,lock_level,status,notes
-J1,5,14,LEFT,TOP,ZONE_PWR,HARD,EVT_ROUTING_LOCKED,System 12V input edge datum; production connector-access review remains separate
+J1,5,14,LEFT,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,System 24V input edge datum; production connector-access review remains separate
 D1,11,14,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,Immediately behind J1
-U6,18,14,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,System eFuse
-U5,29,14,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,3V3 buck; hot-loop parts clustered
-L1,37,14,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,Adjacent to U5 SW
-U7,61,14,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,Radar eFuse; short path to J5
+Q6,18,14,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,100V reverse-polarity blocking FET
+Q7,22,18,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,Fast B_GATE pulldown adjacent to Q6 and U6
+U6,25,14,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,60V system eFuse
+U8,35,14,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,24V to 12V 5A buck; thermal pad via array required
+L8,44,14,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,10uH 12V buck inductor adjacent to U8 SW
+U5,53,14,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,3V3 buck; hot-loop parts clustered on V12_SYS
+L1,61,14,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,Adjacent to U5 SW
+U7,70,14,,TOP,ZONE_PWR,HARD,ECO_CANDIDATE,Radar eFuse; short path to J5
 J5,85,14,RIGHT,TOP,ZONE_PWR,HARD,EVT_ROUTING_LOCKED,Radar 12V output edge datum; production connector-access review remains separate
 J4,85,29,RIGHT,TOP,ZONE_CAN,HARD,EVT_ROUTING_LOCKED,Radar CAN and reference harness edge datum; production connector-access review remains separate
 D4,78,29,,TOP,ZONE_CAN,HARD,ECO_CANDIDATE,ESD immediately behind J4

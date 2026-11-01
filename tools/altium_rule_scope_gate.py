@@ -143,7 +143,7 @@ def validate(system_root: str | Path) -> dict:
         if str(row.get("net_name", "")).strip()
     }
     known_nets |= pair_nets
-    known_nets |= {"BUCK_SW", "BUCK5_SW"}
+    known_nets |= {"U8_SW", "BUCK_SW", "BUCK5_SW"}
 
     net_class_ids = {
         str(row.get("class_id", "")).strip()
@@ -153,6 +153,7 @@ def validate(system_root: str | Path) -> dict:
 
     expected_rule_names = {
         "R_VIN_HIGH_CURRENT",
+        "R_V12_SYS_WIDTH",
         "R_RADAR_12V_WIDTH",
         "R_3V3_TRUNK_WIDTH",
         "R_5V_GNSS_WIDTH",
@@ -346,6 +347,11 @@ def validate(system_root: str | Path) -> dict:
         "R_VIN_HIGH_CURRENT",
         "preferred_value",
         float(power["PWR-001"]["selected_width_mm"]),
+    )
+    check_float(
+        "R_V12_SYS_WIDTH",
+        "preferred_value",
+        float(power["PWR-006"]["selected_width_mm"]),
     )
     check_float(
         "R_RADAR_12V_WIDTH",

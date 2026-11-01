@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 LIBRARY_NAME = "SystemCarrier_Local"
-CORE_TARGET_REFS = {"U2", "U4", "U5", "U6", "U7", "U9"}
+CORE_TARGET_REFS = {"U2", "U4", "U5", "U6", "U7", "U8", "U9"}
 AUX_TARGET_REFS = {"Y1", "D3", "D4", "D8"}
 TARGET_REFS = CORE_TARGET_REFS | AUX_TARGET_REFS
 
@@ -41,6 +41,8 @@ REF_PREFIX = {
     "TPS62132RGTR": "U",
     "TPS62133RGTR": "U",
     "TPS259470ARPWR": "U",
+    "TPS26630RGER": "U",
+    "LM76005RNPR": "U",
     "ECS-2520S33-250-FN-TR": "Y",
     "ESD2CANFD24DBZRQ1": "D",
     "TPD4E05U06DQAR": "D",
@@ -153,6 +155,7 @@ def _symbol_text(
     # Power ICs need space for pin names on both sides of the body.
     half_width = (
         25.4 if name == "ICM-42688-P"
+        else 25.4 if name in {"TPS26630RGER", "LM76005RNPR"}
         else 20.32 if name in {"TPS259470ARPWR", "TPS62132RGTR", "TPS62133RGTR"}
         else 10.16
     )
@@ -219,6 +222,12 @@ def _symbol_text(
             and role == "POWER_SWITCH"
             and pin_num in {"2", "3"}
         ):
+            ptype = "passive"
+
+        # TPS26630 exposes three internally common OUT package pins.
+        # Keep one power-output source and model the duplicate contacts
+        # as passive so ERC does not report a false source conflict.
+        if name == "TPS26630RGER" and pin_num in {"18", "24"}:
             ptype = "passive"
 
         # TPD4E05U06 DQA package pins 6/7/9/10 are true NC pins.

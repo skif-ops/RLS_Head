@@ -4,7 +4,7 @@ RV-002,GENERAL_SIGNAL,preferred_width,0.20,mm,EVT_BASELINE,
 RV-003,GENERAL_CLEARANCE,min_clearance,0.20,mm,EVT_BASELINE,
 RV-004,VIA_SIGNAL,finished_drill,0.30,mm,EVT_BASELINE,
 RV-005,VIA_SIGNAL,pad_diameter,0.60,mm,EVT_BASELINE,
-RV-006,VIN_RAW,min_neck_width,3.00,mm,EVT_CALCULATED,IPC-2221 external-trace screening at 5A 1oz 10C rise; prefer polygon/pour
+RV-006,VIN_RAW,min_neck_width,3.00,mm,EVT_CALCULATED,IPC-2221 external-trace screening at 4.5A 1oz 10C rise; prefer polygon/pour
 RV-007,RADAR_12V,min_neck_width,1.50,mm,EVT_BASELINE,Prefer polygon/pour; verify against final copper weight
 RV-008,3V3,min_trunk_width,1.50,mm,EVT_CALCULATED,IPC-2221 screening at 3A 1oz 10C rise; prefer polygon/pour
 RV-009,5V_GNSS,min_trunk_width,0.50,mm,EVT_BASELINE,Short route from U9 to J8 sized above the external module minimum current requirement
@@ -21,5 +21,6 @@ RV-019,HOST_UART,min_clearance_to_buck_sw,1.00,mm,EVT_BASELINE,Keep UART routes 
 RV-020,GNSS_UART_PPS,min_clearance_to_buck_sw,1.00,mm,EVT_BASELINE,Keep external GNSS UART and PPS away from BUCK_SW and BUCK5_SW
 RV-021,COMPACT_OUTLINE,target_maximum,90x70,mm,ECO_VALIDATE,Initial smaller-board candidate; lock only after native placement routing and DRC
 RV-022,STACKUP,L1_L2_dielectric,0.18,mm,EVT_PROVISIONAL,Nominal FR-4 prepreg separation used for initial impedance estimates
-RV-023,VIN_PROTECTED,min_neck_width,3.00,mm,EVT_CALCULATED,Upstream split rail sized for 5A screen; prefer polygon/pour
+RV-023,VIN_PROTECTED_24V,min_neck_width,3.00,mm,EVT_CALCULATED,Protected 24V rail sized for the 4.5A input limit; prefer polygon/pour
 RV-024,POWER_EXTERNAL,screen_temp_rise,10,C,EVT_CALCULATED,Common conservative screening assumption for provisional power widths
+RV-025,V12_SYS,min_neck_width,3.00,mm,EVT_CALCULATED,12V intermediate bus sized for the 5A LM76005 output rating; prefer polygon/pour

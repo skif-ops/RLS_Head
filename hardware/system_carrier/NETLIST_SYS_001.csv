@@ -23,10 +23,12 @@ GNSS_TX_EXT,J8_3;D8_CH2;U1_PD9,UART,P1,USART3 receive from external receiver TX
 SWDIO,SWD_CONNECTOR;U1_PA13,DEBUG,P0,Programming/debug
 SWCLK,SWD_CONNECTOR;U1_PA14,DEBUG,P0,Programming/debug clock
 MCU_HSE_25M,Y1_OUT;U1_PH0,CLOCK,P0,25MHz external oscillator
-VIN_RAW,J1_POWER;D_IN,POWER,P0,Unprotected input
-VIN_PROTECTED,U6_OUT;U5_VIN;U7_IN,POWER,P0,Protected system input rail
+VIN_RAW,J1_POWER;D_IN;Q6_SOURCE;U6_IN_SYS,POWER,P0,Unprotected 18V to 32V input
+U6_IN_BLOCKED,Q6_DRAIN;U6_IN,POWER,P0,Reverse-polarity blocked input to the TPS26630 internal switch
+VIN_PROTECTED_24V,U6_OUT;U8_PVIN,POWER,P0,Protected 24V domain used only by the wide-input 12V converter
+V12_SYS,U8_OUT;U5_VIN;U9_VIN;U7_IN,POWER,P0,Regulated 12V intermediate system bus
 RADAR_12V,U7_OUT;J_RADAR_PWR,POWER,P0,Dedicated protected radar supply
 5V_GNSS,U9_OUT;L9;J8_1,POWER,P1,Protected optional external GNSS receiver supply
 3V3,U5_OUT;U1_VDD;U2_VDD;U4_VCC;Y1_VDD;R600_1;R605_1,POWER,P0,Primary digital rail
-SYS_EFUSE_FLT,U6_FLT;R_U6_FLT_PU;U1_PE2,FAULT,P0,System eFuse active-low open-drain fault input
+SYS_EFUSE_FLT,U6_FLT14;R_U6_FLT_PU;U1_PE2,FAULT,P0,System eFuse active-low open-drain fault input
 RADAR_EFUSE_FLT,U7_FLT;R_U7_FLT_PU;U1_PE3,FAULT,P0,Radar branch eFuse active-low open-drain fault input

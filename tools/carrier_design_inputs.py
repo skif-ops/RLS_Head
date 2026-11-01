@@ -24,6 +24,10 @@ REQUIRED_MPNS = {
     "TCAN3404DRBRQ1",
     "TPS62132RGTR",
     "TPS62133RGTR",
+    "TPS26630RGER",
+    "LM76005RNPR",
+    "CSD19537Q3",
+    "BSS138",
     "TPS259470ARPWR",
     "ECS-2520S33-250-FN-TR",
     "43650-0200",
@@ -85,7 +89,8 @@ REQUIRED_NETS = {
     "SWCLK",
     "MCU_HSE_25M",
     "VIN_RAW",
-    "VIN_PROTECTED",
+    "VIN_PROTECTED_24V",
+    "V12_SYS",
     "3V3",
     "5V_GNSS",
     "RADAR_12V",
@@ -111,7 +116,9 @@ REQUIRED_RADAR_INTERFACE_SIGNALS = {
 
 
 REQUIRED_POWER_DEVICES = {
-    "SMAJ15CA",
+    "SMCJ36CA",
+    "TPS26630RGER",
+    "LM76005RNPR",
     "TPS259470ARPWR",
     "TPS62132RGTR",
     "TPS62133RGTR",
@@ -308,10 +315,11 @@ def validate_power_tree(path: Path) -> dict:
     }
 
     for pair in {
-        ("VIN_RAW", "VIN_PROTECTED"),
-        ("VIN_PROTECTED", "3V3"),
-        ("VIN_PROTECTED", "5V_GNSS"),
-        ("VIN_PROTECTED", "RADAR_12V"),
+        ("VIN_RAW", "VIN_PROTECTED_24V"),
+        ("VIN_PROTECTED_24V", "V12_SYS"),
+        ("V12_SYS", "3V3"),
+        ("V12_SYS", "5V_GNSS"),
+        ("V12_SYS", "RADAR_12V"),
     }:
         if pair not in transitions:
             findings.append(f"missing_transition:{pair[0]}->{pair[1]}")

@@ -14,18 +14,18 @@ def test_input_tvs_is_shunt_not_series():
     tvs = next(
         row
         for row in power
-        if row["device"] == "SMAJ15CA"
+        if row["device"] == "SMCJ36CA"
     )
 
     assert tvs["input_net"] == "VIN_RAW"
     assert tvs["output_net"] == "GND"
-    assert tvs["setting"] == "SHUNT_TVS"
+    assert tvs["setting"].startswith("SHUNT_TVS_")
 
     efuse = next(
         row
         for row in power
-        if row["device"] == "TPS259470ARPWR"
-        and row["output_net"] == "VIN_PROTECTED"
+        if row["device"] == "TPS26630RGER"
+        and row["output_net"] == "VIN_PROTECTED_24V"
     )
 
     assert efuse["input_net"] == "VIN_RAW"

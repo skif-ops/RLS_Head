@@ -24,6 +24,7 @@ EXPECTED_CHILDREN = {
 
 EXPECTED_PAPER_SIZE = {
     "EVT_SYS_CARRIER.kicad_sch": "A2",
+    "10_POWER_INPUT.kicad_sch": "A3",
     "20_MCU_CORE.kicad_sch": "A3",
     "30_TIME_GNSS.kicad_sch": "A5",
     "40_IMU.kicad_sch": "A5",
@@ -112,6 +113,7 @@ def validate(root: Path) -> dict:
         "Connector_Generic",
         "Connector",
         "Switch",
+        "Transistor_FET",
         "power",
         "MCU_ST_STM32H7",
     }
@@ -128,9 +130,9 @@ def validate(root: Path) -> dict:
         local_symbol_count = int(
             local_manifest.get("symbol_count", 0)
         )
-        if local_symbol_count != 8:
+        if local_symbol_count != 10:
             errors.append(
-                f"local_symbol_count:{local_symbol_count}!=8"
+                f"local_symbol_count:{local_symbol_count}!=10"
             )
 
     pending_refs = {

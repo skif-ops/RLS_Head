@@ -148,7 +148,8 @@ def validate(system_root: str | Path) -> dict:
     }
     expected_nets = {
         "VIN_RAW",
-        "VIN_PROTECTED",
+        "VIN_PROTECTED_24V",
+        "V12_SYS",
         "RADAR_12V",
         "3V3_TRUNK",
         "5V_GNSS",

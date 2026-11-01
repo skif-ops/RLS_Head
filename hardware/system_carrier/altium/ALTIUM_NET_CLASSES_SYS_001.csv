@@ -1,5 +1,6 @@
 class_id,nets,rule_family,target,criticality,notes
-NC_POWER_12V,VIN_RAW;VIN_PROTECTED;RADAR_12V,Width/Polygon,current-based width,P0,Size from copper thickness temperature rise and branch current
+NC_POWER_24V,VIN_RAW;VIN_PROTECTED_24V,Width/Polygon,current-based width,P0,Protected 18V to 32V input path limited to 4.5A nominal
+NC_POWER_12V,V12_SYS;RADAR_12V,Width/Polygon,current-based width,P0,Intermediate 12V bus and protected radar branch
 NC_POWER_3V3,3V3;VDDA_FILTERED,Width/Polygon,low-impedance distribution,P0,Use local pours where practical and preserve return paths
 NC_POWER_5V_GNSS,5V_GNSS,Width/Polygon,low-impedance 300mA minimum external supply,P0,Route U9 to J8 with short protected path and local output capacitance
 NC_CAN,RADAR_CANH;RADAR_CANL,DifferentialPair,coupled pair over solid GND,P1,Termination only when carrier is bus endpoint

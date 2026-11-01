@@ -103,7 +103,7 @@ def test_power_tree_requires_protection_chain(tmp_path):
     lines = [
         line
         for line in source.splitlines()
-        if "TPS259470ARPWR" not in line
+        if "TPS26630RGER" not in line
     ]
 
     path = tmp_path / "power.csv"
@@ -115,9 +115,9 @@ def test_power_tree_requires_protection_chain(tmp_path):
     result = validate_power_tree(path)
 
     assert result["status"] == "FAIL"
-    assert "missing_device:TPS259470ARPWR" in result["findings"]
+    assert "missing_device:TPS26630RGER" in result["findings"]
     assert any(
-        item.startswith("missing_transition:VIN_RAW->VIN_PROTECTED")
+        item.startswith("missing_transition:VIN_RAW->VIN_PROTECTED_24V")
         for item in result["findings"]
     )
 
@@ -194,7 +194,7 @@ def test_power_tree_requires_radar_branch(tmp_path):
 
     assert result["status"] == "FAIL"
     assert (
-        "missing_transition:VIN_PROTECTED->RADAR_12V"
+        "missing_transition:V12_SYS->RADAR_12V"
         in result["findings"]
     )
 

@@ -1,4 +1,13 @@
 block_id,ref_or_pattern,function,value_or_mpn,qty_rule,criticality,placement_rule,notes
+10,D1,Input surge suppressor,SMCJ36CA,1,P0,Immediately behind J1,36V standoff and 58.1V maximum clamp
+10,Q6,Reverse-polarity blocking MOSFET,CSD19537Q3,1,P0,Between VIN_RAW and U6 IN,Source toward VIN_RAW
+10,Q7,Reverse-current fast pulldown MOSFET,BSS138,1,P0,Adjacent Q6 and U6,Connect per TPS26630 reverse-blocking topology
+10,U6,System input eFuse,TPS26630RGER,1,P0,Power sheet,18V UVLO 33.54V OVP and 4.48A nominal current limit
+10,U8,24V to 12V synchronous buck,LM76005RNPR,1,P0,Power sheet,12V 5A at 400kHz
+10,L8,12V buck inductor,XAL7070-103MEC 10uH,1,P0,Adjacent U8 SW,11.5A saturation and 7.5A RMS ratings
+10,C_U8_IN,U8 input ceramic capacitors,4.7uF 100V X7S,2,P0,Adjacent U8 PVIN/PGND,Plus 47nF high-frequency bypass
+10,C_U8_OUT,U8 output ceramic capacitors,47uF 25V X7R,4,P0,Adjacent L8 and U8 PGND,188uF nominal total
+10,R_U8_FB,U8 12V feedback divider,100k and 9.09k 1%,1_set,P0,Adjacent U8 FB,Kelvin sense from V12_SYS
 10,U5,3V3 buck,TPS62132RGTR,1,P0,Power sheet,Fixed 3.3V reduces feedback-network risk
 10,U9,External GNSS 5V buck,TPS62133RGTR,1,P1,Power sheet,Fixed 5V supply for detachable receiver
 10,L9,External GNSS buck inductor,XFL4020-222MEC 2.2uH,1,P1,Adjacent U9 SW,Same locked inductor geometry as L1
@@ -12,11 +21,11 @@ block_id,ref_or_pattern,function,value_or_mpn,qty_rule,criticality,placement_rul
 10,C_U5_OUT,Buck output capacitor,22uF 6.3V X7R/X5R,1,P0,Adjacent VOS/PGND,Minimum effective capacitance verified after DC bias
 10,C_U5_SS,Soft-start capacitor,3.3nF C0G/X7R,1,P1,Adjacent SS/TR,
 10,R_U5_PG,Power-good pull-up,100k 1%,1,P1,Near U5,Pull to 3V3
-10,R_U6_ILIM,System eFuse current program,665R 1%,1,P0,Adjacent U6 ILM,Targets approximately 5.0A
-10,R_U6_UV1,System eFuse divider R1,470k 1%,1,P0,Adjacent U6 EN/UVLO OVLO,
-10,R_U6_UV2,System eFuse divider R2,36.0k 1%,1,P0,Adjacent U6 EN/UVLO OVLO,Targets UVLO approximately 8.51V with R1/R3
-10,R_U6_OV,System eFuse divider R3,41.2k 1%,1,P0,Adjacent U6 EN/UVLO OVLO,Targets OVLO approximately 15.94V with R1/R2
-10,C_U6_DVDT,System eFuse slew capacitor,3.3nF C0G/X7R,1,P1,Adjacent U6 dVdt,Approximate 20ms class 12V rise
+10,R_U6_ILIM,System eFuse current program,4.02k 1%,1,P0,Adjacent U6 ILIM,Targets 4.48A nominal
+10,R_U6_UV1,System eFuse divider R1,887k 1%,1,P0,Adjacent U6 UVLO and OVP,
+10,R_U6_UV2,System eFuse divider R2,29.4k 1%,1,P0,Adjacent U6 UVLO and OVP,Targets UVLO approximately 17.99V
+10,R_U6_OV,System eFuse divider R3,34.0k 1%,1,P0,Adjacent U6 UVLO and OVP,Targets OVP approximately 33.54V
+10,C_U6_DVDT,System eFuse slew capacitor,100nF X7R,1,P1,Adjacent U6 dVdt,Limits 24V-domain inrush
 10,R_U7_ILIM,Radar eFuse current program,1.05k 1%,1,P0,Adjacent U7 ILM,Targets approximately 3.18A
 10,R_U7_UV1,Radar eFuse divider R1,470k 1%,1,P0,Adjacent U7 EN/UVLO OVLO,
 10,R_U7_UV2,Radar eFuse divider R2,16.9k 1%,1,P0,Adjacent U7 EN/UVLO OVLO,Targets UVLO approximately 10.51V

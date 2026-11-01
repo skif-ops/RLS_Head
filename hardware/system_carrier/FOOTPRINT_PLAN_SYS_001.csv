@@ -4,8 +4,12 @@ U2,ICM-42688-P,LGA14,PROJECT_LOCAL,SystemCarrier_Local:ICM-42688-P_LGA14_2.5x3mm
 U4,TCAN3404DRBRQ1,DRB0008A,KICAD_STOCK,Package_DFN_QFN:Texas_DRB0008A,LOCKED,TI DRB package code plus existing KiCad manufacturer footprint,Verify courtyard against assembly rules
 U5,TPS62132RGTR,RGT0016,KICAD_STOCK,Package_DFN_QFN:VQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm,LOCKED,TI RGT0016C 3x3mm P0.5mm EP1.68x1.68mm matches KiCad stock footprint,Use non-via variant for baseline; thermal via decision remains PCB-level
 U9,TPS62133RGTR,RGT0016,KICAD_STOCK,Package_DFN_QFN:VQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm,LOCKED,TI RGT0016 package and fixed 5V device orderable match the verified U5 geometry,External GNSS supply
-U6,TPS259470ARPWR,RPW0010A,PROJECT_LOCAL,SystemCarrier_Local:TPS259470A_RPW0010A_VQFN-HR-10_2x2mm_P0.475mm,LOCKED,TI RPW0010A package/land-pattern drawing cross-checked with KiCad MR 4677,Shared verified local footprint
+U6,TPS26630RGER,RGE0024C,KICAD_STOCK,Package_DFN_QFN:Texas_RGE0024C_VQFN-24-1EP_4x4mm_P0.5mm_EP2.1x2.1mm,LOCKED,TI RGE0024C package and KiCad manufacturer footprint,Use thermal vias in native Altium implementation
 U7,TPS259470ARPWR,RPW0010A,PROJECT_LOCAL,SystemCarrier_Local:TPS259470A_RPW0010A_VQFN-HR-10_2x2mm_P0.475mm,LOCKED,TI RPW0010A package/land-pattern drawing cross-checked with KiCad MR 4677,Same verified local footprint as U6
+U8,LM76005RNPR,RNP0030B,KICAD_STOCK,Package_DFN_QFN:Texas_RNP0030B_WQFN-30-1EP_4x6mm_P0.5mm_EP1.8x4.5mm_ThermalVias,LOCKED,TI RNP0030B wettable-flank package and KiCad manufacturer footprint,Thermal-via variant required at 5A
+Q6,CSD19537Q3,Q3,KICAD_STOCK,Package_SON:VSON-8_3.3x3.3mm_P0.65mm_NexFET,LOCKED,TI Q3 package and KiCad NexFET footprint,Source toward VIN_RAW per TPS2663 reverse-polarity topology
+Q7,BSS138,SOT23,KICAD_STOCK,Package_TO_SOT_SMD:SOT-23,LOCKED,onsemi SOT-23 pinout,Fast B_GATE pulldown
+L8,XAL7070-103MEC,XAL7070,KICAD_STOCK,Inductor_SMD:L_Coilcraft_XAL7070-XXX,LOCKED,Coilcraft XAL7070 dimensions and KiCad manufacturer footprint,10uH 11.5A saturation rating
 D8,TPD4E05U06DQAR,DQA0010A,KICAD_STOCK,Package_SON:USON-10_2.5x1.0mm_P0.5mm,LOCKED,TI DQA0010A package matches KiCad stock footprint,Place directly behind J8
 D3,TPD4E05U06DQAR,DQA0010A,KICAD_STOCK,Package_SON:USON-10_2.5x1.0mm_P0.5mm,LOCKED,TI DQA0010A 2.5x1.0mm P0.5mm land pattern matches KiCad stock footprint,Use straight-through routing orientation per high-speed ESD layout
 D4,ESD2CANFD24DBZRQ1,DBZ0003A,KICAD_STOCK,Package_TO_SOT_SMD:SOT-23,LOCKED,TI DBZ SOT-23-3 package,Confirm pin-1 orientation in symbol mapping

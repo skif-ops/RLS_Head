@@ -1,6 +1,6 @@
 block_id,sheet_name,required_devices,inputs,outputs,criticality,notes
-00,TOP,J1;J_RADAR_PWR;J_RADAR_IO;J_HOST_UART;J_GNSS_EXT,12V_IN;RADAR_IO;HOST_UART;GNSS_EXT,ALL_INTERNAL,P0,Top-level hierarchy only; no functional circuitry
-10,POWER_INPUT,U6;U7;U5;D_IN;L1,12V_IN,3V3;RADAR_12V,P0,System protection plus independent radar branch
+00,TOP,J1;J_RADAR_PWR;J_RADAR_IO;J_HOST_UART;J_GNSS_EXT,24V_IN;RADAR_IO;HOST_UART;GNSS_EXT,ALL_INTERNAL,P0,Top-level hierarchy only; no functional circuitry
+10,POWER_INPUT,D1;Q6;Q7;U6;U8;L8;U7;U5;U9;L1;L9,24V_IN,3V3;5V_GNSS;RADAR_12V,P0,18V to 32V protection 12V intermediate conversion and downstream rails
 20,MCU_CORE,U1;Y1,3V3,MCU_BUSES;SWD;TIME_CAPTURE,P0,STM32H753 power clock reset boot and decoupling
 30,TIME_GNSS,J_GNSS_EXT;D_GNSS_EXT,5V_GNSS;GNSS_UART,GNSS_PPS,P1,External simpleRTK3B Pro interface; GNSS is optional and untrusted
 40,IMU,U2,3V3;SPI2,IMU_DRDY,P1,ICM-42688-P SPI and hardware DRDY

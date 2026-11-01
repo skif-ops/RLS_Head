@@ -4,8 +4,11 @@ U2,1,TDK InvenSense,ICM-42688-P,6-axis IMU,SELECTED
 U4,1,Texas Instruments,TCAN3404DRBRQ1,3.3V CAN FD transceiver,SELECTED
 U5,1,Texas Instruments,TPS62132RGTR,Fixed 3V3 3A buck regulator,SELECTED
 U9,1,Texas Instruments,TPS62133RGTR,Fixed 5V 3A buck regulator for external GNSS,SELECTED
-U6,1,Texas Instruments,TPS259470ARPWR,System input eFuse reverse-polarity protection,SELECTED
+U6,1,Texas Instruments,TPS26630RGER,60V system input eFuse with adjustable UVLO and OVP,SELECTED
 U7,1,Texas Instruments,TPS259470ARPWR,Dedicated radar 12V branch eFuse/load protection,SELECTED
+U8,1,Texas Instruments,LM76005RNPR,60V input 5A synchronous 12V buck regulator,SELECTED
+Q6,1,Texas Instruments,CSD19537Q3,100V reverse-polarity blocking MOSFET,SELECTED
+Q7,1,onsemi,BSS138,Fast gate pulldown MOSFET for reverse blocking,SELECTED
 Y1,1,ECS,ECS-2520S33-250-FN-TR,25MHz 3.3V MCU oscillator,SELECTED
 J6,1,Molex,43045-0600,Micro-Fit 3.0 6-circuit right-angle dual UART connector,SELECTED
 J1,1,Molex,43650-0200,Micro-Fit 3.0 2-circuit right-angle system power input,SELECTED
@@ -18,4 +21,5 @@ D4,1,Texas Instruments,ESD2CANFD24DBZRQ1,CAN FD ESD protection SOT-23-3,SELECTED
 FB1,1,Murata,BLM18BD601SH1,Precision ferrite bead,SELECTED
 L1,1,Coilcraft,XFL4020-222MEC,2.2uH buck inductor,SELECTED
 L9,1,Coilcraft,XFL4020-222MEC,2.2uH external GNSS buck inductor,SELECTED
-D1,1,MULTISOURCE,SMAJ15CA,Bidirectional input TVS,SELECTED
+L8,1,Coilcraft,XAL7070-103MEC,10uH 12V buck power inductor,SELECTED
+D1,1,Littelfuse,SMCJ36CA,1500W bidirectional input TVS,SELECTED
