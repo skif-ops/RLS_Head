@@ -9,7 +9,7 @@
   "input_sha256": {
     "component_inventory": "5ba2caad169488e25ff51c0e587fe9baa0ac540fa0c8455bb47aab2136d4d959",
     "net_inventory": "ade206282e6f047e88bd154fb4aeb1394db8391b2fa632abc6e276929c39ba7d",
-    "pcb": "05a1fa1f765fbddee267de6ad66284ae352b3d187767db18df08d94b62ffd177"
+    "pcb": "518041a570b405a429a70d968ee54b62df126cb0091b9af08e067152c5aa8735"
   },
   "no_76_81ghz_antenna": true,
   "no_76_81ghz_components": true,

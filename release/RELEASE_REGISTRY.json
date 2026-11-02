@@ -1,6 +1,6 @@
 {
   "schema": "DOCUMENT-RELEASE-REGISTRY-001",
-  "latest_document_version": "1.1.1",
+  "latest_document_version": "1.2.0",
   "entries": [
     {
       "version": "1.0.0",
@@ -89,6 +89,49 @@
           "name": "EVT_ГСН_ПМ_EVT_и_отчетные_материалы_v1.1.1_2026-10-31.zip",
           "bytes": 132638,
           "sha256": "146df7be5f0b93a60982692addf6c546c0a0db96a1e3a8584ac9b14156ad0481"
+        }
+      ]
+    },
+    {
+      "version": "1.2.0",
+      "date": "2026-11-02",
+      "scope": "POWER_24V_PRODUCTION_PACKAGE",
+      "baseline_version": "1.1.1",
+      "baseline_commit": "56b799e3090974e6a9b8240be4ce8ddad9b87940",
+      "changes": [
+        "Переработан вход питания системной платы для 24 В",
+        "Выпущены нативные материалы Altium, Gerber, NC Drill, IPC-2581, Pick and Place, STEP и цветные PDF",
+        "Добавлены BOM в XLSX и CSV, исходный код, скомпилированная прошивка, визуализатор и цифровой двойник",
+        "Обновлены техническая документация, программа и методики EVT, инструкции и контрольные материалы",
+        "Подтверждены DRC без нарушений, целостность соединений и эквивалентность с результатом READY_FOR_ROUTING"
+      ],
+      "release_status": "WAITING_RELEASE_REVIEWS",
+      "production_authority": "NOT_AUTHORIZED",
+      "archives": [
+        {
+          "name": "EVT_ГСН_документы_v1.2.0_2026-11-02.zip",
+          "bytes": 649730,
+          "sha256": "a533d5a5bb5a4246e080d8a84eeab1caec7442f1ecb6fcb9c9f34c4b1bf2c417"
+        },
+        {
+          "name": "EVT_ГСН_ПМ_EVT_и_отчетные_материалы_v1.2.0_2026-11-02.zip",
+          "bytes": 134811,
+          "sha256": "38a728b02b82ca24a919214167b67400a1d424a187d52659e85164dbc2eb49c1"
+        },
+        {
+          "name": "EVT_ГСН_BOM_и_закупка_24В_v1.2.0_2026-11-02.xlsx",
+          "bytes": 36163,
+          "sha256": "0feec0ea5726b6fbe2adc5f9f4d90e14b43a0a6036ccfdbdd5ea3d06d65aaf78"
+        },
+        {
+          "name": "EVT_ГСН_полный_производственный_комплект_24В_v1.2.0_2026-11-02.zip",
+          "bytes": 47886106,
+          "sha256": "081e8e8301a79355b67cece960e2a862a91d359f74dff3331f19439ff1bdf206"
+        },
+        {
+          "name": "EVT_ГСН_заказ_ПП_и_монтажа_24В_v1.2.0_2026-11-02.zip",
+          "bytes": 4206213,
+          "sha256": "3a81768a1881a05212ff37fc4693e388a2d02d2794f050b5864f1524baa4f719"
         }
       ]
     }

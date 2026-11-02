@@ -9,22 +9,27 @@
   "reviewer": "Codex computer use operator on user-authorized workstation",
   "evidence_refs": [
     {
-      "path": "hardware/system_carrier/altium/release/pilot_r1/validation/connection_integrity_result.json",
-      "sha256": "9d2abd58d03f69842f8d4dd62d9f96da77c6068214d839f288579195c458af08"
+      "path": "hardware/system_carrier/altium/routing/connection_audit/connection_integrity_result.json",
+      "sha256": "954121977a7a6db5d67bcb6c1c5a09f958269ee238acc973ac5e5e5e6fa5e6d2"
     },
     {
-      "path": "hardware/system_carrier/altium/release/pilot_r1/fab/PCB_Layer_Reference_COLOR.pdf",
-      "sha256": "a5a0c41128136d55a190f9407f4ed2c2d63fb308936141e7a9b7cd19c139c08c"
+      "path": "hardware/system_carrier/altium/equivalence/evt_power_routing_gate.json",
+      "sha256": "7e4507db7ff265ed11a208aab4c58d9f5a6402884caa8e6d5663232e82b5a37a"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Fabrication_PILOT_R1.pdf",
+      "sha256": "cbd968c51e3fce0a59c90fe709258865f373201d2b92abfd40b6d78d5a8d39e3"
     }
   ],
   "notes": [
-    "The compact-board routing and native DRC are current, but a dedicated return-path review has not yet been recorded.",
-    "Production authority remains NOT_AUTHORIZED until this review is completed."
+    "Connection integrity, zero unrouted topology and antennae checks pass on the canonical 24 V PcbDoc.",
+    "The EVT power routing gate passes and the color multilayer PDF is current.",
+    "A dedicated production SI and return-path sign-off remains pending; it does not grant production authority."
   ],
   "power_hot_loop_verified": false,
   "power_branch_widths_verified": false,
   "five_volt_gnss_route_verified": false,
   "no_mmwave_post_route_verified": false,
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea"
+  "source_pcb_sha256": "518041a570b405a429a70d968ee54b62df126cb0091b9af08e067152c5aa8735"
 }

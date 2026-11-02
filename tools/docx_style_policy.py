@@ -29,6 +29,9 @@ HEADING_NAME_PATTERN = re.compile(
     re.IGNORECASE,
 )
 NUMBERED_HEADING_PATTERN = re.compile(r"^\s*\d+(?:\.\d+){0,5}\s+\S")
+NUMBERED_HEADING_WITHOUT_PERIOD_PATTERN = re.compile(
+    r"^(\s*\d+(?:\.\d+){0,5})(\s+\S.*)$"
+)
 
 
 def _child(parent: etree._Element, local_name: str) -> etree._Element:
@@ -79,6 +82,7 @@ def _set_paragraph_properties(
     paragraph: etree._Element,
     in_table: bool,
     heading: bool,
+    in_header_footer: bool = False,
 ) -> None:
     p_pr = _child(paragraph, "pPr")
     ind = _child(p_pr, "ind")
@@ -86,7 +90,7 @@ def _set_paragraph_properties(
         ind.attrib.pop(W + key, None)
     ind.set(W + "left", "0")
     ind.set(W + "right", "0")
-    if in_table:
+    if in_table or in_header_footer:
         ind.set(W + "firstLine", "0")
         ind.set(W + "firstLineChars", "0")
     else:
@@ -100,14 +104,14 @@ def _set_paragraph_properties(
     spacing.set(W + "after", "0")
     spacing.set(W + "line", SINGLE_LINE_TWIPS)
     spacing.set(W + "lineRule", "auto")
-    _child(p_pr, "jc").set(W + "val", "both")
+    _child(p_pr, "jc").set(W + "val", "center" if in_header_footer else "both")
 
     mark_r_pr = _child(p_pr, "rPr")
     _set_fonts(mark_r_pr)
     _set_black(mark_r_pr)
     _set_size(
         mark_r_pr,
-        TABLE_SIZE_HALF_POINTS if in_table else BODY_SIZE_HALF_POINTS,
+        TABLE_SIZE_HALF_POINTS if in_table or in_header_footer else BODY_SIZE_HALF_POINTS,
     )
     if heading:
         _set_bold(mark_r_pr, True)
@@ -193,21 +197,40 @@ def _replace_forbidden_dashes(root: etree._Element) -> int:
 def _format_story(
     root: etree._Element,
     heading_style_ids: set[str],
+    part_name: str,
 ) -> tuple[int, int, int]:
     paragraph_count = 0
     heading_count = 0
     table_paragraph_count = 0
+    in_header_footer = bool(re.fullmatch(r"word/(?:header|footer)\d+\.xml", part_name))
     for paragraph in root.findall(".//w:p", NS):
         paragraph_count += 1
         in_table = _in_table(paragraph)
-        heading = _paragraph_is_heading(paragraph, heading_style_ids)
+        heading = False if in_header_footer else _paragraph_is_heading(paragraph, heading_style_ids)
+        if heading:
+            text_nodes = paragraph.findall(".//w:t", NS)
+            if text_nodes:
+                current_text = "".join(node.text or "" for node in text_nodes)
+                match = NUMBERED_HEADING_WITHOUT_PERIOD_PATTERN.match(current_text)
+                if match:
+                    replacement = match.group(1) + "." + match.group(2)
+                    text_nodes[0].text = replacement
+                    for node in text_nodes[1:]:
+                        node.text = ""
         if in_table:
             table_paragraph_count += 1
         if heading:
             heading_count += 1
-        _set_paragraph_properties(paragraph, in_table, heading)
+        _set_paragraph_properties(
+            paragraph,
+            in_table,
+            heading,
+            in_header_footer=in_header_footer,
+        )
         half_points = (
-            TABLE_SIZE_HALF_POINTS if in_table else BODY_SIZE_HALF_POINTS
+            TABLE_SIZE_HALF_POINTS
+            if in_table or in_header_footer
+            else BODY_SIZE_HALF_POINTS
         )
         for run in paragraph.findall(".//w:r", NS):
             r_pr = _child(run, "rPr")
@@ -250,7 +273,7 @@ def transform_docx(data: bytes, version: str | None = None) -> tuple[bytes, dict
             continue
         root = etree.fromstring(members[name])
         dash_replacements += _replace_forbidden_dashes(root)
-        counts = _format_story(root, heading_style_ids)
+        counts = _format_story(root, heading_style_ids, name)
         paragraphs += counts[0]
         headings += counts[1]
         table_paragraphs += counts[2]
@@ -367,6 +390,9 @@ def audit_docx(data: bytes) -> dict:
     text_run_count = 0
     dash_count = 0
     for part_name, root in roots:
+        in_header_footer = bool(
+            re.fullmatch(r"word/(?:header|footer)\d+\.xml", part_name)
+        )
         dash_count += sum(
             sum((node.text or "").count(char) for char in FORBIDDEN_DASHES)
             for node in root.findall(".//w:t", NS)
@@ -374,7 +400,9 @@ def audit_docx(data: bytes) -> dict:
         for index, paragraph in enumerate(root.findall(".//w:p", NS), start=1):
             paragraph_count += 1
             in_table = _in_table(paragraph)
-            heading = _paragraph_is_heading(paragraph, heading_style_ids)
+            heading = False if in_header_footer else _paragraph_is_heading(
+                paragraph, heading_style_ids
+            )
             table_paragraph_count += int(in_table)
             heading_count += int(heading)
             p_pr = paragraph.find("w:pPr", NS)
@@ -384,7 +412,7 @@ def audit_docx(data: bytes) -> dict:
             if p_pr is None or ind is None or spacing is None or jc is None:
                 failures.append(f"{part_name}:p{index}:missing paragraph property")
                 continue
-            if in_table:
+            if in_table or in_header_footer:
                 indent_ok = (
                     ind.get(W + "left") == "0"
                     and ind.get(W + "right") == "0"
@@ -408,10 +436,13 @@ def audit_docx(data: bytes) -> dict:
                 and spacing.get(W + "lineRule") == "auto"
             ):
                 failures.append(f"{part_name}:p{index}:spacing")
-            if jc.get(W + "val") != "both":
+            expected_alignment = "center" if in_header_footer else "both"
+            if jc.get(W + "val") != expected_alignment:
                 failures.append(f"{part_name}:p{index}:justification")
             expected_size = (
-                TABLE_SIZE_HALF_POINTS if in_table else BODY_SIZE_HALF_POINTS
+                TABLE_SIZE_HALF_POINTS
+                if in_table or in_header_footer
+                else BODY_SIZE_HALF_POINTS
             )
             for run_index, run in enumerate(paragraph.findall(".//w:r", NS), start=1):
                 if not run.findall(".//w:t", NS):

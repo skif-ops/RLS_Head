@@ -5,19 +5,19 @@
   "evt_power_routing_locked": true,
   "models": [
     {
-      "calculated_min_width_mm": 2.766,
-      "current_a": 5.0,
-      "margin_mm": 0.234,
+      "calculated_min_width_mm": 2.391,
+      "current_a": 4.5,
+      "margin_mm": 0.609,
       "model_id": "PWR-001",
       "net_or_class": "VIN_RAW",
       "selected_width_mm": 3.0
     },
     {
-      "calculated_min_width_mm": 2.766,
-      "current_a": 5.0,
-      "margin_mm": 0.234,
+      "calculated_min_width_mm": 2.391,
+      "current_a": 4.5,
+      "margin_mm": 0.609,
       "model_id": "PWR-002",
-      "net_or_class": "VIN_PROTECTED",
+      "net_or_class": "VIN_PROTECTED_24V",
       "selected_width_mm": 3.0
     },
     {
@@ -43,6 +43,14 @@
       "model_id": "PWR-005",
       "net_or_class": "5V_GNSS",
       "selected_width_mm": 0.5
+    },
+    {
+      "calculated_min_width_mm": 2.766,
+      "current_a": 5.0,
+      "margin_mm": 0.234,
+      "model_id": "PWR-006",
+      "net_or_class": "V12_SYS",
+      "selected_width_mm": 3.0
     }
   ],
   "notes": [

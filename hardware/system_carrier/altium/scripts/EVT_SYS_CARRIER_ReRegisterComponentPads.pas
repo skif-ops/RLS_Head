@@ -23,6 +23,7 @@ Begin
     For I := 0 To WS.DM_ProjectCount - 1 Do
     Begin
         Candidate := WS.DM_Projects(I);
+
         If Candidate = Nil Then Continue;
         If ExtractFileName(Candidate.DM_ProjectFullPath) <> 'EVT_SYS_CARRIER.PrjPcb' Then Continue;
         If Not IsCanonicalNativePath(Candidate.DM_ProjectFullPath) Then Continue;
@@ -46,9 +47,15 @@ Var
     PcbDoc  : IServerDocument;
     I       : Integer;
 Begin
+    Result := PCBServer.GetPCBBoardByPath(
+        'C:\Users\skifn\.codex\.chatgpt-projects\g-p-6a9feb917c48819182ec25e1ef55310c\RLS_Head-git\build-cad\history_candidate_audit_20261029_2320\EVT_SYS_CARRIER.~(77).PcbDoc'
+    );
+    If Result <> Nil Then Exit;
     Result := PCBServer.GetCurrentPCBBoard;
     If Result <> Nil Then
-        If IsCanonicalNativePath(Result.FileName) Then Exit;
+        If IsCanonicalNativePath(Result.FileName) Or
+           (UpperCase(ExtractFileName(Result.FileName)) =
+            'EVT_SYS_CARRIER.~(77).PCBDOC') Then Exit;
     Result := Nil;
 
     Project := FindCarrierProject;
@@ -194,7 +201,8 @@ Begin
         ShowMessage('ReRegisterComponentPads could not resolve the canonical EVT_SYS_CARRIER.PcbDoc.');
         Exit;
     End;
-    If UpperCase(ExtractFileName(Board.FileName)) <> 'EVT_SYS_CARRIER.PCBDOC' Then
+    If (UpperCase(ExtractFileName(Board.FileName)) <> 'EVT_SYS_CARRIER.PCBDOC') And
+       (UpperCase(ExtractFileName(Board.FileName)) <> 'EVT_SYS_CARRIER.~(77).PCBDOC') Then
     Begin
         ShowMessage('ReRegisterComponentPads requires EVT_SYS_CARRIER.PcbDoc.');
         Exit;

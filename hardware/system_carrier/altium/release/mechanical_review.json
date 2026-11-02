@@ -9,24 +9,24 @@
   "reviewer": "Codex computer use operator on user-authorized workstation",
   "evidence_refs": [
     {
-      "path": "hardware/system_carrier/altium/release/pilot_r1/documentation/COMPACT_ENCLOSURE_TARGET.md",
-      "sha256": "e43bd93ac27ad06f217605d2a5b1ecaed9f60d6319fba76f1dd2e4fe6e186f34"
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Fabrication_PILOT_R1.pdf",
+      "sha256": "cbd968c51e3fce0a59c90fe709258865f373201d2b92abfd40b6d78d5a8d39e3"
     },
     {
-      "path": "hardware/system_carrier/altium/release/pilot_r1/fab/Fabrication_Drawing_PILOT_R1.pdf",
-      "sha256": "e866be1d79ce7f957d8b793e6735e63ca200b154a364c4deedf4e5fa613f61cd"
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/ExportSTEP/EVT_SYS_CARRIER.step",
+      "sha256": "56de3f71130047365b59229b2ad5630dc859d4506012970d373e3dea56c4a339"
     },
     {
-      "path": "hardware/system_carrier/altium/release/pilot_r1/mechanical/EVT_SYS_CARRIER.step",
-      "sha256": "f9b679014e7aa51cf3ab8378cc22850e85a13db444456163f7746dd728206dd0"
+      "path": "hardware/system_carrier/altium/equivalence/evt_mechanical_datum_gate.json",
+      "sha256": "3f113e37535cf8794858ebf8508be58e2cd655f9d8f94fa15e33474a2f9c441c"
     }
   ],
   "notes": [
-    "The native board outline is frozen at 90.00 x 70.00 mm with four mounting holes.",
-    "Native Altium board-level STEP export succeeded after disabling Export Folded Board for the rigid PCB.",
-    "The PCB has no usable component 3D bodies, so enclosure and connector-access verification remain open outside the current pilot scope.",
-    "Enclosure manufacture is deferred and does not block preparation of the pilot package."
+    "The current native board outline is 90.00 x 70.00 mm with four mounting holes.",
+    "Native fabrication PDF and STEP were regenerated from the canonical 24 V PcbDoc.",
+    "Enclosure manufacture is deferred by project decision and is not a pilot PCB archive blocker.",
+    "Connector-access and populated-enclosure fit remain bench/mechanical follow-up items, so production authority remains NOT_AUTHORIZED."
   ],
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
-  "source_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea"
+  "source_pcb_sha256": "518041a570b405a429a70d968ee54b62df126cb0091b9af08e067152c5aa8735"
 }

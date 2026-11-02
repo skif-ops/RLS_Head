@@ -4,11 +4,11 @@
   "electrical_baseline_erc_warnings": 0,
   "equivalence_gate_status": "PASS",
   "equivalence_result": "hardware/system_carrier/altium/equivalence/altium_equivalence_result.json",
-  "equivalence_result_sha256": "0e578eee2bad4ae008d3520c8704a2cb6f5972c0acd5ce05ef5f41a432c27e99",
+  "equivalence_result_sha256": "210db810614719b27b5c03f7ca3fb451954d94a32063e55856b361c3552dd2ce",
   "hardware_revision": "A",
   "layout_authority": "AUTHORIZED",
   "native_import_status": "NATIVE_FILES_READY",
-  "native_pcb_sha256": "05a1fa1f765fbddee267de6ad66284ae352b3d187767db18df08d94b62ffd177",
+  "native_pcb_sha256": "518041a570b405a429a70d968ee54b62df126cb0091b9af08e067152c5aa8735",
   "native_schematic_sha256": "cd169feb69c055050beee9c3a1cf66b971c66615dbdc507b2709c53ec9e1bbfe",
   "next_required_outputs": [],
   "notes": [

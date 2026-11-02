@@ -1,6 +1,6 @@
 {
-  "approved_schematic_sha256": "85b458cc95d32704a9a9dced80f2f8514bf2f9d3065e0f91c18ab57091dc9166",
-  "current_schematic_sha256": "85b458cc95d32704a9a9dced80f2f8514bf2f9d3065e0f91c18ab57091dc9166",
+  "approved_schematic_sha256": "cd169feb69c055050beee9c3a1cf66b971c66615dbdc507b2709c53ec9e1bbfe",
+  "current_schematic_sha256": "cd169feb69c055050beee9c3a1cf66b971c66615dbdc507b2709c53ec9e1bbfe",
   "equivalence_ready": true,
   "equivalence_schematic_stale": false,
   "evidence": {
@@ -41,18 +41,18 @@
     "native_pcb": {
       "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
       "present": true,
-      "sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea"
+      "sha256": "518041a570b405a429a70d968ee54b62df126cb0091b9af08e067152c5aa8735"
     },
     "native_schematic": {
       "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
       "present": true,
-      "sha256": "85b458cc95d32704a9a9dced80f2f8514bf2f9d3065e0f91c18ab57091dc9166"
+      "sha256": "cd169feb69c055050beee9c3a1cf66b971c66615dbdc507b2709c53ec9e1bbfe"
     },
     "outjob_release_manifest": {
       "path": "hardware/system_carrier/altium/release/outjob_release_manifest.json",
       "present": true,
       "schema": "ALTIUM-OUTJOB-RELEASE-MANIFEST-001",
-      "status": "PARTIAL"
+      "status": "PASS"
     },
     "return_path_si_review": {
       "path": "hardware/system_carrier/altium/release/return_path_si_review.json",
@@ -61,7 +61,7 @@
       "status": "PENDING"
     }
   },
-  "final_native_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
+  "final_native_pcb_sha256": "518041a570b405a429a70d968ee54b62df126cb0091b9af08e067152c5aa8735",
   "invalid_artifacts": [],
   "manifest_errors": [],
   "manifest_ready": true,
@@ -71,7 +71,6 @@
     "dfm_result",
     "fabricator_binding",
     "mechanical_review",
-    "outjob_release_manifest",
     "return_path_si_review"
   ],
   "notes": [

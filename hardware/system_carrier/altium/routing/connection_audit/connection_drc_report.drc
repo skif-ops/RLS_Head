@@ -1,7 +1,7 @@
 Protel Design System Design Rule Check
 PCB File : C:\Users\skifn\.codex\.chatgpt-projects\g-p-6a9feb917c48819182ec25e1ef55310c\RLS_Head-git\hardware\system_carrier\altium\native\EVT_SYS_CARRIER.PcbDoc
-Date     : 30.10.2026
-Time     : 16:52:19
+Date     : 02.11.2026
+Time     : 20:23:29
 
 Processing Rule : Clearance Constraint (Gap=7.874mil) (All),(All)
 Rule Violations :0
@@ -9,13 +9,13 @@ Rule Violations :0
 Processing Rule : Clearance Constraint (Gap=10mil) (All),(All)
 Rule Violations :0
 
-Processing Rule : Clearance Constraint (Gap=39.37mil) (InNetClass('NC_TIMING')),(InNet('BUCK_SW') Or InNet('BUCK5_SW'))
+Processing Rule : Clearance Constraint (Gap=39.37mil) (InNetClass('NC_TIMING')),(InNet('U8_SW') Or InNet('BUCK_SW') Or InNet('BUCK5_SW'))
 Rule Violations :0
 
-Processing Rule : Clearance Constraint (Gap=39.37mil) (InNetClass('NC_HOST_UART') Or InNetClass('NC_GNSS_UART')),(InNet('BUCK_SW') Or InNet('BUCK5_SW'))
+Processing Rule : Clearance Constraint (Gap=39.37mil) (InNetClass('NC_HOST_UART') Or InNetClass('NC_GNSS_UART')),(InNet('U8_SW') Or InNet('BUCK_SW') Or InNet('BUCK5_SW'))
 Rule Violations :0
 
-Processing Rule : Clearance Constraint (Gap=5.118mil) ((InComponent('U6') Or InComponent('U7') Or InComponent('D8'))),((InComponent('U6') Or InComponent('U7') Or InComponent('D8')))
+Processing Rule : Clearance Constraint (Gap=5.118mil) ((InComponent('U6') Or InComponent('U7') Or InComponent('U8') Or InComponent('Q6') Or InComponent('D8'))),((InComponent('U6') Or InComponent('U7') Or InComponent('U8') Or InComponent('Q6') Or InComponent('D8')))
 Rule Violations :0
 
 Processing Rule : Un-Routed Net Constraint ( (All) )

@@ -371,3 +371,38 @@ Begin
     ExportRegions(Board, BasePath);
     ShowMessage('Connection audit exported for the physical-closure candidate.');
 End;
+
+Procedure ExportPower24VDRCZeroCandidate;
+Var
+    Board    : IPCB_Board;
+    BasePath : String;
+    TargetPath : String;
+    PcbDoc   : IServerDocument;
+Begin
+    TargetPath :=
+        'C:\Users\skifn\.codex\.chatgpt-projects\g-p-6a9feb917c48819182ec25e1ef55310c\RLS_Head-git\hardware\system_carrier\altium\native\EVT_SYS_CARRIER_24V_DRC_REPAIR_2026-11-02.PcbDoc';
+    Board := PCBServer.GetPCBBoardByPath(TargetPath);
+    If Board = Nil Then
+    Begin
+        PcbDoc := Client.OpenDocument('PCB', TargetPath);
+        If PcbDoc <> Nil Then Client.ShowDocument(PcbDoc);
+        Board := PCBServer.GetPCBBoardByPath(TargetPath);
+    End;
+    If Board = Nil Then
+    Begin
+        ShowMessage('Connection audit: 24V DRC-zero candidate is not available.');
+        Exit;
+    End;
+
+    BasePath := ExtractFilePath(Board.FileName) +
+        '..\import_attempts\power24v_2026-11-01\evidence\drc_zero_connection_audit\';
+    ForceDirectories(BasePath);
+    ExportComponents(Board, BasePath);
+    ExportPads(Board, BasePath);
+    ExportTracks(Board, BasePath);
+    ExportFills(Board, BasePath);
+    ExportVias(Board, BasePath);
+    ExportPolygons(Board, BasePath);
+    ExportRegions(Board, BasePath);
+    ShowMessage('Connection audit exported for the 24V DRC-zero candidate.');
+End;
