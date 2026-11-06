@@ -69,7 +69,10 @@ def validate(system_root: str | Path) -> dict:
         if not (x_min < x_max and y_min < y_max):
             errors.append(f"invalid_room_bounds:{room_id}")
 
-        if str(row.get("status", "")).strip() != "EVT_PROVISIONAL":
+        if str(row.get("status", "")).strip() not in {
+            "EVT_PROVISIONAL",
+            "ECO_CANDIDATE",
+        }:
             errors.append(f"room_status:{room_id}")
 
         rooms[room_id] = {
@@ -87,7 +90,7 @@ def validate(system_root: str | Path) -> dict:
         "ZONE_MCU",
         "ZONE_IMU",
         "ZONE_GNSS",
-        "ZONE_ETH",
+        "ZONE_UART",
         "ZONE_DEBUG",
     }
     if set(zone_to_room) != expected_zones:

@@ -1,0 +1,107 @@
+# CI616 native Altium import diagnostic, updated 2026-10-23
+
+This snapshot records the Altium import after the second readability pass on
+`10_POWER_INPUT`. It is diagnostic evidence for issue #216. Routing and
+production authority remain `NOT_AUTHORIZED`.
+
+## Source and import
+
+- Branch head `6dbd28b5811a975466c6c19572cfdaf4b5fcf09e` produced CI run
+  `39805306503` (run 616). The completed System Carrier scaffold job uploaded
+  `system-carrier-altium-import`, artifact ID `12436698327`. Its ZIP SHA-256 is
+  `fcc8ace1b363b76a82a6099d36adef92fca3570a1425e12ae4cfb1dc950ddcd7`.
+- Package integrity passed for 117/117 files. Current-source binding passed
+  for 57/57 files before import. The source manifest and results are in
+  `evidence/`. After the audit exporter's locale fix, rechecking that CI616
+  package against the current repository yields 56/57: only
+  `scripts/EVT_SYS_CARRIER_Audit.pas` changed. The failed current recheck is
+  retained in `evidence/ci616_current_source_binding_after_exporter_change.json`.
+  A newly qualified package is required before canonical promotion.
+- Altium Designer 26.10.1 Trial completed the KiCad Import Wizard from that
+  package. Eight native SchDocs were saved in the uniquely named CI616 project.
+  The `native_snapshot/` directory contains the saved project, eight SchDocs,
+  two SchLibs, and the PcbDoc. File hashes and sizes are in
+  `evidence/attempt_receipt.json`.
+- The initial PcbDoc was a byte-identical carry-forward of the audited CI606
+  diagnostic board, SHA-256
+  `f0c6f30b5a65c0eede9ac934c9d318be639f018fb15165f85cb1130926c08c9a`.
+  This import did not create a new PCB. A subsequent guarded Altium ECO placed
+  22 hard-anchor component origins at their contracted coordinates and saved
+  the diagnostic PcbDoc, now SHA-256
+  `853a1d37f848be8dce328e63070ad795c2d77a669ebe053431f70d6cf6d97da2`.
+  The other 70 component origins remain outside the board outline. Placement
+  and routing remain unfinished.
+
+## Layout and native checks
+
+- The revised [POWER_INPUT source render](../../layout_review/power_input_2026-10-22/power_input_source.png)
+  shows the wider distribution on the A4 page, separated J1 and passive labels,
+  and long names inside the frame. The saved CI616 `10_POWER_INPUT.SchDoc` was
+  opened in Altium and inspected at full-sheet and local zoom. Automatic
+  cross-references were disabled in the CI616 project to avoid long generated
+  port suffixes outside the border. The previous CI614 import predates the
+  second source layout pass.
+- A targeted Altium ECO changed U7-6 from Power to Output and D3-6/7/9/10 plus
+  J6-7 from Input to Passive. Before and after pin inventories show exactly
+  these six changes.
+- The initial `Validate PCB Project` completed with zero errors and 49 warnings.
+  Six floating labels were attached to six imported KiCad `PWR_FLAG` symbols
+  in `10_POWER_INPUT`, `20_MCU_CORE`, and `30_TIME_GNSS`. The exact six pairs
+  were removed in Altium, and those three SchDocs were saved. The cleanup
+  script is retained as `evidence/ci616_flag_label_cleanup.pas`.
+- The subsequent Altium validation completed with zero errors and 43 warnings.
+  Its full message list is `evidence/ci616_native_compile_after_flag_cleanup.txt`.
+  The remaining warnings comprise 32 IO pin/port or pin direction conflicts,
+  ten nets without a driving source, and one BOOT0 sheet-entry direction
+  conflict. No warnings were suppressed. The original 49-warning report is
+  retained as `evidence/ci616_native_compile_after_eco.txt`.
+- A second guarded Altium ECO aligned 23 STM32 pins and three Ethernet PHY
+  pins with their fixed-function input/output contracts. Every target pin was
+  uniquely present and initially I/O. The saved SchDocs differ from the prior
+  snapshot in exactly those 26 pin electrical types; all other pin fields and
+  pin identities match. See `evidence/ci616_direction_pin_eco.pas` and
+  `evidence/ci616_direction_pin_diff.json`, which binds the before and after
+  files by SHA-256. The before snapshot is commit `46dd15a`.
+- The fresh validation after this ECO completed with zero errors and 12
+  warnings: eleven nets without a driving source and one BOOT0 sheet-entry
+  direction conflict. `evidence/ci616_native_compile_after_direction_eco.txt`
+  is the full raw Altium report. No warnings were suppressed. The new
+  RADAR_REF no-driver warning appeared when U1-79 became an input as required
+  by `PINMAP_SYS_001.csv`; its source is external through J4.
+- The fresh Altium Protel netlist is byte-identical to the export before the
+  direction ECO. It has 335 assigned pins in 67 connected groups and again
+  passes comparison with the CI616 KiCad baseline with no missing or extra
+  connected pins, merged groups, or split groups. The raw export and result
+  are `evidence/ci616_schematic_protel_after_direction_eco.NET` and
+  `evidence/ci616_schematic_netlist_after_direction_eco_probe.json`.
+- Fresh read-only native PCB audit inventories passed PCB, pin map, stack,
+  mechanical, pair/class, and rule validation. Footprint validation passed for
+  all 92 components; connector validation passed for 22 pads. The hierarchy
+  export passed all 66 native child-sheet port rows against the contract.
+- `evidence/ci616_placement_anchor_eco.pas` performed the guarded 22-component
+  ECO in Altium on the 100 x 80 mm diagnostic board. The saved PcbDoc was
+  re-exported with `scripts/EVT_SYS_CARRIER_Audit.pas`. Its invariant numeric
+  formatting now keeps fractional mil coordinates valid in CSV under a locale
+  using decimal commas. `evidence/ci616_placement_anchor_diff.json` compares
+  the pre-ECO inventory and new export: all 22 origins match their hard
+  coordinates within 0.001 mm, 70 other components and every footprint are
+  unchanged, and the eight non-geometric PCB inventories are byte-identical.
+  Fresh native audit and footprint validators pass. Component body clearance,
+  keepouts, connector orientation, and the 70 remaining placements still need
+  native review.
+- A fresh Altium BOM export with one row per component passed exact designator
+  and MPN comparison for all 92 parts. The default grouped export combined
+  eight capacitors with different MPNs, so its first validation failed. Both
+  raw exports and results are retained in `evidence/`; the ungrouped export is
+  `ci616_native_bom.csv` and its validation is `ci616_native_bom_validation.json`.
+- The saved root SchDoc and PcbDoc passed native file preflight.
+
+## Gate state
+
+The 12 compile warnings violate the zero-warning equivalence prerequisite.
+Current-source binding to CI616 is 56/57 after the exporter correction.
+No-mmWave human review and hash-bound exporter runtime receipts are still
+outstanding. `ALTIUM_EQUIVALENCE_GATE` was not run.
+The canonical `altium/native/` pair remains unpopulated.
+`READY_FOR_ROUTING=false`; routing and production authority remain
+`NOT_AUTHORIZED`. Issue #216 remains open.

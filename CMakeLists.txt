@@ -7,6 +7,7 @@ set(CMAKE_C_EXTENSIONS OFF)
 
 option(HIL_BUILD_HOST_TESTS "Build host-native HIL-R1 golden tests" ON)
 option(HIL_BUILD_STM32H753_SMOKE "Build STM32H753 cross-link smoke target" OFF)
+option(EVT_BUILD_STM32H753_FIRMWARE "Build operational STM32H753 EVT firmware" OFF)
 
 add_library(hil_r1 STATIC
     src/hil_r1.c
@@ -56,10 +57,6 @@ add_library(capture_router STATIC
     src/capture_router.c
 )
 
-add_library(ethernet_reset STATIC
-    src/ethernet_reset.c
-)
-
 add_library(config_lock STATIC
     src/config_lock.c
 )
@@ -70,6 +67,22 @@ add_library(gnss_service STATIC
 
 add_library(imu_service STATIC
     src/imu_service.c
+)
+
+add_library(evt_transport STATIC
+    firmware/stm32h753/src/evt_transport.c
+)
+
+add_library(evt_gnss_parser STATIC
+    firmware/stm32h753/src/evt_gnss_parser.c
+)
+
+add_library(evt_runtime_config STATIC
+    firmware/stm32h753/src/evt_runtime_config.c
+)
+
+add_library(evt_fusion STATIC
+    firmware/stm32h753/src/evt_fusion.c
 )
 
 target_include_directories(hil_r1 PUBLIC
@@ -120,10 +133,6 @@ target_include_directories(capture_router PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-target_include_directories(ethernet_reset PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
 target_include_directories(config_lock PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -134,6 +143,24 @@ target_include_directories(gnss_service PUBLIC
 
 target_include_directories(imu_service PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_include_directories(evt_transport PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/include
+)
+
+target_include_directories(evt_gnss_parser PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/include
+)
+
+target_include_directories(evt_runtime_config PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/include
+)
+
+target_include_directories(evt_fusion PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/include
 )
 
 if(MSVC)
@@ -149,10 +176,13 @@ if(MSVC)
     target_compile_options(measurement_session PRIVATE /W4 /WX)
     target_compile_options(evidence_export PRIVATE /W4 /WX)
     target_compile_options(capture_router PRIVATE /W4 /WX)
-    target_compile_options(ethernet_reset PRIVATE /W4 /WX)
     target_compile_options(config_lock PRIVATE /W4 /WX)
     target_compile_options(gnss_service PRIVATE /W4 /WX)
     target_compile_options(imu_service PRIVATE /W4 /WX)
+    target_compile_options(evt_transport PRIVATE /W4 /WX)
+    target_compile_options(evt_gnss_parser PRIVATE /W4 /WX)
+    target_compile_options(evt_runtime_config PRIVATE /W4 /WX)
+    target_compile_options(evt_fusion PRIVATE /W4 /WX)
 else()
     target_compile_options(hil_r1 PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(hil_r2 PRIVATE -Wall -Wextra -Wpedantic -Werror)
@@ -166,10 +196,13 @@ else()
     target_compile_options(measurement_session PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(evidence_export PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(capture_router PRIVATE -Wall -Wextra -Wpedantic -Werror)
-    target_compile_options(ethernet_reset PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(config_lock PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(gnss_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(imu_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(evt_transport PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(evt_gnss_parser PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(evt_runtime_config PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(evt_fusion PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_link_libraries(hil_r1 PUBLIC m)
     target_link_libraries(hil_r2 PUBLIC m)
 endif()
@@ -177,10 +210,12 @@ endif()
 target_link_libraries(sys_err PUBLIC hil_r2)
 target_link_libraries(targetstate_uncertainty PUBLIC hil_r1 sys_err)
 target_link_libraries(targetstate_error_ledger PUBLIC targetstate_uncertainty)
-target_link_libraries(hil_r2_evidence PUBLIC m)
 target_link_libraries(evidence_export PUBLIC measurement_session time_service carrier_health)
+target_link_libraries(evt_runtime_config PUBLIC hil_r1)
+target_link_libraries(evt_fusion PUBLIC evt_runtime_config targetstate_uncertainty time_service carrier_health gnss_service)
 
 if(NOT MSVC)
+    target_link_libraries(hil_r2_evidence PUBLIC m)
     target_link_libraries(time_service PUBLIC m)
 endif()
 
@@ -355,20 +390,6 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
 
     add_test(NAME carrier_capture_router COMMAND test_capture_router)
 
-    add_executable(test_ethernet_reset
-        tests/test_ethernet_reset.c
-    )
-
-    target_link_libraries(test_ethernet_reset PRIVATE ethernet_reset)
-
-    if(MSVC)
-        target_compile_options(test_ethernet_reset PRIVATE /W4 /WX)
-    else()
-        target_compile_options(test_ethernet_reset PRIVATE -Wall -Wextra -Wpedantic -Werror)
-    endif()
-
-    add_test(NAME carrier_ethernet_reset COMMAND test_ethernet_reset)
-
     add_executable(test_config_lock
         tests/test_config_lock.c
     )
@@ -410,6 +431,61 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     endif()
 
     add_test(NAME carrier_imu_service COMMAND test_imu_service)
+
+    add_executable(test_evt_transport
+        tests/test_evt_transport.c
+    )
+    target_link_libraries(test_evt_transport PRIVATE evt_transport)
+    if(MSVC)
+        target_compile_options(test_evt_transport PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_evt_transport PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+    add_test(NAME evt_can_transport COMMAND test_evt_transport)
+
+    add_executable(test_evt_gnss_parser
+        tests/test_evt_gnss_parser.c
+    )
+    target_link_libraries(test_evt_gnss_parser PRIVATE evt_gnss_parser)
+    if(MSVC)
+        target_compile_options(test_evt_gnss_parser PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_evt_gnss_parser PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+    add_test(NAME evt_gnss_parser COMMAND test_evt_gnss_parser)
+
+    add_executable(test_evt_runtime_config
+        tests/test_evt_runtime_config.c
+    )
+    target_link_libraries(test_evt_runtime_config PRIVATE evt_runtime_config)
+    if(MSVC)
+        target_compile_options(test_evt_runtime_config PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_evt_runtime_config PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+    add_test(NAME evt_config_redundancy COMMAND test_evt_runtime_config)
+
+    add_executable(test_evt_fusion
+        tests/test_evt_fusion.c
+    )
+    target_link_libraries(test_evt_fusion PRIVATE evt_fusion)
+    if(MSVC)
+        target_compile_options(test_evt_fusion PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_evt_fusion PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+    add_test(NAME evt_fusion_degradation COMMAND test_evt_fusion)
+
+    add_executable(test_evt_digital_twin
+        tests/test_evt_digital_twin.c
+    )
+    target_link_libraries(test_evt_digital_twin PRIVATE evt_transport evt_fusion hil_r1)
+    if(MSVC)
+        target_compile_options(test_evt_digital_twin PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_evt_digital_twin PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+    add_test(NAME evt_end_to_end_digital_twin COMMAND test_evt_digital_twin)
 endif()
 
 if(HIL_BUILD_STM32H753_SMOKE)
@@ -451,7 +527,6 @@ if(HIL_BUILD_STM32H753_SMOKE)
         measurement_session
         evidence_export
         capture_router
-        ethernet_reset
         config_lock
         gnss_service
         imu_service
@@ -475,4 +550,128 @@ if(HIL_BUILD_STM32H753_SMOKE)
             VERBATIM
         )
     endif()
+endif()
+
+if(EVT_BUILD_STM32H753_FIRMWARE)
+    if(NOT CMAKE_CROSSCOMPILING)
+        message(FATAL_ERROR "EVT_BUILD_STM32H753_FIRMWARE requires the ARM cross toolchain")
+    endif()
+
+    set(STM32CUBE_VENDOR
+        ${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/vendor/stm32cubeh7)
+
+    add_library(stm32cubeh7_hal STATIC
+        ${STM32CUBE_VENDOR}/CMSIS/Device/ST/STM32H7xx/Source/Templates/system_stm32h7xx.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_cortex.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_dma.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_dma_ex.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_exti.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_fdcan.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_flash.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_flash_ex.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_gpio.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_iwdg.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_pwr.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_pwr_ex.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_rcc.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_rcc_ex.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_spi.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_tim.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_tim_ex.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_uart.c
+        ${STM32CUBE_VENDOR}/HAL/Src/stm32h7xx_hal_uart_ex.c
+    )
+
+    target_compile_definitions(stm32cubeh7_hal PUBLIC
+        STM32H753xx
+        USE_HAL_DRIVER
+    )
+
+    target_include_directories(stm32cubeh7_hal PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/include
+        ${STM32CUBE_VENDOR}/HAL/Inc
+        ${STM32CUBE_VENDOR}/CMSIS/Include
+        ${STM32CUBE_VENDOR}/CMSIS/Device/ST/STM32H7xx/Include
+    )
+
+    target_compile_options(stm32cubeh7_hal PRIVATE
+        -Os
+        -Wall
+        -Wextra
+        -Wno-unused-parameter
+    )
+
+    add_executable(evt_stm32h753_firmware
+        ${STM32CUBE_VENDOR}/CMSIS/Device/ST/STM32H7xx/Source/Templates/gcc/startup_stm32h753xx.s
+        firmware/stm32h753/src/main.c
+        firmware/stm32h753/src/evt_app.c
+        firmware/stm32h753/src/evt_board.c
+        firmware/stm32h753/src/icm42688p.c
+        firmware/stm32h753/src/runtime_support.c
+        firmware/stm32h753/src/stm32h7xx_it.c
+    )
+
+    set_target_properties(evt_stm32h753_firmware PROPERTIES
+        OUTPUT_NAME "EVT_SYS_CARRIER_STM32H753_R1"
+        SUFFIX ".elf"
+    )
+
+    target_compile_definitions(evt_stm32h753_firmware PRIVATE
+        STM32H753xx
+        USE_HAL_DRIVER
+    )
+
+    target_include_directories(evt_stm32h753_firmware PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/include
+    )
+
+    target_compile_options(evt_stm32h753_firmware PRIVATE
+        -Os
+        -g3
+        -Wall
+        -Wextra
+        -Wpedantic
+        -Werror
+    )
+
+    target_link_libraries(evt_stm32h753_firmware PRIVATE
+        stm32cubeh7_hal
+        hil_r1
+        time_service
+        carrier_health
+        gnss_service
+        imu_service
+        evt_transport
+        evt_gnss_parser
+        evt_runtime_config
+        evt_fusion
+        m
+        c
+        nosys
+    )
+
+    target_link_options(evt_stm32h753_firmware PRIVATE
+        -nostartfiles
+        --specs=nano.specs
+        --specs=nosys.specs
+        -Wl,--gc-sections
+        -Wl,--print-memory-usage
+        -Wl,-Map=${CMAKE_BINARY_DIR}/EVT_SYS_CARRIER_STM32H753_R1.map
+        -T${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/linker/STM32H753IIT6_EVT.ld
+    )
+
+    add_custom_command(
+        TARGET evt_stm32h753_firmware
+        POST_BUILD
+        COMMAND ${CMAKE_OBJCOPY} -O ihex
+            $<TARGET_FILE:evt_stm32h753_firmware>
+            ${CMAKE_BINARY_DIR}/EVT_SYS_CARRIER_STM32H753_R1.hex
+        COMMAND ${CMAKE_OBJCOPY} -O binary
+            $<TARGET_FILE:evt_stm32h753_firmware>
+            ${CMAKE_BINARY_DIR}/EVT_SYS_CARRIER_STM32H753_R1.bin
+        COMMAND ${CMAKE_SIZE} $<TARGET_FILE:evt_stm32h753_firmware>
+        VERBATIM
+    )
 endif()

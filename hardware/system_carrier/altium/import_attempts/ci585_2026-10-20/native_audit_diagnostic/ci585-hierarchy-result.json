@@ -1,0 +1,22 @@
+{
+  "errors": [
+    "anchor_net_mismatch:U1.142:CAN_RX!=NetU1_142,U1.143:CAN_TX!=NetU1_143,U1.154:ETH_TX_EN!=NetU1_154,U1.156:ETH_TXD0!=NetU1_156,U1.157:ETH_TXD1!=NetU1_157,U1.33:ETH_MDC!=NetU1_33,U1.40:GNSS_PPS!=NetU1_40,U1.42:ETH_MDIO!=NetU1_42,U1.53:ETH_CRS_DV!=NetU1_53,U1.54:ETH_RXD0!=NetU1_54,U1.55:ETH_RXD1!=NetU1_55,U1.80:IMU_DRDY!=NetU1_80,U1.92:IMU_NSS!=NetU1_92,U1.93:IMU_SCK!=NetU1_93,U1.94:IMU_MISO!=NetU1_94,U1.95:IMU_MOSI!=NetU1_95,U1.96:GNSS_RX_EXT!=NetU1_96,U1.97:GNSS_TX_EXT!=NetU1_97,U2.12:IMU_NSS!=NetU1_92,U2.13:IMU_SCK!=NetU1_93,U2.14:IMU_MOSI!=NetU1_95,U2.1:IMU_MISO!=NetU1_94,U2.4:IMU_DRDY!=NetU1_80,U3.11:ETH_CRS_DV!=NetU1_53,U3.12:ETH_MDIO!=NetU1_42,U3.13:ETH_MDC!=NetU1_33,U3.16:ETH_TX_EN!=NetU1_154,U3.17:ETH_TXD0!=NetU1_156,U3.18:ETH_TXD1!=NetU1_157,U3.7:ETH_RXD1!=NetU1_55,U3.8:ETH_RXD0!=NetU1_54,U4.1:CAN_TX!=NetU1_143,U4.4:CAN_RX!=NetU1_142,U8.20:GNSS_TX_EXT!=NetU1_97,U8.21:GNSS_RX_EXT!=NetU1_96,U8.3:GNSS_PPS!=NetU1_40"
+  ],
+  "expected_row_count": 66,
+  "input_sha256": {
+    "hierarchy_contract": "cb97676478db17d80a5fce2245fe41320349e52fc290e6c26f31bd51c3d1be93",
+    "hierarchy_export": "8d65b155bee329da15aec6ffe606a8df1f8f1724f0befdf0f56711f1ad6786aa",
+    "pad_net_inventory": "8ac50f478ddc38fea7df8bd2acfb6ea93879f3d859f0242aba6ad79dce8b7cdd"
+  },
+  "native_row_count": 66,
+  "notes": [
+    "Rows are matched by sheet, net name and native anchor reference/pin; port direction is compared after normalization.",
+    "The hierarchy export must come from the compiled native Altium schematic project."
+  ],
+  "schema": "ALTIUM-NATIVE-HIERARCHY-RESULT-001",
+  "status": "FAIL",
+  "verified_checks": {
+    "hierarchy_equivalence": "FAIL"
+  },
+  "warnings": []
+}

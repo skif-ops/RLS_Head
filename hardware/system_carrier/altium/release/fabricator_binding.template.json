@@ -4,8 +4,6 @@
   "fabricator": "<FABRICATOR>",
   "stackup_bound": false,
   "copper_weight_bound": false,
-  "impedance_50r_bound": false,
-  "impedance_100r_bound": false,
   "min_trace_clearance_bound": false,
   "via_rules_bound": false,
   "evidence_refs": [
@@ -15,7 +13,7 @@
     }
   ],
   "notes": [
-    "PASS binds provisional EVT values to the selected fabricator process."
+    "PASS binds the pilot stack, copper, trace, clearance and via values to the selected Rezonit process. Controlled impedance is not required for the current ECO."
   ],
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
   "source_pcb_sha256": "<SHA256_OF_FINAL_NATIVE_PCBDOC>"

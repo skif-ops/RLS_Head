@@ -1,0 +1,18 @@
+{
+  "controlled_impedance_required": false,
+  "errors": [],
+  "evt_routing_stack_locked": true,
+  "field_solver_required": false,
+  "impedance_models": [],
+  "notes": [
+    "PASS locks the repository EVT routing stack baseline.",
+    "Source stack rows intentionally remain EVT_PROVISIONAL until the native Altium layer stack is audited.",
+    "The current carrier requires no controlled-impedance structure."
+  ],
+  "production_binding_required": false,
+  "production_stack_locked": false,
+  "schema": "ALTIUM-EVT-ROUTING-STACK-GATE-001",
+  "stack_total_mm": 1.6,
+  "status": "PASS",
+  "warnings": []
+}

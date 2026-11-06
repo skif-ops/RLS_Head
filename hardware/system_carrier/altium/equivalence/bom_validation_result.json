@@ -1,0 +1,19 @@
+{
+  "actual_designator_count": 105,
+  "errors": [],
+  "expected_designator_count": 105,
+  "input_sha256": {
+    "bom_contract": "93a4ab3133cfa343afbfcb37900f6f300dd0cf6fc138a06b33ff999bc428c3d1",
+    "bom_export": "add146705ab00c93a2ba7995e7ee9eb7da56c85e6ff0e09731e5007082eee567"
+  },
+  "notes": [
+    "The native Altium BOM export must contain Designator(s) and MPN/Manufacturer Part Number columns.",
+    "Grouped designator cells are expanded before exact designator-to-MPN comparison."
+  ],
+  "schema": "ALTIUM-NATIVE-BOM-RESULT-001",
+  "status": "PASS",
+  "verified_checks": {
+    "bom_designator_mpn_equivalence": "PASS"
+  },
+  "warnings": []
+}

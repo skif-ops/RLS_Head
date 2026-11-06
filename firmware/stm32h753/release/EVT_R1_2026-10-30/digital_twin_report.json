@@ -1,0 +1,32 @@
+{
+  "schema": "evt-digital-twin-report-v1",
+  "date": "2026-10-30",
+  "result": "PASS",
+  "tests": {
+    "total": 20,
+    "passed": 20,
+    "failed": 0,
+    "ctest_configuration": "Release"
+  },
+  "verified": [
+    "HIL-R1 frame validation and CRC32C rejection",
+    "CAN-FD segmentation, ordered reassembly and out-of-order rejection",
+    "constant-velocity tracker and deterministic target selection",
+    "IMU angular-rate freshness and stale-data degradation",
+    "GNSS lock, holdover, spoofing quarantine and no-GNSS operation",
+    "time and installation uncertainty propagation into position covariance",
+    "TargetState-V1 serialization and output CRC32C",
+    "two-slot configuration selection and corrupted-slot recovery",
+    "carrier health, NMEA parsing, dual-UART payload generation contract"
+  ],
+  "bench_only_not_run": [
+    "SWD programming and read-back on the production PCB",
+    "physical dual-UART electrical and long-duration throughput test",
+    "physical CAN-FD bus timing and bus-off recovery with AWR2944 hardware",
+    "GNSS PPS and ICM-42688-P timing capture on the assembled board",
+    "power-fault injection, watchdog reset and brownout recovery",
+    "RF/radar target measurements and environmental testing"
+  ],
+  "bench_validation": "REQUIRED",
+  "production_authority": "NOT_AUTHORIZED"
+}

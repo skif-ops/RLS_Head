@@ -414,7 +414,7 @@ def validate(
         native_status.get(
             "native_schematic_sha256",
             "",
-        )
+        ) or ""
     ).strip().lower()
     current_schematic_hash = ""
     schematic_path = altium / "native" / "EVT_SYS_CARRIER.SchDoc"
@@ -441,7 +441,7 @@ def validate(
         native_status.get(
             "production_release_source_pcb_sha256",
             "",
-        )
+        ) or ""
     ).strip().lower()
     current_pcb_hash = ""
     pcb_path = altium / "native" / "EVT_SYS_CARRIER.PcbDoc"

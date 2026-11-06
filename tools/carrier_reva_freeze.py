@@ -7,11 +7,13 @@ from pathlib import Path
 REQUIRED = {
     "STM32H753IIT6",
     "ICM-42688-P",
-    "LAN8742Ai-CZ-TR",
     "TCAN3404DRBRQ1",
     "TPS62132RGTR",
+    "TPS62133RGTR",
     "TPS259470ARPWR",
-    "NEO-M9N-00B",
+    "TPD4E05U06DQAR",
+    "43045-0600",
+    "SM06B-GHS-TB(LF)(SN)",
 }
 
 
@@ -47,7 +49,10 @@ def validate_freeze(directory: str | Path) -> dict:
         with io.open("r", encoding="utf-8", newline="") as handle:
             io_rows = list(csv.DictReader(handle))
         signals = {str(row.get("signal", "")).strip() for row in io_rows}
-        for signal in {"GNSS_PPS", "RADAR_REF", "IMU_DRDY", "RADAR_CAN"}:
+        for signal in {
+            "GNSS_PPS", "RADAR_REF", "IMU_DRDY", "RADAR_CAN",
+            "HOST_UART1", "HOST_UART2", "GNSS_UART",
+        }:
             if signal not in signals:
                 errors.append(f"missing_io:{signal}")
 

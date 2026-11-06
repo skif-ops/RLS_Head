@@ -1,3 +1,1 @@
 model_id,net_class,structure,signal_layer,reference_layer,dielectric_height_mm,er_nominal,copper_um,trace_width_mm,pair_gap_mm,target_ohm,calculated_ohm,tolerance_pct,status,notes
-IMP-001,GNSS_RF,MICROSTRIP,L1,L2,0.180,4.2,35,0.360,,50,49.93,10,EVT_CALCULATED,Hammerstad-style initial estimate; fab field-solver adjustment required before production
-IMP-002,ETH_MDI,EDGE_COUPLED_MICROSTRIP,L1,L2,0.180,4.2,35,0.260,0.200,100,100.45,10,EVT_CALCULATED,Initial differential estimate; fab field-solver adjustment required before production

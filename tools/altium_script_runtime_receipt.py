@@ -63,6 +63,8 @@ PROCEDURES = (
     "ExportNativeHierarchy",
 )
 
+CRLF_CANONICAL_INPUTS = {"script_project"}
+
 
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
@@ -70,6 +72,13 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def sha256_runtime_input(path: Path, artifact_id: str) -> str:
+    if artifact_id not in CRLF_CANONICAL_INPUTS:
+        return sha256_file(path)
+    data = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(data.replace(b"\n", b"\r\n")).hexdigest()
 
 
 def _valid_text(value: object) -> bool:
@@ -170,7 +179,7 @@ def validate(
         if not path.is_file():
             errors.append(f"missing:{artifact_id}")
             continue
-        actual = sha256_file(path)
+        actual = sha256_runtime_input(path, artifact_id)
         actual_inputs[artifact_id] = actual
         claimed = str(
             claimed_inputs.get(artifact_id, "")

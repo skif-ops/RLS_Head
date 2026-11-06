@@ -1,0 +1,31 @@
+{
+  "altium_version": "26.10.1 Trial",
+  "errors": [],
+  "input_sha256": {
+    "api_contract": "06638f8620c3a2fac52cd8f4e3403bb1a9fe887cedba7be052ea33b9f20815dd",
+    "hierarchy_audit_script": "7e75cad16b3600b5a3482dc3da6cbd6c0a06a0cd0a4df6befe2a9b3a345f0078",
+    "pcb": "05a1fa1f765fbddee267de6ad66284ae352b3d187767db18df08d94b62ffd177",
+    "pcb_audit_script": "df6e25f73cf32ce8fb614d82fedd57961f7160b904b4a888a5797ea8cafd81f6",
+    "project": "59284024bdb3184601c17657c14d78c81da3352848f81fbe023bc74b25fc41bd",
+    "schematic": "cd169feb69c055050beee9c3a1cf66b971c66615dbdc507b2709c53ec9e1bbfe",
+    "script_project": "dd12429671e6d4f574546ab1338ffd0b9507a0d2468cb1ec9f8d853cb979396f"
+  },
+  "notes": [
+    "PASS validates the operator runtime receipt against the exact pre-routing native documents, scripts, API contract and CSV outputs used for equivalence.",
+    "The receipt is explicit external Altium Designer execution evidence; it is never synthesized by repository automation."
+  ],
+  "operator": "Codex computer use on user-authorized workstation",
+  "output_sha256": {
+    "component_inventory": "5ba2caad169488e25ff51c0e587fe9baa0ac540fa0c8455bb47aab2136d4d959",
+    "hierarchy_export": "7ea7b3fea89d594161c8cf6bec7cfdd9e89cceaf7173e32d34f60ecf3f7318c9",
+    "layer_stack_inventory": "cbdf4c20e487668a5b1e67abfa8e4d3bcd8dc4015688fc52b0e1d6e9cfa662ec",
+    "net_inventory": "ade206282e6f047e88bd154fb4aeb1394db8391b2fa632abc6e276929c39ba7d",
+    "pad_net_inventory": "992bf3677ac9ab13271543b9e6bdd45a5c97bdab833eebd3e8ab0b77860d022e",
+    "rule_inventory": "0fd7f86bd4d12dd03f50c2c8b4dfd2e9baed7a87bf5e7215db3510e5be33dadb"
+  },
+  "reason_codes": [],
+  "receipt_sha256": "2affe48936b1a63cecaf5a937d773dd32e24023fa230490c52fab47e558bc082",
+  "runtime_validated": true,
+  "schema": "ALTIUM-SCRIPT-RUNTIME-RESULT-001",
+  "status": "PASS"
+}

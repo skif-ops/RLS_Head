@@ -14,6 +14,11 @@ def test_kicad_netlist_baseline_filters_to_physical_refs(tmp_path):
         "R1,1,X,R1,R,LOCKED,FP,POPULATE,LOCKED\n",
         encoding="utf-8",
     )
+    (system / "SYMBOL_PIN_CONTRACT_SYS_001.csv").write_text(
+        "ref,pin_number,connection\n"
+        "U1,2,OPEN_INTERNAL_SELECT\n",
+        encoding="utf-8",
+    )
 
     xml = tmp_path / "net.xml"
     xml.write_text(
@@ -50,3 +55,30 @@ def test_kicad_netlist_baseline_filters_to_physical_refs(tmp_path):
         ("R1", "1", "NET_A"),
         ("R1", "2", "NET_B"),
     }
+
+
+def test_kicad_netlist_baseline_rejects_connected_open_pin(tmp_path):
+    system = tmp_path / "hardware/system_carrier"
+    system.mkdir(parents=True)
+    (system / "BOM_SYS_CARRIER_LAYOUT_004.csv").write_text(
+        "ref\nU1\n", encoding="utf-8"
+    )
+    (system / "SYMBOL_PIN_CONTRACT_SYS_001.csv").write_text(
+        "ref,pin_number,connection\nU1,2,OPEN_INTERNAL_SELECT\n",
+        encoding="utf-8",
+    )
+    xml = tmp_path / "net.xml"
+    xml.write_text(
+        '<export><nets><net name="GND"><node ref="U1" pin="2"/>'
+        '</net></nets></export>',
+        encoding="utf-8",
+    )
+
+    result = build(
+        system_root=system,
+        xml_netlist=xml,
+        output_csv=tmp_path / "baseline.csv",
+    )
+
+    assert result["status"] == "FAIL"
+    assert "open_pin_connected:U1.2:GND" in result["errors"]

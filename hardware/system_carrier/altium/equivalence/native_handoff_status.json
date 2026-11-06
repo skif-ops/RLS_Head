@@ -1,0 +1,224 @@
+{
+  "equivalence_evidence_complete": true,
+  "evidence": {
+    "bom_export": {
+      "path": "hardware/system_carrier/altium/equivalence/bom_export.csv",
+      "present": true,
+      "sha256": "add146705ab00c93a2ba7995e7ee9eb7da56c85e6ff0e09731e5007082eee567",
+      "size": 2263
+    },
+    "bom_validation_result": {
+      "path": "hardware/system_carrier/altium/equivalence/bom_validation_result.json",
+      "present": true,
+      "sha256": "5902fcad1376f5553f2df9df675705b084df132bcca61926639707e842613a1d",
+      "size": 671
+    },
+    "compile_report": {
+      "path": "hardware/system_carrier/altium/equivalence/compile_report.json",
+      "present": true,
+      "sha256": "6da439c66d1267e7c666943bcd1cd828059d8bac76e7dc24ff0dd9bd7f62dc06",
+      "size": 979
+    },
+    "compile_report_raw": {
+      "path": "hardware/system_carrier/altium/equivalence/compile_report_raw.txt",
+      "present": true,
+      "sha256": "151ec63f9ed78059cd4cdac8b030ae85b5780a0f0487b98972a53637cc06e3fc",
+      "size": 436
+    },
+    "component_inventory": {
+      "path": "hardware/system_carrier/altium/equivalence/component_inventory.csv",
+      "present": true,
+      "sha256": "5ba2caad169488e25ff51c0e587fe9baa0ac540fa0c8455bb47aab2136d4d959",
+      "size": 4959
+    },
+    "connector_validation_result": {
+      "path": "hardware/system_carrier/altium/equivalence/connector_validation_result.json",
+      "present": true,
+      "sha256": "d30d9c8ba5de062b8e7c26678c72be5a90c6733b751698d025192cc45ca02d5a",
+      "size": 881
+    },
+    "footprint_report": {
+      "path": "hardware/system_carrier/altium/equivalence/footprint_report.json",
+      "present": true,
+      "sha256": "ca495a552893cea5f5e33459a3d1f69800f66e9acacfa637209f119021e0b51b",
+      "size": 666
+    },
+    "hierarchy_export": {
+      "path": "hardware/system_carrier/altium/equivalence/hierarchy_export.csv",
+      "present": true,
+      "sha256": "7ea7b3fea89d594161c8cf6bec7cfdd9e89cceaf7173e32d34f60ecf3f7318c9",
+      "size": 1795
+    },
+    "hierarchy_validation_result": {
+      "path": "hardware/system_carrier/altium/equivalence/hierarchy_validation_result.json",
+      "present": true,
+      "sha256": "ca0e073ad2991398d3c7d771036383680cd4055e5b5cff8a557566803465cdaa",
+      "size": 778
+    },
+    "import_log": {
+      "path": "hardware/system_carrier/altium/equivalence/import_log.txt",
+      "present": true,
+      "sha256": "194067a1eada87c4d1d34e7006fc21f38859b825d48f4791a408373e129df624",
+      "size": 213660
+    },
+    "import_native_file_preflight": {
+      "path": "hardware/system_carrier/altium/equivalence/import_native_file_preflight.json",
+      "present": true,
+      "sha256": "b6cc9892a310aff941aec3f5840ec18531693aedf465d6cfe32fc9d6ccbf296c",
+      "size": 1170
+    },
+    "import_package_manifest": {
+      "path": "hardware/system_carrier/altium/equivalence/import_package_manifest.json",
+      "present": true,
+      "sha256": "51753eefe1fadcb76f3c378424a6bb1086c6ab3d441f0ac6ed135a7c63fb9c95",
+      "size": 34255
+    },
+    "import_package_verification": {
+      "path": "hardware/system_carrier/altium/equivalence/import_package_verification.json",
+      "present": true,
+      "sha256": "7c6f97233a06dfe7ffc50ea38013f64d513b43d88051caccfcb7dafa2e4eeff9",
+      "size": 21981
+    },
+    "import_receipt": {
+      "path": "hardware/system_carrier/altium/equivalence/import_receipt.json",
+      "present": true,
+      "sha256": "cb3f6d901bc1b2f2f1471c534fe38b94689e98caab8198af8b82472395a07d6b",
+      "size": 30733
+    },
+    "kicad_netlist_baseline": {
+      "path": "hardware/system_carrier/altium/equivalence/kicad_netlist_baseline.csv",
+      "present": true,
+      "sha256": "28db2f3284fd9810db3e6ab99d10aa47c6471b58a84ea57d211db4ef0455dbb5",
+      "size": 12955
+    },
+    "layer_stack_inventory": {
+      "path": "hardware/system_carrier/altium/equivalence/layer_stack_inventory.csv",
+      "present": true,
+      "sha256": "cbdf4c20e487668a5b1e67abfa8e4d3bcd8dc4015688fc52b0e1d6e9cfa662ec",
+      "size": 85
+    },
+    "manifest": {
+      "path": "hardware/system_carrier/altium/equivalence/manifest.json",
+      "present": true,
+      "sha256": "1b5a018e269c85d52f25b09f5aad2d0e2343f16b6321c59eba120a6b3c9f6e3e",
+      "size": 7276
+    },
+    "native_audit_result": {
+      "path": "hardware/system_carrier/altium/equivalence/native_audit_result.json",
+      "present": true,
+      "sha256": "2a73ef3e6382edd3d0135b9c5b1b989ac33b44adac93bb4312e9a9d2615dd2e9",
+      "size": 2457
+    },
+    "native_file_preflight": {
+      "path": "hardware/system_carrier/altium/equivalence/native_file_preflight.json",
+      "present": true,
+      "sha256": "2bb4046128d78ce4b7123fb05e7836da3565c9ea00956d40f8c0e601f74c39ac",
+      "size": 1170
+    },
+    "net_inventory": {
+      "path": "hardware/system_carrier/altium/equivalence/net_inventory.csv",
+      "present": true,
+      "sha256": "ade206282e6f047e88bd154fb4aeb1394db8391b2fa632abc6e276929c39ba7d",
+      "size": 900
+    },
+    "netlist_export": {
+      "path": "hardware/system_carrier/altium/equivalence/netlist_export.csv",
+      "present": true,
+      "sha256": "992bf3677ac9ab13271543b9e6bdd45a5c97bdab833eebd3e8ab0b77860d022e",
+      "size": 11190
+    },
+    "netlist_validation_result": {
+      "path": "hardware/system_carrier/altium/equivalence/netlist_validation_result.json",
+      "present": true,
+      "sha256": "6440759235dbafbe2d075e1268a319f3a2671c1c187b722fabfea053c884ece5",
+      "size": 831
+    },
+    "no_mmwave_review": {
+      "path": "hardware/system_carrier/altium/equivalence/no_mmwave_review.json",
+      "present": true,
+      "sha256": "ed4f78f282e0e802d6c1d7734bfde96e0fe98690ba2b8d4b485fd7c725f36725",
+      "size": 1285
+    },
+    "no_mmwave_review_result": {
+      "path": "hardware/system_carrier/altium/equivalence/no_mmwave_review_result.json",
+      "present": true,
+      "sha256": "067c9b46d2bb867473c7512420c85054c4db8c937fef9d69744d08529bd90b1b",
+      "size": 953
+    },
+    "pad_net_inventory": {
+      "path": "hardware/system_carrier/altium/equivalence/pad_net_inventory.csv",
+      "present": true,
+      "sha256": "992bf3677ac9ab13271543b9e6bdd45a5c97bdab833eebd3e8ab0b77860d022e",
+      "size": 11190
+    },
+    "pcb": {
+      "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+      "present": true,
+      "sha256": "518041a570b405a429a70d968ee54b62df126cb0091b9af08e067152c5aa8735",
+      "size": 2130432
+    },
+    "project": {
+      "path": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
+      "present": true,
+      "sha256": "59284024bdb3184601c17657c14d78c81da3352848f81fbe023bc74b25fc41bd",
+      "size": 1132
+    },
+    "rule_inventory": {
+      "path": "hardware/system_carrier/altium/equivalence/rule_inventory.csv",
+      "present": true,
+      "sha256": "0fd7f86bd4d12dd03f50c2c8b4dfd2e9baed7a87bf5e7215db3510e5be33dadb",
+      "size": 3284
+    },
+    "schematic": {
+      "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
+      "present": true,
+      "sha256": "cd169feb69c055050beee9c3a1cf66b971c66615dbdc507b2709c53ec9e1bbfe",
+      "size": 61952
+    },
+    "script_runtime_receipt": {
+      "path": "hardware/system_carrier/altium/equivalence/script_runtime_receipt.json",
+      "present": true,
+      "sha256": "b1e44ac3c797d03b1668b31a850115188ab614913756b27d4c2e7e772dec52a1",
+      "size": 2225
+    },
+    "script_runtime_result": {
+      "path": "hardware/system_carrier/altium/equivalence/script_runtime_result.json",
+      "present": true,
+      "sha256": "b8edaa69bd5e6157c041d57204b59160b69a9805d01bf34c922f3e61705a4832",
+      "size": 1883
+    }
+  },
+  "hierarchy_export_ready": true,
+  "import_provenance_ready": true,
+  "manifest_checks": {
+    "bom_designator_mpn_equivalence": "PASS",
+    "connector_pinout_equivalence": "PASS",
+    "footprint_equivalence": "PASS",
+    "hierarchy_equivalence": "PASS",
+    "native_pcb_audit": "PASS",
+    "netlist_equivalence": "PASS",
+    "no_76_81GHz_rf_on_system_carrier": "PASS",
+    "pinmap_equivalence": "PASS",
+    "rules_equivalence": "PASS",
+    "stackup_equivalence": "PASS"
+  },
+  "manifest_errors": [],
+  "missing_artifacts": [],
+  "native_audit_ready": true,
+  "native_file_preflight_ready": true,
+  "native_files_ready": true,
+  "next_action": "RUN_ALTIUM_EQUIVALENCE_GATE",
+  "notes": [
+    "This status tool never grants layout or production authority.",
+    "Layout authority is granted only by ALTIUM_EQUIVALENCE_GATE PASS."
+  ],
+  "pending_equivalence_checks": [],
+  "production_authorized": false,
+  "routing_authorized": false,
+  "schema": "ALTIUM-NATIVE-HANDOFF-STATUS-001",
+  "script_runtime_ready": true,
+  "script_runtime_receipt_ready": true,
+  "script_runtime_result_ready": true,
+  "semantic_checks_ready": true,
+  "status": "READY_TO_RUN_EQUIVALENCE_GATE"
+}

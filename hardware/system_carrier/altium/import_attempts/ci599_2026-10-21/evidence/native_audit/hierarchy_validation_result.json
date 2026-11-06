@@ -1,0 +1,20 @@
+{
+  "errors": [],
+  "expected_row_count": 66,
+  "input_sha256": {
+    "hierarchy_contract": "cb97676478db17d80a5fce2245fe41320349e52fc290e6c26f31bd51c3d1be93",
+    "hierarchy_export": "7c18dfa634017bc72fbb86243ac45735fbaedc75c8ed808bd75b987e7263cbc9",
+    "pad_net_inventory": "d5f4e0655e4263e2a2a284989314f38c0d47302bb68d50fed9f46b37108873ad"
+  },
+  "native_row_count": 66,
+  "notes": [
+    "Rows are matched by sheet, net name and native anchor reference/pin; port direction is compared after normalization.",
+    "The hierarchy export must come from the compiled native Altium schematic project."
+  ],
+  "schema": "ALTIUM-NATIVE-HIERARCHY-RESULT-001",
+  "status": "PASS",
+  "verified_checks": {
+    "hierarchy_equivalence": "PASS"
+  },
+  "warnings": []
+}

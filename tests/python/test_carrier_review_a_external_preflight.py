@@ -9,8 +9,10 @@ AUDITS = {
     "reset_boot": "PENDING",
     "timing_capture": "PENDING",
     "imu": "PENDING",
-    "ethernet": "PENDING",
+    "host_uart": "PENDING",
+    "external_gnss": "PENDING",
     "can_fd": "PENDING",
+    "no_obsolete_interfaces": "PENDING",
 }
 
 
@@ -44,7 +46,7 @@ def make_inputs(root: Path):
     (root / "inputs" / "pinmap.csv").write_text(
         (
             "signal,mcu_pin,peripheral,direction,criticality\n"
-            "GNSS_PPS,PA0,TIM2_CH1,IN,P0\n"
+            "GNSS_PPS,PA0,TIM2_CH1,IN,P1\n"
             "RADAR_REF,PB10,TIM2_CH3,IN,P0\n"
             "IMU_DRDY,PB11,TIM2_CH4,IN,P0\n"
         ),
@@ -56,12 +58,13 @@ def make_inputs(root: Path):
             "ref,qty,manufacturer,mpn,description\n"
             "U1,1,ST,STM32H753IIT6,MCU\n"
             "U2,1,TDK,ICM-42688-P,IMU\n"
-            "U3,1,Microchip,LAN8742Ai-CZ-TR,PHY\n"
             "U4,1,TI,TCAN3404DRBRQ1,CAN\n"
             "U5,1,TI,TPS62132RGTR,BUCK\n"
             "U6,1,TI,TPS259470ARPWR,EFUSE\n"
-            "U8,1,u-blox,NEO-M9N-00B,GNSS timing receiver\n"
-            "J_ETH,1,Bel,SI-60182-F,MagJack\n"
+            "U9,1,TI,TPS62133RGTR,5V GNSS buck\n"
+            "D3,1,TI,TPD4E05U06DQAR,UART ESD\n"
+            "J6,1,Molex,43045-0600,UART connector\n"
+            "J8,1,JST,SM06B-GHS-TB(LF)(SN),GNSS connector\n"
         ),
         encoding="utf-8",
     )

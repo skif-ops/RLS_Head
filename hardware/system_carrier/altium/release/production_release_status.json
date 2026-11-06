@@ -1,0 +1,87 @@
+{
+  "approved_schematic_sha256": "cd169feb69c055050beee9c3a1cf66b971c66615dbdc507b2709c53ec9e1bbfe",
+  "current_schematic_sha256": "cd169feb69c055050beee9c3a1cf66b971c66615dbdc507b2709c53ec9e1bbfe",
+  "equivalence_ready": true,
+  "equivalence_schematic_stale": false,
+  "evidence": {
+    "dfm_result": {
+      "path": "hardware/system_carrier/altium/release/dfm_result.json",
+      "present": true,
+      "schema": "ALTIUM-DFM-RESULT-001",
+      "status": "PENDING"
+    },
+    "equivalence_result": {
+      "path": "hardware/system_carrier/altium/equivalence/altium_equivalence_result.json",
+      "present": true,
+      "schema": "ALTIUM-EQUIVALENCE-RESULT-001",
+      "status": "PASS"
+    },
+    "fabricator_binding": {
+      "path": "hardware/system_carrier/altium/release/fabricator_binding.json",
+      "present": true,
+      "schema": "ALTIUM-FABRICATOR-BINDING-001",
+      "status": "PUBLISHED_BASELINE_CAPTURED"
+    },
+    "manifest": {
+      "path": "hardware/system_carrier/altium/release/manifest.json",
+      "present": true
+    },
+    "mechanical_review": {
+      "path": "hardware/system_carrier/altium/release/mechanical_review.json",
+      "present": true,
+      "schema": "ALTIUM-MECHANICAL-REVIEW-001",
+      "status": "PENDING"
+    },
+    "native_drc_result": {
+      "path": "hardware/system_carrier/altium/release/native_drc_result.json",
+      "present": true,
+      "schema": "ALTIUM-NATIVE-DRC-RESULT-001",
+      "status": "PASS"
+    },
+    "native_pcb": {
+      "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+      "present": true,
+      "sha256": "518041a570b405a429a70d968ee54b62df126cb0091b9af08e067152c5aa8735"
+    },
+    "native_schematic": {
+      "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
+      "present": true,
+      "sha256": "cd169feb69c055050beee9c3a1cf66b971c66615dbdc507b2709c53ec9e1bbfe"
+    },
+    "outjob_release_manifest": {
+      "path": "hardware/system_carrier/altium/release/outjob_release_manifest.json",
+      "present": true,
+      "schema": "ALTIUM-OUTJOB-RELEASE-MANIFEST-001",
+      "status": "PASS"
+    },
+    "return_path_si_review": {
+      "path": "hardware/system_carrier/altium/release/return_path_si_review.json",
+      "present": true,
+      "schema": "ALTIUM-RETURN-PATH-SI-REVIEW-001",
+      "status": "PENDING"
+    }
+  },
+  "final_native_pcb_sha256": "518041a570b405a429a70d968ee54b62df126cb0091b9af08e067152c5aa8735",
+  "invalid_artifacts": [],
+  "manifest_errors": [],
+  "manifest_ready": true,
+  "missing_artifacts": [],
+  "next_action": "CLOSE_NON_PASS_RELEASE_REVIEWS",
+  "non_pass_artifacts": [
+    "dfm_result",
+    "fabricator_binding",
+    "mechanical_review",
+    "return_path_si_review"
+  ],
+  "notes": [
+    "This status tool never grants production authority.",
+    "Production authority is granted only by ALTIUM_PRODUCTION_RELEASE_GATE PASS.",
+    "All post-routing evidence must be SHA-256-bound to the same final native PcbDoc."
+  ],
+  "production_authorized": false,
+  "release_evidence_complete": true,
+  "release_reviews_pass": false,
+  "schema": "ALTIUM-PRODUCTION-RELEASE-STATUS-001",
+  "source_binding_errors": [],
+  "status": "WAITING_RELEASE_REVIEWS"
+}

@@ -20,7 +20,7 @@ def test_native_audit_script_exports_rich_read_only_evidence():
         "Pad.Component",
         "Pad.Net",
         "Board.LayerStack",
-        "Layer2String(LayerObj.LayerID)",
+        "LayerObj.Name",
         "Rule.Scope1Expression",
         "Rule.Scope2Expression",
         "Rule.DRCEnabled",

@@ -1,0 +1,480 @@
+{
+  "candidate_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "candidate_pcb_sha256": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc",
+  "counts": {
+    "fill": 67,
+    "pad": 346,
+    "track": 581,
+    "via": 132
+  },
+  "disconnected_pad_nets": [
+    "3V3",
+    "GND",
+    "GNSS_BCKP_LOCAL",
+    "GNSS_BIAS_FILTER",
+    "GNSS_RX_EXT",
+    "GNSS_TX_EXT",
+    "GNSS_VCC_RF",
+    "GNSS_VUSB_LOCAL",
+    "NetJ6_8",
+    "NetR41_1",
+    "NetR42_1",
+    "NetR600_1",
+    "RADAR_EFUSE_FLT",
+    "SYS_EFUSE_FLT",
+    "U5_PG",
+    "U5_SS_LOCAL",
+    "U6_DVDT",
+    "U6_ILIM_LOCAL",
+    "U6_OVLO_LOCAL",
+    "U6_UVLO_LOCAL",
+    "U7_DVDT",
+    "U7_ILIM_LOCAL",
+    "U7_OVLO_LOCAL",
+    "U7_UVLO_LOCAL",
+    "VCAP1_LOCAL",
+    "VCAP2_LOCAL",
+    "VDDA_FILTERED",
+    "VIN_RAW"
+  ],
+  "disconnected_signal_nets": [],
+  "drc": {
+    "net_antennae_violations": 0,
+    "pcb_file": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+    "routing_topology_violations": 0,
+    "unrouted_net_violations": 0
+  },
+  "errors": [],
+  "evidence_sha256": {
+    "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc": "d897f5d82fe2c8de05a4588e369d4ed5114733777bc5509122cba06c749082cc",
+    "hardware/system_carrier/altium/routing/connection_audit/connection_drc_report.drc": "5396af1617e3e470767b8b4995a55770199350c3ca798cf628b17dd2915e3d16",
+    "hardware/system_carrier/altium/routing/connection_audit/fill_inventory.csv": "5da6ba46033c23c3b32ba65a59e73ca1c922726bcfb2533beb65299fc722046b",
+    "hardware/system_carrier/altium/routing/connection_audit/pad_geometry.csv": "a627426856314fc0f30f4fbbdc3b85aee4fe9734021b84b4c6221e770ab6d15c",
+    "hardware/system_carrier/altium/routing/connection_audit/track_inventory.csv": "f7e7317534919b8b91305705af7d8f184d4f6c2f3352024f6a1cf8a5ba1ed61d",
+    "hardware/system_carrier/altium/routing/connection_audit/via_inventory.csv": "6e103c4564f07e8288cf0669eb134b084e65473d3d7211202f5454953b72b971"
+  },
+  "missing_target_nets": [],
+  "net_results": {
+    "3V3": {
+      "connected": false,
+      "node_count": 135,
+      "pad_component_count": 55,
+      "pad_count": 67
+    },
+    "BOOT0": {
+      "connected": true,
+      "node_count": 21,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "BUCK_SW": {
+      "connected": true,
+      "node_count": 5,
+      "pad_component_count": 1,
+      "pad_count": 4
+    },
+    "CAN_RX": {
+      "connected": true,
+      "node_count": 27,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "CAN_TX": {
+      "connected": true,
+      "node_count": 27,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "DEBUG_RX": {
+      "connected": true,
+      "node_count": 10,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "DEBUG_TX": {
+      "connected": true,
+      "node_count": 14,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "ETH_50M": {
+      "connected": true,
+      "node_count": 21,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "ETH_CRS_DV": {
+      "connected": true,
+      "node_count": 19,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "ETH_CT": {
+      "connected": true,
+      "node_count": 27,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "ETH_MDC": {
+      "connected": true,
+      "node_count": 21,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "ETH_MDIO": {
+      "connected": true,
+      "node_count": 22,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "ETH_NRST": {
+      "connected": true,
+      "node_count": 20,
+      "pad_component_count": 1,
+      "pad_count": 3
+    },
+    "ETH_RXD0": {
+      "connected": true,
+      "node_count": 21,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "ETH_RXD1": {
+      "connected": true,
+      "node_count": 19,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "ETH_RXN": {
+      "connected": true,
+      "node_count": 26,
+      "pad_component_count": 1,
+      "pad_count": 4
+    },
+    "ETH_RXP": {
+      "connected": true,
+      "node_count": 34,
+      "pad_component_count": 1,
+      "pad_count": 4
+    },
+    "ETH_TXD0": {
+      "connected": true,
+      "node_count": 24,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "ETH_TXD1": {
+      "connected": true,
+      "node_count": 16,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "ETH_TXN": {
+      "connected": true,
+      "node_count": 24,
+      "pad_component_count": 1,
+      "pad_count": 4
+    },
+    "ETH_TXP": {
+      "connected": true,
+      "node_count": 22,
+      "pad_component_count": 1,
+      "pad_count": 4
+    },
+    "ETH_TX_EN": {
+      "connected": true,
+      "node_count": 20,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "GND": {
+      "connected": false,
+      "node_count": 189,
+      "pad_component_count": 76,
+      "pad_count": 107
+    },
+    "GNSS_BCKP_LOCAL": {
+      "connected": false,
+      "node_count": 2,
+      "pad_component_count": 2,
+      "pad_count": 2
+    },
+    "GNSS_BIAS_FILTER": {
+      "connected": false,
+      "node_count": 3,
+      "pad_component_count": 3,
+      "pad_count": 3
+    },
+    "GNSS_PPS": {
+      "connected": true,
+      "node_count": 12,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "GNSS_RF": {
+      "connected": true,
+      "node_count": 8,
+      "pad_component_count": 1,
+      "pad_count": 4
+    },
+    "GNSS_RX_EXT": {
+      "connected": false,
+      "node_count": 2,
+      "pad_component_count": 2,
+      "pad_count": 2
+    },
+    "GNSS_TX_EXT": {
+      "connected": false,
+      "node_count": 2,
+      "pad_component_count": 2,
+      "pad_count": 2
+    },
+    "GNSS_VCC_RF": {
+      "connected": false,
+      "node_count": 2,
+      "pad_component_count": 2,
+      "pad_count": 2
+    },
+    "GNSS_VUSB_LOCAL": {
+      "connected": false,
+      "node_count": 2,
+      "pad_component_count": 2,
+      "pad_count": 2
+    },
+    "IMU_DRDY": {
+      "connected": true,
+      "node_count": 8,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "IMU_MISO": {
+      "connected": true,
+      "node_count": 27,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "IMU_MOSI": {
+      "connected": true,
+      "node_count": 17,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "IMU_NSS": {
+      "connected": true,
+      "node_count": 14,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "IMU_SCK": {
+      "connected": true,
+      "node_count": 14,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "MCU_HSE_25M": {
+      "connected": true,
+      "node_count": 5,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "NRST": {
+      "connected": true,
+      "node_count": 32,
+      "pad_component_count": 1,
+      "pad_count": 4
+    },
+    "NetC60_1": {
+      "connected": true,
+      "node_count": 7,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "NetJ6_8": {
+      "connected": false,
+      "node_count": 3,
+      "pad_component_count": 3,
+      "pad_count": 3
+    },
+    "NetR41_1": {
+      "connected": false,
+      "node_count": 2,
+      "pad_component_count": 2,
+      "pad_count": 2
+    },
+    "NetR42_1": {
+      "connected": false,
+      "node_count": 2,
+      "pad_component_count": 2,
+      "pad_count": 2
+    },
+    "NetR600_1": {
+      "connected": false,
+      "node_count": 2,
+      "pad_component_count": 2,
+      "pad_count": 2
+    },
+    "RADAR_12V": {
+      "connected": true,
+      "node_count": 9,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "RADAR_CANH": {
+      "connected": true,
+      "node_count": 23,
+      "pad_component_count": 1,
+      "pad_count": 4
+    },
+    "RADAR_CANL": {
+      "connected": true,
+      "node_count": 28,
+      "pad_component_count": 1,
+      "pad_count": 4
+    },
+    "RADAR_EFUSE_FLT": {
+      "connected": false,
+      "node_count": 3,
+      "pad_component_count": 3,
+      "pad_count": 3
+    },
+    "RADAR_REF": {
+      "connected": true,
+      "node_count": 12,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "SWCLK": {
+      "connected": true,
+      "node_count": 14,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "SWDIO": {
+      "connected": true,
+      "node_count": 13,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "SWO": {
+      "connected": true,
+      "node_count": 13,
+      "pad_component_count": 1,
+      "pad_count": 2
+    },
+    "SYS_EFUSE_FLT": {
+      "connected": false,
+      "node_count": 3,
+      "pad_component_count": 3,
+      "pad_count": 3
+    },
+    "U5_PG": {
+      "connected": false,
+      "node_count": 2,
+      "pad_component_count": 2,
+      "pad_count": 2
+    },
+    "U5_SS_LOCAL": {
+      "connected": false,
+      "node_count": 2,
+      "pad_component_count": 2,
+      "pad_count": 2
+    },
+    "U6_DVDT": {
+      "connected": false,
+      "node_count": 2,
+      "pad_component_count": 2,
+      "pad_count": 2
+    },
+    "U6_ILIM_LOCAL": {
+      "connected": false,
+      "node_count": 2,
+      "pad_component_count": 2,
+      "pad_count": 2
+    },
+    "U6_OVLO_LOCAL": {
+      "connected": false,
+      "node_count": 3,
+      "pad_component_count": 3,
+      "pad_count": 3
+    },
+    "U6_UVLO_LOCAL": {
+      "connected": false,
+      "node_count": 3,
+      "pad_component_count": 3,
+      "pad_count": 3
+    },
+    "U7_DVDT": {
+      "connected": false,
+      "node_count": 2,
+      "pad_component_count": 2,
+      "pad_count": 2
+    },
+    "U7_ILIM_LOCAL": {
+      "connected": false,
+      "node_count": 2,
+      "pad_component_count": 2,
+      "pad_count": 2
+    },
+    "U7_OVLO_LOCAL": {
+      "connected": false,
+      "node_count": 3,
+      "pad_component_count": 3,
+      "pad_count": 3
+    },
+    "U7_UVLO_LOCAL": {
+      "connected": false,
+      "node_count": 3,
+      "pad_component_count": 3,
+      "pad_count": 3
+    },
+    "VCAP1_LOCAL": {
+      "connected": false,
+      "node_count": 2,
+      "pad_component_count": 2,
+      "pad_count": 2
+    },
+    "VCAP2_LOCAL": {
+      "connected": false,
+      "node_count": 2,
+      "pad_component_count": 2,
+      "pad_count": 2
+    },
+    "VDDA_FILTERED": {
+      "connected": false,
+      "node_count": 5,
+      "pad_component_count": 5,
+      "pad_count": 5
+    },
+    "VIN_PROTECTED": {
+      "connected": true,
+      "node_count": 31,
+      "pad_component_count": 1,
+      "pad_count": 9
+    },
+    "VIN_RAW": {
+      "connected": false,
+      "node_count": 14,
+      "pad_component_count": 2,
+      "pad_count": 4
+    }
+  },
+  "orphan_copper_component_count": 0,
+  "orphan_copper_components": [],
+  "outside_board": [],
+  "outside_board_count": 0,
+  "planned_geometry": {
+    "expected_track_count": 489,
+    "expected_via_count": 93,
+    "matched_track_count": 489,
+    "matched_via_count": 93,
+    "missing_tracks": [],
+    "missing_vias": []
+  },
+  "power_stitch_net_count": 2,
+  "production_authority": "NOT_AUTHORIZED",
+  "schema": "PCB-A10-NATIVE-CONNECTION-AUDIT-001",
+  "signal_target_net_count": 28,
+  "status": "PASS",
+  "target_net_count": 30,
+  "unattached_target_pads": []
+}

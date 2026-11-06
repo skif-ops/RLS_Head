@@ -1,0 +1,5 @@
+layer_name,copper_thickness_raw,dielectric_height_raw,dielectric_er
+"Top Layer",14000,70866,"4.2"
+"Mid-Layer 1",13780,433071,"4.2"
+"Mid-Layer 2",13780,70866,"4.2"
+"Bottom Layer",14000,126000,"4.8"

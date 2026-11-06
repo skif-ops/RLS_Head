@@ -1,0 +1,53 @@
+{
+  "schema": "ALTIUM-NATIVE-STEP-EXPORT-RESULT-001",
+  "status": "PASS",
+  "scope_status": "PARTIAL_3D_BOARD_ASSEMBLY",
+  "exported_on": "2026-10-30",
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "156db08f27896cf217806c3313631991c538db50ff1fdb9a1660058376a2e8ea",
+  "step_path": "hardware/system_carrier/altium/release/pilot_r1/mechanical/EVT_SYS_CARRIER.step",
+  "step_sha256": "f9b679014e7aa51cf3ab8378cc22850e85a13db444456163f7746dd728206dd0",
+  "step_size_bytes": 65412,
+  "exporter": {
+    "application": "Altium Designer",
+    "version": "26.10.1",
+    "format": "STEP 3D",
+    "processor": "Open CASCADE STEP processor 7.5",
+    "schema": "AUTOMOTIVE_DESIGN ISO 10303-214"
+  },
+  "export_options": {
+    "export_folded_board": false,
+    "pad_holes": "ALL",
+    "components_with_3d_bodies": "ALL",
+    "three_dimensional_bodies": "BOTH_SIMPLE_AND_GENERIC",
+    "single_part": false
+  },
+  "step_inventory": {
+    "product_records": 3,
+    "manifold_solid_brep_records": 1,
+    "advanced_face_records": 41,
+    "face_bound_records": 103,
+    "circular_edge_records": 70,
+    "named_products": [
+      "PCB",
+      "Board"
+    ]
+  },
+  "verified_checks": {
+    "altium_export_completed": "PASS",
+    "iso_10303_21_header": "PASS",
+    "step_terminator_present": "PASS",
+    "board_solid_present": "PASS",
+    "current_90x70_board_binding": "PASS"
+  },
+  "limitations": [
+    "The native PCB contains no usable component 3D bodies, so the STEP contains the board solid and hole geometry but not a populated component assembly.",
+    "Connector access, mating-plug clearance and enclosure Z clearance remain unverified."
+  ],
+  "notes": [
+    "The direct export was generated from the current 90.00 x 70.00 mm PcbDoc with all pad holes enabled.",
+    "Export Folded Board was disabled because this is a rigid PCB.",
+    "This artifact is suitable for board outline, thickness, hole and mounting-datum exchange."
+  ],
+  "production_authority": "NOT_AUTHORIZED"
+}

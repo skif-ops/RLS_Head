@@ -72,7 +72,7 @@ def test_bom_missing_required_part_fails(tmp_path):
     assert "ICM-42688-P" in result["missing_mpns"]
 
 
-def test_clock_tree_requires_both_eth_targets(tmp_path):
+def test_clock_tree_requires_gnss_pps(tmp_path):
     source = (ROOT / "CLOCK_TREE_SYS_001.csv").read_text(
         encoding="utf-8"
     )
@@ -80,7 +80,7 @@ def test_clock_tree_requires_both_eth_targets(tmp_path):
     lines = [
         line
         for line in source.splitlines()
-        if "LAN8742A_REF_CLK" not in line
+        if not line.startswith("GNSS_PPS,")
     ]
 
     path = tmp_path / "clock.csv"
@@ -92,7 +92,7 @@ def test_clock_tree_requires_both_eth_targets(tmp_path):
     result = validate_clock_tree(path)
 
     assert result["status"] == "FAIL"
-    assert "eth_50m_target:LAN8742A_REF_CLK" in result["findings"]
+    assert "missing_clock:GNSS_PPS" in result["findings"]
 
 
 def test_power_tree_requires_protection_chain(tmp_path):
@@ -103,7 +103,7 @@ def test_power_tree_requires_protection_chain(tmp_path):
     lines = [
         line
         for line in source.splitlines()
-        if "TPS259470ARPWR" not in line
+        if "TPS26630RGER" not in line
     ]
 
     path = tmp_path / "power.csv"
@@ -115,9 +115,9 @@ def test_power_tree_requires_protection_chain(tmp_path):
     result = validate_power_tree(path)
 
     assert result["status"] == "FAIL"
-    assert "missing_device:TPS259470ARPWR" in result["findings"]
+    assert "missing_device:TPS26630RGER" in result["findings"]
     assert any(
-        item.startswith("missing_transition:VIN_RAW->VIN_PROTECTED")
+        item.startswith("missing_transition:VIN_RAW->VIN_PROTECTED_24V")
         for item in result["findings"]
     )
 
@@ -157,7 +157,7 @@ def test_bom_requires_selected_gnss_and_radar_connectors(tmp_path):
     lines = [
         line
         for line in source.splitlines()
-        if "NEO-M9N-00B" not in line
+        if "SM06B-GHS-TB(LF)(SN)" not in line
     ]
 
     path = tmp_path / "bom.csv"
@@ -169,7 +169,8 @@ def test_bom_requires_selected_gnss_and_radar_connectors(tmp_path):
     result = validate_bom(path)
 
     assert result["status"] == "FAIL"
-    assert "NEO-M9N-00B" in result["missing_mpns"]
+    assert "SM06B-GHS-TB(LF)(SN)" in result["missing_mpns"]
+    assert "J8:SM06B-GHS-TB(LF)(SN)" in result["missing_refs"]
 
 
 def test_power_tree_requires_radar_branch(tmp_path):
@@ -193,7 +194,7 @@ def test_power_tree_requires_radar_branch(tmp_path):
 
     assert result["status"] == "FAIL"
     assert (
-        "missing_transition:VIN_PROTECTED->RADAR_12V"
+        "missing_transition:V12_SYS->RADAR_12V"
         in result["findings"]
     )
 
@@ -264,31 +265,32 @@ def test_bom_requires_fixed_3v3_regulator(tmp_path):
     assert "TPS62132RGTR" in result["missing_mpns"]
 
 
-def test_bom_requires_gnss_rf_protection_and_connector(tmp_path):
+def test_bom_requires_external_gnss_esd(tmp_path):
     source = (ROOT / "BOM_SYS_CARRIER_003.csv").read_text(
         encoding="utf-8"
     )
     lines = [
         line
         for line in source.splitlines()
-        if "ESD0P2RF-02LS" not in line
+        if not line.startswith("D8,")
     ]
     path = tmp_path / "bom.csv"
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     result = validate_bom(path)
     assert result["status"] == "FAIL"
-    assert "ESD0P2RF-02LS" in result["missing_mpns"]
+    assert "D8:TPD4E05U06DQAR" in result["missing_refs"]
 
 
-def test_bom_requires_selected_extended_temperature_magjack(tmp_path):
+def test_bom_requires_fixed_5v_external_gnss_regulator(tmp_path):
     source = (ROOT / "BOM_SYS_CARRIER_003.csv").read_text(
         encoding="utf-8"
     )
     path = tmp_path / "bom.csv"
     path.write_text(
-        source.replace("SI-60182-F", "P01-0006-01"),
+        source.replace("TPS62133RGTR", "TPS62130ARGTR"),
         encoding="utf-8",
     )
     result = validate_bom(path)
     assert result["status"] == "FAIL"
-    assert "SI-60182-F" in result["missing_mpns"]
+    assert "TPS62133RGTR" in result["missing_mpns"]
+    assert "U9:TPS62133RGTR" in result["missing_refs"]

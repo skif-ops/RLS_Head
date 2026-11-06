@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "version": "1.0.0",
+  "archive": "release\\EVT_ГСН_визуализатор_Windows_v1.0.0_2026-10-31.zip",
+  "download": "release\\downloads\\EVT_GSN_visualizer_windows_v1.0.0.zip",
+  "archive_sha256": "7dc67863db9774d709bb199b93b6fedebc57d11281d4b29168b3d86d49785541",
+  "archive_bytes": 13351351,
+  "exe_sha256": "6290cd1378a741bec6ec12b38adaf3524c320b733fb1d8340ae4f003f2eb7cb9",
+  "exe_bytes": 13409588,
+  "docx_style_audit": {
+    "status": "PASS",
+    "styles": 164,
+    "paragraphs": 320,
+    "table_paragraphs": 297,
+    "headings": 19,
+    "text_runs": 320,
+    "forbidden_dashes": 0,
+    "failures": []
+  },
+  "demo_packets": 375,
+  "test_command": "pytest tests/python/test_evt_visualizer.py tests/python/test_protocol.py",
+  "test_result": "8 passed",
+  "visual_check": "PASS: demo targets, table, counters, connection help",
+  "production_authority": "NOT_AUTHORIZED",
+  "pdf_visual_review": "PASS: 7 pages inspected at 100 percent"
+}

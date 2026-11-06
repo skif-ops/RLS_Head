@@ -1,0 +1,123 @@
+{
+  "schema": "CI623-POST-IMPORT-RAW-001",
+  "status": "CAPTURED",
+  "captured_date": "2026-10-23",
+  "qualified_run_id": "39943400259",
+  "artifact_id": "12496479601",
+  "artifact_zip_sha256": "f3dfc3293be5845a40e420e30507a7486c99c26a01285332b941225df7ffc514",
+  "pcb_provenance": "CI616 audited diagnostic PcbDoc carried forward byte-for-byte because the qualified package contains no kicad_pcb source",
+  "layout_authority": "NOT_AUTHORIZED",
+  "production_authority": "NOT_AUTHORIZED",
+  "files": [
+    {
+      "name": "10_POWER_INPUT_template.SCHDOT",
+      "size": 18432,
+      "sha256": "6a7e4866c2d35ae643397714afaa85c05c34f3ca8627051fb64caaa83c3c5f0b"
+    },
+    {
+      "name": "10_POWER_INPUT.SchDoc",
+      "size": 139264,
+      "sha256": "bb5713e5eb2d0612169739d6c36aa49ae69425812035c5fc8ae66b85e756d068"
+    },
+    {
+      "name": "20_MCU_CORE_template.SCHDOT",
+      "size": 21504,
+      "sha256": "76310f5c576793afc2f5f9f11de6ed900d34600d43c3efff7f655b2964f741e3"
+    },
+    {
+      "name": "20_MCU_CORE.SchDoc",
+      "size": 278016,
+      "sha256": "d4852b3986a0c8f0efb848f44a89912dda550d4a243ff047b1cf5f1cbb704200"
+    },
+    {
+      "name": "30_TIME_GNSS_template.SCHDOT",
+      "size": 18432,
+      "sha256": "c8f4ef49479d1d6308a16e83241e8bda753258c877f513c31f013c877a4b3225"
+    },
+    {
+      "name": "30_TIME_GNSS.SchDoc",
+      "size": 81920,
+      "sha256": "caa2873a9fa384c8043b57498e17c9746cee0174f4b581f16c59a92dd8b2c52a"
+    },
+    {
+      "name": "40_IMU_template.SCHDOT",
+      "size": 18432,
+      "sha256": "5ab7bcdc25382df8d14158c9202dce6be2b4c2e4420fb29b084502cc1d34cb61"
+    },
+    {
+      "name": "40_IMU.SchDoc",
+      "size": 47104,
+      "sha256": "bcd7d2c91936a4d23cd48c5dd2729f13f40520e841daa34ef7b28427d08d32ba"
+    },
+    {
+      "name": "50_RADAR_IO_CAN_template.SCHDOT",
+      "size": 18432,
+      "sha256": "07a77d68b1e0f95d8b99cab54b8b36095ea0123e840325265508e78f45d1df28"
+    },
+    {
+      "name": "50_RADAR_IO_CAN.SchDoc",
+      "size": 64000,
+      "sha256": "fd3182be16da654b0635d1a6a15240c10b817dc9087150c50c5f4f6bcde1ace9"
+    },
+    {
+      "name": "60_ETHERNET_template.SCHDOT",
+      "size": 18432,
+      "sha256": "c77000d192cee6a3aee57520dc23d62083cbe7068ed246a673807a877121512c"
+    },
+    {
+      "name": "60_ETHERNET.SchDoc",
+      "size": 147456,
+      "sha256": "ac18f9810f018e704a948a968e95c3a40cd483c25160d4c640be0575e73df965"
+    },
+    {
+      "name": "70_DEBUG_BOOT_template.SCHDOT",
+      "size": 18432,
+      "sha256": "634f5b6505c7a4f930a3b6531296948f7c39a40a8a4a1fc6fd66b54d592ce2e7"
+    },
+    {
+      "name": "70_DEBUG_BOOT.SchDoc",
+      "size": 29184,
+      "sha256": "b7b2a53eaaf767e465998253d507c7cd0ee4966e3bd155dc06378276fd4e08d1"
+    },
+    {
+      "name": "EVT_SYS_CARRIER_template.SCHDOT",
+      "size": 25600,
+      "sha256": "2a4c5ca8c1ebaeeaea2241067912875f782646fe65ef2b782669260db69935fc"
+    },
+    {
+      "name": "EVT_SYS_CARRIER.PcbDoc",
+      "size": 1674752,
+      "sha256": "853a1d37f848be8dce328e63070ad795c2d77a669ebe053431f70d6cf6d97da2"
+    },
+    {
+      "name": "EVT_SYS_CARRIER.PrjPcb",
+      "size": 35584,
+      "sha256": "fe2f689364704ddc97ba073d97c4c18634a35016e9e4f78aa952923288019e1a"
+    },
+    {
+      "name": "EVT_SYS_CARRIER.SchDoc",
+      "size": 64512,
+      "sha256": "26b6b3ab119ea476d2710c42856dc07ea1bf326bd558ae19c186bcc88e71adfc"
+    },
+    {
+      "name": "EVT_SYS_CARRIER.SchLib",
+      "size": 131584,
+      "sha256": "4bee791bc6740820ad648a309dfedde3c335f95db5e6259a4fb0d63d6b987ce9"
+    },
+    {
+      "name": "EVT_SYS_CARRIER.SchLib.LOG",
+      "size": 155765,
+      "sha256": "bb92061cbb93aeb4ac0ed637bea1cadecc361a84ac5f73a606b9747b2de9ac18"
+    },
+    {
+      "name": "SystemCarrier_Local.SchLib",
+      "size": 41472,
+      "sha256": "432f8bbacb0c92b1b109b99290c69554173d855e1b7218297832054d83e00e74"
+    },
+    {
+      "name": "SystemCarrier_Local.SchLib.LOG",
+      "size": 1052,
+      "sha256": "8f3552250ae7c45c98ee764cafaba2a6f84ea1cfc1a8eddb797f541e26dfb72b"
+    }
+  ]
+}

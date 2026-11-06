@@ -30,6 +30,17 @@ def physical_refs(system_root: Path) -> set[str]:
     }
 
 
+def open_pin_contract(system_root: Path) -> set[tuple[str, str]]:
+    path = system_root / "SYMBOL_PIN_CONTRACT_SYS_001.csv"
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        rows = csv.DictReader(handle)
+        return {
+            (str(row["ref"]).strip(), str(row["pin_number"]).strip())
+            for row in rows
+            if str(row["connection"]).strip().startswith(("OPEN", "NC"))
+        }
+
+
 def build(
     *,
     system_root: str | Path,
@@ -40,11 +51,13 @@ def build(
     xml_path = Path(xml_netlist)
     output = Path(output_csv)
     bom_path = system / "BOM_SYS_CARRIER_LAYOUT_004.csv"
+    pin_contract_path = system / "SYMBOL_PIN_CONTRACT_SYS_001.csv"
 
     errors: list[str] = []
     for path, label in (
         (xml_path, "xml_netlist"),
         (bom_path, "bom_contract"),
+        (pin_contract_path, "pin_contract"),
     ):
         if not path.is_file():
             errors.append(f"missing:{label}")
@@ -94,6 +107,11 @@ def build(
             + ",".join(sorted(set(conflicts)))
         )
 
+    for ref, pin in sorted(open_pin_contract(system)):
+        net_name = endpoints.get((ref, pin), "")
+        if net_name and not net_name.startswith("unconnected-"):
+            errors.append(f"open_pin_connected:{ref}.{pin}:{net_name}")
+
     rows = [
         {
             "designator": ref,
@@ -125,6 +143,7 @@ def build(
         "input_sha256": {
             "xml_netlist": sha256_file(xml_path),
             "bom_contract": sha256_file(bom_path),
+            "pin_contract": sha256_file(pin_contract_path),
         },
         "output": {
             "path": output.as_posix(),

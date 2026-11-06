@@ -84,7 +84,7 @@ def test_timing_pinmap_mismatch_fails(tmp_path):
 
     path.write_text(
         "signal,mcu_pin,peripheral,direction,criticality\n"
-        "GNSS_PPS,PA1,TIM2_CH1,IN,P0\n"
+        "GNSS_PPS,PA1,TIM2_CH1,IN,P1\n"
         "RADAR_REF,PB10,TIM2_CH3,IN,P0\n"
         "IMU_DRDY,PB11,TIM2_CH4,IN,P0\n",
         encoding="utf-8",
@@ -143,12 +143,13 @@ def test_review_a_bom_requires_current_rev_a_parts(tmp_path):
         "ref,qty,manufacturer,mpn,description\n"
         "U1,1,STMicroelectronics,STM32H753IIT6,System MCU\n"
         "U2,1,TDK InvenSense,ICM-42688-P,IMU\n"
-        "U3,1,Microchip,LAN8742Ai-CZ-TR,RMII PHY\n"
         "U4,1,Texas Instruments,TCAN3404DRBRQ1,CAN FD transceiver\n"
         "U5,1,Texas Instruments,TPS62130ARGTR,obsolete adjustable baseline\n"
         "U6,1,Texas Instruments,TPS259470ARPWR,eFuse\n"
-        "U8,1,u-blox,NEO-M9N-00B,GNSS timing receiver\n"
-        "J_ETH,1,Bel,P01-0006-01,old MagJack baseline\n",
+        "U9,1,Texas Instruments,TPS62130ARGTR,wrong 5V regulator\n"
+        "D3,1,Texas Instruments,TPD4E05U06DQAR,UART ESD\n"
+        "J6,1,Molex,43045-0600,UART connector\n"
+        "J8,1,JST,SM06B-GHS-TB(LF)(SN),GNSS connector\n",
         encoding="utf-8",
     )
 
@@ -156,4 +157,4 @@ def test_review_a_bom_requires_current_rev_a_parts(tmp_path):
 
     assert result["status"] == "FAIL"
     assert "TPS62132RGTR" in result["missing_required_mpns"]
-    assert "SI-60182-F" in result["missing_required_mpns"]
+    assert "TPS62133RGTR" in result["missing_required_mpns"]

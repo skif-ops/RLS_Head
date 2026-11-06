@@ -4,7 +4,8 @@
   "p0_open_findings": null,
   "l2_ground_continuity_verified": false,
   "timing_return_paths_verified": false,
-  "ethernet_mdi_return_path_verified": false,
+  "host_uart_routes_verified": false,
+  "gnss_connector_routes_verified": false,
   "reviewer": "<REVIEWER>",
   "evidence_refs": [
     {
@@ -14,12 +15,11 @@
   ],
   "notes": [
     "PASS requires routed-board return-path/SI review.",
-    "The review also closes release checklist items for U5 hot loop/power widths, Ethernet MDI rule application, GNSS_RF controlled-impedance route and post-route confirmation that System Carrier contains no 76-81 GHz implementation."
+    "The review also closes U5 and U9 hot loops, power widths, dual-UART and external-GNSS connector routes, and confirms that System Carrier contains no 76-81 GHz implementation."
   ],
   "power_hot_loop_verified": false,
   "power_branch_widths_verified": false,
-  "ethernet_mdi_impedance_rule_verified": false,
-  "gnss_rf_route_verified": false,
+  "five_volt_gnss_route_verified": false,
   "no_mmwave_post_route_verified": false,
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
   "source_pcb_sha256": "<SHA256_OF_FINAL_NATIVE_PCBDOC>"

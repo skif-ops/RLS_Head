@@ -8,6 +8,7 @@ from tools.altium_script_runtime_receipt import (
     CANONICAL,
     OUTPUTS,
     sha256_file,
+    sha256_runtime_input,
 )
 
 
@@ -41,7 +42,7 @@ def prepare(
         if not path.is_file():
             errors.append(f"missing:{artifact_id}")
             continue
-        input_hashes[artifact_id] = sha256_file(path)
+        input_hashes[artifact_id] = sha256_runtime_input(path, artifact_id)
 
     for artifact_id, relative in OUTPUTS.items():
         path = root / relative

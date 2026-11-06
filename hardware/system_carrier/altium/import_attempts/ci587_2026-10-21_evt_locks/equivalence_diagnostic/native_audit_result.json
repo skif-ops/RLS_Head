@@ -1,0 +1,57 @@
+{
+  "component_count": 92,
+  "differential_pair_count": 3,
+  "errors": [],
+  "expected_component_count": 92,
+  "expected_layer_stack_count": 4,
+  "input_sha256": {
+    "class_inventory": "e10749638a29f40f12937b4b143c49d4220a5ea7a51d640fc5f5907dfdd0c405",
+    "component_inventory": "fb462ec58348928fd6f1ad25f555afddcbb30e5b001fd876be43075a317e9003",
+    "diff_pair_inventory": "3e1d1b755d770d65fa75eb2a7909834fcaf2da920592a7b7529a791e4e76f2d0",
+    "layer_stack_detail": "ebc29a9c697b473aebd5190ad1d7ce241a2ef45850c408b581fec31153912d9a",
+    "layer_stack_inventory": "cbdf4c20e487668a5b1e67abfa8e4d3bcd8dc4015688fc52b0e1d6e9cfa662ec",
+    "mechanical_inventory": "1ba0cb6c4beceab12bc46a7ae1b24da22f320f63e2bbc7781ce6df5df319413d",
+    "net_inventory": "8e66f63a7b8d8d9fc073c7e05f28db63b24ad5552bd243b70a0da54da2e08fcf",
+    "pad_net_inventory": "008121542bdb40cae1827def69de017309e2ada08d08f2ba343ca9137a8ac7c0",
+    "rule_constraint_inventory": "1a6b277c51dda97bb3f67eb8958aa36113749796f287031b8149d766edff4b66",
+    "rule_inventory": "e7944aa9f546f25cb34c491957da5c50aa6eeb5b3f5bce25bfd1bb838ea27fc1"
+  },
+  "layer_stack_count": 4,
+  "mounting_hole_count": 4,
+  "net_count": 67,
+  "notes": [
+    "PASS cross-checks native components, P0/P1 net names, rule names/families and values, MCU pin-to-net assignments, direct symbol pin contracts, four-layer copper stack, board outline and mounting holes.",
+    "Exact footprint equivalence, hierarchy/port semantics, connector aggregate semantics and rule priority remain controlled by dedicated evidence.",
+    "The full ALTIUM_EQUIVALENCE_GATE still controls layout authority."
+  ],
+  "pad_record_count": 512,
+  "pinmap_checked_count": 29,
+  "required_class_count": 10,
+  "required_p0_p1_net_count": 32,
+  "required_rule_count": 10,
+  "rule_count": 44,
+  "schema": "ALTIUM-NATIVE-AUDIT-RESULT-001",
+  "status": "PASS",
+  "symbol_pin_checked_count": 65,
+  "symbol_pin_semantic_deferred_count": 16,
+  "verified_checks": {
+    "mechanical_equivalence": "PASS",
+    "native_pcb_audit": "PASS",
+    "pair_class_equivalence": "PASS",
+    "pinmap_equivalence": "PASS",
+    "rules_equivalence": "PASS",
+    "stackup_equivalence": "PASS"
+  },
+  "warnings": [
+    "duplicate_class_members:DP_CAN",
+    "duplicate_class_members:DP_ETH_MDI",
+    "duplicate_class_members:NC_CAN",
+    "duplicate_class_members:NC_ETH_MDI",
+    "duplicate_class_members:NC_GNSS_RF",
+    "duplicate_class_members:NC_IMU_SPI",
+    "duplicate_class_members:NC_POWER_12V",
+    "duplicate_class_members:NC_POWER_3V3",
+    "duplicate_class_members:NC_RMII",
+    "duplicate_class_members:NC_TIMING"
+  ]
+}

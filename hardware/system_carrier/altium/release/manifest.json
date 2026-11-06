@@ -1,0 +1,55 @@
+{
+  "schema": "ALTIUM-PRODUCTION-RELEASE-MANIFEST-001",
+  "board_id": "EVT-SYS-CARRIER",
+  "hardware_revision": "A",
+  "primary_cad": "Altium Designer",
+  "synthetic_fixture": false,
+  "evidence_level": "NATIVE_ALTIUM_RELEASE",
+  "artifacts": [
+    {
+      "id": "native_schematic",
+      "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
+      "sha256": "cd169feb69c055050beee9c3a1cf66b971c66615dbdc507b2709c53ec9e1bbfe"
+    },
+    {
+      "id": "native_pcb",
+      "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+      "sha256": "518041a570b405a429a70d968ee54b62df126cb0091b9af08e067152c5aa8735"
+    },
+    {
+      "id": "equivalence_result",
+      "path": "hardware/system_carrier/altium/equivalence/altium_equivalence_result.json",
+      "sha256": "210db810614719b27b5c03f7ca3fb451954d94a32063e55856b361c3552dd2ce"
+    },
+    {
+      "id": "native_drc_result",
+      "path": "hardware/system_carrier/altium/release/native_drc_result.json",
+      "sha256": "c7a40ec07eaacdb912b59d198783440555f2d3ca394cd7462999990f113206c9"
+    },
+    {
+      "id": "mechanical_review",
+      "path": "hardware/system_carrier/altium/release/mechanical_review.json",
+      "sha256": "f5bd22364c2222188f6fda816ab62e48064abb0f1d549cb60689fc386a7e8473"
+    },
+    {
+      "id": "fabricator_binding",
+      "path": "hardware/system_carrier/altium/release/fabricator_binding.json",
+      "sha256": "8231868de5606918c33f69dad8b05dc421a34bd3ce7ce6a432eeea1932b7ef30"
+    },
+    {
+      "id": "return_path_si_review",
+      "path": "hardware/system_carrier/altium/release/return_path_si_review.json",
+      "sha256": "2899ed3b2908ade6d48739dc62cb91ebf8cdea9c796f0e3919e63b84492ec121"
+    },
+    {
+      "id": "dfm_result",
+      "path": "hardware/system_carrier/altium/release/dfm_result.json",
+      "sha256": "770a0ee019bbcb87e302438a48e1674a12dad6f40fce9b6781551815a9f7b59a"
+    },
+    {
+      "id": "outjob_release_manifest",
+      "path": "hardware/system_carrier/altium/release/outjob_release_manifest.json",
+      "sha256": "43f639b0e3dc37b9a489f11a18a27ace07d6b8d4d4269b5520d88cb96eaf8eb7"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+﻿EVT ГСН document set
+Version: 1.2.0
+Date: 2026-11-02
+Power input: 24 V nominal, 18...32 V allowed
+Production authority: NOT_AUTHORIZED

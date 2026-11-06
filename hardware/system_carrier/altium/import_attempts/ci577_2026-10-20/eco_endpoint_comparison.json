@@ -1,0 +1,177 @@
+{
+  "altium_name_alias_endpoint_count": 10,
+  "altium_name_aliases": [
+    {
+      "altium_net": "NetC60_1",
+      "designator": "C60",
+      "kicad_net": "Net-(U3-VDDCR)",
+      "pin": "1"
+    },
+    {
+      "altium_net": "NetJ6_8",
+      "designator": "J6",
+      "kicad_net": "Net-(J6-Pad8)",
+      "pin": "8"
+    },
+    {
+      "altium_net": "NetJ6_8",
+      "designator": "J6",
+      "kicad_net": "Net-(J6-Pad8)",
+      "pin": "SH"
+    },
+    {
+      "altium_net": "NetR41_1",
+      "designator": "R41",
+      "kicad_net": "Net-(U4-STB)",
+      "pin": "1"
+    },
+    {
+      "altium_net": "NetR42_1",
+      "designator": "R42",
+      "kicad_net": "Net-(U4-SHDN)",
+      "pin": "1"
+    },
+    {
+      "altium_net": "NetR600_1",
+      "designator": "R600",
+      "kicad_net": "Net-(U3-RBIAS)",
+      "pin": "1"
+    },
+    {
+      "altium_net": "NetR600_1",
+      "designator": "U3",
+      "kicad_net": "Net-(U3-RBIAS)",
+      "pin": "24"
+    },
+    {
+      "altium_net": "NetC60_1",
+      "designator": "U3",
+      "kicad_net": "Net-(U3-VDDCR)",
+      "pin": "6"
+    },
+    {
+      "altium_net": "NetR42_1",
+      "designator": "U4",
+      "kicad_net": "Net-(U4-SHDN)",
+      "pin": "5"
+    },
+    {
+      "altium_net": "NetR41_1",
+      "designator": "U4",
+      "kicad_net": "Net-(U4-STB)",
+      "pin": "8"
+    }
+  ],
+  "altium_net_merges_kicad_partitions": {},
+  "eco_assigned_unique_endpoints": 316,
+  "eco_assignment_log_records": 319,
+  "eco_unassigned_kicad_endpoints": 167,
+  "kicad_endpoint_count": 483,
+  "kicad_multi_endpoint_net_endpoints": 335,
+  "kicad_net_count": 215,
+  "kicad_partition_splits_across_altium_nets": {},
+  "production_authority": "NOT_AUTHORIZED",
+  "reason": "19 endpoints on multi-endpoint KiCad nets are absent from executed ECO assignments; native equivalence is not established.",
+  "routing_authority": "NOT_AUTHORIZED",
+  "schema": "ALTIUM-ECO-ENDPOINT-COMPARISON-216-001",
+  "source": "Archived Altium ECO logs compared with retained KiCad netlist CSV; not a direct native PcbDoc audit.",
+  "status": "FAIL",
+  "unassigned_multi_endpoint_count": 19,
+  "unassigned_multi_endpoints": [
+    {
+      "designator": "L1",
+      "net": "/3V3",
+      "pin": "2"
+    },
+    {
+      "designator": "R70",
+      "net": "/3V3",
+      "pin": "2"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "23"
+    },
+    {
+      "designator": "U2",
+      "net": "/3V3",
+      "pin": "8"
+    },
+    {
+      "designator": "U3",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "U4",
+      "net": "/3V3",
+      "pin": "3"
+    },
+    {
+      "designator": "U8",
+      "net": "/3V3",
+      "pin": "23"
+    },
+    {
+      "designator": "R70",
+      "net": "/BOOT0",
+      "pin": "1"
+    },
+    {
+      "designator": "U1",
+      "net": "/BOOT0",
+      "pin": "166"
+    },
+    {
+      "designator": "U1",
+      "net": "/ETH_50M",
+      "pin": "41"
+    },
+    {
+      "designator": "U3",
+      "net": "/ETH_50M",
+      "pin": "5"
+    },
+    {
+      "designator": "R605",
+      "net": "/ETH_NRST",
+      "pin": "1"
+    },
+    {
+      "designator": "U4",
+      "net": "/GND",
+      "pin": "EP"
+    },
+    {
+      "designator": "U5",
+      "net": "/GND",
+      "pin": "EP"
+    },
+    {
+      "designator": "SW1",
+      "net": "/NRST",
+      "pin": "1"
+    },
+    {
+      "designator": "U1",
+      "net": "/NRST",
+      "pin": "31"
+    },
+    {
+      "designator": "R7F",
+      "net": "/RADAR_EFUSE_FLT",
+      "pin": "1"
+    },
+    {
+      "designator": "U1",
+      "net": "/SYS_EFUSE_FLT",
+      "pin": "1"
+    },
+    {
+      "designator": "U6",
+      "net": "/SYS_EFUSE_FLT",
+      "pin": "4"
+    }
+  ]
+}

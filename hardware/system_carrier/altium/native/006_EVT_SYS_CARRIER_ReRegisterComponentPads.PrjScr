@@ -1,0 +1,10 @@
+[Design]
+Version=1.0
+HierarchyMode=0
+
+[Document1]
+DocumentPath=..\scripts\EVT_SYS_CARRIER_ReRegisterComponentPads.pas
+AnnotationEnabled=1
+
+[Generic_ScriptingSystem]
+StartProcName=..\scripts\EVT_SYS_CARRIER_ReRegisterComponentPads.pas>ReRegisterComponentPads
