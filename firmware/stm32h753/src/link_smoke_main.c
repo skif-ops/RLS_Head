@@ -156,22 +156,25 @@ int main(void)
             2500000u,
             &disciplined_time);
 
-    rls_radar_link_msg_t radar_msg = {
+    rls_radar_link_frame_t radar_frame = {
         .version = RLS_RADAR_LINK_VERSION,
-        .type = RLS_RADAR_MSG_FRAME_META,
-        .status_flags = 0u,
+        .status_flags = RLS_RADAR_STATUS_TIME_VALID,
         .sequence = 1u,
-        .radar_time_us = 2500000u,
-        .config_crc32 = 0x12345678u,
-        .temperature_cdeg = 2500,
-        .measurement_count = 0u,
+        .timestamp_us = 2500000u,
+        .session_id = 1u,
+    };
+    const rls_radar_measurement_t radar_measurement = {
+        .track_state = RLS_RADAR_TRACK_NONE,
     };
     uint8_t radar_wire[RLS_RADAR_LINK_WIRE_SIZE] = {0};
     const bool radar_link_ok =
-        rls_radar_link_encode(
-            &radar_msg,
+        rls_radar_measurement_pack(
+            &radar_measurement,
+            &radar_frame) == RLS_RADAR_LINK_OK
+        && rls_radar_link_encode(
+            &radar_frame,
             radar_wire,
-            sizeof(radar_wire)) == 0;
+            sizeof(radar_wire)) == RLS_RADAR_LINK_OK;
 
     rls_carrier_health_state_t carrier_health;
     rls_carrier_health_report_t carrier_report;

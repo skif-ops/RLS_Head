@@ -31,6 +31,9 @@ static volatile uint8_t can_rx_head;
 static volatile uint8_t can_rx_tail;
 static volatile uint32_t can_bus_off_count;
 static volatile bool can_restart_pending;
+static volatile uint64_t can_restart_due_us;
+static volatile uint64_t can_restart_window_start_us;
+static volatile uint8_t can_restart_attempts;
 
 static uint8_t gnss_dma_buffer[GNSS_DMA_SIZE]
     __attribute__((section(".dma_rx"), aligned(32)));
@@ -435,10 +438,32 @@ uint32_t evt_board_initialize(void)
 
 void evt_board_service(void)
 {
-    if (can_restart_pending) {
+    if (!can_restart_pending) {
+        return;
+    }
+    const uint64_t now_us = evt_board_time_us();
+    if (now_us < can_restart_due_us) {
+        return;
+    }
+    if (can_restart_window_start_us == 0u
+        || now_us - can_restart_window_start_us >= UINT64_C(10000000)) {
+        can_restart_window_start_us = now_us;
+        can_restart_attempts = 0u;
+    }
+    if (can_restart_attempts >= 3u) {
+        can_restart_due_us = can_restart_window_start_us + UINT64_C(10000000);
+        return;
+    }
+
+    can_restart_attempts++;
+    (void)HAL_FDCAN_Stop(&hfdcan1);
+    (void)HAL_FDCAN_DeInit(&hfdcan1);
+    if (fdcan_init()) {
         can_restart_pending = false;
-        (void)HAL_FDCAN_Stop(&hfdcan1);
-        (void)HAL_FDCAN_Start(&hfdcan1);
+    } else if (can_restart_attempts >= 3u) {
+        can_restart_due_us = can_restart_window_start_us + UINT64_C(10000000);
+    } else {
+        can_restart_due_us = now_us + RLS_RADAR_BUS_OFF_RESTART_DELAY_US;
     }
 }
 
@@ -495,7 +520,7 @@ bool evt_board_can_receive(uint8_t frame[64])
 
 bool evt_board_can_transmit(const uint8_t frame[64])
 {
-    if (frame == NULL) {
+    if (frame == NULL || can_restart_pending) {
         return false;
     }
     FDCAN_TxHeaderTypeDef header = {0};
@@ -714,8 +739,17 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *fdcan, uint32_t flags)
 void HAL_FDCAN_ErrorStatusCallback(FDCAN_HandleTypeDef *fdcan, uint32_t flags)
 {
     if (fdcan->Instance == FDCAN1 && (flags & FDCAN_IT_BUS_OFF) != 0u) {
+        const uint64_t now_us = evt_board_time_us();
         can_bus_off_count++;
+        can_rx_head = 0u;
+        can_rx_tail = 0u;
         can_restart_pending = true;
+        can_restart_due_us = now_us + RLS_RADAR_BUS_OFF_RESTART_DELAY_US;
+        if (can_restart_window_start_us == 0u
+            || now_us - can_restart_window_start_us >= UINT64_C(10000000)) {
+            can_restart_window_start_us = now_us;
+            can_restart_attempts = 0u;
+        }
     }
 }
 

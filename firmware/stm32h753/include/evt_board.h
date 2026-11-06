@@ -5,10 +5,11 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "rls/radar_link.h"
 #include "stm32h7xx_hal.h"
 
-#define EVT_RADAR_CAN_RX_ID 0x320u
-#define EVT_RADAR_CAN_TX_ID 0x321u
+#define EVT_RADAR_CAN_RX_ID RLS_RADAR_CAN_AWR_TO_CARRIER_ID
+#define EVT_RADAR_CAN_TX_ID RLS_RADAR_CAN_CARRIER_TO_AWR_ID
 #define EVT_HOST_BAUD_RATE 921600u
 #define EVT_GNSS_BAUD_RATE 115200u
 

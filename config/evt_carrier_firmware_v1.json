@@ -14,7 +14,13 @@
     "nominal_bit_rate": 500000,
     "data_bit_rate": 2500000,
     "transport_version": 1,
-    "payload_contract": "HIL-R1"
+    "payload_contract": "CAN-FD-1.0.0",
+    "frame_bytes": 64,
+    "endianness": "little",
+    "application_crc": "CRC-32C Castagnoli over bytes 0..59",
+    "measurement_timeout_us": 250000,
+    "heartbeat_degraded_us": 300000,
+    "link_lost_us": 500000
   },
   "host_uart": {
     "channels": ["USART2", "USART1"],
