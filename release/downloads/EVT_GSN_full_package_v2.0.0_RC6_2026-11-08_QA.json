@@ -1,0 +1,32 @@
+{
+  "release": "v2.0.0_RC6",
+  "readiness": {
+    "internal_package_ready": true,
+    "bare_pcb_order_submission": "READY_FOR_FACTORY_CAM_REVIEW",
+    "pcba_order_submission": "READY_FOR_FACTORY_QUOTE_AND_CAM_REVIEW",
+    "ready_to_place_conditional_factory_order": true,
+    "fabrication_start_authorized": false,
+    "production_authority": "NOT_AUTHORIZED"
+  },
+  "internal_blockers": [],
+  "full_archive": {
+    "path": "C:\\Users\\skifn\\.codex\\.chatgpt-projects\\g-p-6a9feb917c48819182ec25e1ef55310c\\RLS_Head-git\\release\\downloads\\EVT_GSN_full_package_v2.0.0_RC6_2026-11-08.zip",
+    "sha256": "D8EE82D1CAF2C3E45E5170B991CB68DA425EA453E8A663AFD7C2F059A3717F9D",
+    "size_bytes": 63558587,
+    "entry_count": 628,
+    "uncompressed_bytes": 153423310,
+    "testzip_bad_entry": null
+  },
+  "factory_archive": {
+    "path": "C:\\Users\\skifn\\.codex\\.chatgpt-projects\\g-p-6a9feb917c48819182ec25e1ef55310c\\RLS_Head-git\\release\\downloads\\EVT_GSN_PCB_PCBA_order_D79_24V_v2.0.0_RC6_2026-11-08.zip",
+    "sha256": "2BDABA4AC6D093FF787CF1541CDF527CE249CF8121B31507532A4016844796E2",
+    "size_bytes": 18227583,
+    "entry_count": 129,
+    "uncompressed_bytes": 54944938,
+    "testzip_bad_entry": null
+  },
+  "package_manifest_sha256": "ED042539895E92D9E254215E77E4151524FB30DA986E3383CE1671F43235C2BF",
+  "archive_validation_pass": true,
+  "production_authority": "NOT_AUTHORIZED",
+  "generated_utc": "2026-11-08T15:41:49.327382+00:00"
+}
