@@ -1,0 +1,39 @@
+СРЕДА СБОРКИ ПРОШИВКИ AWR2944P
+
+Проверенные версии
+
+MMWAVE-MCUPLUS-SDK: 04.07.02.01
+MCU+ SDK AWR2x44P: 10.02.00.04
+mmWave DFP: 02.04.18.01
+SysConfig: 1.23.0
+TI ARM Clang: 4.0.2 LTS
+TI C6000 compiler: 8.3.13
+Code Composer Studio: 20.1.0
+
+Официальные загрузки TI
+
+MMWAVE-MCUPLUS-SDK:
+https://www.ti.com/tool/download/MMWAVE-MCUPLUS-SDK
+
+UniFlash:
+https://www.ti.com/tool/download/UNIFLASH
+
+Руководство AWR2944PEVM:
+https://www.ti.com/lit/ug/spruj22c/spruj22c.pdf
+
+Сборка
+
+1. Установить компоненты TI в каталоги, указанные в руководстве DOCX, или передать свои пути параметрами сценария.
+2. Открыть PowerShell в каталоге 03_Исходный_код.
+3. Выполнить:
+
+powershell -ExecutionPolicy Bypass -File firmware\awr2944p_observer\tools\build_target.ps1
+
+Сценарий копирует официальный пример TI в одноразовый рабочий каталог, накладывает исходный код наблюдателя, запускает SysConfig, компилирует R5F и C66x и формирует GP appimage. Исходный код и установщики TI в комплект не включены.
+
+Ограничение
+
+Образ High Security требует OpenSSL, совместимый со сценарием подписи TI. Выпуск EVT_OBSERVER_R1 содержит проверенный GP appimage. Перед загрузкой необходимо подтвердить тип устройства.
+
+Production authority = NOT_AUTHORIZED
+

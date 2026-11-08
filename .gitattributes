@@ -18,6 +18,9 @@ tools/generate_system_carrier_symbols.py text eol=lf
 tools/kicad_netlist_baseline.py text eol=lf
 tools/validate_system_carrier_cad_scaffold.py text eol=lf
 tests/fixtures/** text eol=lf
+# Generated TI maps and release evidence retain exact tool output bytes.
+firmware/awr2944p_observer/release/** whitespace=-trailing-space,-blank-at-eof
+release/downloads/*_QA.json whitespace=-blank-at-eof
 
 # Native Altium binary containers: never apply text conversion or textual merge/diff.
 *.SchDoc binary

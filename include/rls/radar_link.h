@@ -13,6 +13,7 @@ extern "C" {
 #define RLS_RADAR_LINK_WIRE_SIZE 64u
 #define RLS_RADAR_LINK_PAYLOAD_SIZE 36u
 #define RLS_RADAR_LINK_CRC_OFFSET 60u
+#define RLS_RADAR_SERVICE_PAYLOAD_SIZE 16u
 
 #define RLS_RADAR_CAN_AWR_TO_CARRIER_ID 0x320u
 #define RLS_RADAR_CAN_CARRIER_TO_AWR_ID 0x321u
@@ -79,6 +80,13 @@ typedef enum {
 } rls_radar_service_operation_t;
 
 typedef enum {
+    RLS_RADAR_SERVICE_ACK_OK = 0,
+    RLS_RADAR_SERVICE_ACK_UNSUPPORTED = 1,
+    RLS_RADAR_SERVICE_ACK_INVALID_STATE = 2,
+    RLS_RADAR_SERVICE_ACK_INTERNAL_ERROR = 3
+} rls_radar_service_ack_status_t;
+
+typedef enum {
     RLS_RADAR_SEQUENCE_FIRST = 0,
     RLS_RADAR_SEQUENCE_NEXT = 1,
     RLS_RADAR_SEQUENCE_GAP = 2,
@@ -130,6 +138,17 @@ typedef struct {
 } rls_radar_measurement_t;
 
 typedef struct {
+    uint8_t operation;
+    uint32_t request_id;
+} rls_radar_service_request_t;
+
+typedef struct {
+    uint8_t operation;
+    uint8_t status;
+    uint32_t request_id;
+} rls_radar_service_ack_t;
+
+typedef struct {
     bool initialized;
     uint32_t session_id;
     uint32_t last_sequence;
@@ -157,6 +176,26 @@ int rls_radar_measurement_pack(
 int rls_radar_measurement_unpack(
     const rls_radar_link_frame_t *frame,
     rls_radar_measurement_t *measurement
+);
+
+int rls_radar_service_request_pack(
+    const rls_radar_service_request_t *request,
+    rls_radar_link_frame_t *frame
+);
+
+int rls_radar_service_request_unpack(
+    const rls_radar_link_frame_t *frame,
+    rls_radar_service_request_t *request
+);
+
+int rls_radar_service_ack_pack(
+    const rls_radar_service_ack_t *ack,
+    rls_radar_link_frame_t *frame
+);
+
+int rls_radar_service_ack_unpack(
+    const rls_radar_link_frame_t *frame,
+    rls_radar_service_ack_t *ack
 );
 
 void rls_radar_sequence_tracker_init(rls_radar_sequence_tracker_t *tracker);

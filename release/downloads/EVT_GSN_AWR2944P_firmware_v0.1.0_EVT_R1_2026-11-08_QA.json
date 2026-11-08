@@ -1,0 +1,49 @@
+{
+  "archive": "EVT_GSN_AWR2944P_firmware_v0.1.0_EVT_R1_2026-11-08.zip",
+  "archive_size_bytes": 1950808,
+  "archive_sha256": "CD8EECEA39A4BC82315C93854F6371C742F9623B03223F5C047FF46F2660111A",
+  "release": "EVT_OBSERVER_R1",
+  "version": "0.1.0",
+  "date": "2026-11-08",
+  "scope": "civilian airborne-drone observation and tracking measurements only",
+  "production_authority": "NOT_AUTHORIZED",
+  "archive_verification": {
+    "re_extraction": "PASS",
+    "top_level_layout": "PASS",
+    "file_count": 30,
+    "verified_internal_sha256_entries": 29,
+    "missing_files": 0,
+    "hash_mismatches": 0
+  },
+  "source_verification": {
+    "configure_from_extracted_archive": "PASS",
+    "release_build_from_extracted_archive": "PASS",
+    "standalone_tests": "PASS, 2 of 2",
+    "full_repository_tests": "PASS, 21 of 21"
+  },
+  "target_verification": {
+    "sysconfig_generation": "PASS",
+    "r5f_compile_and_link": "PASS",
+    "c66x_compile_and_link": "PASS",
+    "gp_appimage_generation": "PASS",
+    "appimage_sha256": "8768D29167EA3484A1B22D5A1E43CAAD1D85BFE4C3E702ED9B7B1371200AA88E",
+    "high_security_appimage": "NOT_BUILT: OpenSSL executable absent"
+  },
+  "document_verification": {
+    "guide_pages_rendered_and_inspected": 6,
+    "can_contract_pages_rendered_and_inspected": 5,
+    "template_package_comparison": "PASS",
+    "structure_and_typography": "PASS"
+  },
+  "not_run": [
+    "hardware bench test",
+    "RF performance test",
+    "range calibration",
+    "azimuth and elevation calibration",
+    "RCS calibration",
+    "uncertainty calibration",
+    "thermal test",
+    "EMC test"
+  ]
+}
+

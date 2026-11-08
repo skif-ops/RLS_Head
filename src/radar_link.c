@@ -75,7 +75,7 @@ uint16_t rls_radar_link_expected_payload_length(uint8_t type)
         return 36u;
     case RLS_RADAR_MSG_SERVICE_ACK:
     case RLS_RADAR_MSG_SERVICE_REQUEST:
-        return 16u;
+        return RLS_RADAR_SERVICE_PAYLOAD_SIZE;
     default:
         return 0u;
     }
@@ -237,6 +237,22 @@ static bool measurement_is_valid(const rls_radar_measurement_t *measurement)
     return measurement_invalid_fields_are_zero(measurement);
 }
 
+static bool service_operation_is_valid(uint8_t operation)
+{
+    return operation >= RLS_RADAR_SERVICE_START_OBSERVATION
+        && operation <= RLS_RADAR_SERVICE_RESET_STATISTICS;
+}
+
+static bool bytes_are_zero(const uint8_t *data, size_t begin, size_t end)
+{
+    for (size_t i = begin; i < end; ++i) {
+        if (data[i] != 0u) {
+            return false;
+        }
+    }
+    return true;
+}
+
 int rls_radar_measurement_pack(
     const rls_radar_measurement_t *measurement,
     rls_radar_link_frame_t *frame)
@@ -292,6 +308,94 @@ int rls_radar_measurement_unpack(
     measurement->quality_flags = get_u16_le(&frame->payload[32]);
     measurement->track_state = frame->payload[34];
     return measurement_is_valid(measurement)
+        ? RLS_RADAR_LINK_OK
+        : RLS_RADAR_LINK_ERROR_PAYLOAD;
+}
+
+int rls_radar_service_request_pack(
+    const rls_radar_service_request_t *request,
+    rls_radar_link_frame_t *frame)
+{
+    if (request == NULL || frame == NULL) {
+        return RLS_RADAR_LINK_ERROR_ARGUMENT;
+    }
+    if (!service_operation_is_valid(request->operation)
+        || request->request_id == 0u) {
+        return RLS_RADAR_LINK_ERROR_PAYLOAD;
+    }
+    frame->type = RLS_RADAR_MSG_SERVICE_REQUEST;
+    frame->payload_length = RLS_RADAR_SERVICE_PAYLOAD_SIZE;
+    frame->header_flags = RLS_RADAR_HEADER_ACK_REQUIRED;
+    memset(frame->payload, 0, sizeof(frame->payload));
+    frame->payload[0] = request->operation;
+    put_u32_le(&frame->payload[4], request->request_id);
+    return RLS_RADAR_LINK_OK;
+}
+
+int rls_radar_service_request_unpack(
+    const rls_radar_link_frame_t *frame,
+    rls_radar_service_request_t *request)
+{
+    if (frame == NULL || request == NULL) {
+        return RLS_RADAR_LINK_ERROR_ARGUMENT;
+    }
+    if (frame->type != RLS_RADAR_MSG_SERVICE_REQUEST
+        || frame->payload_length != RLS_RADAR_SERVICE_PAYLOAD_SIZE
+        || frame->header_flags != RLS_RADAR_HEADER_ACK_REQUIRED
+        || !service_operation_is_valid(frame->payload[0])
+        || !bytes_are_zero(frame->payload, 1u, 4u)
+        || !bytes_are_zero(frame->payload, 8u, RLS_RADAR_SERVICE_PAYLOAD_SIZE)) {
+        return RLS_RADAR_LINK_ERROR_PAYLOAD;
+    }
+    request->operation = frame->payload[0];
+    request->request_id = get_u32_le(&frame->payload[4]);
+    return request->request_id != 0u
+        ? RLS_RADAR_LINK_OK
+        : RLS_RADAR_LINK_ERROR_PAYLOAD;
+}
+
+int rls_radar_service_ack_pack(
+    const rls_radar_service_ack_t *ack,
+    rls_radar_link_frame_t *frame)
+{
+    if (ack == NULL || frame == NULL) {
+        return RLS_RADAR_LINK_ERROR_ARGUMENT;
+    }
+    if (!service_operation_is_valid(ack->operation)
+        || ack->status > RLS_RADAR_SERVICE_ACK_INTERNAL_ERROR
+        || ack->request_id == 0u) {
+        return RLS_RADAR_LINK_ERROR_PAYLOAD;
+    }
+    frame->type = RLS_RADAR_MSG_SERVICE_ACK;
+    frame->payload_length = RLS_RADAR_SERVICE_PAYLOAD_SIZE;
+    frame->header_flags = RLS_RADAR_HEADER_ACK_RESPONSE;
+    memset(frame->payload, 0, sizeof(frame->payload));
+    frame->payload[0] = ack->operation;
+    frame->payload[1] = ack->status;
+    put_u32_le(&frame->payload[4], ack->request_id);
+    return RLS_RADAR_LINK_OK;
+}
+
+int rls_radar_service_ack_unpack(
+    const rls_radar_link_frame_t *frame,
+    rls_radar_service_ack_t *ack)
+{
+    if (frame == NULL || ack == NULL) {
+        return RLS_RADAR_LINK_ERROR_ARGUMENT;
+    }
+    if (frame->type != RLS_RADAR_MSG_SERVICE_ACK
+        || frame->payload_length != RLS_RADAR_SERVICE_PAYLOAD_SIZE
+        || frame->header_flags != RLS_RADAR_HEADER_ACK_RESPONSE
+        || !service_operation_is_valid(frame->payload[0])
+        || frame->payload[1] > RLS_RADAR_SERVICE_ACK_INTERNAL_ERROR
+        || !bytes_are_zero(frame->payload, 2u, 4u)
+        || !bytes_are_zero(frame->payload, 8u, RLS_RADAR_SERVICE_PAYLOAD_SIZE)) {
+        return RLS_RADAR_LINK_ERROR_PAYLOAD;
+    }
+    ack->operation = frame->payload[0];
+    ack->status = frame->payload[1];
+    ack->request_id = get_u32_le(&frame->payload[4]);
+    return ack->request_id != 0u
         ? RLS_RADAR_LINK_OK
         : RLS_RADAR_LINK_ERROR_PAYLOAD;
 }

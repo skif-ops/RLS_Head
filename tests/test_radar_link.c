@@ -123,6 +123,64 @@ static int test_measurement_validity_rules(void)
     return 0;
 }
 
+static int test_service_request_and_ack_contract(void)
+{
+    rls_radar_link_frame_t frame;
+    rls_radar_link_frame_t decoded;
+    rls_radar_service_request_t request = {
+        RLS_RADAR_SERVICE_START_OBSERVATION,
+        0x12345678u
+    };
+    rls_radar_service_request_t decoded_request;
+    rls_radar_service_ack_t ack = {
+        RLS_RADAR_SERVICE_START_OBSERVATION,
+        RLS_RADAR_SERVICE_ACK_OK,
+        0x12345678u
+    };
+    rls_radar_service_ack_t decoded_ack;
+    uint8_t wire[RLS_RADAR_LINK_WIRE_SIZE];
+
+    memset(&frame, 0, sizeof(frame));
+    frame.version = RLS_RADAR_LINK_VERSION;
+    frame.sequence = 7u;
+    frame.timestamp_us = 1000u;
+    frame.session_id = 2u;
+    CHECK(rls_radar_service_request_pack(&request, &frame)
+        == RLS_RADAR_LINK_OK);
+    CHECK(rls_radar_link_encode(&frame, wire, sizeof(wire))
+        == RLS_RADAR_LINK_OK);
+    CHECK(rls_radar_link_decode(wire, sizeof(wire), &decoded)
+        == RLS_RADAR_LINK_OK);
+    CHECK(rls_radar_service_request_unpack(&decoded, &decoded_request)
+        == RLS_RADAR_LINK_OK);
+    CHECK(decoded_request.operation == request.operation);
+    CHECK(decoded_request.request_id == request.request_id);
+
+    memset(&frame, 0, sizeof(frame));
+    frame.version = RLS_RADAR_LINK_VERSION;
+    frame.sequence = 8u;
+    frame.timestamp_us = 1001u;
+    frame.session_id = 3u;
+    CHECK(rls_radar_service_ack_pack(&ack, &frame) == RLS_RADAR_LINK_OK);
+    CHECK(rls_radar_link_encode(&frame, wire, sizeof(wire))
+        == RLS_RADAR_LINK_OK);
+    CHECK(rls_radar_link_decode(wire, sizeof(wire), &decoded)
+        == RLS_RADAR_LINK_OK);
+    CHECK(rls_radar_service_ack_unpack(&decoded, &decoded_ack)
+        == RLS_RADAR_LINK_OK);
+    CHECK(decoded_ack.operation == ack.operation);
+    CHECK(decoded_ack.status == ack.status);
+    CHECK(decoded_ack.request_id == ack.request_id);
+
+    decoded.payload[8] = 1u;
+    CHECK(rls_radar_service_ack_unpack(&decoded, &decoded_ack)
+        == RLS_RADAR_LINK_ERROR_PAYLOAD);
+    request.request_id = 0u;
+    CHECK(rls_radar_service_request_pack(&request, &frame)
+        == RLS_RADAR_LINK_ERROR_PAYLOAD);
+    return 0;
+}
+
 static int test_sequence_contract(void)
 {
     rls_radar_sequence_tracker_t tracker;
@@ -152,6 +210,7 @@ int main(void)
     CHECK(test_measurement_round_trip() == 0);
     CHECK(test_crc_and_reserved_rejection() == 0);
     CHECK(test_measurement_validity_rules() == 0);
+    CHECK(test_service_request_and_ack_contract() == 0);
     CHECK(test_sequence_contract() == 0);
     return 0;
 }

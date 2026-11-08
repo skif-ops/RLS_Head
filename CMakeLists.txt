@@ -41,6 +41,10 @@ add_library(radar_link STATIC
     src/radar_link.c
 )
 
+add_library(awr2944p_observer STATIC
+    firmware/awr2944p_observer/src/awr2944p_observer.c
+)
+
 add_library(carrier_health STATIC
     src/carrier_health.c
 )
@@ -117,6 +121,11 @@ target_include_directories(radar_link PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+target_include_directories(awr2944p_observer PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/firmware/awr2944p_observer/include
+)
+
 target_include_directories(carrier_health PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -172,6 +181,7 @@ if(MSVC)
     target_compile_options(hil_r2_evidence PRIVATE /W4 /WX)
     target_compile_options(time_service PRIVATE /W4 /WX)
     target_compile_options(radar_link PRIVATE /W4 /WX)
+    target_compile_options(awr2944p_observer PRIVATE /W4 /WX)
     target_compile_options(carrier_health PRIVATE /W4 /WX)
     target_compile_options(measurement_session PRIVATE /W4 /WX)
     target_compile_options(evidence_export PRIVATE /W4 /WX)
@@ -192,6 +202,7 @@ else()
     target_compile_options(hil_r2_evidence PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(time_service PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(radar_link PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(awr2944p_observer PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(carrier_health PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(measurement_session PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(evidence_export PRIVATE -Wall -Wextra -Wpedantic -Werror)
@@ -208,6 +219,7 @@ else()
 endif()
 
 target_link_libraries(sys_err PUBLIC hil_r2)
+target_link_libraries(awr2944p_observer PUBLIC radar_link)
 target_link_libraries(targetstate_uncertainty PUBLIC hil_r1 sys_err)
 target_link_libraries(targetstate_error_ledger PUBLIC targetstate_uncertainty)
 target_link_libraries(evidence_export PUBLIC measurement_session time_service carrier_health)
@@ -215,6 +227,7 @@ target_link_libraries(evt_runtime_config PUBLIC hil_r1)
 target_link_libraries(evt_fusion PUBLIC evt_runtime_config targetstate_uncertainty time_service carrier_health gnss_service)
 
 if(NOT MSVC)
+    target_link_libraries(awr2944p_observer PUBLIC m)
     target_link_libraries(hil_r2_evidence PUBLIC m)
     target_link_libraries(time_service PUBLIC m)
 endif()
@@ -333,6 +346,20 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     endif()
 
     add_test(NAME radar_link_wire COMMAND test_radar_link)
+
+    add_executable(test_awr2944p_observer
+        tests/test_awr2944p_observer.c
+    )
+
+    target_link_libraries(test_awr2944p_observer PRIVATE awr2944p_observer)
+
+    if(MSVC)
+        target_compile_options(test_awr2944p_observer PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_awr2944p_observer PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+
+    add_test(NAME awr2944p_observer_logic COMMAND test_awr2944p_observer)
 
     add_executable(test_carrier_health
         tests/test_carrier_health.c
