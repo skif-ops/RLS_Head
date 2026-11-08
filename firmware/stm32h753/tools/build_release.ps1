@@ -40,6 +40,6 @@ cmake -S $repoRoot -B $build -G Ninja `
 cmake --build $build
 
 Get-FileHash -Algorithm SHA256 `
-    (Join-Path $build "EVT_SYS_CARRIER_STM32H753_R1.elf"), `
-    (Join-Path $build "EVT_SYS_CARRIER_STM32H753_R1.hex"), `
-    (Join-Path $build "EVT_SYS_CARRIER_STM32H753_R1.bin")
+    (Join-Path $build "EVT_SYS_CARRIER_STM32H753_R2.elf"), `
+    (Join-Path $build "EVT_SYS_CARRIER_STM32H753_R2.hex"), `
+    (Join-Path $build "EVT_SYS_CARRIER_STM32H753_R2.bin")

@@ -640,7 +640,7 @@ if(EVT_BUILD_STM32H753_FIRMWARE)
     )
 
     set_target_properties(evt_stm32h753_firmware PROPERTIES
-        OUTPUT_NAME "EVT_SYS_CARRIER_STM32H753_R1"
+        OUTPUT_NAME "EVT_SYS_CARRIER_STM32H753_R2"
         SUFFIX ".elf"
     )
 
@@ -685,7 +685,7 @@ if(EVT_BUILD_STM32H753_FIRMWARE)
         --specs=nosys.specs
         -Wl,--gc-sections
         -Wl,--print-memory-usage
-        -Wl,-Map=${CMAKE_BINARY_DIR}/EVT_SYS_CARRIER_STM32H753_R1.map
+        -Wl,-Map=${CMAKE_BINARY_DIR}/EVT_SYS_CARRIER_STM32H753_R2.map
         -T${CMAKE_CURRENT_SOURCE_DIR}/firmware/stm32h753/linker/STM32H753IIT6_EVT.ld
     )
 
@@ -694,10 +694,10 @@ if(EVT_BUILD_STM32H753_FIRMWARE)
         POST_BUILD
         COMMAND ${CMAKE_OBJCOPY} -O ihex
             $<TARGET_FILE:evt_stm32h753_firmware>
-            ${CMAKE_BINARY_DIR}/EVT_SYS_CARRIER_STM32H753_R1.hex
+            ${CMAKE_BINARY_DIR}/EVT_SYS_CARRIER_STM32H753_R2.hex
         COMMAND ${CMAKE_OBJCOPY} -O binary
             $<TARGET_FILE:evt_stm32h753_firmware>
-            ${CMAKE_BINARY_DIR}/EVT_SYS_CARRIER_STM32H753_R1.bin
+            ${CMAKE_BINARY_DIR}/EVT_SYS_CARRIER_STM32H753_R2.bin
         COMMAND ${CMAKE_SIZE} $<TARGET_FILE:evt_stm32h753_firmware>
         VERBATIM
     )

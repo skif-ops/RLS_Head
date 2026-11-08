@@ -1,0 +1,98 @@
+{
+  "schema": "evt-board-order-readiness-audit-v1",
+  "audit_date": "2026-11-08",
+  "release": "2.0.0-RC5",
+  "board": "RADAR_D79_POWER_24V",
+  "board_revision": "0.7.232",
+  "board_sha256": "bacbf2f3fc93192ffb653bd3dff7fe64e2a3a647d62394d5fcf163af94cb9a2f",
+  "intended_use": "Civil airborne drone observation and tracking",
+  "order_readiness": {
+    "bare_pcb_dfm_submission": "READY_FOR_FACTORY_CAM_REVIEW",
+    "bare_pcb_unconditional_order": "NOT_READY",
+    "pcba_order": "NOT_READY",
+    "fully_ready_to_order": false
+  },
+  "verified": {
+    "native_altium_board_present": true,
+    "native_altium_project_present": true,
+    "native_schematic_sheets": 31,
+    "native_erc_latest_result": "NO_VIOLATIONS_FOUND",
+    "native_drc_violations": 0,
+    "native_drc_waived": 0,
+    "unrouted_connections": 0,
+    "net_antennae": 0,
+    "board_outline": "CIRCLE_79.0_MM",
+    "components": 304,
+    "component_origins_outside_board": 0,
+    "copper_primitives_outside_board": 0,
+    "minimum_conservative_copper_to_edge_mm": 0.8421,
+    "nets": 269,
+    "physical_pads": 1408,
+    "vias": 1367,
+    "polygons": 17,
+    "gerber_files": 15,
+    "drill_output_files": 6,
+    "ipc_2581_revision": "B",
+    "ipc_2581_components": 304,
+    "pick_and_place_rows": 300,
+    "bom_rows": 304,
+    "bom_fit_rows": 293,
+    "bom_pcb_only_rows": 11,
+    "firmware_stm32": "EVT_R2_BUILT_SOFTWARE_VERIFIED_HARDWARE_NOT_RUN",
+    "firmware_awr2944p": "EVT_OBSERVER_R1_BUILT_SOFTWARE_VERIFIED_HARDWARE_NOT_RUN"
+  },
+  "blocking_findings": [
+    {
+      "id": "BOM-001",
+      "severity": "BLOCKER_PCBA",
+      "finding": "The assembly BOM contains 14 fitted positions with SELECTION_REQUIRED and no MPN."
+    },
+    {
+      "id": "BOM-002",
+      "severity": "BLOCKER_PCBA",
+      "finding": "The assembly BOM contains 82 fitted positions marked SPEC_ONLY; exact orderable MPNs are not locked."
+    },
+    {
+      "id": "BOM-003",
+      "severity": "BLOCKER_PCBA",
+      "finding": "All 304 BOM rows have no recorded price; 47 rows have no manufacturer and 25 rows have no MPN, including PCB-only items."
+    },
+    {
+      "id": "BOM-PNP-001",
+      "severity": "BLOCKER_PCBA",
+      "finding": "BOM coordinates do not match the native Pick and Place export for C91, J1, J6 and J8. The native Pick and Place file is the geometry authority, but the conflicting BOM fields must be corrected or removed."
+    },
+    {
+      "id": "FAB-001",
+      "severity": "BLOCKER_UNCONDITIONAL_PCB_ORDER",
+      "finding": "There are 187 via-in-pad locations: 146 copper-filled planarized microvias and 41 filled planarized copper-capped through vias. Factory process acceptance is not recorded."
+    },
+    {
+      "id": "FAB-002",
+      "severity": "BLOCKER_UNCONDITIONAL_PCB_ORDER",
+      "finding": "The eight-layer mixed RO3003 and high-Tg FR-4 stack, controlled RF geometry and drilling spans have not received an independent factory CAM and stack feasibility review."
+    },
+    {
+      "id": "DOC-001",
+      "severity": "BLOCKER_COMPLETE_PCBA_PACKAGE",
+      "finding": "The current assembly drawing has sparse and faint designators and is not sufficient as the only visual assembly reference."
+    }
+  ],
+  "prototype_qualification_open": [
+    "RF electromagnetic simulation and measured antenna/range performance",
+    "Power integrity, thermal and signal integrity qualification",
+    "Programming and read-back of STM32H753 on the assembled board",
+    "AWR2944P to STM32 CAN-FD interoperability on hardware",
+    "EMC, environmental and production test validation"
+  ],
+  "next_actions": [
+    "Lock exact MPNs for every fitted BOM position and regenerate the XLSX and CSV BOMs.",
+    "Regenerate BOM coordinates from native Altium 0.7.232 or remove coordinate fields from the BOM and designate the native Pick and Place file as the only placement authority.",
+    "Submit Gerber, NC Drill, IPC-2581, stack and via-in-pad requirements for factory CAM review and record the accepted stack and process deviations.",
+    "Regenerate readable top and bottom assembly drawings with visible designators.",
+    "After corrections, regenerate all manufacturing outputs from the unchanged or newly revised native PcbDoc and repeat DRC and archive checksum verification."
+  ],
+  "rf_performance": "NOT_MEASURED",
+  "hardware_bench_validation": "NOT_RUN",
+  "production_authority": "NOT_AUTHORIZED"
+}

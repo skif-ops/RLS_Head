@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "generated_utc": "2026-11-08T14:13:19Z",
+  "package": "EVT_GSN_STM32H753_firmware_v0.2.0_EVT_R2_2026-11-08.zip",
+  "bytes": 8015767,
+  "sha256": "a49e466b4b78286b8d95426c55240e27b55d126d8c5dec10ce53e28cb94d9f79",
+  "archive_verification": {
+    "checked_files": 456,
+    "mismatch_count": 0,
+    "mismatches": [],
+    "archive_entry_count": 457
+  },
+  "toolchain": {
+    "compiler": "xPack GNU Arm Embedded GCC 14.2.1-1.1",
+    "binutils": "2.43.1.20241119",
+    "generator": "Ninja 1.13.2"
+  },
+  "target_build": {
+    "status": "PASS",
+    "clean_builds": 2,
+    "bin_reproducible": true,
+    "hex_reproducible": true,
+    "bin_sha256": "9e857872469f4a2aec982753bfbd6f94bf253ef48985fb8c1b6854f872453ef5",
+    "hex_sha256": "df929d44325adcd64a1d52a392de6739bdf966323c6da2f9dc604838a05d301c",
+    "flash_bytes": 53000
+  },
+  "host_tests": {
+    "status": "PASS",
+    "passed": 21,
+    "failed": 0
+  },
+  "packaged_source_rebuild": {
+    "status": "PASS",
+    "bin_and_hex_match_release": true,
+    "requirement": "Extract to a short path such as C:\\EVT_STM32_R2 before rebuilding on Windows."
+  },
+  "hardware_bench": "NOT_RUN",
+  "production_authority": "NOT_AUTHORIZED"
+}

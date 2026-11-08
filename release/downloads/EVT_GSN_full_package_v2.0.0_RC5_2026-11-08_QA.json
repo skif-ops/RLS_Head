@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "generated_utc": "2026-11-08T14:13:25Z",
+  "package": "EVT_GSN_full_package_v2.0.0_RC5_2026-11-08.zip",
+  "bytes": 65431778,
+  "sha256": "7fb8c4d702b606e937cd581062e417ea78d231ce13630c2323da6373ca953e16",
+  "archive_verification": {
+    "checked_files": 666,
+    "mismatch_count": 0,
+    "mismatches": [],
+    "archive_entry_count": 667
+  },
+  "stm32h753_evt_r2": {
+    "target_build": "PASS",
+    "host_tests": "21/21 PASS",
+    "packaged_source_rebuild": "PASS",
+    "hardware_bench": "NOT_RUN"
+  },
+  "awr2944p_observer": {
+    "release": "EVT_R1",
+    "target_build": "PASS",
+    "hardware_bench": "NOT_RUN",
+    "scope": "Observation and tracking only."
+  },
+  "round_board_d79": {
+    "drc": "PASS_0_VIOLATIONS",
+    "unrouted": 0,
+    "schematic_equivalence": "PASS",
+    "bare_pcb_dfm_submission": "READY_FOR_FACTORY_CAM_REVIEW",
+    "unconditional_bare_pcb_order": "NOT_READY",
+    "pcba_order": "NOT_READY"
+  },
+  "package_state": "IN_PREPARATION_BOARD_ORDER_BLOCKERS_RECORDED",
+  "production_authority": "NOT_AUTHORIZED"
+}
