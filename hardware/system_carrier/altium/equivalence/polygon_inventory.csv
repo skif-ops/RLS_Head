@@ -1,0 +1,3 @@
+polygon_name,layer_name,net_name,polygon_type,hatch_style,point_count,outline_point_count,outline_match,remove_dead,remove_islands_by_area,remove_narrow_necks
+"EVT_GND_L2_PLANE","Mid-Layer 1","GND","SignalLayer","Solid",8,8,"true","false","false","false"
+"EVT_3V3_L3_PLANE","Mid-Layer 2","3V3","SignalLayer","Solid",8,8,"true","false","false","false"

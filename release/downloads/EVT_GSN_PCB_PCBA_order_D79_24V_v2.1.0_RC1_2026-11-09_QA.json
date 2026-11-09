@@ -1,0 +1,21 @@
+{
+  "schema": "evt_radar_d79_r9_factory_archive_qa_v1",
+  "release": "EVT_GSN_PCB_PCBA_order_D79_24V_v2.1.0_RC1_2026-11-09.zip",
+  "archive_sha256": "e445b36a9ced4f752ce2af84690abef21e14fb77d0ede309118b1b2c3276fd95",
+  "archive_files": 55,
+  "zip_read_test": "PASS",
+  "native_pcbdoc": "PRESENT",
+  "ascii_pcbdoc": "PRESENT",
+  "altium_drc": "PASS_0_WARNINGS_0_VIOLATIONS",
+  "unrouted_connections": 0,
+  "short_circuits": 0,
+  "gerber_x2": "PRESENT",
+  "nc_drill_separate_plated_files": "PRESENT",
+  "pick_and_place_metric_csv_txt": "PRESENT",
+  "antenna_preflight": "PASS_64_RADIATORS_8_PER_CHANNEL",
+  "full_wave_em": "NOT_RUN",
+  "physical_rf_validation": "NOT_RUN",
+  "r9_bom_binding": "INCOMPLETE_DO_NOT_ORDER_PCBA",
+  "schematic_pcb_equivalence_r9": "NOT_RUN",
+  "production_authority": "NOT_AUTHORIZED"
+}

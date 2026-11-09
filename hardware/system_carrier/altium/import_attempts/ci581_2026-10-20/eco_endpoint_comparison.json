@@ -1,0 +1,1009 @@
+{
+  "altium_net_merges_kicad_partitions": {
+    "3V3": {
+      "assigned_endpoint_count": 12,
+      "examples": [
+        "C62-2:/GND",
+        "U3-1:/3V3",
+        "U3-11:/ETH_CRS_DV",
+        "U3-12:/ETH_MDIO",
+        "U3-13:/ETH_MDC",
+        "U3-15:/ETH_NRST",
+        "U3-16:/ETH_TX_EN",
+        "U3-17:/ETH_TXD0",
+        "U3-18:/ETH_TXD1",
+        "U3-5:/ETH_50M",
+        "U3-7:/ETH_RXD1",
+        "U3-8:/ETH_RXD0"
+      ],
+      "kicad_nets": [
+        "/3V3",
+        "/ETH_50M",
+        "/ETH_CRS_DV",
+        "/ETH_MDC",
+        "/ETH_MDIO",
+        "/ETH_NRST",
+        "/ETH_RXD0",
+        "/ETH_RXD1",
+        "/ETH_TXD0",
+        "/ETH_TXD1",
+        "/ETH_TX_EN",
+        "/GND"
+      ]
+    },
+    "RADAR_12V": {
+      "assigned_endpoint_count": 6,
+      "examples": [
+        "J4-4:/RADAR_REF",
+        "J5-1:/RADAR_12V",
+        "U4-1:/CAN_TX",
+        "U4-2:/GND",
+        "U4-3:/3V3",
+        "U4-4:/CAN_RX"
+      ],
+      "kicad_nets": [
+        "/3V3",
+        "/CAN_RX",
+        "/CAN_TX",
+        "/GND",
+        "/RADAR_12V",
+        "/RADAR_REF"
+      ]
+    }
+  },
+  "eco_assigned_unique_endpoints": 147,
+  "eco_assignment_log_records": 147,
+  "eco_net_count": 48,
+  "endpoints_assigned_multiple_altium_nets": {},
+  "kicad_endpoint_count": 483,
+  "kicad_net_count": 215,
+  "production_authority": "NOT_AUTHORIZED",
+  "routing_authority": "NOT_AUTHORIZED",
+  "schema": "ALTIUM-ECO-ENDPOINT-COMPARISON-216-002",
+  "source": "Executed Altium ECO log versus qualified CI581 KiCad netlist baseline; not a direct native PcbDoc audit.",
+  "status": "FAIL",
+  "unassigned_multi_endpoint_count": 188,
+  "unassigned_multi_endpoints": [
+    {
+      "designator": "C1",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C10",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C100",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C100",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C101",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C101",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C102",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C102",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C103",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C103",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C104",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C104",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C105",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C105",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C106",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C106",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C107",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C107",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C108",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C108",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C109",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C109",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C11",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C110",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C110",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C111",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C111",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C112",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C112",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C113",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C113",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C114",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C114",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C115",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C12",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C12",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C13",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C14",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C15",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C15",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C2",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C2",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C20",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C20",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C21",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C21",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C22",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C22",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C3",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C4",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C40",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C40",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C61",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C62",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C64",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C65",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C6D",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C7D",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C80",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C80",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C81",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "C81",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "C82",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "D1",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "D4",
+      "net": "/GND",
+      "pin": "3"
+    },
+    {
+      "designator": "D8",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "FB1",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "J1",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "J10",
+      "net": "/3V3",
+      "pin": "1"
+    },
+    {
+      "designator": "J10",
+      "net": "/GND",
+      "pin": "3"
+    },
+    {
+      "designator": "J10",
+      "net": "/GND",
+      "pin": "5"
+    },
+    {
+      "designator": "J4",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "J4",
+      "net": "/GND",
+      "pin": "5"
+    },
+    {
+      "designator": "J5",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "J8",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "L1",
+      "net": "/3V3",
+      "pin": "2"
+    },
+    {
+      "designator": "R1",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "R10",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "R2",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "R41",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "R42",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "R5P",
+      "net": "/3V3",
+      "pin": "2"
+    },
+    {
+      "designator": "R601",
+      "net": "/3V3",
+      "pin": "2"
+    },
+    {
+      "designator": "R602",
+      "net": "/3V3",
+      "pin": "2"
+    },
+    {
+      "designator": "R603",
+      "net": "/3V3",
+      "pin": "2"
+    },
+    {
+      "designator": "R604",
+      "net": "/3V3",
+      "pin": "2"
+    },
+    {
+      "designator": "R63",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "R6F",
+      "net": "/3V3",
+      "pin": "2"
+    },
+    {
+      "designator": "R70",
+      "net": "/BOOT0",
+      "pin": "1"
+    },
+    {
+      "designator": "R70",
+      "net": "/3V3",
+      "pin": "2"
+    },
+    {
+      "designator": "R73",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "R7F",
+      "net": "/3V3",
+      "pin": "2"
+    },
+    {
+      "designator": "R81",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "R82",
+      "net": "/3V3",
+      "pin": "2"
+    },
+    {
+      "designator": "SW1",
+      "net": "/NRST",
+      "pin": "1"
+    },
+    {
+      "designator": "SW1",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "U1",
+      "net": "/SYS_EFUSE_FLT",
+      "pin": "1"
+    },
+    {
+      "designator": "U1",
+      "net": "/GND",
+      "pin": "102"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "103"
+    },
+    {
+      "designator": "U1",
+      "net": "/GND",
+      "pin": "113"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "114"
+    },
+    {
+      "designator": "U1",
+      "net": "/GND",
+      "pin": "126"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "127"
+    },
+    {
+      "designator": "U1",
+      "net": "/GND",
+      "pin": "135"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "136"
+    },
+    {
+      "designator": "U1",
+      "net": "/GND",
+      "pin": "14"
+    },
+    {
+      "designator": "U1",
+      "net": "/CAN_RX",
+      "pin": "142"
+    },
+    {
+      "designator": "U1",
+      "net": "/CAN_TX",
+      "pin": "143"
+    },
+    {
+      "designator": "U1",
+      "net": "/GND",
+      "pin": "148"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "149"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "15"
+    },
+    {
+      "designator": "U1",
+      "net": "/ETH_TX_EN",
+      "pin": "154"
+    },
+    {
+      "designator": "U1",
+      "net": "/ETH_TXD0",
+      "pin": "156"
+    },
+    {
+      "designator": "U1",
+      "net": "/ETH_TXD1",
+      "pin": "157"
+    },
+    {
+      "designator": "U1",
+      "net": "/GND",
+      "pin": "158"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "159"
+    },
+    {
+      "designator": "U1",
+      "net": "/BOOT0",
+      "pin": "166"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "171"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "172"
+    },
+    {
+      "designator": "U1",
+      "net": "/RADAR_EFUSE_FLT",
+      "pin": "2"
+    },
+    {
+      "designator": "U1",
+      "net": "/GND",
+      "pin": "22"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "23"
+    },
+    {
+      "designator": "U1",
+      "net": "/ETH_NRST",
+      "pin": "3"
+    },
+    {
+      "designator": "U1",
+      "net": "/NRST",
+      "pin": "31"
+    },
+    {
+      "designator": "U1",
+      "net": "/ETH_MDC",
+      "pin": "33"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "36"
+    },
+    {
+      "designator": "U1",
+      "net": "/GND",
+      "pin": "37"
+    },
+    {
+      "designator": "U1",
+      "net": "/GNSS_PPS",
+      "pin": "40"
+    },
+    {
+      "designator": "U1",
+      "net": "/ETH_50M",
+      "pin": "41"
+    },
+    {
+      "designator": "U1",
+      "net": "/ETH_MDIO",
+      "pin": "42"
+    },
+    {
+      "designator": "U1",
+      "net": "/GND",
+      "pin": "48"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "49"
+    },
+    {
+      "designator": "U1",
+      "net": "/ETH_CRS_DV",
+      "pin": "53"
+    },
+    {
+      "designator": "U1",
+      "net": "/ETH_RXD0",
+      "pin": "54"
+    },
+    {
+      "designator": "U1",
+      "net": "/ETH_RXD1",
+      "pin": "55"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "6"
+    },
+    {
+      "designator": "U1",
+      "net": "/GND",
+      "pin": "61"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "62"
+    },
+    {
+      "designator": "U1",
+      "net": "/GND",
+      "pin": "71"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "72"
+    },
+    {
+      "designator": "U1",
+      "net": "/RADAR_REF",
+      "pin": "79"
+    },
+    {
+      "designator": "U1",
+      "net": "/IMU_DRDY",
+      "pin": "80"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "82"
+    },
+    {
+      "designator": "U1",
+      "net": "/GND",
+      "pin": "90"
+    },
+    {
+      "designator": "U1",
+      "net": "/3V3",
+      "pin": "91"
+    },
+    {
+      "designator": "U1",
+      "net": "/IMU_NSS",
+      "pin": "92"
+    },
+    {
+      "designator": "U1",
+      "net": "/IMU_SCK",
+      "pin": "93"
+    },
+    {
+      "designator": "U1",
+      "net": "/IMU_MISO",
+      "pin": "94"
+    },
+    {
+      "designator": "U1",
+      "net": "/IMU_MOSI",
+      "pin": "95"
+    },
+    {
+      "designator": "U1",
+      "net": "/GNSS_RX_EXT",
+      "pin": "96"
+    },
+    {
+      "designator": "U1",
+      "net": "/GNSS_TX_EXT",
+      "pin": "97"
+    },
+    {
+      "designator": "U2",
+      "net": "/IMU_MISO",
+      "pin": "1"
+    },
+    {
+      "designator": "U2",
+      "net": "/IMU_NSS",
+      "pin": "12"
+    },
+    {
+      "designator": "U2",
+      "net": "/IMU_SCK",
+      "pin": "13"
+    },
+    {
+      "designator": "U2",
+      "net": "/IMU_MOSI",
+      "pin": "14"
+    },
+    {
+      "designator": "U2",
+      "net": "/IMU_DRDY",
+      "pin": "4"
+    },
+    {
+      "designator": "U2",
+      "net": "/3V3",
+      "pin": "5"
+    },
+    {
+      "designator": "U2",
+      "net": "/GND",
+      "pin": "6"
+    },
+    {
+      "designator": "U2",
+      "net": "/GND",
+      "pin": "7"
+    },
+    {
+      "designator": "U2",
+      "net": "/3V3",
+      "pin": "8"
+    },
+    {
+      "designator": "U2",
+      "net": "/GND",
+      "pin": "9"
+    },
+    {
+      "designator": "U3",
+      "net": "/3V3",
+      "pin": "19"
+    },
+    {
+      "designator": "U3",
+      "net": "/3V3",
+      "pin": "9"
+    },
+    {
+      "designator": "U4",
+      "net": "/GND",
+      "pin": "EP"
+    },
+    {
+      "designator": "U5",
+      "net": "/3V3",
+      "pin": "14"
+    },
+    {
+      "designator": "U5",
+      "net": "/GND",
+      "pin": "15"
+    },
+    {
+      "designator": "U5",
+      "net": "/GND",
+      "pin": "16"
+    },
+    {
+      "designator": "U5",
+      "net": "/GND",
+      "pin": "5"
+    },
+    {
+      "designator": "U5",
+      "net": "/GND",
+      "pin": "6"
+    },
+    {
+      "designator": "U5",
+      "net": "/GND",
+      "pin": "EP"
+    },
+    {
+      "designator": "U6",
+      "net": "/SYS_EFUSE_FLT",
+      "pin": "4"
+    },
+    {
+      "designator": "U6",
+      "net": "/GND",
+      "pin": "8"
+    },
+    {
+      "designator": "U7",
+      "net": "/RADAR_EFUSE_FLT",
+      "pin": "4"
+    },
+    {
+      "designator": "U7",
+      "net": "/RADAR_12V",
+      "pin": "6"
+    },
+    {
+      "designator": "U7",
+      "net": "/GND",
+      "pin": "8"
+    },
+    {
+      "designator": "U8",
+      "net": "/GND",
+      "pin": "10"
+    },
+    {
+      "designator": "U8",
+      "net": "/GND",
+      "pin": "12"
+    },
+    {
+      "designator": "U8",
+      "net": "/GND",
+      "pin": "13"
+    },
+    {
+      "designator": "U8",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "U8",
+      "net": "/GNSS_TX_EXT",
+      "pin": "20"
+    },
+    {
+      "designator": "U8",
+      "net": "/GNSS_RX_EXT",
+      "pin": "21"
+    },
+    {
+      "designator": "U8",
+      "net": "/3V3",
+      "pin": "23"
+    },
+    {
+      "designator": "U8",
+      "net": "/GND",
+      "pin": "24"
+    },
+    {
+      "designator": "U8",
+      "net": "/GNSS_PPS",
+      "pin": "3"
+    },
+    {
+      "designator": "U8",
+      "net": "/3V3",
+      "pin": "4"
+    },
+    {
+      "designator": "Y1",
+      "net": "/GND",
+      "pin": "2"
+    },
+    {
+      "designator": "Y1",
+      "net": "/3V3",
+      "pin": "4"
+    },
+    {
+      "designator": "Y2",
+      "net": "/3V3",
+      "pin": "4"
+    }
+  ],
+  "unknown_eco_endpoints": []
+}

@@ -1,0 +1,19 @@
+{
+  "connected_endpoint_count": 483,
+  "errors": [],
+  "input_sha256": {
+    "bom_contract": "3a3bf81063029143b8ea4ffb524fec3ec18984f1e0b828ee45b39fab787e9068",
+    "pin_contract": "fe45f36b20e8515e2ffe569f481a488178707326905ba2c2d0fd3025f51f3dc3",
+    "xml_netlist": "4104b918e72916ee07e27c7450636c57fafa52cb29878382585b68abaaa58438"
+  },
+  "notes": [
+    "Only endpoints whose designators exist in the authoritative layout BOM are retained; KiCad power symbols are excluded."
+  ],
+  "output": {
+    "path": "build/layout-all-review/baseline.csv",
+    "sha256": "7b8b244a2076791f27b5ee991cafc34c87d86d5240e0c985b1ad792d581161ae"
+  },
+  "physical_ref_count": 92,
+  "schema": "KICAD-NETLIST-BASELINE-001",
+  "status": "PASS"
+}

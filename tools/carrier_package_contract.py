@@ -5,8 +5,8 @@ from pathlib import Path
 
 
 REQUIRED_REFS = {
-    "U1", "U2", "U3", "U4", "U5", "U6", "U7", "U8",
-    "D8", "D3", "D4", "J6",
+    "U1", "U2", "U4", "U5", "U6", "U7", "U9",
+    "D8", "D3", "D4", "J6", "J8",
 }
 
 

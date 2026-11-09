@@ -1,0 +1,88 @@
+sheet,designator,comment,comment_hidden,designator_hidden,symbol_left_mil,symbol_bottom_mil,symbol_right_mil,symbol_top_mil,full_left_mil,full_bottom_mil,full_right_mil,full_top_mil,designator_over_symbol,comment_over_symbol,symbol_outside_safe_frame,full_outside_safe_frame,sheet_width_mil,sheet_height_mil
+"10_POWER_INPUT.SchDoc","J1","12V_IN",true,false,1630,6200,1900,6400,1580,6160,2049,6620,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","D1","SMAJ15CA",true,false,2330,6890,2670,7010,2280,6860,2763,7230,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","U6","SYS_EFUSE",true,false,3580,5950,5420,6750,3530,5810,5570,6970,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","U5","3V3_BUCK",true,false,7380,6550,9220,7550,7330,6410,9363,7770,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","U9","5V_GNSS_BUCK",true,false,7380,3550,9220,4550,7330,3410,9500,4770,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","U7","RADAR_EFUSE",true,false,3580,4050,5420,4850,3530,3910,5661,5070,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","L1","2.2uH",true,false,10420,6880,10480,7220,10320,6830,10565,7443,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","L9","2.2uH",true,false,10420,3880,10480,4220,10320,3830,10565,4455,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","C1","10uF/25V",true,false,6840,4930,7060,5270,6820,4880,7207,5490,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","C2","22uF/6.3V",true,false,10040,4930,10260,5270,10020,4880,10430,5490,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","C3","3.3nF",true,false,8190,4930,8410,5270,8170,4880,8458,5490,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","C4","100nF/25V",true,false,7290,4480,7510,4820,7270,4430,7688,5040,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","R1","665R 1%",true,false,4460,5130,4540,5470,4370,5080,4580,5699,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","R2","1.05k 1%",true,false,4460,3230,4540,3570,4370,3180,4580,3810,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","R5P","100k 1% PG_PU",true,false,8910,5130,8990,5470,8820,5080,9030,5743,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","C90","10uF/25V",true,false,6390,2430,6610,2770,6370,2380,6757,2990,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","C91","22uF/10V",true,false,10040,2430,10260,2770,10020,2380,10407,2990,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","C92","3.3nF",true,false,8190,2430,8410,2770,8170,2380,8458,2990,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","C93","100nF/25V",true,false,7290,2430,7510,2770,7270,2380,7688,2990,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","R90","100k 1% PG_PU",true,false,8910,2630,8990,2970,8820,2580,9030,3243,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","R6F","10k 1% FLT_PU",true,false,5810,5130,5890,5470,5720,5080,5930,5739,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","R7F","10k 1% FLT_PU",true,false,5810,3230,5890,3570,5720,3180,5930,3838,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","R61","470k 1%",true,false,2310,5980,2390,6320,2220,5930,2430,6580,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","R62","36.0k 1%",true,false,2910,5530,2990,5870,2820,5480,3030,6141,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","R63","41.2k 1%",true,false,3510,5130,3590,5470,3420,5080,3630,5740,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","R71","470k 1%",true,false,2310,3680,2390,4020,2220,3630,2430,4279,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","R72","16.9k 1%",true,false,2910,3230,2990,3570,2820,3180,3030,3840,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","R73","43.7k 1%",true,false,3510,2830,3590,3170,3420,2780,3630,3440,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","C6D","3.3nF",true,false,4990,4930,5210,5270,4970,4880,5258,5490,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","C7D","3.3nF",true,false,4990,3030,5210,3370,4970,2980,5258,3590,false,false,false,false,11693,8268
+"10_POWER_INPUT.SchDoc","#FLG0201","PWR_FLAG",true,true,1500,5880,1600,6010,0,0,1687,6140,false,false,false,true,11693,8268
+"10_POWER_INPUT.SchDoc","#FLG0202","PWR_FLAG",true,true,1150,1580,1250,1710,0,0,1337,1840,false,false,false,true,11693,8268
+"20_MCU_CORE.SchDoc","U1","STM32H753IIT6",true,false,8780,1230,11620,10370,8730,1180,11670,10590,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C10","2.2uF",true,false,2340,6180,2560,6520,2320,6130,2608,6740,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C11","2.2uF",true,false,2340,5430,2560,5770,2320,5380,2608,5990,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C12","4.7uF",true,false,2340,4680,2560,5020,2320,4630,2608,5240,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C13","100nF",true,false,5090,7430,5310,7770,5070,7380,5366,7990,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","R10","10k 1%",true,false,5160,5930,5240,6270,5070,5880,5280,6533,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","J10","TC2030_SWD",true,false,4980,4750,5250,5350,4930,4710,5538,5570,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","Y1","25MHz_OSC",true,false,2180,8450,3220,9250,2130,8310,3415,9470,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C15","100nF",true,false,3340,7180,3560,7520,3320,7130,3616,7740,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C100","100nF VDD",true,false,6090,8930,6310,9270,6070,8880,6499,9490,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C101","100nF VDD",true,false,6090,8530,6310,8870,6070,8480,6499,9090,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C102","100nF VDD",true,false,6090,8130,6310,8470,6070,8080,6499,8690,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C103","100nF VDD",true,false,6090,7730,6310,8070,6070,7680,6499,8290,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C104","100nF VDD",true,false,6090,7330,6310,7670,6070,7280,6499,7890,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C105","100nF VDD",true,false,6090,6930,6310,7270,6070,6880,6499,7490,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C106","100nF VDD",true,false,6090,6530,6310,6870,6070,6480,6499,7090,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C107","100nF VDD",true,false,7090,8930,7310,9270,7070,8880,7499,9490,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C108","100nF VDD",true,false,7090,8530,7310,8870,7070,8480,7499,9090,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C109","100nF VDD",true,false,7090,8130,7310,8470,7070,8080,7499,8690,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C110","100nF VDD",true,false,7090,7730,7310,8070,7070,7680,7499,8290,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C111","100nF VDD",true,false,7090,7330,7310,7670,7070,7280,7499,7890,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C112","100nF VDD",true,false,7090,6930,7310,7270,7070,6880,7499,7490,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C113","100nF VDD",true,false,7090,6530,7310,6870,7070,6480,7499,7090,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C114","100nF VDD33_USB",true,false,6090,5680,6310,6020,6070,5630,6688,6240,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C115","100nF NRST",true,false,7090,5680,7310,6020,7070,5630,7520,6240,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","TP1","HOST_UART1_TX",true,false,6170,4830,6230,5010,6070,4610,6622,5230,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","TP2","HOST_UART1_RX",true,false,7170,4830,7230,5010,7070,4610,7625,5230,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","FB1","BLM18BD601SH1",true,false,4420,8180,4520,8520,4320,8130,4600,8776,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","C14","1uF",true,false,4340,6680,4560,7020,4320,6630,4580,7240,false,false,false,false,16535,11693
+"20_MCU_CORE.SchDoc","#FLG0101","PWR_FLAG",true,true,3400,4580,3500,4710,0,0,3587,4840,false,false,false,true,16535,11693
+"20_MCU_CORE.SchDoc","#FLG0103","PWR_FLAG",true,true,4900,4580,5000,4710,0,0,5087,4840,false,false,false,true,16535,11693
+"30_TIME_GNSS.SchDoc","D8","UART_PPS_ESD",true,false,2930,2950,3970,3750,2880,2810,4234,3970,false,false,false,false,8268,5827
+"30_TIME_GNSS.SchDoc","J8","EXT_GNSS_PIXHAWK",true,false,6630,2400,6900,3000,6580,2360,7381,3220,false,false,false,false,8268,5827
+"40_IMU.SchDoc","U2","IMU",true,false,3430,3050,5670,3850,3380,2910,5720,4070,false,false,false,false,8268,5827
+"40_IMU.SchDoc","C20","100nF",true,false,3340,2580,3560,2920,3320,2530,3616,3140,false,false,false,false,8268,5827
+"40_IMU.SchDoc","C21","2.2uF",true,false,3890,2580,4110,2920,3870,2530,4158,3140,false,false,false,false,8268,5827
+"40_IMU.SchDoc","C22","10nF",true,false,4440,2580,4660,2920,4420,2530,4685,3140,false,false,false,false,8268,5827
+"50_RADAR_IO_CAN.SchDoc","U4","CAN_FD",true,false,2980,3200,4020,4000,2930,3060,4108,4220,false,false,false,false,8268,5827
+"50_RADAR_IO_CAN.SchDoc","D4","CAN_ESD",true,false,6130,3200,7170,4000,6080,3060,7290,4220,false,false,false,false,8268,5827
+"50_RADAR_IO_CAN.SchDoc","J4","RADAR_IO",true,false,7430,3150,7700,3750,7380,3110,7914,3970,false,false,false,false,8268,5827
+"50_RADAR_IO_CAN.SchDoc","J5","RADAR_PWR",true,false,7430,2200,7700,2400,7380,2160,7975,2620,false,false,false,false,8268,5827
+"50_RADAR_IO_CAN.SchDoc","R40","120R",true,false,5860,1980,5940,2320,5770,1930,5980,2594,false,false,false,false,8268,5827
+"50_RADAR_IO_CAN.SchDoc","C40","100nF",true,false,2890,2680,3110,3020,2870,2630,3166,3240,false,false,false,false,8268,5827
+"50_RADAR_IO_CAN.SchDoc","R41","10k",true,false,3610,2430,3690,2770,3520,2380,3730,3031,false,false,false,false,8268,5827
+"50_RADAR_IO_CAN.SchDoc","R42","10k",true,false,4060,2430,4140,2770,3970,2380,4180,3042,false,false,false,false,8268,5827
+"60_HOST_UART.SchDoc","D3","DUAL_UART_ESD",true,false,4230,2650,5270,3450,4180,2510,5583,3670,false,false,false,false,8268,5827
+"60_HOST_UART.SchDoc","J6","HOST_UART_2X",true,false,6880,2750,7150,3350,6830,2710,7501,3570,false,false,false,false,8268,5827
+"60_HOST_UART.SchDoc","R600","10k",true,false,3730,3510,4070,3590,3680,3470,4120,3770,false,false,false,false,8268,5827
+"60_HOST_UART.SchDoc","R605","10k",true,false,3730,1860,4070,1940,3680,1820,4120,2120,false,false,false,false,8268,5827
+"60_HOST_UART.SchDoc","R601","33R",true,false,3380,3860,3720,3940,3330,3808,3770,4120,false,false,false,false,8268,5827
+"60_HOST_UART.SchDoc","R602","33R",true,false,3380,3060,3720,3140,3330,3008,3770,3320,false,false,false,false,8268,5827
+"60_HOST_UART.SchDoc","R603","33R",true,false,3380,2260,3720,2340,3330,2208,3770,2520,false,false,false,false,8268,5827
+"60_HOST_UART.SchDoc","R604","33R",true,false,3380,1460,3720,1540,3330,1408,3770,1720,false,false,false,false,8268,5827
+"70_DEBUG_BOOT.SchDoc","SW1","NRST",true,false,3130,3420,3570,3580,3080,3360,3620,3800,false,false,false,false,8268,5827
+"70_DEBUG_BOOT.SchDoc","R70","0R",true,false,7160,2080,7240,2420,7070,2030,7280,2692,false,false,false,false,8268,5827

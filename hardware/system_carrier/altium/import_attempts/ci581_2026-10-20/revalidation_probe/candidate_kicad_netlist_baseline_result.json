@@ -1,0 +1,18 @@
+{
+  "connected_endpoint_count": 483,
+  "errors": [],
+  "input_sha256": {
+    "bom_contract": "3a3bf81063029143b8ea4ffb524fec3ec18984f1e0b828ee45b39fab787e9068",
+    "xml_netlist": "0503544802eb8d334e49a1fd3de1a0fcdfd794ef15cab933f9b3f3bd415f9ddf"
+  },
+  "notes": [
+    "Only endpoints whose designators exist in the authoritative layout BOM are retained; KiCad power symbols are excluded."
+  ],
+  "output": {
+    "path": "build/port-bridge-carrier/kicad_netlist_baseline.csv",
+    "sha256": "d14add24676de1e076d424385501cc3da5320f30f14f351f090a5df45bf7ade8"
+  },
+  "physical_ref_count": 92,
+  "schema": "KICAD-NETLIST-BASELINE-001",
+  "status": "PASS"
+}

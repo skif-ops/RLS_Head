@@ -195,6 +195,9 @@ def _sync_layout_authority_status(
     native_status["equivalence_gate_status"] = "PASS"
     native_status["layout_authority"] = "AUTHORIZED"
     native_status["production_authority"] = "NOT_AUTHORIZED"
+    if gate_result.get("review_a_status") != "PASS":
+        raise ValueError("equivalence PASS missing Review A PASS")
+    native_status["review_a_status"] = "PASS"
     native_status["next_required_outputs"] = []
     native_status["equivalence_result"] = (
         PATHS["gate_result"].as_posix()
@@ -227,6 +230,8 @@ def _sync_layout_authority_status(
             item
             for item in blockers
             if "Native Altium import/save" not in str(item)
+            and "Current native Altium files and evidence predate"
+            not in str(item)
         ]
 
     routing = implementation_status.setdefault(

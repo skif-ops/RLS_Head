@@ -1,0 +1,114 @@
+Added Pin To Net: NetName=GND Pin=C1-2
+Added Pin To Net: NetName=3V3 Pin=C2-1
+Added Pin To Net: NetName=GND Pin=C2-2
+Added Pin To Net: NetName=GND Pin=C3-2
+Added Pin To Net: NetName=GND Pin=C4-2
+Added Pin To Net: NetName=GND Pin=C6D-2
+Added Pin To Net: NetName=GND Pin=C7D-2
+Added Pin To Net: NetName=3V3 Pin=C12-1
+Added Pin To Net: NetName=3V3 Pin=C15-1
+Added Pin To Net: NetName=3V3 Pin=C20-1
+Added Pin To Net: NetName=GND Pin=C20-2
+Added Pin To Net: NetName=3V3 Pin=C21-1
+Added Pin To Net: NetName=GND Pin=C21-2
+Added Pin To Net: NetName=3V3 Pin=C22-1
+Added Pin To Net: NetName=GND Pin=C22-2
+Added Pin To Net: NetName=3V3 Pin=C40-1
+Added Pin To Net: NetName=GND Pin=C40-2
+Added Pin To Net: NetName=GND Pin=C60-2
+Added Pin To Net: NetName=GND Pin=C61-2
+Added Pin To Net: NetName=GND Pin=C63-2
+Added Pin To Net: NetName=GND Pin=C64-2
+Added Pin To Net: NetName=GND Pin=C65-2
+Added Pin To Net: NetName=3V3 Pin=C80-1
+Added Pin To Net: NetName=GND Pin=C80-2
+Added Pin To Net: NetName=3V3 Pin=C81-1
+Added Pin To Net: NetName=GND Pin=C81-2
+Added Pin To Net: NetName=GND Pin=C82-2
+Added Pin To Net: NetName=3V3 Pin=C100-1
+Added Pin To Net: NetName=3V3 Pin=C101-1
+Added Pin To Net: NetName=3V3 Pin=C102-1
+Added Pin To Net: NetName=3V3 Pin=C103-1
+Added Pin To Net: NetName=3V3 Pin=C104-1
+Added Pin To Net: NetName=3V3 Pin=C105-1
+Added Pin To Net: NetName=3V3 Pin=C106-1
+Added Pin To Net: NetName=3V3 Pin=C107-1
+Added Pin To Net: NetName=3V3 Pin=C108-1
+Added Pin To Net: NetName=3V3 Pin=C109-1
+Added Pin To Net: NetName=3V3 Pin=C110-1
+Added Pin To Net: NetName=3V3 Pin=C111-1
+Added Pin To Net: NetName=3V3 Pin=C112-1
+Added Pin To Net: NetName=3V3 Pin=C113-1
+Added Pin To Net: NetName=3V3 Pin=C114-1
+Added Pin To Net: NetName=GND Pin=D1-2
+Added Pin To Net: NetName=GND Pin=D3-3
+Added Pin To Net: NetName=GND Pin=D3-8
+Added Pin To Net: NetName=GND Pin=D4-3
+Added Pin To Net: NetName=GND Pin=D8-2
+Added Pin To Net: NetName=3V3 Pin=FB1-1
+Added Pin To Net: NetName=GND Pin=J4-2
+Added Pin To Net: NetName=GND Pin=J4-5
+Added Pin To Net: NetName=GND Pin=J5-2
+Added Pin To Net: NetName=GND Pin=J8-2
+Added Pin To Net: NetName=GND Pin=J8-2
+Added Pin To Net: NetName=3V3 Pin=J10-1
+Added Pin To Net: NetName=GND Pin=R1-2
+Added Pin To Net: NetName=GND Pin=R2-2
+Added Pin To Net: NetName=3V3 Pin=R5P-2
+Added Pin To Net: NetName=3V3 Pin=R6F-2
+Added Pin To Net: NetName=3V3 Pin=R7F-2
+Added Pin To Net: NetName=GND Pin=R41-2
+Added Pin To Net: NetName=GND Pin=R42-2
+Added Pin To Net: NetName=GND Pin=R63-2
+Added Pin To Net: NetName=GND Pin=R73-2
+Added Pin To Net: NetName=GND Pin=R81-2
+Added Pin To Net: NetName=3V3 Pin=R82-2
+Added Pin To Net: NetName=GND Pin=R600-2
+Added Pin To Net: NetName=GND Pin=R605-2
+Added Pin To Net: NetName=3V3 Pin=U1-6
+Added Pin To Net: NetName=3V3 Pin=U1-15
+Added Pin To Net: NetName=3V3 Pin=U1-36
+Added Pin To Net: NetName=3V3 Pin=U1-49
+Added Pin To Net: NetName=3V3 Pin=U1-62
+Added Pin To Net: NetName=3V3 Pin=U1-72
+Added Pin To Net: NetName=3V3 Pin=U1-82
+Added Pin To Net: NetName=3V3 Pin=U1-91
+Added Pin To Net: NetName=3V3 Pin=U1-103
+Added Pin To Net: NetName=3V3 Pin=U1-114
+Added Pin To Net: NetName=3V3 Pin=U1-127
+Added Pin To Net: NetName=3V3 Pin=U1-136
+Added Pin To Net: NetName=3V3 Pin=U1-149
+Added Pin To Net: NetName=3V3 Pin=U1-159
+Added Pin To Net: NetName=3V3 Pin=U1-171
+Added Pin To Net: NetName=3V3 Pin=U1-172
+Added Pin To Net: NetName=3V3 Pin=U2-5
+Added Pin To Net: NetName=GND Pin=U2-7
+Added Pin To Net: NetName=GND Pin=U2-9
+Added Pin To Net: NetName=GND Pin=U3-25
+Add Pin To Net: Unknown Pin: Pin U4-EP
+Added Pin To Net: NetName=GND Pin=U5-5
+Added Pin To Net: NetName=GND Pin=U5-6
+Added Pin To Net: NetName=3V3 Pin=U5-14
+Added Pin To Net: NetName=GND Pin=U5-15
+Added Pin To Net: NetName=GND Pin=U5-16
+Add Pin To Net: Unknown Pin: Pin U5-EP
+Added Pin To Net: NetName=GND Pin=U6-8
+Added Pin To Net: NetName=GND Pin=U7-8
+Added Pin To Net: NetName=GND Pin=U8-2
+Added Pin To Net: NetName=3V3 Pin=U8-4
+Added Pin To Net: NetName=3V3 Pin=Y1-4
+Added Pin To Net: NetName=GND Pin=Y2-2
+Add Net: Net with name "3V3" already exists
+Add Net: Net with name "BOOT0" already exists
+Add Net: Net with name "ETH_50M" already exists
+Add Net: Net with name "ETH_NRST" already exists
+Add Net: Net with name "NRST" already exists
+Add Net: Net with name "RADAR_EFUSE_FLT" already exists
+Add Net: Net with name "SYS_EFUSE_FLT" already exists
+Change Class Name : Old Net Name=DEBUG_BOOT New Net Name=70_DEBUG_BOOT
+Change Class Name : Old Net Name=ETHERNET New Net Name=60_ETHERNET
+Change Class Name : Old Net Name=IMU New Net Name=40_IMU
+Change Class Name : Old Net Name=MCU_CORE New Net Name=20_MCU_CORE
+Change Class Name : Old Net Name=POWER_INPUT New Net Name=10_POWER_INPUT
+Change Class Name : Old Net Name=RADAR_IO_CAN New Net Name=50_RADAR_IO_CAN
+Change Class Name : Old Net Name=TIME_GNSS New Net Name=30_TIME_GNSS

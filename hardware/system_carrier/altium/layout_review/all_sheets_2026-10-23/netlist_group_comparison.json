@@ -1,0 +1,66 @@
+{
+  "schema": "SCHEMATIC-LAYOUT-NETLIST-COMPARISON-001",
+  "baseline": "CI616 qualified KiCad source",
+  "baseline_xml_sha256": "d9c3829f10918aa247b0758feae37139ab8ac56089315a5911a1063aefb46912",
+  "candidate_xml_sha256": "4104b918e72916ee07e27c7450636c57fafa52cb29878382585b68abaaa58438",
+  "normalization": "Ignore U8.2 and U8.4 to isolate layout edits from two pin-contract corrections",
+  "baseline_group_count": 67,
+  "candidate_group_count": 67,
+  "removed_group_count": 0,
+  "added_group_count": 0,
+  "renamed_groups": [
+    {
+      "old": "Net-(J6-Pad8)",
+      "new": "/ETHERNET/ETH_SHIELD_LOCAL",
+      "pins": [
+        "J6.8",
+        "J6.SH"
+      ]
+    },
+    {
+      "old": "Net-(U3-RBIAS)",
+      "new": "/ETHERNET/ETH_RBIAS_LOCAL",
+      "pins": [
+        "R600.1",
+        "U3.24"
+      ]
+    },
+    {
+      "old": "Net-(U3-VDDCR)",
+      "new": "/ETHERNET/ETH_VDDCR_LOCAL",
+      "pins": [
+        "C60.1",
+        "U3.6"
+      ]
+    },
+    {
+      "old": "Net-(U4-SHDN)",
+      "new": "/RADAR_IO_CAN/SHDN_PD",
+      "pins": [
+        "R42.1",
+        "U4.5"
+      ]
+    },
+    {
+      "old": "Net-(U4-STB)",
+      "new": "/RADAR_IO_CAN/STB_PD",
+      "pins": [
+        "R41.1",
+        "U4.8"
+      ]
+    }
+  ],
+  "pin_contract_corrections": [
+    {
+      "pin": "U8.2",
+      "old_net": "/GND",
+      "new_net": "unconnected-(U8-D_SEL-Pad2)"
+    },
+    {
+      "pin": "U8.4",
+      "old_net": "/3V3",
+      "new_net": "unconnected-(U8-EXTINT-Pad4)"
+    }
+  ],
+  "status": "PASS"
+}

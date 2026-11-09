@@ -8,14 +8,19 @@
   "allowed_temp_rise_c": 10,
   "nets": {
     "VIN_RAW": {
-      "current_a": 5,
+      "current_a": 4.5,
       "min_neck_width_mm": 3,
       "rule_id": "RV-006"
     },
-    "VIN_PROTECTED": {
-      "current_a": 5,
+    "VIN_PROTECTED_24V": {
+      "current_a": 4.5,
       "min_neck_width_mm": 3,
       "rule_id": "RV-023"
+    },
+    "V12_SYS": {
+      "current_a": 5,
+      "min_neck_width_mm": 3,
+      "rule_id": "RV-025"
     },
     "RADAR_12V": {
       "current_a": 3.18,
@@ -26,6 +31,11 @@
       "current_a": 3,
       "min_neck_width_mm": 1.5,
       "rule_id": "RV-008"
+    },
+    "5V_GNSS": {
+      "current_a": 0.5,
+      "min_neck_width_mm": 0.5,
+      "rule_id": "RV-009"
     }
   },
   "locked_sources": [
@@ -45,7 +55,7 @@
     "production_power_geometry_locked": false
   },
   "notes": [
-    "This contract locks only the EVT routing minimum power geometry.",
+    "This contract locks only the EVT routing minimum power geometry for the 18V to 32V input ECO.",
     "Source widths remain calculation-derived and do not replace final manufacturing copper/thermal review.",
     "Production release remains blocked until final copper weight, stack and thermal evidence are reviewed."
   ]

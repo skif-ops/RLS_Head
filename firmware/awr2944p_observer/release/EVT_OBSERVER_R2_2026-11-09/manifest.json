@@ -1,0 +1,51 @@
+{
+  "schema": "evt_awr2944p_observer_release_v2",
+  "release": "EVT_OBSERVER_R2_2026-11-09",
+  "firmware_version": "0.2.0-EVT-R2",
+  "date": "2026-11-09",
+  "purpose": "civil airborne-object observation and one-target tracking",
+  "excluded_functions": [
+    "interception",
+    "lead-point calculation",
+    "convergence-course calculation",
+    "movement commands",
+    "actuator commands",
+    "external-control commands"
+  ],
+  "target": {
+    "device": "AWR2944P",
+    "image_type": "unsigned GP appimage",
+    "appimage": "Таргет/AWR2944P_OBSERVER_EVT_R2.appimage",
+    "appimage_sha256": "d1b0957916ba13792e91eecc21202113e36d457b2658eaf81bedd0bb828b2fc0",
+    "high_security_image": "NOT_BUILT"
+  },
+  "profile": {
+    "operational_candidate": "Профили/EVT_R9_TRIPRF_TRACKING_CANDIDATE.cfg",
+    "calibration": "Профили/EVT_R9_RANGE_PHASE_CALIBRATION.cfg",
+    "range_resolution_calculated_m": 0.93685143125,
+    "beat_frequency_at_300m_hz": 16011076.569511298,
+    "velocity_search_interval_m_s": [-60.0, 60.0],
+    "antenna_virtual_channels": 16,
+    "physical_patches": 64,
+    "profile_status": "CALCULATED_CANDIDATE_NOT_HARDWARE_ACCEPTED"
+  },
+  "interfaces": {
+    "can_fd": true,
+    "awr_to_carrier_id": "0x320",
+    "carrier_to_awr_id": "0x321",
+    "dlc_bytes": 64,
+    "uart_cli": "3.3 V"
+  },
+  "validation": {
+    "host_tests": "22/22 PASS",
+    "r5f_build": "PASS",
+    "c66x_build": "PASS",
+    "profile_calculation": "PASS",
+    "three_prf_digital_sweep": "PASS",
+    "hardware_validation": "NOT_RUN",
+    "range_phase_calibration": "NOT_RUN",
+    "full_wave_antenna_validation": "NOT_RUN",
+    "range_300m_rcs_0_01m2": "NOT_RUN"
+  },
+  "production_authority": "NOT_AUTHORIZED"
+}

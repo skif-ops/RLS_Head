@@ -1,0 +1,10 @@
+[Design]
+Version=1.0
+HierarchyMode=0
+
+[Document1]
+DocumentPath=EVT_SYS_CARRIER_U9FSW_ECO.pas
+AnnotationEnabled=1
+
+[Generic_ScriptingSystem]
+StartProcName=EVT_SYS_CARRIER_U9FSW_ECO.pas>ClearU9FSWNet

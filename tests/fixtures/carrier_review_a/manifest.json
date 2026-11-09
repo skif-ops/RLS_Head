@@ -20,12 +20,12 @@
     {
       "id": "pinmap",
       "path": "tests/fixtures/carrier_review_a/pinmap.csv",
-      "sha256": "153d80cdf02da37cd65b72c7e6feedc4a2cc1849b517ff7a858c0b92cb0d7125"
+      "sha256": "a6d479c97745de974d63116e7d686e8e87412de3784eb708cf6838e4ca09566f"
     },
     {
       "id": "bom",
       "path": "tests/fixtures/carrier_review_a/bom.csv",
-      "sha256": "c28c6f79f4e64ee28ceea51db2ccd6638b5703fd56fbc4a8309d28dcc041d268"
+      "sha256": "5a617af8a69de87d70a8f411182472bc832653661f498deb1f4e9075c2c75b7c"
     }
   ],
   "erc_policy": {
@@ -38,7 +38,9 @@
     "reset_boot": "PASS",
     "timing_capture": "PASS",
     "imu": "PASS",
-    "ethernet": "PASS",
-    "can_fd": "PASS"
+    "host_uart": "PASS",
+    "external_gnss": "PASS",
+    "can_fd": "PASS",
+    "no_obsolete_interfaces": "PASS"
   }
 }

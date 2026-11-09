@@ -1,0 +1,17 @@
+{
+  "schema": "evt_awr2944p_release_qa_v2",
+  "release": "EVT_GSN_AWR2944P_firmware_v0.2.0_EVT_R2_2026-11-09.zip",
+  "archive_sha256": "c13542434868b908294c973266c4df8a35f3d3e54a6ad0b576bd1ac1a2cb7d48",
+  "archive_files": 40,
+  "zip_read_test": "PASS",
+  "host_tests": "PASS_22_OF_22",
+  "r5f_mss_build": "PASS",
+  "c66x_dss_build": "PASS",
+  "unsigned_gp_appimage": "PASS",
+  "three_prf_velocity_sweep": "PASS_MINUS_60_TO_PLUS_60_M_S",
+  "physical_hardware_validation": "NOT_RUN",
+  "range_phase_calibration": "NOT_RUN",
+  "high_security_signing": "NOT_BUILT_OPENSSL_NOT_AVAILABLE",
+  "control_or_guidance_commands": "NOT_PRESENT",
+  "production_authority": "NOT_AUTHORIZED"
+}

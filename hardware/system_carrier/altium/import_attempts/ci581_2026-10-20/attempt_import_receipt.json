@@ -1,0 +1,58 @@
+{
+  "altium_version": "26.10.1 Trial",
+  "artifact": {
+    "artifact_id": 12262810614,
+    "current_source_binding": "PASS",
+    "digest": "sha256:fe322748504c7077c131871abb7182ebf96a06ca40d059d6c5cfedd1f4ebc811",
+    "name": "system-carrier-altium-import",
+    "package_file_count": 112,
+    "package_verification": "PASS",
+    "source_bindings_checked": 52,
+    "source_commit": "b4caea651f593d01a5b61d1316a83598dacf147a"
+  },
+  "board_id": "EVT-SYS-CARRIER",
+  "compile": {
+    "errors": 54,
+    "scope": "Automatic",
+    "validated_status": "FAIL",
+    "warnings": 169
+  },
+  "connectivity_comparison": {
+    "eco_assigned_unique_endpoints": 147,
+    "kicad_endpoints": 483,
+    "merged_altium_nets": [
+      "3V3",
+      "RADAR_12V"
+    ],
+    "status": "FAIL",
+    "unassigned_multi_endpoint_count": 188
+  },
+  "date": "2026-10-20",
+  "eco_log_counts": {
+    "components": 92,
+    "nets": 48,
+    "pin_assignment_records": 148
+  },
+  "import_source": "build/ci581/kicad_source/EVT_SYS_CARRIER.kicad_sch",
+  "native_container_preflight": "PASS",
+  "native_snapshot_dir": "native_snapshot",
+  "notes": [
+    "Genuine Altium native files from the CI581 import are retained as a diagnostic snapshot, not the canonical native design.",
+    "PcbLib was copied from the prior diagnostic import; the 29 source KiCad footprint files were byte-identical across CI577 and CI581.",
+    "This receipt does not satisfy the canonical import receipt or ALTIUM_EQUIVALENCE_GATE."
+  ],
+  "pcb_native_stream_counts": {
+    "Components6": 92,
+    "Nets6": 48,
+    "Pads6": 525,
+    "Tracks6": 1054
+  },
+  "production_authority": "NOT_AUTHORIZED",
+  "routing_authority": "NOT_AUTHORIZED",
+  "schema": "ALTIUM-NATIVE-IMPORT-ATTEMPT-RECEIPT-216-002",
+  "snapshot_sha256": {
+    "pcb": "c4457c03d5d55b616fc2b492a7a060d5942ad957e6a91d42a35b845076a4eb44",
+    "schematic": "8c476dbcc5bfb41ed3d25de02e24362f1567d987f075a0c06b7eeb38e8806c42"
+  },
+  "status": "RECORDED_BLOCKED"
+}

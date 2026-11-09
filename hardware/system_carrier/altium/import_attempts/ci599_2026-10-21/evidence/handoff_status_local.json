@@ -1,0 +1,195 @@
+{
+  "equivalence_evidence_complete": false,
+  "evidence": {
+    "bom_export": {
+      "path": "hardware/system_carrier/altium/equivalence/bom_export.csv",
+      "present": false
+    },
+    "bom_validation_result": {
+      "path": "hardware/system_carrier/altium/equivalence/bom_validation_result.json",
+      "present": false
+    },
+    "compile_report": {
+      "path": "hardware/system_carrier/altium/equivalence/compile_report.json",
+      "present": false
+    },
+    "compile_report_raw": {
+      "path": "hardware/system_carrier/altium/equivalence/compile_report_raw.txt",
+      "present": false
+    },
+    "component_inventory": {
+      "path": "hardware/system_carrier/altium/equivalence/component_inventory.csv",
+      "present": false
+    },
+    "connector_validation_result": {
+      "path": "hardware/system_carrier/altium/equivalence/connector_validation_result.json",
+      "present": false
+    },
+    "footprint_report": {
+      "path": "hardware/system_carrier/altium/equivalence/footprint_report.json",
+      "present": false
+    },
+    "hierarchy_export": {
+      "path": "hardware/system_carrier/altium/equivalence/hierarchy_export.csv",
+      "present": false
+    },
+    "hierarchy_validation_result": {
+      "path": "hardware/system_carrier/altium/equivalence/hierarchy_validation_result.json",
+      "present": false
+    },
+    "import_log": {
+      "path": "hardware/system_carrier/altium/equivalence/import_log.txt",
+      "present": false
+    },
+    "import_native_file_preflight": {
+      "path": "hardware/system_carrier/altium/equivalence/import_native_file_preflight.json",
+      "present": false
+    },
+    "import_package_manifest": {
+      "path": "hardware/system_carrier/altium/equivalence/import_package_manifest.json",
+      "present": false
+    },
+    "import_package_verification": {
+      "path": "hardware/system_carrier/altium/equivalence/import_package_verification.json",
+      "present": false
+    },
+    "import_receipt": {
+      "path": "hardware/system_carrier/altium/equivalence/import_receipt.json",
+      "present": false
+    },
+    "kicad_netlist_baseline": {
+      "path": "hardware/system_carrier/altium/equivalence/kicad_netlist_baseline.csv",
+      "present": false
+    },
+    "layer_stack_inventory": {
+      "path": "hardware/system_carrier/altium/equivalence/layer_stack_inventory.csv",
+      "present": false
+    },
+    "manifest": {
+      "path": "hardware/system_carrier/altium/equivalence/manifest.json",
+      "present": false
+    },
+    "native_audit_result": {
+      "path": "hardware/system_carrier/altium/equivalence/native_audit_result.json",
+      "present": false
+    },
+    "native_file_preflight": {
+      "path": "hardware/system_carrier/altium/equivalence/native_file_preflight.json",
+      "present": false
+    },
+    "net_inventory": {
+      "path": "hardware/system_carrier/altium/equivalence/net_inventory.csv",
+      "present": false
+    },
+    "netlist_export": {
+      "path": "hardware/system_carrier/altium/equivalence/netlist_export.csv",
+      "present": false
+    },
+    "netlist_validation_result": {
+      "path": "hardware/system_carrier/altium/equivalence/netlist_validation_result.json",
+      "present": false
+    },
+    "no_mmwave_review": {
+      "path": "hardware/system_carrier/altium/equivalence/no_mmwave_review.json",
+      "present": false
+    },
+    "no_mmwave_review_result": {
+      "path": "hardware/system_carrier/altium/equivalence/no_mmwave_review_result.json",
+      "present": false
+    },
+    "pad_net_inventory": {
+      "path": "hardware/system_carrier/altium/equivalence/pad_net_inventory.csv",
+      "present": false
+    },
+    "pcb": {
+      "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+      "present": false
+    },
+    "project": {
+      "path": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
+      "present": true,
+      "sha256": "59284024bdb3184601c17657c14d78c81da3352848f81fbe023bc74b25fc41bd",
+      "size": 1132
+    },
+    "rule_inventory": {
+      "path": "hardware/system_carrier/altium/equivalence/rule_inventory.csv",
+      "present": false
+    },
+    "schematic": {
+      "path": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
+      "present": false
+    },
+    "script_runtime_receipt": {
+      "path": "hardware/system_carrier/altium/equivalence/script_runtime_receipt.json",
+      "present": false
+    },
+    "script_runtime_result": {
+      "path": "hardware/system_carrier/altium/equivalence/script_runtime_result.json",
+      "present": false
+    }
+  },
+  "hierarchy_export_ready": false,
+  "import_provenance_ready": false,
+  "manifest_checks": {},
+  "manifest_errors": [],
+  "missing_artifacts": [
+    "bom_export",
+    "bom_validation_result",
+    "compile_report",
+    "compile_report_raw",
+    "component_inventory",
+    "connector_validation_result",
+    "footprint_report",
+    "hierarchy_export",
+    "hierarchy_validation_result",
+    "import_log",
+    "import_native_file_preflight",
+    "import_package_manifest",
+    "import_package_verification",
+    "import_receipt",
+    "kicad_netlist_baseline",
+    "layer_stack_inventory",
+    "manifest",
+    "native_audit_result",
+    "native_file_preflight",
+    "net_inventory",
+    "netlist_export",
+    "netlist_validation_result",
+    "no_mmwave_review",
+    "no_mmwave_review_result",
+    "pad_net_inventory",
+    "pcb",
+    "rule_inventory",
+    "schematic",
+    "script_runtime_receipt",
+    "script_runtime_result"
+  ],
+  "native_audit_ready": false,
+  "native_file_preflight_ready": false,
+  "native_files_ready": false,
+  "next_action": "CREATE_AND_SAVE_NATIVE_SCHDOC_PCBDOC_IN_ALTIUM",
+  "notes": [
+    "This status tool never grants layout or production authority.",
+    "Layout authority is granted only by ALTIUM_EQUIVALENCE_GATE PASS."
+  ],
+  "pending_equivalence_checks": [
+    "bom_designator_mpn_equivalence",
+    "connector_pinout_equivalence",
+    "footprint_equivalence",
+    "hierarchy_equivalence",
+    "native_pcb_audit",
+    "netlist_equivalence",
+    "no_76_81GHz_rf_on_system_carrier",
+    "pinmap_equivalence",
+    "rules_equivalence",
+    "stackup_equivalence"
+  ],
+  "production_authorized": false,
+  "routing_authorized": false,
+  "schema": "ALTIUM-NATIVE-HANDOFF-STATUS-001",
+  "script_runtime_ready": false,
+  "script_runtime_receipt_ready": false,
+  "script_runtime_result_ready": false,
+  "semantic_checks_ready": false,
+  "status": "WAITING_NATIVE_IMPORT"
+}

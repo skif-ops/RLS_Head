@@ -1,0 +1,23 @@
+{
+  "schema": "evt_full_package_qa_v2",
+  "release": "EVT_GSN_full_package_v2.1.0_RC1_2026-11-09.zip",
+  "archive_sha256": "445b1afac658a6b1af37446f8dc142de65287add7fe3134fbe95ae475492ec0f",
+  "archive_files": 723,
+  "archive_uncompressed_bytes": 172719700,
+  "zip_read_test": "PASS_ALL_ENTRIES",
+  "round_board_r9_native_altium": "PRESENT",
+  "r9_factory_outputs": "PRESENT",
+  "previous_0_7_232_outputs": "ARCHIVED_AND_MARKED_DO_NOT_USE",
+  "antenna_pdf": "PRESENT",
+  "awr2944p_evt_r2_sources_targets_profiles_tests": "PRESENT",
+  "setup_test_calibration_methods_docx_pdf": "PRESENT",
+  "awr2944p_host_tests": "PASS_22_OF_22",
+  "awr2944p_target_build": "PASS_MSS_DSS_UNSIGNED_GP_APPIMAGE",
+  "native_altium_drc_r9": "PASS_0_WARNINGS_0_VIOLATIONS",
+  "antenna_geometry_preflight": "PASS_64_RADIATORS",
+  "physical_hardware_validation": "NOT_RUN",
+  "full_wave_em": "NOT_RUN",
+  "r9_bom_binding": "INCOMPLETE",
+  "schematic_pcb_equivalence_r9": "NOT_RUN",
+  "production_authority": "NOT_AUTHORIZED"
+}

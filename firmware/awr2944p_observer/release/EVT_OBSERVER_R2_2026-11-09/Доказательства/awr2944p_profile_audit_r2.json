@@ -1,0 +1,133 @@
+{
+  "reports": [
+    {
+      "schema": "awr2944p_profile_audit_v1",
+      "profile": "EVT_R9_TRIPRF_TRACKING_CANDIDATE.cfg",
+      "sha256": "63cf166bbb1f6b8dbe0e69890d2a85a43e98ab9c0f3c41aa72fb088d24be1a14",
+      "scope": "calculated configuration audit without physical radar hardware",
+      "profiles": [
+        {
+          "profile_id": 0,
+          "start_frequency_ghz": 77.0,
+          "idle_time_us": 5.0,
+          "adc_start_us": 3.0,
+          "ramp_end_us": 25.0,
+          "slope_mhz_us": 8.0,
+          "adc_samples": 800,
+          "sample_rate_hz": 40000000.0,
+          "sample_time_us": 20.0,
+          "bandwidth_hz": 160000000.0,
+          "range_resolution_m": 0.93685143125,
+          "beat_frequency_at_300m_hz": 16011076.569511298,
+          "chirp_period_us": 29.999999999999996,
+          "native_unambiguous_velocity_m_s": 7.95627542462845
+        },
+        {
+          "profile_id": 1,
+          "start_frequency_ghz": 77.0,
+          "idle_time_us": 8.0,
+          "adc_start_us": 3.0,
+          "ramp_end_us": 25.0,
+          "slope_mhz_us": 8.0,
+          "adc_samples": 800,
+          "sample_rate_hz": 40000000.0,
+          "sample_time_us": 20.0,
+          "bandwidth_hz": 160000000.0,
+          "range_resolution_m": 0.93685143125,
+          "beat_frequency_at_300m_hz": 16011076.569511298,
+          "chirp_period_us": 32.99999999999999,
+          "native_unambiguous_velocity_m_s": 7.232977658753137
+        },
+        {
+          "profile_id": 2,
+          "start_frequency_ghz": 77.0,
+          "idle_time_us": 14.0,
+          "adc_start_us": 3.0,
+          "ramp_end_us": 25.0,
+          "slope_mhz_us": 8.0,
+          "adc_samples": 800,
+          "sample_rate_hz": 40000000.0,
+          "sample_time_us": 20.0,
+          "bandwidth_hz": 160000000.0,
+          "range_resolution_m": 0.93685143125,
+          "beat_frequency_at_300m_hz": 16011076.569511298,
+          "chirp_period_us": 39.0,
+          "native_unambiguous_velocity_m_s": 6.120211865098807
+        }
+      ],
+      "antenna_geometry_virtual_channels": 16,
+      "requirements": {
+        "target_range_m": 300.0,
+        "target_speed_interval_km_h": [
+          130.0,
+          190.0
+        ],
+        "target_abs_speed_m_s": 52.77777777777778,
+        "calculated_range_gate": "PASS",
+        "calculated_three_prf_unwrap_gate": "PASS"
+      },
+      "velocity_sweep": {
+        "range_m_s": [
+          -60.0,
+          60.0
+        ],
+        "step_m_s": 0.1,
+        "failure_count": 0,
+        "first_failures": []
+      },
+      "hardware_validation": "NOT_RUN",
+      "phase_calibration": "NOT_RUN",
+      "full_wave_antenna_validation": "NOT_RUN",
+      "production_authority": "NOT_AUTHORIZED"
+    },
+    {
+      "schema": "awr2944p_profile_audit_v1",
+      "profile": "EVT_R9_RANGE_PHASE_CALIBRATION.cfg",
+      "sha256": "76efb5a75263cb2cf75f5728d01b900f5e5616f24019f16b1f2dfa47e36d8446",
+      "scope": "calculated configuration audit without physical radar hardware",
+      "profiles": [
+        {
+          "profile_id": 0,
+          "start_frequency_ghz": 77.0,
+          "idle_time_us": 186.0,
+          "adc_start_us": 7.0,
+          "ramp_end_us": 57.14,
+          "slope_mhz_us": 70.0,
+          "adc_samples": 656,
+          "sample_rate_hz": 13349000.0,
+          "sample_time_us": 49.14225784702975,
+          "bandwidth_hz": 3439958049.2920823,
+          "range_resolution_m": 0.04357501657057926,
+          "beat_frequency_at_300m_hz": 140096919.98322386,
+          "chirp_period_us": 243.14,
+          "native_unambiguous_velocity_m_s": 0.9816906421767438
+        }
+      ],
+      "antenna_geometry_virtual_channels": 16,
+      "requirements": {
+        "target_range_m": 300.0,
+        "target_speed_interval_km_h": [
+          130.0,
+          190.0
+        ],
+        "target_abs_speed_m_s": 52.77777777777778,
+        "calculated_range_gate": "NOT_APPLICABLE_OR_FAIL",
+        "calculated_three_prf_unwrap_gate": "NOT_APPLICABLE_OR_FAIL"
+      },
+      "velocity_sweep": {
+        "range_m_s": [
+          -60.0,
+          60.0
+        ],
+        "step_m_s": 0.1,
+        "failure_count": 0,
+        "first_failures": []
+      },
+      "hardware_validation": "NOT_RUN",
+      "phase_calibration": "NOT_RUN",
+      "full_wave_antenna_validation": "NOT_RUN",
+      "production_authority": "NOT_AUTHORIZED"
+    }
+  ],
+  "production_authority": "NOT_AUTHORIZED"
+}

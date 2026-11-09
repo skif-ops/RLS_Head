@@ -1,0 +1,72 @@
+{
+  "date": "2026-10-20",
+  "files": {
+    ".gitattributes": {
+      "sha256": "bde1cd0fd26d5f1bafb422c04f3bcf0412bd9d607601dc1860fe38836ce8db33",
+      "size": 104
+    },
+    "README.md": {
+      "sha256": "695901fae7c60cda169f27c5b390e8ba87a26c85a62dc709025b90f01f1dde6e",
+      "size": 2401
+    },
+    "automatic.NET": {
+      "sha256": "dbfbca79434decac72ab7bb12e245234d98c0769c3d358f360ad991301565b88",
+      "size": 8096
+    },
+    "automatic_comparison.json": {
+      "sha256": "84feee49f9b2a0e0e861b3fce0ac8c2955cabb9cda86e4ab0713b0f9c677e716",
+      "size": 7228
+    },
+    "candidate_hierarchy_validation.json": {
+      "sha256": "4ae20acf540fd18c2f8e7b1a124809e12a620bbe61e8ccef48b360a82d6d5f95",
+      "size": 355
+    },
+    "candidate_kicad_erc.json": {
+      "sha256": "b1ab7bed2dc88e20a5e68bf90725f5ce86060db096d9ee945758be24c954fe02",
+      "size": 2302
+    },
+    "candidate_kicad_netlist_baseline.csv": {
+      "sha256": "ee72dab91135fcd2ae90121bbee743e67b785c3e9ff96213f3274c7beff3f8db",
+      "size": 10938
+    },
+    "candidate_kicad_netlist_baseline_result.json": {
+      "sha256": "748db372509e2b46eefe8e6e83d76ef6cad75fc3ce9c1e2443e5e0adf2ddfcda",
+      "size": 654
+    },
+    "candidate_vs_ci581_baseline.json": {
+      "sha256": "7ed59689fadcdcd9e59ba662cacc22bbbd7ec88e5565ea199df0bd3ac1a1bb4f",
+      "size": 211
+    },
+    "compile_cold_reload_automatic.txt": {
+      "sha256": "53d56908c51ec2dc9d7d39021fe36731ab80c16204c9cacd6ccd1a7086dbc0d8",
+      "size": 21368
+    },
+    "global_exact_3v3_label.NET": {
+      "sha256": "9689780ab64db8c2475c9abdcc0d9ebc432fc4a2f72a85c3444708f1ca596c34",
+      "size": 7989
+    },
+    "global_exact_3v3_label_comparison.json": {
+      "sha256": "229d5dc5c3903364dffb9b7dc794df727d0fd73504bf4637b2cb13e0ddaa0080",
+      "size": 6814
+    },
+    "global_ports_named.NET": {
+      "sha256": "3c8dc51a76642072cf392da4851d7f29ea21eb480e28cc8174f4e23416c98cd0",
+      "size": 8004
+    },
+    "global_ports_named_comparison.json": {
+      "sha256": "37b526b48cbde72e302d3e6a47ec7b712e62a245b3ed2a1097c8d4659ebc85e7",
+      "size": 6966
+    },
+    "global_ports_unnamed.NET": {
+      "sha256": "f374831aac4648355d228d6434f1235e1ac15f83963a99af23123d4d173c6b93",
+      "size": 8004
+    },
+    "global_ports_unnamed_comparison.json": {
+      "sha256": "4969e05076ccf53c32824c92bbb06ec3d1445683e26e415f4ff44e58daf82a8a",
+      "size": 6950
+    }
+  },
+  "qualified_source_artifact_id": 12262810614,
+  "schema": "ALTIUM-CI581-REVALIDATION-PROBE-001",
+  "status": "DIAGNOSTIC_ONLY"
+}

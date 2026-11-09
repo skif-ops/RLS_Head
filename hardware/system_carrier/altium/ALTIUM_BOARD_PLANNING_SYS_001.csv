@@ -1,9 +1,9 @@
 plan_id,domain,constraint,criticality,notes
-PLAN-001,BOARD,Use the repository 100x80 R3 EVT routing datum and four locked M3 mounting holes; do not change without explicit mechanical ECO,P0,Production enclosure/STEP freeze remains separate
-PLAN-002,CONNECTORS,Use locked EVT edge datums for J1 J4 J5 J6 J8 J10 during native layout,P0,Final enclosure/harness connector access is verified again in production mechanical review
-PLAN-003,POWER,Reserve contiguous placement area for U6 U5 U7 and bulk/decoupling network,P0,Minimize 12V and switch-current loops
-PLAN-004,GNSS,Reserve quiet board-edge RF corridor for J8-D8-U8,P0,Keep away from switch node clocks and digital buses
-PLAN-005,ETHERNET,Reserve board-edge Ethernet corridor U3-D3-J6,P0,Keep MDI routing short and direct
-PLAN-006,IMU,Reserve mechanically stiff region for U2 away from power magnetics and connectors,P1,Do not place near board flex hot spots
-PLAN-007,DEBUG,Reserve reachable edge access for J10 and service controls,P1,Must remain accessible after enclosure assembly
-PLAN-008,RETURN_PATH,Any signal layer transition on fast/timing nets requires nearby GND return via,P0,Applies to RMII MDI timing CAN and GNSS
+PLAN-001,BOARD,Use 100x80 mm as the maximum ECO envelope and reduce the native outline after placement while preserving four M3 holes and all edge clearances,P0,90x70 mm is the initial compact candidate; the final smaller outline requires native placement routing and DRC evidence
+PLAN-002,CONNECTORS,Keep J1 J4 J5 J6 J8 and J10 accessible at board edges during compact native layout,P0,Connector access and cable bend clearance are checked before the compact outline is locked
+PLAN-003,POWER,Reserve contiguous placement areas for U6 U5 U7 U9 and their bulk and decoupling networks,P0,Minimize 12V 3V3 and 5V_GNSS switch-current loops
+PLAN-004,GNSS,Place J8 and D8 at an accessible edge with U9 nearby but outside connector keepout,P0,GNSS is an external module connected by detachable JST-GH cable; no RF path exists on the carrier
+PLAN-005,HOST_UART,Place J6 and D3 at an accessible edge with R601 through R604 adjacent to the ESD array,P0,Keep both 3.3V UART channels short and provide direct low-inductance ESD return
+PLAN-006,IMU,Reserve a mechanically stiff region for U2 away from power magnetics and connectors,P1,Do not place near board flex hot spots
+PLAN-007,DEBUG,Reserve reachable edge access for J10 and service controls,P1,Must remain accessible after assembly
+PLAN-008,RETURN_PATH,Any signal layer transition on timing CAN SPI or UART nets requires a nearby GND return via,P0,Applies to timing CAN IMU SPI host UART and external GNSS UART

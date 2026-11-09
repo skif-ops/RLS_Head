@@ -1,0 +1,89 @@
+----------------------------------------------------------------------------------------------------------------------------------
+NCDrill File Report For: RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE.PcbDoc   09.11.2026  12:42:39
+----------------------------------------------------------------------------------------------------------------------------------
+
+Layer Pair : Top Layer to Bottom Layer
+ASCII Plated RoundHoles File : RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE-RoundHoles-Plated.TXT
+ASCII Plated SlotHoles File : RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE-SlotHoles-Plated.TXT
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T5      0.2mm (8mil)                                              Round             238       PTH        714.36mm (28.12inch)
+T6      0.22mm (9mil)                                             Round             3         PTH        36.60mm (1.44inch)
+T7      0.23mm (9mil)                                             Round             8         PTH        55.25mm (2.18inch)
+T8      0.25mm (10mil)                                            Round             202       PTH        702.54mm (27.66inch)
+T9      0.28mm (11mil)                                            Round             2         PTH        10.43mm (0.41inch)
+T10     0.3mm (12mil)                                             Round             36        PTH        184.92mm (7.28inch)
+T11     0.6mm (24mil)                                             Slot              2         PTH        16.10mm (0.63inch)
+T12     0.85mm (33mil)                                            Round             2         PTH        5.00mm (0.20inch)
+T13     0.991mm (39mil)                                           Round             3         PTH        7.21mm (0.28inch)
+T14     1.02mm (40mil)                                            Round             8         PTH        61.25mm (2.41inch)
+T15     3mm (118mil)                                              Round             2         PTH        51.55mm (2.03inch)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              506
+Layer Pair : Top Layer to GND1
+ASCII Plated RoundHoles File : RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE-RoundHoles-Plated.TX1
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T1      0.15mm (6mil)           +0mm (0mil)/-0.15mm (6mil)        Round             617       PTH        396.99mm (15.63inch)
+T2      0.15mm (6mil)           +0mm (0mil)/-0.025mm (1mil)       Round             137       PTH        376.19mm (14.81inch)
+T3      0.15mm (6mil)                                             Round             3         PTH        2.50mm (0.10inch)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              757
+Layer Pair : Top Layer to SIG1
+ASCII Plated RoundHoles File : RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE-RoundHoles-Plated.TX2
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T5      0.2mm (8mil)                                              Round             2         PTH        36.50mm (1.44inch)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              2
+Layer Pair : GND1 to PWR2
+ASCII Plated RoundHoles File : RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE-RoundHoles-Plated.TX3
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T5      0.2mm (8mil)                                              Round             1         PTH        0.00mm (0.00inch)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              1
+Layer Pair : SIG1 to SIG2
+ASCII Plated RoundHoles File : RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE-RoundHoles-Plated.TX4
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T5      0.2mm (8mil)                                              Round             2         PTH        1.43mm (0.06inch)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              2
+Layer Pair : SIG1 to Bottom Layer
+ASCII Plated RoundHoles File : RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE-RoundHoles-Plated.TX5
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T5      0.2mm (8mil)                                              Round             1         PTH        0.00mm (0.00inch)
+T8      0.25mm (10mil)                                            Round             2         PTH        1.01mm (0.04inch)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              3
+Layer Pair : SIG2 to Bottom Layer
+ASCII Plated RoundHoles File : RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE-RoundHoles-Plated.TX6
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T8      0.25mm (10mil)                                            Round             1         PTH        0.00mm (0.00inch)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              1
+Layer Pair : GND2 to Bottom Layer
+ASCII Plated RoundHoles File : RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE-RoundHoles-Plated.TX7
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T2      0.15mm (6mil)           +0mm (0mil)/-0.025mm (1mil)       Round             111       PTH        474.21mm (18.67inch)
+T4      0.2mm (8mil)            +0mm (0mil)/-0.025mm (1mil)       Round             8         PTH        121.60mm (4.79inch)
+T5      0.2mm (8mil)                                              Round             14        PTH        116.23mm (4.58inch)
+T8      0.25mm (10mil)                                            Round             1         PTH        0.00mm (0.00inch)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              134
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              1406
+
+Total Processing Time (hh:mm:ss) : 00:00:01

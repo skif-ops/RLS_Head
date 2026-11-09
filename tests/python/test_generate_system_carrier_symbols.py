@@ -22,7 +22,7 @@ def test_generates_expected_local_symbols(tmp_path):
 
     assert result["schema"] == "SYSTEM-CARRIER-LOCAL-SYMBOL-LIBRARY-001"
     assert result["status"] == "GENERATED"
-    assert result["symbol_count"] == 8
+    assert result["symbol_count"] == 10
     assert output.is_file()
 
     names = {
@@ -31,17 +31,19 @@ def test_generates_expected_local_symbols(tmp_path):
     }
     assert names == {
         "ICM-42688-P",
+        "LM76005RNPR",
         "TCAN3404DRBRQ1",
         "TPS62132RGTR",
+        "TPS62133RGTR",
         "TPS259470ARPWR",
+        "TPS26630RGER",
         "ECS-2520S33-250-FN-TR",
-        "ECS-2520S33-500-FN-TR",
         "ESD2CANFD24DBZRQ1",
         "TPD4E05U06DQAR",
     }
 
 
-def test_shared_tps259470_symbol_covers_u6_u7(tmp_path):
+def test_power_protection_symbols_cover_u6_u7(tmp_path):
     output = tmp_path / "SystemCarrier_Local.kicad_sym"
 
     result = generate(
@@ -51,17 +53,24 @@ def test_shared_tps259470_symbol_covers_u6_u7(tmp_path):
         output=output,
     )
 
-    symbol = next(
+    radar_efuse = next(
         item
         for item in result["symbols"]
         if item["name"] == "TPS259470ARPWR"
     )
+    system_efuse = next(
+        item
+        for item in result["symbols"]
+        if item["name"] == "TPS26630RGER"
+    )
 
-    assert symbol["refs"] == ["U6", "U7"]
-    assert symbol["pin_count"] == 10
+    assert radar_efuse["refs"] == ["U7"]
+    assert radar_efuse["pin_count"] == 10
+    assert system_efuse["refs"] == ["U6"]
+    assert system_efuse["pin_count"] == 25
 
 
-def test_pin_numbers_and_ep_are_emitted(tmp_path):
+def test_physical_pad_numbers_are_emitted(tmp_path):
     output = tmp_path / "SystemCarrier_Local.kicad_sym"
 
     generate(
@@ -76,8 +85,10 @@ def test_pin_numbers_and_ep_are_emitted(tmp_path):
     assert '(symbol "ICM-42688-P"' in text
     assert '(number "14"' in text
     assert '(symbol "TCAN3404DRBRQ1"' in text
-    assert '(number "EP"' in text
+    assert '(number "9"' in text
     assert '(symbol "TPS62132RGTR"' in text
+    assert '(number "17"' in text
+    assert '(number "EP"' not in text
 
 
 def test_locked_footprints_are_embedded_only_when_available(tmp_path):
@@ -96,9 +107,13 @@ def test_locked_footprints_are_embedded_only_when_available(tmp_path):
     }
 
     assert by_name["TCAN3404DRBRQ1"]["footprint"] == (
-        "Package_SON:Texas_DRB0008A"
+        "Package_DFN_QFN:Texas_DRB0008A"
     )
     assert by_name["TPS62132RGTR"]["footprint"] == (
+        "Package_DFN_QFN:"
+        "VQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm"
+    )
+    assert by_name["TPS62133RGTR"]["footprint"] == (
         "Package_DFN_QFN:"
         "VQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm"
     )
@@ -129,12 +144,6 @@ def test_auxiliary_symbol_pin_counts_and_footprints(tmp_path):
 
     assert by_name["ECS-2520S33-250-FN-TR"]["pin_count"] == 4
     assert by_name["ECS-2520S33-250-FN-TR"]["footprint"] == (
-        "Oscillator:"
-        "Oscillator_SMD_ECS_2520MV-xxx-xx-4Pin_2.5x2.0mm"
-    )
-
-    assert by_name["ECS-2520S33-500-FN-TR"]["pin_count"] == 4
-    assert by_name["ECS-2520S33-500-FN-TR"]["footprint"] == (
         "Oscillator:"
         "Oscillator_SMD_ECS_2520MV-xxx-xx-4Pin_2.5x2.0mm"
     )

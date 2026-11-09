@@ -1,0 +1,632 @@
+Added Component: Designator=C1(C_1206_3216Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "10uF/25V"; VariantName = "[No Variations]"
+Added Component: Designator=C2(C_1206_3216Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "22uF/6.3V"; VariantName = "[No Variations]"
+Added Component: Designator=C3(C_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "3.3nF"; VariantName = "[No Variations]"
+Added Component: Designator=C4(C_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF/25V"; VariantName = "[No Variations]"
+Added Component: Designator=C6D(C_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "3.3nF"; VariantName = "[No Variations]"
+Added Component: Designator=C7D(C_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "3.3nF"; VariantName = "[No Variations]"
+Added Component: Designator=C10(C_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "2.2uF"; VariantName = "[No Variations]"
+Added Component: Designator=C11(C_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "2.2uF"; VariantName = "[No Variations]"
+Added Component: Designator=C12(C_0805_2012Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "4.7uF"; VariantName = "[No Variations]"
+Added Component: Designator=C13(C_0402_1005Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF"; VariantName = "[No Variations]"
+Added Component: Designator=C14(C_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "1uF"; VariantName = "[No Variations]"
+Added Component: Designator=C15(C_0402_1005Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF"; VariantName = "[No Variations]"
+Added Component: Designator=C20(C_0402_1005Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/0c24a24f-4857-47d3-ba8c-2373ead2bace"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF"; VariantName = "[No Variations]"
+Added Component: Designator=C21(C_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/0c24a24f-4857-47d3-ba8c-2373ead2bace"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "2.2uF"; VariantName = "[No Variations]"
+Added Component: Designator=C22(C_0402_1005Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/0c24a24f-4857-47d3-ba8c-2373ead2bace"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "10nF"; VariantName = "[No Variations]"
+Added Component: Designator=C40(C_0402_1005Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/ed30b47e-f64f-41a4-bc40-4ec400c7b7f9"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF"; VariantName = "[No Variations]"
+Added Component: Designator=C60(C_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/6587eb5d-ce90-4de1-aea6-bcf91640d3f4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "1uF"; VariantName = "[No Variations]"
+Added Component: Designator=C61(C_0402_1005Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/6587eb5d-ce90-4de1-aea6-bcf91640d3f4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "470pF C0G"; VariantName = "[No Variations]"
+Added Component: Designator=C62(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U3_Pin"; Value = "1"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/6587eb5d-ce90-4de1-aea6-bcf91640d3f4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF"; VariantName = "[No Variations]"
+Added Component: Designator=C63(C_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/6587eb5d-ce90-4de1-aea6-bcf91640d3f4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "22nF C0G"; VariantName = "[No Variations]"
+Added Component: Designator=C64(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U3_Pin"; Value = "9"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/6587eb5d-ce90-4de1-aea6-bcf91640d3f4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF"; VariantName = "[No Variations]"
+Added Component: Designator=C65(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U3_Pin"; Value = "19"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/6587eb5d-ce90-4de1-aea6-bcf91640d3f4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF"; VariantName = "[No Variations]"
+Added Component: Designator=C80(C_0402_1005Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/5c0f5c0c-af16-4eb5-961c-078426f85444"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF"; VariantName = "[No Variations]"
+Added Component: Designator=C81(C_0805_2012Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/5c0f5c0c-af16-4eb5-961c-078426f85444"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "10uF"; VariantName = "[No Variations]"
+Added Component: Designator=C82(C_0402_1005Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/5c0f5c0c-af16-4eb5-961c-078426f85444"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF DNP_OPTION"; VariantName = "[No Variations]"
+Added Component: Designator=C100(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U1_Pin"; Value = "15"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Added Component: Designator=C101(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U1_Pin"; Value = "23"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Added Component: Designator=C102(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U1_Pin"; Value = "36"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Added Component: Designator=C103(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U1_Pin"; Value = "49"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Added Component: Designator=C104(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U1_Pin"; Value = "62"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Added Component: Designator=C105(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U1_Pin"; Value = "72"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Added Component: Designator=C106(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U1_Pin"; Value = "82"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Added Component: Designator=C107(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U1_Pin"; Value = "91"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Added Component: Designator=C108(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U1_Pin"; Value = "103"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Added Component: Designator=C109(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U1_Pin"; Value = "127"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Added Component: Designator=C110(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U1_Pin"; Value = "136"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Added Component: Designator=C111(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U1_Pin"; Value = "149"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Added Component: Designator=C112(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U1_Pin"; Value = "159"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Added Component: Designator=C113(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U1_Pin"; Value = "172"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Added Component: Designator=C114(C_0402_1005Metric)
+Add component (AddParameter): Name = "Decouples_U1_Pin"; Value = "114"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF VDD33_USB"; VariantName = "[No Variations]"
+Added Component: Designator=C115(C_0402_1005Metric)
+Add component (AddParameter): Name = "Filters_U1_Pin"; Value = "31"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100nF NRST"; VariantName = "[No Variations]"
+Added Component: Designator=D1(D_SMA)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "SMAJ15CA"; VariantName = "[No Variations]"
+Added Component: Designator=D3(USON-10_2.5x1.0mm_P0.5mm)
+Add component (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/6587eb5d-ce90-4de1-aea6-bcf91640d3f4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MPN"; Value = "TPD4E05U06DQAR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "TPD4E05U06DQAR"; VariantName = "[No Variations]"
+Added Component: Designator=D4(SOT-23)
+Add component (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/ed30b47e-f64f-41a4-bc40-4ec400c7b7f9"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MPN"; Value = "ESD2CANFD24DBZRQ1"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "ESD2CANFD24-Q1"; VariantName = "[No Variations]"
+Added Component: Designator=D8(ESD0P2RF-02LS_PG-TSSLP-2-1)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/5c0f5c0c-af16-4eb5-961c-078426f85444"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MPN"; Value = "ESD0P2RF-02LS"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "ESD0P2RF-02LS"; VariantName = "[No Variations]"
+Added Component: Designator=FB1(L_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MPN"; Value = "BLM18BD601SH1"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "BLM18BD601SH1"; VariantName = "[No Variations]"
+Added Component: Designator=J1(Molex_43650-0200_RA_THT_2P)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "12V_IN"; VariantName = "[No Variations]"
+Added Component: Designator=J4(Molex_43045-0600_RA_THT_6P)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/ed30b47e-f64f-41a4-bc40-4ec400c7b7f9"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "RADAR_IO"; VariantName = "[No Variations]"
+Added Component: Designator=J5(Molex_43650-0200_RA_THT_2P)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/ed30b47e-f64f-41a4-bc40-4ec400c7b7f9"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "RADAR_PWR"; VariantName = "[No Variations]"
+Added Component: Designator=J6(RJ45_Bel_SI-60062-F)
+Add component (AddParameter): Name = "Compatibility_Basis"; Value = "Bel_SI-60182-F_vs_SI-60062-F_verified"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/6587eb5d-ce90-4de1-aea6-bcf91640d3f4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MPN"; Value = "SI-60182-F"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "SI-60182-F"; VariantName = "[No Variations]"
+Added Component: Designator=J8(Hirose_UFL_R_SMT_K)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/5c0f5c0c-af16-4eb5-961c-078426f85444"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "GNSS_UFL"; VariantName = "[No Variations]"
+Added Component: Designator=J10(TagConnect_TC2030_NL)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "TC2030_SWD"; VariantName = "[No Variations]"
+Added Component: Designator=L1(Coilcraft_XFL4020_4x4)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "2.2uH"; VariantName = "[No Variations]"
+Added Component: Designator=L80(L_0402_1005Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/5c0f5c0c-af16-4eb5-961c-078426f85444"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "27nH DNP_OPTION"; VariantName = "[No Variations]"
+Added Component: Designator=R1(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "665R 1%"; VariantName = "[No Variations]"
+Added Component: Designator=R2(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "1.05k 1%"; VariantName = "[No Variations]"
+Added Component: Designator=R5P(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100k 1% PG_PU"; VariantName = "[No Variations]"
+Added Component: Designator=R6F(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "10k 1% FLT_PU"; VariantName = "[No Variations]"
+Added Component: Designator=R7F(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "10k 1% FLT_PU"; VariantName = "[No Variations]"
+Added Component: Designator=R10(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "10k 1%"; VariantName = "[No Variations]"
+Added Component: Designator=R40(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/ed30b47e-f64f-41a4-bc40-4ec400c7b7f9"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "120R 1% DNP_DEFAULT"; VariantName = "[No Variations]"
+Added Component: Designator=R41(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/ed30b47e-f64f-41a4-bc40-4ec400c7b7f9"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "10k 1% STB_PD"; VariantName = "[No Variations]"
+Added Component: Designator=R42(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/ed30b47e-f64f-41a4-bc40-4ec400c7b7f9"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "10k 1% SHDN_PD"; VariantName = "[No Variations]"
+Added Component: Designator=R61(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "470k 1%"; VariantName = "[No Variations]"
+Added Component: Designator=R62(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "36.0k 1%"; VariantName = "[No Variations]"
+Added Component: Designator=R63(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "41.2k 1%"; VariantName = "[No Variations]"
+Added Component: Designator=R70(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/514f00d6-d51e-49be-b56d-56a67297fb29"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "0R DNP_BOOT_OVERRIDE"; VariantName = "[No Variations]"
+Added Component: Designator=R71(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "470k 1%"; VariantName = "[No Variations]"
+Added Component: Designator=R72(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "16.9k 1%"; VariantName = "[No Variations]"
+Added Component: Designator=R73(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "43.7k 1%"; VariantName = "[No Variations]"
+Added Component: Designator=R80(R_0805_2012Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/5c0f5c0c-af16-4eb5-961c-078426f85444"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "10R 0.25W DNP_OPTION"; VariantName = "[No Variations]"
+Added Component: Designator=R81(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/5c0f5c0c-af16-4eb5-961c-078426f85444"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "100k 1% VUSB_PD"; VariantName = "[No Variations]"
+Added Component: Designator=R82(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/5c0f5c0c-af16-4eb5-961c-078426f85444"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "0R V_BCKP"; VariantName = "[No Variations]"
+Added Component: Designator=R600(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/6587eb5d-ce90-4de1-aea6-bcf91640d3f4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "12.1k 1%"; VariantName = "[No Variations]"
+Added Component: Designator=R601(R_0402_1005Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/6587eb5d-ce90-4de1-aea6-bcf91640d3f4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "49.9R 1%"; VariantName = "[No Variations]"
+Added Component: Designator=R602(R_0402_1005Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/6587eb5d-ce90-4de1-aea6-bcf91640d3f4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "49.9R 1%"; VariantName = "[No Variations]"
+Added Component: Designator=R603(R_0402_1005Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/6587eb5d-ce90-4de1-aea6-bcf91640d3f4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "49.9R 1%"; VariantName = "[No Variations]"
+Added Component: Designator=R604(R_0402_1005Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/6587eb5d-ce90-4de1-aea6-bcf91640d3f4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "49.9R 1%"; VariantName = "[No Variations]"
+Added Component: Designator=R605(R_0603_1608Metric)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/6587eb5d-ce90-4de1-aea6-bcf91640d3f4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "10k 1% NRST_PD"; VariantName = "[No Variations]"
+Added Component: Designator=SW1(ESwitch_TL3301_GullWing_6x6)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/514f00d6-d51e-49be-b56d-56a67297fb29"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "NRST"; VariantName = "[No Variations]"
+Added Component: Designator=TP1(TestPoint_Pad_D1.0mm)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "DEBUG_TX"; VariantName = "[No Variations]"
+Added Component: Designator=TP2(TestPoint_Pad_D1.0mm)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "DEBUG_RX"; VariantName = "[No Variations]"
+Added Component: Designator=U1(LQFP-176_24x24mm_P0.5mm)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MPN"; Value = "STM32H753IIT6"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "STM32H753IIT6"; VariantName = "[No Variations]"
+Added Component: Designator=U2(ICM-42688-P_LGA14_2.5x3mm_P0.5mm)
+Add component (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/0c24a24f-4857-47d3-ba8c-2373ead2bace"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MPN"; Value = "ICM-42688-P"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "ICM-42688-P"; VariantName = "[No Variations]"
+Added Component: Designator=U3(QFN-24-1EP_4x4mm_P0.5mm_EP2.6x2.6mm)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/6587eb5d-ce90-4de1-aea6-bcf91640d3f4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MPN"; Value = "LAN8742Ai-CZ-TR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "LAN8742Ai-CZ-TR"; VariantName = "[No Variations]"
+Added Component: Designator=U4(Texas_DRB0008A)
+Add component (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/ed30b47e-f64f-41a4-bc40-4ec400c7b7f9"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MPN"; Value = "TCAN3404DRBRQ1"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "TCAN3404DRBRQ1"; VariantName = "[No Variations]"
+Added Component: Designator=U5(VQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm)
+Add component (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MPN"; Value = "TPS62132RGTR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "TPS62132RGTR_3V3"; VariantName = "[No Variations]"
+Added Component: Designator=U6(TPS259470A_RPW0010A_VQFN-HR-10_2x2mm_P0.475mm)
+Add component (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MPN"; Value = "TPS259470ARPWR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "TPS259470ARPWR_SYS"; VariantName = "[No Variations]"
+Added Component: Designator=U7(TPS259470A_RPW0010A_VQFN-HR-10_2x2mm_P0.475mm)
+Add component (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/f4c08eef-67fd-4a71-870f-41ab2a8b55a2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MPN"; Value = "TPS259470ARPWR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "TPS259470ARPWR_RADAR"; VariantName = "[No Variations]"
+Added Component: Designator=U8(NEO-M9N_LCC24_12.2x16mm)
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/5c0f5c0c-af16-4eb5-961c-078426f85444"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MPN"; Value = "NEO-M9N-00B"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "NEO-M9N-00B"; VariantName = "[No Variations]"
+Added Component: Designator=Y1(Oscillator_SMD_ECS_2520MV-xxx-xx-4Pin_2.5x2.0mm)
+Add component (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/9f550f4d-8654-4935-b926-6c7217ba2275"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MPN"; Value = "ECS-2520S33-250-FN-TR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "ECS-2520S33-250-FN-TR"; VariantName = "[No Variations]"
+Added Component: Designator=Y2(Oscillator_SMD_ECS_2520MV-xxx-xx-4Pin_2.5x2.0mm)
+Add component (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "hierarchy_path"; Value = "/4418bc32-abbb-4a83-847b-6de524461e6d/6587eb5d-ce90-4de1-aea6-bcf91640d3f4"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MPN"; Value = "ECS-2520S33-500-FN-TR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "ECS-2520S33-500-FN-TR"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=3V3 Pin=C61-1
+Added Pin To Net: NetName=3V3 Pin=C62-1
+Added Pin To Net: NetName=3V3 Pin=C64-1
+Added Pin To Net: NetName=3V3 Pin=C65-1
+Added Pin To Net: NetName=3V3 Pin=R601-2
+Added Pin To Net: NetName=3V3 Pin=R602-2
+Added Pin To Net: NetName=3V3 Pin=R603-2
+Added Pin To Net: NetName=3V3 Pin=R604-2
+Added Pin To Net: NetName=3V3 Pin=U3-9
+Added Pin To Net: NetName=3V3 Pin=U3-19
+Added Pin To Net: NetName=3V3 Pin=Y2-4
+Added Net: Name=3V3
+Add Net: Net with name "3V3" already exists
+Add Net: Net with name "3V3" already exists
+Add Net: Net with name "3V3" already exists
+Add Net: Net with name "3V3" already exists
+Add Net: Net with name "3V3" already exists
+Add Net: Net with name "3V3" already exists
+Added Pin To Net: NetName=BOOT0 Pin=R10-1
+Added Net: Name=BOOT0
+Add Net: Net with name "BOOT0" already exists
+Added Pin To Net: NetName=BUCK_SW Pin=L1-1
+Added Pin To Net: NetName=BUCK_SW Pin=U5-1
+Added Pin To Net: NetName=BUCK_SW Pin=U5-2
+Added Pin To Net: NetName=BUCK_SW Pin=U5-3
+Added Net: Name=BUCK_SW
+Added Pin To Net: NetName=CAN_RX Pin=U1-142
+Added Pin To Net: NetName=CAN_RX Pin=U4-4
+Added Net: Name=CAN_RX
+Added Pin To Net: NetName=CAN_TX Pin=U1-143
+Added Pin To Net: NetName=CAN_TX Pin=U4-1
+Added Net: Name=CAN_TX
+Added Pin To Net: NetName=DEBUG_RX Pin=TP2-1
+Added Pin To Net: NetName=DEBUG_RX Pin=U1-150
+Added Net: Name=DEBUG_RX
+Added Pin To Net: NetName=DEBUG_TX Pin=TP1-1
+Added Pin To Net: NetName=DEBUG_TX Pin=U1-147
+Added Net: Name=DEBUG_TX
+Added Pin To Net: NetName=ETH_50M Pin=Y2-3
+Added Net: Name=ETH_50M
+Add Net: Net with name "ETH_50M" already exists
+Added Pin To Net: NetName=ETH_CRS_DV Pin=U1-53
+Added Pin To Net: NetName=ETH_CRS_DV Pin=U3-11
+Added Net: Name=ETH_CRS_DV
+Added Pin To Net: NetName=ETH_CT Pin=C63-1
+Added Pin To Net: NetName=ETH_CT Pin=J6-2
+Added Pin To Net: NetName=ETH_CT Pin=J6-5
+Added Net: Name=ETH_CT
+Added Pin To Net: NetName=ETH_MDC Pin=U1-33
+Added Pin To Net: NetName=ETH_MDC Pin=U3-13
+Added Net: Name=ETH_MDC
+Added Pin To Net: NetName=ETH_MDIO Pin=U1-42
+Added Pin To Net: NetName=ETH_MDIO Pin=U3-12
+Added Net: Name=ETH_MDIO
+Added Pin To Net: NetName=ETH_NRST Pin=U1-3
+Added Pin To Net: NetName=ETH_NRST Pin=U3-15
+Added Net: Name=ETH_NRST
+Add Net: Net with name "ETH_NRST" already exists
+Added Pin To Net: NetName=ETH_RXD0 Pin=U1-54
+Added Pin To Net: NetName=ETH_RXD0 Pin=U3-8
+Added Net: Name=ETH_RXD0
+Added Pin To Net: NetName=ETH_RXD1 Pin=U1-55
+Added Pin To Net: NetName=ETH_RXD1 Pin=U3-7
+Added Net: Name=ETH_RXD1
+Added Pin To Net: NetName=ETH_RXN Pin=D3-5
+Added Pin To Net: NetName=ETH_RXN Pin=J6-6
+Added Pin To Net: NetName=ETH_RXN Pin=R604-1
+Added Pin To Net: NetName=ETH_RXN Pin=U3-22
+Added Net: Name=ETH_RXN
+Added Pin To Net: NetName=ETH_RXP Pin=D3-4
+Added Pin To Net: NetName=ETH_RXP Pin=J6-4
+Added Pin To Net: NetName=ETH_RXP Pin=R603-1
+Added Pin To Net: NetName=ETH_RXP Pin=U3-23
+Added Net: Name=ETH_RXP
+Added Pin To Net: NetName=ETH_TX_EN Pin=U1-154
+Added Pin To Net: NetName=ETH_TX_EN Pin=U3-16
+Added Net: Name=ETH_TX_EN
+Added Pin To Net: NetName=ETH_TXD0 Pin=U1-156
+Added Pin To Net: NetName=ETH_TXD0 Pin=U3-17
+Added Net: Name=ETH_TXD0
+Added Pin To Net: NetName=ETH_TXD1 Pin=U1-157
+Added Pin To Net: NetName=ETH_TXD1 Pin=U3-18
+Added Net: Name=ETH_TXD1
+Added Pin To Net: NetName=ETH_TXN Pin=D3-2
+Added Pin To Net: NetName=ETH_TXN Pin=J6-3
+Added Pin To Net: NetName=ETH_TXN Pin=R602-1
+Added Pin To Net: NetName=ETH_TXN Pin=U3-20
+Added Net: Name=ETH_TXN
+Added Pin To Net: NetName=ETH_TXP Pin=D3-1
+Added Pin To Net: NetName=ETH_TXP Pin=J6-1
+Added Pin To Net: NetName=ETH_TXP Pin=R601-1
+Added Pin To Net: NetName=ETH_TXP Pin=U3-21
+Added Net: Name=ETH_TXP
+Added Pin To Net: NetName=GND Pin=C10-2
+Added Pin To Net: NetName=GND Pin=C11-2
+Added Pin To Net: NetName=GND Pin=C12-2
+Added Pin To Net: NetName=GND Pin=C13-2
+Added Pin To Net: NetName=GND Pin=C14-2
+Added Pin To Net: NetName=GND Pin=C15-2
+Added Pin To Net: NetName=GND Pin=C62-2
+Added Pin To Net: NetName=GND Pin=C100-2
+Added Pin To Net: NetName=GND Pin=C101-2
+Added Pin To Net: NetName=GND Pin=C102-2
+Added Pin To Net: NetName=GND Pin=C103-2
+Added Pin To Net: NetName=GND Pin=C104-2
+Added Pin To Net: NetName=GND Pin=C105-2
+Added Pin To Net: NetName=GND Pin=C106-2
+Added Pin To Net: NetName=GND Pin=C107-2
+Added Pin To Net: NetName=GND Pin=C108-2
+Added Pin To Net: NetName=GND Pin=C109-2
+Added Pin To Net: NetName=GND Pin=C110-2
+Added Pin To Net: NetName=GND Pin=C111-2
+Added Pin To Net: NetName=GND Pin=C112-2
+Added Pin To Net: NetName=GND Pin=C113-2
+Added Pin To Net: NetName=GND Pin=C114-2
+Added Pin To Net: NetName=GND Pin=C115-2
+Added Pin To Net: NetName=GND Pin=J1-2
+Added Pin To Net: NetName=GND Pin=J10-3
+Added Pin To Net: NetName=GND Pin=J10-5
+Added Pin To Net: NetName=GND Pin=R10-2
+Added Pin To Net: NetName=GND Pin=SW1-2
+Added Pin To Net: NetName=GND Pin=SW1-2
+Added Pin To Net: NetName=GND Pin=U1-14
+Added Pin To Net: NetName=GND Pin=U1-22
+Added Pin To Net: NetName=GND Pin=U1-37
+Added Pin To Net: NetName=GND Pin=U1-48
+Added Pin To Net: NetName=GND Pin=U1-61
+Added Pin To Net: NetName=GND Pin=U1-71
+Added Pin To Net: NetName=GND Pin=U1-90
+Added Pin To Net: NetName=GND Pin=U1-102
+Added Pin To Net: NetName=GND Pin=U1-113
+Added Pin To Net: NetName=GND Pin=U1-126
+Added Pin To Net: NetName=GND Pin=U1-135
+Added Pin To Net: NetName=GND Pin=U1-148
+Added Pin To Net: NetName=GND Pin=U1-158
+Added Pin To Net: NetName=GND Pin=U2-6
+Added Pin To Net: NetName=GND Pin=U4-2
+Added Pin To Net: NetName=GND Pin=U8-10
+Added Pin To Net: NetName=GND Pin=U8-12
+Added Pin To Net: NetName=GND Pin=U8-13
+Added Pin To Net: NetName=GND Pin=U8-24
+Added Pin To Net: NetName=GND Pin=Y1-2
+Added Net: Name=GND
+Add Net: Net with name "GND" already exists
+Add Net: Net with name "GND" already exists
+Add Net: Net with name "GND" already exists
+Add Net: Net with name "GND" already exists
+Add Net: Net with name "GND" already exists
+Added Pin To Net: NetName=GNSS_BCKP_LOCAL Pin=R82-1
+Added Pin To Net: NetName=GNSS_BCKP_LOCAL Pin=U8-22
+Added Net: Name=GNSS_BCKP_LOCAL
+Added Pin To Net: NetName=GNSS_BIAS_FILTER Pin=C82-1
+Added Pin To Net: NetName=GNSS_BIAS_FILTER Pin=L80-1
+Added Pin To Net: NetName=GNSS_BIAS_FILTER Pin=R80-2
+Added Net: Name=GNSS_BIAS_FILTER
+Added Pin To Net: NetName=GNSS_PPS Pin=U1-40
+Added Pin To Net: NetName=GNSS_PPS Pin=U8-3
+Added Net: Name=GNSS_PPS
+Added Pin To Net: NetName=GNSS_RF Pin=D8-1
+Added Pin To Net: NetName=GNSS_RF Pin=J8-1
+Added Pin To Net: NetName=GNSS_RF Pin=L80-2
+Added Pin To Net: NetName=GNSS_RF Pin=U8-11
+Added Net: Name=GNSS_RF
+Added Pin To Net: NetName=GNSS_RX_EXT Pin=U1-96
+Added Pin To Net: NetName=GNSS_RX_EXT Pin=U8-21
+Added Net: Name=GNSS_RX_EXT
+Added Pin To Net: NetName=GNSS_TX_EXT Pin=U1-97
+Added Pin To Net: NetName=GNSS_TX_EXT Pin=U8-20
+Added Net: Name=GNSS_TX_EXT
+Added Pin To Net: NetName=GNSS_VCC_RF Pin=R80-1
+Added Pin To Net: NetName=GNSS_VCC_RF Pin=U8-9
+Added Net: Name=GNSS_VCC_RF
+Added Pin To Net: NetName=GNSS_VUSB_LOCAL Pin=R81-1
+Added Pin To Net: NetName=GNSS_VUSB_LOCAL Pin=U8-7
+Added Net: Name=GNSS_VUSB_LOCAL
+Added Pin To Net: NetName=IMU_DRDY Pin=U1-80
+Added Pin To Net: NetName=IMU_DRDY Pin=U2-4
+Added Net: Name=IMU_DRDY
+Added Pin To Net: NetName=IMU_MISO Pin=U1-94
+Added Pin To Net: NetName=IMU_MISO Pin=U2-1
+Added Net: Name=IMU_MISO
+Added Pin To Net: NetName=IMU_MOSI Pin=U1-95
+Added Pin To Net: NetName=IMU_MOSI Pin=U2-14
+Added Net: Name=IMU_MOSI
+Added Pin To Net: NetName=IMU_NSS Pin=U1-92
+Added Pin To Net: NetName=IMU_NSS Pin=U2-12
+Added Net: Name=IMU_NSS
+Added Pin To Net: NetName=IMU_SCK Pin=U1-93
+Added Pin To Net: NetName=IMU_SCK Pin=U2-13
+Added Net: Name=IMU_SCK
+Added Pin To Net: NetName=MCU_HSE_25M Pin=U1-29
+Added Pin To Net: NetName=MCU_HSE_25M Pin=Y1-3
+Added Net: Name=MCU_HSE_25M
+Added Pin To Net: NetName=NetC60_1 Pin=C60-1
+Added Pin To Net: NetName=NetC60_1 Pin=U3-6
+Added Net: Name=NetC60_1
+Added Pin To Net: NetName=NetJ6_8 Pin=J6-8
+Added Pin To Net: NetName=NetJ6_8 Pin=J6-SH
+Added Pin To Net: NetName=NetJ6_8 Pin=J6-SH
+Added Net: Name=NetJ6_8
+Added Pin To Net: NetName=NetR41_1 Pin=R41-1
+Added Pin To Net: NetName=NetR41_1 Pin=U4-8
+Added Net: Name=NetR41_1
+Added Pin To Net: NetName=NetR42_1 Pin=R42-1
+Added Pin To Net: NetName=NetR42_1 Pin=U4-5
+Added Net: Name=NetR42_1
+Added Pin To Net: NetName=NetR600_1 Pin=R600-1
+Added Pin To Net: NetName=NetR600_1 Pin=U3-24
+Added Net: Name=NetR600_1
+Added Pin To Net: NetName=NRST Pin=C115-1
+Added Net: Name=NRST
+Add Net: Net with name "NRST" already exists
+Added Pin To Net: NetName=RADAR_12V Pin=J5-1
+Added Pin To Net: NetName=RADAR_12V Pin=U7-6
+Added Net: Name=RADAR_12V
+Added Pin To Net: NetName=RADAR_CANH Pin=D4-1
+Added Pin To Net: NetName=RADAR_CANH Pin=J4-3
+Added Pin To Net: NetName=RADAR_CANH Pin=R40-1
+Added Pin To Net: NetName=RADAR_CANH Pin=U4-7
+Added Net: Name=RADAR_CANH
+Added Pin To Net: NetName=RADAR_CANL Pin=D4-2
+Added Pin To Net: NetName=RADAR_CANL Pin=J4-1
+Added Pin To Net: NetName=RADAR_CANL Pin=R40-2
+Added Pin To Net: NetName=RADAR_CANL Pin=U4-6
+Added Net: Name=RADAR_CANL
+Added Pin To Net: NetName=RADAR_EFUSE_FLT Pin=U1-2
+Added Pin To Net: NetName=RADAR_EFUSE_FLT Pin=U7-4
+Added Net: Name=RADAR_EFUSE_FLT
+Add Net: Net with name "RADAR_EFUSE_FLT" already exists
+Added Pin To Net: NetName=RADAR_REF Pin=J4-4
+Added Pin To Net: NetName=RADAR_REF Pin=U1-79
+Added Net: Name=RADAR_REF
+Added Pin To Net: NetName=SWCLK Pin=J10-4
+Added Pin To Net: NetName=SWCLK Pin=U1-137
+Added Net: Name=SWCLK
+Added Pin To Net: NetName=SWDIO Pin=J10-2
+Added Pin To Net: NetName=SWDIO Pin=U1-124
+Added Net: Name=SWDIO
+Added Pin To Net: NetName=SWO Pin=J10-6
+Added Pin To Net: NetName=SWO Pin=U1-161
+Added Net: Name=SWO
+Added Pin To Net: NetName=SYS_EFUSE_FLT Pin=R6F-1
+Added Net: Name=SYS_EFUSE_FLT
+Add Net: Net with name "SYS_EFUSE_FLT" already exists
+Added Pin To Net: NetName=U5_PG Pin=R5P-1
+Added Pin To Net: NetName=U5_PG Pin=U5-4
+Added Net: Name=U5_PG
+Added Pin To Net: NetName=U5_SS_LOCAL Pin=C3-1
+Added Pin To Net: NetName=U5_SS_LOCAL Pin=U5-9
+Added Net: Name=U5_SS_LOCAL
+Added Pin To Net: NetName=U6_DVDT Pin=C6D-1
+Added Pin To Net: NetName=U6_DVDT Pin=U6-7
+Added Net: Name=U6_DVDT
+Added Pin To Net: NetName=U6_ILIM_LOCAL Pin=R1-1
+Added Pin To Net: NetName=U6_ILIM_LOCAL Pin=U6-9
+Added Net: Name=U6_ILIM_LOCAL
+Added Pin To Net: NetName=U6_OVLO_LOCAL Pin=R62-2
+Added Pin To Net: NetName=U6_OVLO_LOCAL Pin=R63-1
+Added Pin To Net: NetName=U6_OVLO_LOCAL Pin=U6-2
+Added Net: Name=U6_OVLO_LOCAL
+Added Pin To Net: NetName=U6_UVLO_LOCAL Pin=R61-2
+Added Pin To Net: NetName=U6_UVLO_LOCAL Pin=R62-1
+Added Pin To Net: NetName=U6_UVLO_LOCAL Pin=U6-1
+Added Net: Name=U6_UVLO_LOCAL
+Added Pin To Net: NetName=U7_DVDT Pin=C7D-1
+Added Pin To Net: NetName=U7_DVDT Pin=U7-7
+Added Net: Name=U7_DVDT
+Added Pin To Net: NetName=U7_ILIM_LOCAL Pin=R2-1
+Added Pin To Net: NetName=U7_ILIM_LOCAL Pin=U7-9
+Added Net: Name=U7_ILIM_LOCAL
+Added Pin To Net: NetName=U7_OVLO_LOCAL Pin=R72-2
+Added Pin To Net: NetName=U7_OVLO_LOCAL Pin=R73-1
+Added Pin To Net: NetName=U7_OVLO_LOCAL Pin=U7-2
+Added Net: Name=U7_OVLO_LOCAL
+Added Pin To Net: NetName=U7_UVLO_LOCAL Pin=R71-2
+Added Pin To Net: NetName=U7_UVLO_LOCAL Pin=R72-1
+Added Pin To Net: NetName=U7_UVLO_LOCAL Pin=U7-1
+Added Net: Name=U7_UVLO_LOCAL
+Added Pin To Net: NetName=VCAP1_LOCAL Pin=C10-1
+Added Pin To Net: NetName=VCAP1_LOCAL Pin=U1-81
+Added Net: Name=VCAP1_LOCAL
+Added Pin To Net: NetName=VCAP2_LOCAL Pin=C11-1
+Added Pin To Net: NetName=VCAP2_LOCAL Pin=U1-125
+Added Net: Name=VCAP2_LOCAL
+Added Pin To Net: NetName=VDDA_FILTERED Pin=C13-1
+Added Pin To Net: NetName=VDDA_FILTERED Pin=C14-1
+Added Pin To Net: NetName=VDDA_FILTERED Pin=FB1-2
+Added Pin To Net: NetName=VDDA_FILTERED Pin=U1-38
+Added Pin To Net: NetName=VDDA_FILTERED Pin=U1-39
+Added Net: Name=VDDA_FILTERED
+Added Pin To Net: NetName=VIN_PROTECTED Pin=C1-1
+Added Pin To Net: NetName=VIN_PROTECTED Pin=C4-1
+Added Pin To Net: NetName=VIN_PROTECTED Pin=R71-1
+Added Pin To Net: NetName=VIN_PROTECTED Pin=U5-10
+Added Pin To Net: NetName=VIN_PROTECTED Pin=U5-11
+Added Pin To Net: NetName=VIN_PROTECTED Pin=U5-12
+Added Pin To Net: NetName=VIN_PROTECTED Pin=U5-13
+Added Pin To Net: NetName=VIN_PROTECTED Pin=U6-6
+Added Pin To Net: NetName=VIN_PROTECTED Pin=U7-5
+Added Net: Name=VIN_PROTECTED
+Added Pin To Net: NetName=VIN_RAW Pin=D1-1
+Added Pin To Net: NetName=VIN_RAW Pin=J1-1
+Added Pin To Net: NetName=VIN_RAW Pin=R61-1
+Added Pin To Net: NetName=VIN_RAW Pin=U6-5
+Added Net: Name=VIN_RAW
+Added Class: Name=DEBUG_BOOT
+Added Class: Name=ETHERNET
+Added Class: Name=IMU
+Added Class: Name=MCU_CORE
+Added Class: Name=POWER_INPUT
+Added Class: Name=RADAR_IO_CAN
+Added Class: Name=TIME_GNSS

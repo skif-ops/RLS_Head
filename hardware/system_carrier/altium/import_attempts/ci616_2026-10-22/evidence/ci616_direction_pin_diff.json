@@ -1,0 +1,202 @@
+{
+  "schema": "ALTIUM-CI616-DIRECTION-PIN-DIFF-001",
+  "status": "PASS",
+  "before_commit": "46dd15adeb7a125df5e2306f6ac6f10fd276bd18",
+  "file_hashes": [
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "before_sha256": "c77fb89141108ad756d05701cf7935a956ce9a2c441f42f0f61a817df076463a",
+      "after_sha256": "3e9cdd2efa3e06a29d0b4f3caec27d532e767a783495b2dc7882e6af3e013e8c"
+    },
+    {
+      "sheet": "60_ETHERNET.SchDoc",
+      "before_sha256": "7d71ce1ad394af7df90ebda4c94d3ab0377ce1e5dc7ed91c05ebf1a110d12161",
+      "after_sha256": "9dc91851cc0791867311f5734676ea2e3e0baa31f06d90e9f59b63ad062bee60"
+    }
+  ],
+  "changed_pin_count": 26,
+  "changed_pins": [
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "1",
+      "name": "PE2",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "2",
+      "name": "PE3",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "3",
+      "name": "PE4",
+      "before": 1,
+      "after": 2
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "29",
+      "name": "PH0",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "33",
+      "name": "PC1",
+      "before": 1,
+      "after": 2
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "40",
+      "name": "PA0",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "41",
+      "name": "PA1",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "53",
+      "name": "PA7",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "54",
+      "name": "PC4",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "55",
+      "name": "PC5",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "79",
+      "name": "PB10",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "80",
+      "name": "PB11",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "92",
+      "name": "PB12",
+      "before": 1,
+      "after": 2
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "93",
+      "name": "PB13",
+      "before": 1,
+      "after": 2
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "94",
+      "name": "PB14",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "95",
+      "name": "PB15",
+      "before": 1,
+      "after": 2
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "96",
+      "name": "PD8",
+      "before": 1,
+      "after": 2
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "97",
+      "name": "PD9",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "142",
+      "name": "PD0",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "143",
+      "name": "PD1",
+      "before": 1,
+      "after": 2
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "154",
+      "name": "PG11",
+      "before": 1,
+      "after": 2
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "156",
+      "name": "PG13",
+      "before": 1,
+      "after": 2
+    },
+    {
+      "sheet": "20_MCU_CORE.SchDoc",
+      "pin": "157",
+      "name": "PG14",
+      "before": 1,
+      "after": 2
+    },
+    {
+      "sheet": "60_ETHERNET.SchDoc",
+      "pin": "7",
+      "name": "RXD1/MODE1",
+      "before": 1,
+      "after": 2
+    },
+    {
+      "sheet": "60_ETHERNET.SchDoc",
+      "pin": "8",
+      "name": "RXD0/MODE0",
+      "before": 1,
+      "after": 2
+    },
+    {
+      "sheet": "60_ETHERNET.SchDoc",
+      "pin": "11",
+      "name": "CRS_DV/MODE2",
+      "before": 1,
+      "after": 2
+    }
+  ]
+}

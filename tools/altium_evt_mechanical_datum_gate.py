@@ -9,29 +9,31 @@ from pathlib import Path
 
 SCHEMA = "ALTIUM-EVT-MECHANICAL-DATUM-GATE-001"
 LOCK_STATUS = "EVT_ROUTING_LOCKED"
+CANDIDATE_STATUS = "ECO_CANDIDATE"
+ALLOWED_DATUM_STATUSES = {LOCK_STATUS, CANDIDATE_STATUS}
 
 EXPECTED_BOARD = {
     "x_mm": 0.0,
     "y_mm": 0.0,
-    "width_mm": 100.0,
-    "height_mm": 80.0,
+    "width_mm": 90.0,
+    "height_mm": 70.0,
     "corner_radius_mm": 3.0,
 }
 
 EXPECTED_HOLES = {
     "H1": (5.0, 5.0, 3.2),
-    "H2": (95.0, 5.0, 3.2),
-    "H3": (5.0, 75.0, 3.2),
-    "H4": (95.0, 75.0, 3.2),
+    "H2": (85.0, 5.0, 3.2),
+    "H3": (5.0, 65.0, 3.2),
+    "H4": (85.0, 65.0, 3.2),
 }
 
 EXPECTED_CONNECTOR_DATUMS = {
     "J1": ("LEFT", 5.0, 14.0),
-    "J4": ("RIGHT", 95.0, 30.0),
-    "J5": ("RIGHT", 95.0, 14.0),
-    "J6": ("RIGHT", 96.0, 60.0),
-    "J8": ("LEFT", 5.0, 66.0),
-    "J10": ("BOTTOM", 50.0, 5.0),
+    "J4": ("RIGHT", 85.0, 29.0),
+    "J5": ("RIGHT", 85.0, 14.0),
+    "J6": ("RIGHT", 85.0, 54.0),
+    "J8": ("LEFT", 5.0, 57.0),
+    "J10": ("BOTTOM", 45.0, 5.0),
 }
 
 
@@ -66,6 +68,7 @@ def validate(system_root: str | Path) -> dict:
 
     errors: list[str] = []
     warnings: list[str] = []
+    datum_statuses: list[str] = []
 
     for path in (mechanical_path, placement_path):
         if not path.is_file():
@@ -125,8 +128,10 @@ def validate(system_root: str | Path) -> dict:
         ):
             if not close(actual, expected):
                 errors.append(f"board_outline_baseline:{field}")
-        if str(outline.get("status", "")).strip() != LOCK_STATUS:
-            errors.append("board_outline_not_evt_routing_locked")
+        outline_status = str(outline.get("status", "")).strip()
+        datum_statuses.append(outline_status)
+        if outline_status not in ALLOWED_DATUM_STATUSES:
+            errors.append("board_outline_status")
 
     corner_radius = math.nan
     if corner is not None:
@@ -137,8 +142,10 @@ def validate(system_root: str | Path) -> dict:
         )
         if not close(corner_radius, EXPECTED_BOARD["corner_radius_mm"]):
             errors.append("corner_radius_baseline")
-        if str(corner.get("status", "")).strip() != LOCK_STATUS:
-            errors.append("corner_radius_not_evt_routing_locked")
+        corner_status = str(corner.get("status", "")).strip()
+        datum_statuses.append(corner_status)
+        if corner_status not in ALLOWED_DATUM_STATUSES:
+            errors.append("corner_radius_status")
 
     board_thickness = math.nan
     if thickness is not None:
@@ -185,8 +192,10 @@ def validate(system_root: str | Path) -> dict:
             errors.append(f"mount_hole_position_baseline:{hole_id}")
         if not close(diameter, expected_diameter):
             errors.append(f"mount_hole_diameter_baseline:{hole_id}")
-        if str(row.get("status", "")).strip() != LOCK_STATUS:
-            errors.append(f"mount_hole_not_evt_routing_locked:{hole_id}")
+        hole_status = str(row.get("status", "")).strip()
+        datum_statuses.append(hole_status)
+        if hole_status not in ALLOWED_DATUM_STATUSES:
+            errors.append(f"mount_hole_status:{hole_id}")
 
         if not any(math.isnan(value) for value in (x, y, diameter, width, height)):
             radius = diameter / 2.0
@@ -238,8 +247,9 @@ def validate(system_root: str | Path) -> dict:
             errors.append(f"connector_position_baseline:{ref}")
         if lock != "HARD":
             errors.append(f"connector_datum_not_hard:{ref}")
-        if status != LOCK_STATUS:
-            errors.append(f"connector_datum_not_evt_routing_locked:{ref}")
+        datum_statuses.append(status)
+        if status not in ALLOWED_DATUM_STATUSES:
+            errors.append(f"connector_datum_status:{ref}")
 
         distance = math.nan
         if not any(math.isnan(value) for value in (x, y, width, height)):
@@ -269,12 +279,20 @@ def validate(system_root: str | Path) -> dict:
         }
 
     status = "PASS" if not errors else "FAIL"
+    datums_locked = (
+        status == "PASS"
+        and bool(datum_statuses)
+        and all(item == LOCK_STATUS for item in datum_statuses)
+    )
+    if status == "PASS" and not datums_locked:
+        warnings.append("compact_candidate_requires_native_drc_before_lock")
     return {
         "schema": SCHEMA,
         "status": status,
         "errors": sorted(set(errors)),
         "warnings": sorted(set(warnings)),
-        "evt_routing_datums_locked": status == "PASS",
+        "evt_routing_datums_locked": datums_locked,
+        "compact_candidate_validated": status == "PASS",
         "production_mechanical_freeze": False,
         "board_baseline": {
             "origin_mm": [EXPECTED_BOARD["x_mm"], EXPECTED_BOARD["y_mm"]],
@@ -292,8 +310,9 @@ def validate(system_root: str | Path) -> dict:
         ),
         "notes": [
             (
-                "PASS locks the repository EVT routing datum only: board "
-                "envelope, mounting pattern and primary edge-connector anchors."
+                "PASS validates the repository board envelope, mounting pattern "
+                "and primary edge-connector anchors. ECO_CANDIDATE remains "
+                "unlocked until native Altium placement, routing and DRC pass."
             ),
             (
                 "PASS does not constitute a production mechanical freeze, "

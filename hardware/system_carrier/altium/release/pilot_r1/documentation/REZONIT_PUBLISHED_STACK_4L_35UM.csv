@@ -1,0 +1,15 @@
+variant,sequence,item,material_or_type,nominal_thickness_mm,copper_um,dk_1mhz,published_actual_board_thickness_mm,availability,role,status
+TG150,1,Top copper,Electrolytic copper,,35,,1.50,,signal,WORKING_BASELINE
+TG150,2,Prepreg,FR-4 TG150 2116,0.115,,4.2,1.50,available,dielectric,WORKING_BASELINE
+TG150,3,Inner copper 1,Electrolytic copper,,35,,1.50,,plane,WORKING_BASELINE
+TG150,4,Core,FR-4 TG150 IPC-4101/99,1.13,,4.6,1.50,available,dielectric,WORKING_BASELINE
+TG150,5,Inner copper 2,Electrolytic copper,,35,,1.50,,plane,WORKING_BASELINE
+TG150,6,Prepreg,FR-4 TG150 2116,0.115,,4.2,1.50,available,dielectric,WORKING_BASELINE
+TG150,7,Bottom copper,Electrolytic copper,,35,,1.50,,signal,WORKING_BASELINE
+TG170,1,Top copper,Electrolytic copper,,35,,1.52,,signal,PUBLISHED_ALTERNATIVE
+TG170,2,Prepreg,FR-4 TG170 2116,0.125,,5.1,1.52,available,dielectric,PUBLISHED_ALTERNATIVE
+TG170,3,Inner copper 1,Electrolytic copper,,35,,1.52,,plane,PUBLISHED_ALTERNATIVE
+TG170,4,Core,FR-4 TG170 IPC-4101/126,1.13,,4.7,1.52,available,dielectric,PUBLISHED_ALTERNATIVE
+TG170,5,Inner copper 2,Electrolytic copper,,35,,1.52,,plane,PUBLISHED_ALTERNATIVE
+TG170,6,Prepreg,FR-4 TG170 2116,0.125,,5.1,1.52,available,dielectric,PUBLISHED_ALTERNATIVE
+TG170,7,Bottom copper,Electrolytic copper,,35,,1.52,,signal,PUBLISHED_ALTERNATIVE

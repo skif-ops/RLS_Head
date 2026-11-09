@@ -1,0 +1,49 @@
+{
+  "release": "v2.2.0 RC2",
+  "date": "2026-11-09",
+  "purpose": "Инженерная партия EVT для стендовых испытаний",
+  "civil_tracking_only": true,
+  "evt_order_authorized": true,
+  "production_authority": "NOT_AUTHORIZED",
+  "board": "RADAR D79 24V v0.8.0 R9",
+  "order": {
+    "assembled_pcba": 5,
+    "bare_pcb": 2,
+    "stencil_sets": 1,
+    "impedance_coupons": 2,
+    "microsection_coupons": 1
+  },
+  "checks": {
+    "native_drc_violations": 0,
+    "unrouted_connections": 0,
+    "pick_place_rows_reconciled": "300/300",
+    "fit_positions": 293,
+    "pcb_only_objects": 11,
+    "stm32h753_digital_tests": "21/21 PASS",
+    "awr2944p_digital_tests": "22/22 PASS",
+    "docx_template_audit": "0 errors",
+    "docx_visual_pages_checked": 6
+  },
+  "package_counts": {
+    "gerber_x2_files": 24,
+    "drill_output_files": 11,
+    "current_bom_files": 8
+  },
+  "open_until_physical_hardware": [
+    "Полноволновая проверка и измерение диаграммы антенны",
+    "Физическая калибровка дальности и фазовых каналов",
+    "Проверка дальности 300 м для ЭПР 0,01 м2 в секторе плюс или минус 20 градусов",
+    "Проверка питания, нагрева, ЭМС и внешних интерфейсов",
+    "Подтверждение фактического стека и технологических отклонений фабрики"
+  ],
+  "archive": {
+    "path": "EVT_GSN_EVT_order_and_bench_D79_24V_v2.2.0_RC2_2026-11-09.zip",
+    "sha256": "43f2f1290dd3cdd060192db950ac00e3f4cf76dc066e615d3cbf3d0e4b43beeb",
+    "size_bytes": 68555087,
+    "file_entries": 738,
+    "uncompressed_bytes": 173516388,
+    "zip_test": "PASS",
+    "entry_hash_verification": "PASS",
+    "generated_at": "2026-11-09T13:36:46"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "CI599_NATIVE_MPN_DIAGNOSTIC_001",
+  "source": "Altium SchDoc CFB FileHeader RECORD=34 Designator and RECORD=41 MPN with common OwnerIndex",
+  "expected_bom_sha256": "3a3bf81063029143b8ea4ffb524fec3ec18984f1e0b828ee45b39fab787e9068",
+  "native_schdoc_sha256": {
+    "10_POWER_INPUT.SchDoc": "d9a1a215be9e195df3eddf9f1fddb771812b87dbcad046c44cff4550d71bcdce",
+    "20_MCU_CORE.SchDoc": "fc6495632ad4460f0d4c6e613b1fb231dde0ace8e2b2af3a5dc0fe497de37e78",
+    "30_TIME_GNSS.SchDoc": "1cbdaf08613efbcf333956e7288f0840cc093446596b5796360fa91d3a6b3d94",
+    "40_IMU.SchDoc": "860cd475c8d62d51491e04b5feea42eabcf65fe2eb3b21c4e1c29a9d98d8a5fd",
+    "50_RADAR_IO_CAN.SchDoc": "32774a549ac1baaf3f41d7b2089eb6c7f424690f439ebb2939a53c07acce0ff7",
+    "60_ETHERNET.SchDoc": "4cb07aa2a97dd967ce7fe3ed37266f3f45c43b5fbbc51775be6596a3a0107ee8",
+    "70_DEBUG_BOOT.SchDoc": "ed6de942e57b5377ca9c3d2f5613a804bf86f0a579f95e9827b002ba039547b1",
+    "EVT_SYS_CARRIER.SchDoc": "843d790b30fc8eab2080e68081557783af893c6f4c7170c5f64b5f9b346f0cb8"
+  },
+  "expected_count": 92,
+  "native_designator_count": 92,
+  "native_mpn_count": 92,
+  "ignored_power_flags": [
+    "#FLG0101",
+    "#FLG0103",
+    "#FLG0201",
+    "#FLG0202",
+    "#FLG0301",
+    "#FLG0302",
+    "#FLG0601",
+    "#FLG0602"
+  ],
+  "mismatches": [],
+  "status": "PASS"
+}
