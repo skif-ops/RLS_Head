@@ -41,6 +41,7 @@ static int test_polar_measurement_and_confirmation(void)
     CHECK((output.measurement.quality_flags
         & RLS_RADAR_QUALITY_UNCERTAINTY_VALID) == 0u);
     CHECK(output.measurement.track_state == RLS_RADAR_TRACK_TENTATIVE);
+    CHECK((output.status_flags & RLS_RADAR_STATUS_CONFIG_MATCH) == 0u);
 
     CHECK(rls_awr2944p_observer_process(
         &observer, &detection, 1u, 2000u, &output) == 0);
@@ -137,6 +138,7 @@ static int test_can_contract_output(void)
         .snr_decidb = 180,
     };
     CHECK(start_observer(&observer) == 0);
+    observer.config.profile_config_match = true;
     CHECK(rls_awr2944p_observer_process(
         &observer, &detection, 1u, UINT64_C(123456), &output) == 0);
     CHECK(rls_awr2944p_observer_build_can_frame(
@@ -150,6 +152,7 @@ static int test_can_contract_output(void)
     CHECK(frame.timestamp_us == UINT64_C(123456));
     CHECK(frame.session_id == 0x10203040u);
     CHECK((frame.status_flags & RLS_RADAR_STATUS_DATA_VALID) != 0u);
+    CHECK((frame.status_flags & RLS_RADAR_STATUS_CONFIG_MATCH) != 0u);
     CHECK(rls_radar_measurement_unpack(
         &frame, &measurement) == RLS_RADAR_LINK_OK);
     CHECK(measurement.target_id == 1u);

@@ -43,6 +43,7 @@ add_library(radar_link STATIC
 
 add_library(awr2944p_observer STATIC
     firmware/awr2944p_observer/src/awr2944p_observer.c
+    firmware/awr2944p_observer/src/awr2944p_velocity_unwrap.c
 )
 
 add_library(carrier_health STATIC
@@ -360,6 +361,20 @@ if(HIL_BUILD_HOST_TESTS AND NOT CMAKE_CROSSCOMPILING)
     endif()
 
     add_test(NAME awr2944p_observer_logic COMMAND test_awr2944p_observer)
+
+    add_executable(test_awr2944p_velocity_unwrap
+        tests/test_awr2944p_velocity_unwrap.c
+    )
+
+    target_link_libraries(test_awr2944p_velocity_unwrap PRIVATE awr2944p_observer)
+
+    if(MSVC)
+        target_compile_options(test_awr2944p_velocity_unwrap PRIVATE /W4 /WX)
+    else()
+        target_compile_options(test_awr2944p_velocity_unwrap PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    endif()
+
+    add_test(NAME awr2944p_velocity_unwrap COMMAND test_awr2944p_velocity_unwrap)
 
     add_executable(test_carrier_health
         tests/test_carrier_health.c

@@ -1,0 +1,70 @@
+{
+  "schema": "evt_awr2944p_observer_qa_v2",
+  "release": "EVT_OBSERVER_R2_2026-11-09",
+  "date": "2026-11-09",
+  "checks": [
+    {
+      "name": "host_cmake_ctest",
+      "status": "PASS",
+      "result": "22 of 22 tests passed"
+    },
+    {
+      "name": "awr2944p_r5f_mss_build",
+      "status": "PASS",
+      "artifact_sha256": "59739b5e5366eba7f6f467e86909d9857204f87eafb036e528e278c3528e266e"
+    },
+    {
+      "name": "awr2944p_c66x_dss_build",
+      "status": "PASS",
+      "artifact_sha256": "4940a116fbfe52ff32ff75993a48ce1909456d2de1aae37774a14303ea1310ce"
+    },
+    {
+      "name": "unsigned_gp_appimage",
+      "status": "PASS",
+      "artifact_sha256": "d1b0957916ba13792e91eecc21202113e36d457b2658eaf81bedd0bb828b2fc0"
+    },
+    {
+      "name": "calculated_300m_if_gate",
+      "status": "PASS",
+      "scope": "calculation only, no physical hardware"
+    },
+    {
+      "name": "three_prf_velocity_sweep",
+      "status": "PASS",
+      "range_m_s": [-60.0, 60.0],
+      "step_m_s": 0.1,
+      "failure_count": 0
+    },
+    {
+      "name": "docx_style_policy",
+      "status": "PASS",
+      "documents_checked": 2,
+      "forbidden_dashes": 0,
+      "table_first_line_indent": "0 cm",
+      "body_and_heading_first_line_indent": "1.25 cm",
+      "header_footer": "centered, 12 pt, no indent"
+    },
+    {
+      "name": "docx_and_pdf_visual_render",
+      "status": "PASS",
+      "pages_checked": 13
+    },
+    {
+      "name": "physical_hardware_validation",
+      "status": "NOT_RUN"
+    },
+    {
+      "name": "range_phase_calibration",
+      "status": "NOT_RUN"
+    },
+    {
+      "name": "full_wave_antenna_validation",
+      "status": "NOT_RUN"
+    },
+    {
+      "name": "300m_rcs_0_01m2_edge_of_elevation_sector",
+      "status": "NOT_RUN"
+    }
+  ],
+  "production_authority": "NOT_AUTHORIZED"
+}

@@ -1,0 +1,18 @@
+MMWAVE-MCUPLUS-SDK 04.07.02.01
+MCU+ SDK AWR2x44P 10.02.00.04
+mmWave DFP 02.04.18.01
+SysConfig 1.23.0
+Code Composer Studio 20.1.0
+TI ARM Clang 4.0.2 LTS
+TI C6000 8.3.13
+
+Команда сборки в корне репозитория:
+powershell -NoProfile -ExecutionPolicy Bypass -File firmware/awr2944p_observer/tools/build_target.ps1
+
+Результат сборки 09.11.2026:
+R5F MSS compile and link PASS
+C66x DSS compile and link PASS
+Unsigned GP appimage PASS
+High-security image NOT_BUILT, OpenSSL отсутствовал в среде сборки
+
+Production authority = NOT_AUTHORIZED

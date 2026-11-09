@@ -72,10 +72,12 @@ $overlay = Join-Path $demoRoot "mss\observer"
 $overlayHeaders = Join-Path $overlay "rls"
 New-Item -ItemType Directory -Path $overlayHeaders -Force | Out-Null
 Copy-Item -LiteralPath (Join-Path $observerRoot "include\rls\awr2944p_observer.h") -Destination $overlayHeaders
+Copy-Item -LiteralPath (Join-Path $observerRoot "include\rls\awr2944p_velocity_unwrap.h") -Destination $overlayHeaders
 Copy-Item -LiteralPath (Join-Path $repoRoot "include\rls\radar_link.h") -Destination $overlayHeaders
 Copy-Item -LiteralPath (Join-Path $observerRoot "target\include\rls\observer_app.h") -Destination $overlayHeaders
 Copy-Item -LiteralPath (Join-Path $observerRoot "target\include\rls\observer_mcan_port.h") -Destination $overlayHeaders
 Copy-Item -LiteralPath (Join-Path $observerRoot "src\awr2944p_observer.c") -Destination $overlay
+Copy-Item -LiteralPath (Join-Path $observerRoot "src\awr2944p_velocity_unwrap.c") -Destination $overlay
 Copy-Item -LiteralPath (Join-Path $repoRoot "src\radar_link.c") -Destination $overlay
 Copy-Item -LiteralPath (Join-Path $observerRoot "target\src\observer_app.c") -Destination $overlay
 Copy-Item -LiteralPath (Join-Path $observerRoot "target\src\observer_mcan_port.c") -Destination $overlay
@@ -95,7 +97,7 @@ if (-not $makefile.Contains($oldVpath)) {
 }
 $makefile = $makefile.Replace($oldVpath, $newVpath)
 $sourceAnchor = "                           mss_main.c $continuation"
-$sourceReplacement = "                           mss_main.c $continuation`n                           radar_link.c $continuation`n                           awr2944p_observer.c $continuation`n                           observer_mcan_port.c $continuation`n                           observer_app.c $continuation"
+$sourceReplacement = "                           mss_main.c $continuation`n                           radar_link.c $continuation`n                           awr2944p_observer.c $continuation`n                           awr2944p_velocity_unwrap.c $continuation`n                           observer_mcan_port.c $continuation`n                           observer_app.c $continuation"
 if (-not $makefile.Contains($sourceAnchor)) {
     throw "Unable to locate MSS source insertion point"
 }

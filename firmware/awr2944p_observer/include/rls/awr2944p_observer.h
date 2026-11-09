@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 #define RLS_AWR2944P_OBSERVER_VERSION_MAJOR 0u
-#define RLS_AWR2944P_OBSERVER_VERSION_MINOR 1u
+#define RLS_AWR2944P_OBSERVER_VERSION_MINOR 2u
 #define RLS_AWR2944P_OBSERVER_VERSION_PATCH 0u
 
 typedef struct {
@@ -36,6 +36,7 @@ typedef struct {
     float filter_alpha;
     uint8_t confirmation_hits;
     uint8_t maximum_coast_frames;
+    bool profile_config_match;
     bool calibration_valid;
     bool uncertainty_valid;
     uint16_t range_sigma_mm;

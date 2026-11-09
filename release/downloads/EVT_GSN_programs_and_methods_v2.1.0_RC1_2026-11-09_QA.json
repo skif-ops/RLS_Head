@@ -1,0 +1,14 @@
+{
+  "schema": "evt_programs_methods_archive_qa_v1",
+  "release": "EVT_GSN_programs_and_methods_v2.1.0_RC1_2026-11-09.zip",
+  "archive_sha256": "8054e2ec1e1305482775aab83cd177964815aeeaec63addfacb468de074a22fe",
+  "archive_files": 19,
+  "zip_read_test": "PASS",
+  "awr2944p_setup_test_calibration_method_docx_pdf": "PRESENT",
+  "first_power_on_and_stop_criteria": "PRESENT",
+  "range_phase_angle_imu_thermal_methods": "PRESENT",
+  "windows_visualizer_and_digital_twin": "PRESENT_FROM_RC6",
+  "docx_style_policy_new_documents": "PASS",
+  "physical_hardware_results": "NOT_RUN",
+  "production_authority": "NOT_AUTHORIZED"
+}

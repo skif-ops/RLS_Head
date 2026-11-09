@@ -89,7 +89,9 @@ static void make_empty_output(
 {
     memset(output, 0, sizeof(*output));
     output->timestamp_us = observer->frame_timestamp_us;
-    output->status_flags = RLS_RADAR_STATUS_CONFIG_MATCH;
+    if (observer->config.profile_config_match) {
+        output->status_flags |= RLS_RADAR_STATUS_CONFIG_MATCH;
+    }
     if (observer->frame_timestamp_us != 0u) {
         output->status_flags |= RLS_RADAR_STATUS_TIME_VALID;
     }
