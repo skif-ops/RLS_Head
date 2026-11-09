@@ -492,10 +492,10 @@
     "calculation_limit": "The result is an eight-element array-factor and first-order microstrip phase-length calculation. Patch coupling tapers and meander sections require full-wave tuning with the actual stackup. The calculation does not replace a full-wave model of feeds, mutual coupling, radome or losses."
   },
   "altium_native_pcbdoc": "RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE.PcbDoc",
-  "altium_native_sha256": "e27047d120cd8be94e2d62b7d2fda1e0294e1e4950f3d80a5675cece04dc22bb",
+  "altium_native_sha256": "508fcf79324964875aa90920dc00e5e0c36c5ec0dc6b5dc8efab2991f361c510",
   "altium_native_import_status": "PASS",
   "altium_drc_report": "Design Rule Check - RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE.html",
-  "altium_drc_report_sha256": "54b086b45cfac5a4747a9f8691c21eda90410337efa896ae0a7aa63a916cbb32",
+  "altium_drc_report_sha256": "5a9556e7c4f7e9a42a5efdcd7c6c8a1a933a2260875f95ebe8209beefd20ef84",
   "altium_drc_status": "PASS_0_VIOLATIONS",
   "full_wave_em_status": "REQUIRED_NOT_PERFORMED",
   "physical_measurement_status": "REQUIRED_NOT_PERFORMED",

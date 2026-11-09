@@ -71,7 +71,7 @@
   "duplicate_indices": [],
   "errors": [],
   "native_pcbdoc": "RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE.PcbDoc",
-  "native_pcbdoc_sha256": "e27047d120cd8be94e2d62b7d2fda1e0294e1e4950f3d80a5675cece04dc22bb",
+  "native_pcbdoc_sha256": "508fcf79324964875aa90920dc00e5e0c36c5ec0dc6b5dc8efab2991f361c510",
   "native_altium_drc": "PASS_0_VIOLATIONS",
   "native_altium_drc_report": "Design Rule Check - RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE.html",
   "full_wave_em": "REQUIRED_NOT_PERFORMED",
