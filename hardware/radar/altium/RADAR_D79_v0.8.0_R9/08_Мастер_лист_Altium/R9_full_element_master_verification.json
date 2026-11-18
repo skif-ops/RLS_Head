@@ -1,0 +1,46 @@
+{
+  "artifact": "RADAR_D79_R9_FULL_ELEMENT_MASTER",
+  "revision": "PCB v0.8.0 R9 / release v2.2.6 RC8",
+  "native_schdoc": {
+    "file": "00_FULL_ELEMENT_SCHEMATIC.SchDoc",
+    "bytes": 1693184,
+    "sha256": "2fd17c7b160ac048e2ef44ba520b7d7fa71f1a256710949499c57f2139d5e05b",
+    "format": "Altium Advanced Schematic binary"
+  },
+  "pdf": {
+    "file": "RADAR_D79_R9_FULL_ELEMENT_MASTER.pdf",
+    "bytes": 626728,
+    "sha256": "1cd739eba3de1630c50bd62f3ae7924f872ec44397c4e36b2b4ff52af8f5faa7",
+    "pages": 1,
+    "page_width_points": 6740,
+    "page_height_points": 2600,
+    "vector_text_length": 70189
+  },
+  "layout": {
+    "source_detail_sheets": 31,
+    "master_cells": 32,
+    "replicated_native_primitives": 3497,
+    "visual_checks": [
+      "full-page overview",
+      "RF tract tile",
+      "10 POWER INPUT tile",
+      "31 Radar VPP service tile"
+    ],
+    "clipping_or_frame_overlap_observed": false
+  },
+  "rf_tract": {
+    "device": "AWR2944P",
+    "channels": {
+      "TX1": "TI_TX1 / B3 / 8 printed elements",
+      "TX2": "TI_TX2 / B5 / 8 printed elements",
+      "TX3": "TI_TX3 / B7 / 8 printed elements",
+      "TX4": "TI_TX4 / B9 / 8 printed elements",
+      "RX1": "TI_RX1 / M2 / 8 printed elements",
+      "RX2": "TI_RX2 / K2 / 8 printed elements",
+      "RX3": "TI_RX3 / H2 / 8 printed elements",
+      "RX4": "TI_RX4 / F2 / 8 printed elements"
+    },
+    "required_text_markers_found_in_pdf": true
+  },
+  "production_authority": "NOT_AUTHORIZED"
+}
