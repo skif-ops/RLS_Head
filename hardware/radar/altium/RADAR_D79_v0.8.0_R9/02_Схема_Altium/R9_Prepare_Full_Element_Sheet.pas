@@ -57,6 +57,37 @@ Begin
     RegisterObject(Doc, L);
 End;
 
+Procedure AddWire(Doc : ISch_Document; X1, Y1, X2, Y2 : Double;
+    WireColor : TColor; WireWidth : TSize);
+Var
+    W : ISch_Wire;
+Begin
+    W := SchServer.SchObjectFactory(eWire, eCreate_GlobalCopy);
+    If W = Nil Then Exit;
+    W.SetState_VerticesCount(2);
+    W.SetState_Vertex(1, Point(Mm(X1), Mm(Y1)));
+    W.SetState_Vertex(2, Point(Mm(X2), Mm(Y2)));
+    W.Color := WireColor;
+    W.LineWidth := WireWidth;
+    RegisterObject(Doc, W);
+End;
+
+Procedure AddNetLabel(Doc : ISch_Document; S : WideString; Xmm, Ymm : Double;
+    FontSize : Integer; TextColor : TColor);
+Var
+    L : ISch_NetLabel;
+Begin
+    L := SchServer.SchObjectFactory(eNetLabel, eCreate_GlobalCopy);
+    If L = Nil Then Exit;
+    L.Location := Point(Mm(Xmm), Mm(Ymm));
+    L.Text := S;
+    L.Color := TextColor;
+    L.Orientation := eRotate0;
+    L.FontID := SchServer.FontManager.GetFontID(FontSize, 0, False, False,
+        False, False, 'Arial');
+    RegisterObject(Doc, L);
+End;
+
 Procedure AddRectangle(Doc : ISch_Document; X1, Y1, X2, Y2 : Double;
     LineColor, FillColor : TColor; Filled : Boolean; LineWidth : TSize);
 Var
@@ -248,6 +279,131 @@ Begin
     End;
 End;
 
+Function CsvField(Line : String; FieldIndex : Integer) : String;
+Var
+    I          : Integer;
+    Current    : Integer;
+    StartPos   : Integer;
+    InQuotes   : Boolean;
+    Ch         : Char;
+Begin
+    Result := '';
+    Current := 0;
+    StartPos := 1;
+    InQuotes := False;
+    For I := 1 To Length(Line) + 1 Do
+    Begin
+        If I <= Length(Line) Then Ch := Line[I] Else Ch := ',';
+        If Ch = '"' Then InQuotes := Not InQuotes;
+        If (Ch = ',') And (Not InQuotes) Then
+        Begin
+            If Current = FieldIndex Then
+            Begin
+                Result := Copy(Line, StartPos, I - StartPos);
+                Result := StringReplace(Result, '"', '', rfReplaceAll);
+                Exit;
+            End;
+            Current := Current + 1;
+            StartPos := I + 1;
+        End;
+    End;
+End;
+
+Function SheetListContains(SheetList : String; SheetNumber : Integer) : Boolean;
+Var
+    Token : String;
+Begin
+    If SheetNumber < 10 Then
+        Token := '0' + IntToStr(SheetNumber)
+    Else
+        Token := IntToStr(SheetNumber);
+    Result := Pos(';' + Token + ';', ';' + SheetList + ';') > 0;
+End;
+
+Function NetColor(NetName : String) : TColor;
+Var
+    U : String;
+Begin
+    U := UpperCase(NetName);
+    If U = 'GND' Then
+        Result := $00303030
+    Else If (Pos('24V', U) > 0) Or (Pos('12V', U) > 0) Or
+            (Pos('5V', U) > 0) Or (Pos('3V3', U) > 0) Or
+            (Pos('1V', U) > 0) Then
+        Result := $000000C0
+    Else If (Pos('UART', U) > 0) Or (Pos('CAN', U) > 0) Or
+            (Pos('USB', U) > 0) Or (Pos('GNSS', U) > 0) Or
+            (Pos('IMU', U) > 0) Or (Pos('SWD', U) > 0) Then
+        Result := $00C00000
+    Else If Pos('TI_', U) = 1 Then
+        Result := $00800080
+    Else
+        Result := $00606060;
+End;
+
+Procedure AddConnectivityMatrix(Doc : ISch_Document; Rows : TStringList);
+Var
+    I, S           : Integer;
+    NetName        : String;
+    SheetList      : String;
+    Y              : Double;
+    RowHeight      : Double;
+    SheetX         : Double;
+    C              : TColor;
+Begin
+    AddRectangle(Doc, 20.0, 20.0, 3580.0, 625.0,
+        $00404040, $00FFFFFF, False, eMedium);
+    AddLabel(Doc, 'INTER-SHEET ELECTRICAL CONNECTIONS / EXACT NET NAMES',
+        35.0, 601.0, 13, True, $00202020);
+    AddLabel(Doc,
+        'Each row is an actual Altium wire with a net label. Identical labels electrically join the row to all matching endpoints in the 31 flattened sheets.',
+        35.0, 584.0, 8, False, $00404040);
+    AddLabel(Doc,
+        'Full component-pad-to-net binding for PCB rerouting: R9_pad_binding.csv in the release verification folder.',
+        35.0, 571.0, 8, False, $00404040);
+
+    AddLabel(Doc, 'NET', 35.0, 552.0, 7, True, $00202020);
+    For S := 1 To 31 Do
+    Begin
+        SheetX := 650.0 + (S - 1) * 94.0;
+        If S < 10 Then
+            AddLabel(Doc, '0' + IntToStr(S), SheetX - 2.0, 552.0,
+                5, True, $00303030)
+        Else
+            AddLabel(Doc, IntToStr(S), SheetX - 2.0, 552.0,
+                5, True, $00303030);
+        AddLine(Doc, SheetX, 45.0, SheetX, 546.0,
+            $00E0E0E0, eZeroSize);
+    End;
+
+    If Rows.Count <= 1 Then Exit;
+    RowHeight := 500.0 / (Rows.Count - 1);
+    If RowHeight > 6.0 Then RowHeight := 6.0;
+    For I := 1 To Rows.Count - 1 Do
+    Begin
+        NetName := CsvField(Rows[I], 0);
+        SheetList := CsvField(Rows[I], 1);
+        If (NetName = '') Or (SheetList = '') Then Continue;
+        Y := 542.0 - (I - 1) * RowHeight;
+        C := NetColor(NetName);
+        AddWire(Doc, 350.0, Y, 3550.0, Y, C, eSmall);
+        AddNetLabel(Doc, NetName, 350.0, Y, 4, C);
+        AddLabel(Doc, NetName, 35.0, Y - 1.0, 4, False, C);
+        For S := 1 To 31 Do
+            If SheetListContains(SheetList, S) Then
+            Begin
+                SheetX := 650.0 + (S - 1) * 94.0;
+                AddRectangle(Doc, SheetX - 1.3, Y - 1.3,
+                    SheetX + 1.3, Y + 1.3, C, C, True, eZeroSize);
+            End;
+    End;
+
+    AddLabel(Doc, 'Power', 35.0, 31.0, 6, True, $000000C0);
+    AddLabel(Doc, 'Interfaces', 100.0, 31.0, 6, True, $00C00000);
+    AddLabel(Doc, 'AWR2944P', 190.0, 31.0, 6, True, $00800080);
+    AddLabel(Doc, 'GND and other nets', 285.0, 31.0, 6, True, $00303030);
+End;
+
 Procedure PrepareFullElementSheet;
 Var
     Project        : IProject;
@@ -270,6 +426,9 @@ Var
     OffsetX        : TCoord;
     OffsetY        : TCoord;
     PrimitiveCount : Integer;
+    Connectivity   : TStringList;
+    ConnectivityPath : String;
+    CrossNetCount  : Integer;
 Begin
     If SchServer = Nil Then Exit;
     Project := FindR9Project;
@@ -306,13 +465,33 @@ Begin
         Exit;
     End;
 
+    ConnectivityPath := BasePath +
+        'R9_master_inter_sheet_connectivity.csv';
+    If Not FileExists(ConnectivityPath) Then
+    Begin
+        ShowMessage('Missing connectivity file: ' + ConnectivityPath +
+            '. Master sheet was not changed.');
+        SourcePaths.Free;
+        Exit;
+    End;
+    Connectivity := TStringList.Create;
+    Connectivity.LoadFromFile(ConnectivityPath);
+    If Connectivity.Count <= 1 Then
+    Begin
+        ShowMessage('Connectivity file has no data. Master sheet was not changed.');
+        Connectivity.Free;
+        SourcePaths.Free;
+        Exit;
+    End;
+    CrossNetCount := Connectivity.Count - 1;
+
     SchServer.ProcessControl.PreProcess(TargetDoc, '');
     Try
         ClearCurrentSheet(TargetDoc);
         TargetDoc.UseCustomSheet := True;
-        TargetDoc.CustomSheetStyle := 'R9 Full Element 3600 x 1400 mm';
+        TargetDoc.CustomSheetStyle := 'R9 Full Element 3600 x 2000 mm';
         TargetDoc.CustomX := Mm(3600);
-        TargetDoc.CustomY := Mm(1400);
+        TargetDoc.CustomY := Mm(2000);
         TargetDoc.CustomMarginWidth := Mm(10);
         TargetDoc.BorderOn := True;
         TargetDoc.ReferenceZonesOn := False;
@@ -324,25 +503,25 @@ Begin
 
         AddLabel(TargetDoc,
             'RADAR D79 24 V / FULL ELEMENT SCHEMATIC / PCB v0.8.0 R9',
-            20, 1373, 24, True, $00202020);
+            20, 1973, 24, True, $00202020);
         AddLabel(TargetDoc,
-            'All 31 native schematic sheets flattened at 1:1 scale. RF tract and eight 8-element antenna arrays are shown in tile RF.',
-            20, 1353, 14, False, $00404040);
+            'All 31 native schematic sheets flattened at 1:1 scale. Complete inter-sheet electrical connectivity is shown below the sheet field.',
+            20, 1953, 14, False, $00404040);
         AddLabel(TargetDoc,
-            'Civil drone tracking system. Measurement and target-state output only.',
-            20, 1337, 12, False, $00404040);
+            'Civil drone tracking system. Measurement and target-state output only. Production authority: NOT_AUTHORIZED.',
+            20, 1937, 12, False, $00404040);
 
         For TileIndex := 0 To 31 Do
         Begin
             ColIndex := TileIndex Mod 8;
             RowIndex := TileIndex Div 8;
             X0 := 20.0 + ColIndex * 445.0;
-            Y0 := 1020.0 - RowIndex * 325.0;
+            Y0 := 1620.0 - RowIndex * 325.0;
             AddRectangle(TargetDoc, X0, Y0, X0 + 435.0, Y0 + 310.0,
                 $00707070, $00FFFFFF, False, eSmall);
         End;
 
-        AddRfAntennaTile(TargetDoc, 20.0, 1020.0);
+        AddRfAntennaTile(TargetDoc, 20.0, 1620.0);
 
         PrimitiveCount := 0;
         For I := 0 To SourcePaths.Count - 1 Do
@@ -357,7 +536,7 @@ Begin
             ColIndex := TileIndex Mod 8;
             RowIndex := TileIndex Div 8;
             X0 := 20.0 + ColIndex * 445.0;
-            Y0 := 1020.0 - RowIndex * 325.0;
+            Y0 := 1620.0 - RowIndex * 325.0;
 
             AddLabel(TargetDoc, SourceName, X0 + 8.0, Y0 + 292.0,
                 11, True, $00303030);
@@ -366,8 +545,10 @@ Begin
             PrimitiveCount := PrimitiveCount +
                 ReplicateSheet(SourceDoc, TargetDoc, OffsetX, OffsetY);
         End;
+        AddConnectivityMatrix(TargetDoc, Connectivity);
     Finally
         SchServer.ProcessControl.PostProcess(TargetDoc, '');
+        Connectivity.Free;
         SourcePaths.Free;
     End;
 
@@ -379,6 +560,7 @@ Begin
         TargetServer.DoFileSave('Advanced Schematic binary');
         Client.ShowDocument(TargetServer);
     End;
-    ShowMessage('Full element master sheet saved. Replicated primitives: ' +
-        IntToStr(PrimitiveCount) + '.');
+    ShowMessage('Connected full element master sheet saved. Replicated primitives: ' +
+        IntToStr(PrimitiveCount) + '. Cross-sheet nets: ' +
+        IntToStr(CrossNetCount) + '.');
 End;

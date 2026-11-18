@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import argparse
+import csv
+import re
+from collections import defaultdict
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
@@ -11,11 +14,91 @@ from reportlab.pdfgen import canvas
 
 
 PAGE_WIDTH = 6740.0
-PAGE_HEIGHT = 2600.0
+PAGE_HEIGHT = 3800.0
 TITLE_HEIGHT = 190.0
-GRID_BOTTOM = 25.0
+GRID_BOTTOM = 1270.0
 CELL_WIDTH = 840.0
 CELL_HEIGHT = 590.0
+MATRIX_BOTTOM = 30.0
+MATRIX_TOP = 1220.0
+
+
+def encoded_net_name(net: str) -> str:
+    return "NL" + "".join(character if character.isalnum() else "0" for character in net)
+
+
+def load_binding(binding_csv: Path) -> tuple[dict[str, set[str]], dict[str, int]]:
+    token_to_nets: dict[str, set[str]] = defaultdict(set)
+    net_pad_count: dict[str, int] = defaultdict(int)
+    with binding_csv.open(encoding="utf-8-sig", newline="") as stream:
+        for row in csv.DictReader(stream):
+            net = (row.get("Net") or "").strip()
+            if not net:
+                continue
+            token_to_nets[encoded_net_name(net)].add(net)
+            net_pad_count[net] += 1
+    return token_to_nets, dict(net_pad_count)
+
+
+def extract_cross_sheet_nets(
+    source_pdf: Path,
+    binding_csv: Path,
+) -> tuple[dict[str, list[int]], dict[str, int], list[str]]:
+    reader = PdfReader(str(source_pdf))
+    if len(reader.pages) < 32:
+        raise ValueError(f"Expected at least 32 schematic pages, found {len(reader.pages)}")
+    token_to_nets, net_pad_count = load_binding(binding_csv)
+    net_to_sheets: dict[str, set[int]] = defaultdict(set)
+    unresolved: set[str] = set()
+    for sheet_number, page in enumerate(reader.pages[1:32], start=1):
+        text = page.extract_text() or ""
+        for token in set(re.findall(r"NL[A-Za-z0-9_]+", text)):
+            candidates = token_to_nets.get(token, set())
+            if len(candidates) == 1:
+                net_to_sheets[next(iter(candidates))].add(sheet_number)
+            else:
+                unresolved.add(token)
+    cross_sheet = {
+        net: sorted(sheets)
+        for net, sheets in net_to_sheets.items()
+        if len(sheets) >= 2
+    }
+    return cross_sheet, net_pad_count, sorted(unresolved)
+
+
+def write_connectivity_csv(path: Path, net_to_sheets: dict[str, list[int]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8-sig", newline="") as stream:
+        writer = csv.writer(stream, lineterminator="\n")
+        writer.writerow(["Net", "Sheets"])
+        for net in sorted(net_to_sheets, key=net_sort_key):
+            writer.writerow([net, ";".join(f"{sheet:02d}" for sheet in net_to_sheets[net])])
+
+
+def net_sort_key(net: str) -> tuple[int, str]:
+    upper = net.upper()
+    if upper == "GND":
+        group = 0
+    elif any(token in upper for token in ("24V", "12V", "5V", "3V3", "1V")):
+        group = 1
+    elif any(token in upper for token in ("UART", "CAN", "USB", "GNSS", "IMU", "SWD")):
+        group = 2
+    elif upper.startswith("TI_"):
+        group = 3
+    else:
+        group = 4
+    return group, upper
+
+
+def net_color(net: str) -> tuple[float, float, float]:
+    group = net_sort_key(net)[0]
+    return {
+        0: (0.18, 0.18, 0.18),
+        1: (0.76, 0.05, 0.05),
+        2: (0.04, 0.24, 0.76),
+        3: (0.48, 0.05, 0.55),
+        4: (0.38, 0.38, 0.38),
+    }[group]
 
 
 def register_fonts() -> tuple[str, str]:
@@ -129,7 +212,90 @@ def draw_rf_tile(
     c.drawString(x + 20, y + 37, "Электрические связи каналов показаны явно; каждый прямоугольник обозначает печатный элемент.")
 
 
-def build_overlay(path: Path, regular_font: str, bold_font: str) -> None:
+def draw_connectivity_matrix(
+    c: canvas.Canvas,
+    net_to_sheets: dict[str, list[int]],
+    net_pad_count: dict[str, int],
+    regular_font: str,
+    bold_font: str,
+) -> None:
+    left = 25.0
+    right = PAGE_WIDTH - 25.0
+    header_y = MATRIX_TOP - 32.0
+    first_row_y = MATRIX_TOP - 95.0
+    row_bottom = MATRIX_BOTTOM + 58.0
+    sheet_start_x = 940.0
+    sheet_end_x = right - 25.0
+    sheet_step = (sheet_end_x - sheet_start_x) / 30.0
+    ordered_nets = sorted(net_to_sheets, key=net_sort_key)
+    row_height = (first_row_y - row_bottom) / max(len(ordered_nets) - 1, 1)
+
+    c.setStrokeColorRGB(0.2, 0.2, 0.2)
+    c.setLineWidth(1.5)
+    c.rect(left, MATRIX_BOTTOM, right - left, MATRIX_TOP - MATRIX_BOTTOM, stroke=1, fill=0)
+    c.setFillColorRGB(0.08, 0.08, 0.08)
+    c.setFont(bold_font, 18)
+    c.drawString(left + 12, header_y, "МЕЖЛИСТОВЫЕ ЭЛЕКТРИЧЕСКИЕ СОЕДИНЕНИЯ")
+    c.setFont(regular_font, 9)
+    c.drawString(
+        left + 12,
+        header_y - 22,
+        "Строка соответствует точному имени сети Altium. Метка в столбце листа означает наличие электрической точки этой сети на данном листе.",
+    )
+    c.drawString(
+        left + 12,
+        header_y - 38,
+        "Все локальные проводники, номера выводов и обозначения компонентов показаны выше. Полная привязка контакт-сеть сохранена в R9_pad_binding.csv.",
+    )
+    c.setFont(bold_font, 7)
+    c.drawString(left + 12, first_row_y + 17, "ТОЧНОЕ ИМЯ СЕТИ")
+    c.drawString(535, first_row_y + 17, "КОНТАКТОВ")
+    c.drawString(640, first_row_y + 17, "ЛИСТЫ")
+    for sheet in range(1, 32):
+        x = sheet_start_x + (sheet - 1) * sheet_step
+        c.setFillColorRGB(0.12, 0.12, 0.12)
+        c.setFont(bold_font, 7)
+        c.drawCentredString(x, first_row_y + 17, f"{sheet:02d}")
+        c.setStrokeColorRGB(0.9, 0.9, 0.9)
+        c.setLineWidth(0.25)
+        c.line(x, row_bottom - 4, x, first_row_y + 10)
+
+    for row_index, net in enumerate(ordered_nets):
+        y = first_row_y - row_index * row_height
+        color = net_color(net)
+        sheets = net_to_sheets[net]
+        c.setFillColorRGB(*color)
+        c.setFont(regular_font, 5.2)
+        c.drawString(left + 12, y - 1.8, net)
+        c.drawRightString(595, y - 1.8, str(net_pad_count.get(net, 0)))
+        c.drawString(635, y - 1.8, ", ".join(f"{sheet:02d}" for sheet in sheets))
+        c.setStrokeColorRGB(*color)
+        c.setLineWidth(0.45)
+        c.line(885, y, sheet_end_x + 4, y)
+        for sheet in sheets:
+            x = sheet_start_x + (sheet - 1) * sheet_step
+            c.setFillColorRGB(*color)
+            c.rect(x - 2.0, y - 2.0, 4.0, 4.0, stroke=0, fill=1)
+
+    c.setFillColorRGB(0.76, 0.05, 0.05)
+    c.setFont(bold_font, 7)
+    c.drawString(left + 12, MATRIX_BOTTOM + 17, "ПИТАНИЕ")
+    c.setFillColorRGB(0.04, 0.24, 0.76)
+    c.drawString(left + 95, MATRIX_BOTTOM + 17, "ИНТЕРФЕЙСЫ")
+    c.setFillColorRGB(0.48, 0.05, 0.55)
+    c.drawString(left + 205, MATRIX_BOTTOM + 17, "AWR2944P")
+    c.setFillColorRGB(0.18, 0.18, 0.18)
+    c.drawString(left + 285, MATRIX_BOTTOM + 17, "GND И ПРОЧИЕ ЦЕПИ")
+    c.drawRightString(right - 12, MATRIX_BOTTOM + 17, f"МЕЖЛИСТОВЫХ СЕТЕЙ: {len(ordered_nets)}")
+
+
+def build_overlay(
+    path: Path,
+    regular_font: str,
+    bold_font: str,
+    net_to_sheets: dict[str, list[int]],
+    net_pad_count: dict[str, int],
+) -> None:
     c = canvas.Canvas(str(path), pagesize=(PAGE_WIDTH, PAGE_HEIGHT), pageCompression=1)
     c.setTitle("RADAR D79 R9 full element schematic master")
     c.setSubject("31 native schematic sheets with RF tract and eight 8-element antenna arrays")
@@ -140,13 +306,13 @@ def build_overlay(path: Path, regular_font: str, bold_font: str) -> None:
     c.drawString(
         25,
         PAGE_HEIGHT - 87,
-        "Все 31 лист схемы сведены на одно расширенное полотно. Система гражданского наблюдения и сопровождения БПЛА.",
+        "Все 31 лист схемы сведены на одно расширенное полотно и связаны полным реестром межлистовых электрических сетей.",
     )
     c.setFont(regular_font, 13)
     c.drawString(
         25,
         PAGE_HEIGHT - 116,
-        "Масштаб элементов исходных листов сохранён в векторном виде. Для чтения используйте увеличение PDF.",
+        "Система гражданского наблюдения и сопровождения БПЛА. Исходные элементы и проводники сохранены в векторном виде.",
     )
     c.setStrokeColorRGB(0.2, 0.2, 0.2)
     c.setLineWidth(2)
@@ -159,6 +325,7 @@ def build_overlay(path: Path, regular_font: str, bold_font: str) -> None:
         c.rect(x + 4, y + 4, CELL_WIDTH - 8, CELL_HEIGHT - 8, stroke=1, fill=0)
     rf_x, rf_y = cell_origin(0)
     draw_rf_tile(c, rf_x, rf_y, regular_font, bold_font)
+    draw_connectivity_matrix(c, net_to_sheets, net_pad_count, regular_font, bold_font)
     c.showPage()
     c.save()
 
@@ -201,13 +368,30 @@ def merge_source_pages(source_pdf: Path, overlay_pdf: Path, output_pdf: Path) ->
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=Path, required=True)
+    parser.add_argument("--binding", type=Path, required=True)
+    parser.add_argument("--connectivity-csv", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    net_to_sheets, net_pad_count, unresolved = extract_cross_sheet_nets(
+        args.source,
+        args.binding,
+    )
+    if not net_to_sheets:
+        raise ValueError("No cross-sheet electrical nets were extracted")
+    if len(unresolved) > 5:
+        raise ValueError(f"Too many unresolved Altium net tokens: {unresolved}")
+    write_connectivity_csv(args.connectivity_csv, net_to_sheets)
     regular_font, bold_font = register_fonts()
     with NamedTemporaryFile(suffix=".pdf", delete=False) as temporary:
         overlay_path = Path(temporary.name)
     try:
-        build_overlay(overlay_path, regular_font, bold_font)
+        build_overlay(
+            overlay_path,
+            regular_font,
+            bold_font,
+            net_to_sheets,
+            net_pad_count,
+        )
         merge_source_pages(args.source, overlay_path, args.output)
     finally:
         overlay_path.unlink(missing_ok=True)
