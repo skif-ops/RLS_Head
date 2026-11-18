@@ -1,0 +1,171 @@
+{
+  "generated_at": "2026-11-18T12:50:46+03:00",
+  "board": "C:\\Users\\skifn\\.codex\\.chatgpt-projects\\g-p-6a9feb917c48819182ec25e1ef55310c\\RLS_Head-git\\hardware\\radar\\altium\\RADAR_D79_v0.8.0_R9\\01_Исходник_Altium\\RADAR_D79_POWER_24V_v0.8.0_R9_ASCII.PcbDoc",
+  "board_sha256": "338f80463936e970346cfec232ae6c6ee9e60cce601608807e9b974a24a353cb",
+  "schematic_sheets": 31,
+  "board_components": 304,
+  "board_nets": 269,
+  "board_pads": 1408,
+  "reference_binding_rows": 1408,
+  "binding_multiset_differences": 0,
+  "schematic_to_r9_binding": "PASS",
+  "native_compile": "FAIL_12_SINGLE_PIN_NET_ERRORS",
+  "production_authority": "NOT_AUTHORIZED",
+  "sheets": [
+    {
+      "file": "01_10_POWER_INPUT.SchDoc",
+      "bytes": 79360,
+      "sha256": "cfaba07f50dcca1becd02405a383b939ea400a2c9472d355293d174b54bfb3da"
+    },
+    {
+      "file": "02_10_POWER_INPUT.SchDoc",
+      "bytes": 44032,
+      "sha256": "d2a9800e22340c2d3da23590b2cca29e506b99c8f988a7e76c2574a67fcce599"
+    },
+    {
+      "file": "03_10_POWER_INPUT.SchDoc",
+      "bytes": 45568,
+      "sha256": "f70c3d4c210f9ec9b5448e8726ce04e1ade54849c55f884274e648db9d49d800"
+    },
+    {
+      "file": "04_10_POWER_INPUT.SchDoc",
+      "bytes": 40960,
+      "sha256": "c04dbca232d49e86c77b0fa11a6bea140b35a52dd62d71f37623152f6d42f175"
+    },
+    {
+      "file": "05_60_HOST_UART.SchDoc",
+      "bytes": 33792,
+      "sha256": "5306865a4bab21f301608061a41b43c9f1dfdfe7721eb52aae30105c856ed733"
+    },
+    {
+      "file": "06_50_RADAR_IO_CAN.SchDoc",
+      "bytes": 26624,
+      "sha256": "75c975b941884c8af08aef6b9cd4d1af72e8adc49144ee72b7dc5a53a2136d19"
+    },
+    {
+      "file": "07_70_DEBUG_BOOT.SchDoc",
+      "bytes": 12288,
+      "sha256": "37aa11856c972a212baa5c6472e6efe66d7b9132ddc6f209ee0e395e0946e247"
+    },
+    {
+      "file": "08_30_TIME_GNSS.SchDoc",
+      "bytes": 18944,
+      "sha256": "c928124adb718d1c613337892201407a1d197928e348bb714e0aa71259300f00"
+    },
+    {
+      "file": "09_20_MCU_CORE.SchDoc",
+      "bytes": 89088,
+      "sha256": "4865e384b24ce9761e3f9e33e580b738fcfd17730104598a1d4157d7f3ad3d84"
+    },
+    {
+      "file": "10_20_MCU_CORE.SchDoc",
+      "bytes": 48128,
+      "sha256": "a090f4dae78fe17224b29907cb7f539193de106d713cf401a3d4df90582c5628"
+    },
+    {
+      "file": "11_20_MCU_CORE.SchDoc",
+      "bytes": 37376,
+      "sha256": "f959891d99cd5acc81dde81c253db7dc208b397fc67d2149af5b551b7287d994"
+    },
+    {
+      "file": "12_40_IMU.SchDoc",
+      "bytes": 23552,
+      "sha256": "6887a7e04f7bceaf08863f824e82b5d20ddbd547caf66bba0b5869ab713b34da"
+    },
+    {
+      "file": "13_Radar_interfaces_and_QSPI.SchDoc",
+      "bytes": 176640,
+      "sha256": "a74e2b98858bff9ccd7ef65631f12236a2d4f93c45d8f2a235bd38fd486fcc23"
+    },
+    {
+      "file": "14_Radar_interfaces_and_QSPI.SchDoc",
+      "bytes": 62976,
+      "sha256": "25bf7ac474ebcce347f024a3c54a5f48da88f7e26b64f8b46043951fff2774d3"
+    },
+    {
+      "file": "15_Radar_interfaces_and_QSPI.SchDoc",
+      "bytes": 41472,
+      "sha256": "bf9fc0459084b4824ae0d216a03ebaf67516700afdf611273827fe10b4468d41"
+    },
+    {
+      "file": "16_Radar_service_USB_and_boot.SchDoc",
+      "bytes": 54784,
+      "sha256": "081411587b537e9ff3cac1dcc2ac5a570d5efe6d1aba04788d60cab599f91aab"
+    },
+    {
+      "file": "17_Radar_service_USB_and_boot.SchDoc",
+      "bytes": 45056,
+      "sha256": "108335149d765af0be02f92f917ccdc18145650d31f046ca011f2a7ecb4a90dd"
+    },
+    {
+      "file": "18_Radar_service_USB_and_boot.SchDoc",
+      "bytes": 12800,
+      "sha256": "840bc9dde89ea1e16c6b2b80e9faea7599ca5a8950af5d2280de70780fabe013"
+    },
+    {
+      "file": "19_Radar_12V_to_3V3.SchDoc",
+      "bytes": 50176,
+      "sha256": "a4526c655466fbc6fc6b7ec06820b49e88afb61c122b6b60431356063425984a"
+    },
+    {
+      "file": "20_Radar_12V_to_3V3.SchDoc",
+      "bytes": 10240,
+      "sha256": "407168ecf4f6308b70144f0a83599c4577b5933ca04071dd04d030b0f5cf9ff9"
+    },
+    {
+      "file": "21_Radar_input_and_reference.SchDoc",
+      "bytes": 29184,
+      "sha256": "d2b35ccfe5c8eba9ef4112c567dc6880a0594cbcf7a1e9d009af6faf71950536"
+    },
+    {
+      "file": "22_Radar_bypass.SchDoc",
+      "bytes": 45056,
+      "sha256": "946771b8b5e4c394189cdc68ce5fb8eeb4b5b3f9fadc2ba01f559381d8557809"
+    },
+    {
+      "file": "23_Radar_bypass.SchDoc",
+      "bytes": 45568,
+      "sha256": "a34c449428dd9e15a785f68421ac2de2c3bcde1ad824f68f6f974b33c69d6aac"
+    },
+    {
+      "file": "24_Radar_bypass.SchDoc",
+      "bytes": 17408,
+      "sha256": "560ef02e13c59d085212bdaf3cf59b45f84d89d55ff6d77d251ab74b8c8e0475"
+    },
+    {
+      "file": "25_Radar_PMIC_and_rail_filters.SchDoc",
+      "bytes": 45056,
+      "sha256": "70c68e5fe9cae36ae4b07baefb6e72fb72e80a65db0fe61620259f5d17be2d50"
+    },
+    {
+      "file": "26_Radar_PMIC_and_rail_filters.SchDoc",
+      "bytes": 46592,
+      "sha256": "ec2f121778f3a68db1c7ab9b7ceb1629f78457ce2fc09207ee6a7d9264ee2562"
+    },
+    {
+      "file": "27_Radar_PMIC_and_rail_filters.SchDoc",
+      "bytes": 46080,
+      "sha256": "8fa38809ed97e027a2581a6803ead80ddab7fa8a177dec14d6f04a29f6421c55"
+    },
+    {
+      "file": "28_Radar_PMIC_and_rail_filters.SchDoc",
+      "bytes": 16896,
+      "sha256": "063aa4242134a4082a4b06abb97fdf9c0ddde564fe0fe3370e7019d2fecae79b"
+    },
+    {
+      "file": "29_Radar_rail_selection_and_sensing.SchDoc",
+      "bytes": 57856,
+      "sha256": "5ed9da56b1c94f8e597a397557fa1667794d5fd5840ffdc4e27c340401b97e4e"
+    },
+    {
+      "file": "30_Radar_rail_selection_and_sensing.SchDoc",
+      "bytes": 43520,
+      "sha256": "43b1452d19616d9be6877eab43abc648f32edf3940a08315ee3520dd6bbd95c7"
+    },
+    {
+      "file": "31_Radar_VPP_service.SchDoc",
+      "bytes": 21504,
+      "sha256": "61d13b69ed29ad3cdb61d879ac245a8fa5622562ef1a4066159e36d76c3b6ffd"
+    }
+  ]
+}
