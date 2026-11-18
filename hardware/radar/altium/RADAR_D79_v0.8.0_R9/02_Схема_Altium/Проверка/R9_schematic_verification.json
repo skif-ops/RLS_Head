@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-18T12:50:46+03:00",
+  "generated_at": "2026-11-18T13:34:06+03:00",
   "board": "C:\\Users\\skifn\\.codex\\.chatgpt-projects\\g-p-6a9feb917c48819182ec25e1ef55310c\\RLS_Head-git\\hardware\\radar\\altium\\RADAR_D79_v0.8.0_R9\\01_Исходник_Altium\\RADAR_D79_POWER_24V_v0.8.0_R9_ASCII.PcbDoc",
   "board_sha256": "338f80463936e970346cfec232ae6c6ee9e60cce601608807e9b974a24a353cb",
-  "schematic_sheets": 31,
+  "schematic_sheets": 32,
   "board_components": 304,
   "board_nets": 269,
   "board_pads": 1408,
@@ -12,6 +12,11 @@
   "native_compile": "FAIL_12_SINGLE_PIN_NET_ERRORS",
   "production_authority": "NOT_AUTHORIZED",
   "sheets": [
+    {
+      "file": "00_SYSTEM_OVERVIEW.SchDoc",
+      "bytes": 36864,
+      "sha256": "3b731189eec92292caf02b2d748055244c485688d132507dcc90144889c9c4c8"
+    },
     {
       "file": "01_10_POWER_INPUT.SchDoc",
       "bytes": 79360,
