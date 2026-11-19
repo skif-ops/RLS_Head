@@ -419,7 +419,7 @@ Begin
 End;
 
 Function ReplicateSheet(SourceDoc, TargetDoc : ISch_Document;
-    OffsetX, OffsetY : TCoord) : Integer;
+    OffsetX, OffsetY, SourceCenterX : TCoord) : Integer;
 Var
     Iterator : ISch_Iterator;
     Obj      : ISch_BasicContainer;
@@ -447,6 +447,13 @@ Begin
                     Begin
                         NewNetLabel := NewObj;
                         NewNetLabel.Text := NormalizeNetName(NewNetLabel.Text);
+                        { Keep labels horizontal and place the text on the
+                          component side of the anchor. }
+                        NewNetLabel.Orientation := eRotate0;
+                        If NewNetLabel.Location.X > SourceCenterX Then
+                            NewNetLabel.Justification := eJustify_BottomRight
+                        Else
+                            NewNetLabel.Justification := eJustify_BottomLeft;
                     End;
                     NewGraph := NewObj;
                     NewGraph.MoveByXY(OffsetX, OffsetY);
@@ -855,6 +862,178 @@ Begin
         Result := $00606060;
 End;
 
+Function ConnectivityContainsNet(Rows : TStringList;
+    NetName : String) : Boolean;
+Var
+    I : Integer;
+Begin
+    Result := False;
+    For I := 1 To Rows.Count - 1 Do
+        If SameText(Trim(CsvField(Rows[I], 0)), Trim(NetName)) Then
+        Begin
+            Result := True;
+            Exit;
+        End;
+End;
+
+Procedure RouteLocalExplicitNets(SourceDoc, TargetDoc : ISch_Document;
+    OffsetX, OffsetY : TCoord; GroupMinX, GroupMinY, GroupMaxX,
+    GroupMaxY : Double; SheetNumber : Integer; Connectivity,
+    Audit : TStringList; Var RoutedNetCount, RoutedAnchorCount : Integer);
+Var
+    Iterator       : ISch_Iterator;
+    Obj            : ISch_BasicContainer;
+    LabelObj       : ISch_NetLabel;
+    Names          : TStringList;
+    NetName        : String;
+    AnchorXs       : Array[0..255] Of Double;
+    AnchorYs       : Array[0..255] Of Double;
+    AnchorX        : TCoord;
+    AnchorY        : TCoord;
+    AnchorIndex    : Integer;
+    AnchorCount    : Integer;
+    LocalNetIndex  : Integer;
+    I              : Integer;
+    LeftCount      : Integer;
+    RightCount     : Integer;
+    CellCenter     : Double;
+    LaneOffset     : Double;
+    LeftLaneX      : Double;
+    RightLaneX     : Double;
+    RailY          : Double;
+    EscapeX        : Double;
+    MinEscapeX     : Double;
+    MaxEscapeX     : Double;
+    MinAnchorY     : Double;
+    MaxAnchorY     : Double;
+    C              : TColor;
+    ModeText       : String;
+Begin
+    Names := TStringList.Create;
+    Names.Sorted := True;
+    Names.Duplicates := dupIgnore;
+    Iterator := SourceDoc.SchIterator_Create;
+    If Iterator = Nil Then
+    Begin
+        Names.Free;
+        Exit;
+    End;
+    Iterator.SetState_IterationDepth(eIterateFirstLevel);
+    Iterator.AddFilter_ObjectSet(MkSet(eNetLabel));
+    Try
+        Obj := Iterator.FirstSchObject;
+        While Obj <> Nil Do
+        Begin
+            LabelObj := Obj;
+            NetName := NormalizeNetName(Trim(LabelObj.Text));
+            If NetName <> '' Then Names.Add(NetName);
+            Obj := Iterator.NextSchObject;
+        End;
+    Finally
+        SourceDoc.SchIterator_Destroy(Iterator);
+    End;
+
+    CellCenter := (GroupMinX + GroupMaxX) / 2.0;
+    LocalNetIndex := 0;
+    For I := 0 To Names.Count - 1 Do
+    Begin
+        NetName := Names[I];
+        If ConnectivityContainsNet(Connectivity, NetName) Then Continue;
+
+        AnchorCount := 0;
+        AnchorIndex := 0;
+        While (AnchorCount < 256) And
+              FindNetAnchorAt(SourceDoc, NetName, AnchorIndex,
+                  AnchorX, AnchorY) Do
+        Begin
+            AnchorXs[AnchorCount] := UnMm(AnchorX + OffsetX);
+            AnchorYs[AnchorCount] := UnMm(AnchorY + OffsetY);
+            AnchorCount := AnchorCount + 1;
+            AnchorIndex := AnchorIndex + 1;
+        End;
+        If AnchorCount < 2 Then Continue;
+
+        LocalNetIndex := LocalNetIndex + 1;
+        LaneOffset := 18.0 + LocalNetIndex * 2.2;
+        LeftLaneX := UnMm(SnapCoordToMils(
+            Mm(GroupMinX - LaneOffset), 10));
+        RightLaneX := UnMm(SnapCoordToMils(
+            Mm(GroupMaxX + LaneOffset), 10));
+        RailY := UnMm(SnapCoordToMils(
+            Mm(GroupMaxY + LaneOffset), 10));
+        LeftCount := 0;
+        RightCount := 0;
+        MinAnchorY := AnchorYs[0];
+        MaxAnchorY := AnchorYs[0];
+        For AnchorIndex := 0 To AnchorCount - 1 Do
+        Begin
+            If AnchorXs[AnchorIndex] <= CellCenter Then
+                LeftCount := LeftCount + 1
+            Else
+                RightCount := RightCount + 1;
+            If AnchorYs[AnchorIndex] < MinAnchorY Then
+                MinAnchorY := AnchorYs[AnchorIndex];
+            If AnchorYs[AnchorIndex] > MaxAnchorY Then
+                MaxAnchorY := AnchorYs[AnchorIndex];
+        End;
+        C := NetColor(NetName);
+
+        { The replicated net labels provide the electrical connection. These
+          overview routes must remain graphical primitives: Altium joins wire
+          primitives at every crossing and would otherwise short unrelated
+          nets on a dense single-sheet drawing. }
+
+        If RightCount = 0 Then
+        Begin
+            ModeText := 'LEFT_LANE';
+            For AnchorIndex := 0 To AnchorCount - 1 Do
+                AddLine(TargetDoc, AnchorXs[AnchorIndex],
+                    AnchorYs[AnchorIndex], LeftLaneX,
+                    AnchorYs[AnchorIndex], C, eSmall);
+            AddLine(TargetDoc, LeftLaneX, MinAnchorY,
+                LeftLaneX, MaxAnchorY, C, eSmall);
+        End
+        Else If LeftCount = 0 Then
+        Begin
+            ModeText := 'RIGHT_LANE';
+            For AnchorIndex := 0 To AnchorCount - 1 Do
+                AddLine(TargetDoc, AnchorXs[AnchorIndex],
+                    AnchorYs[AnchorIndex], RightLaneX,
+                    AnchorYs[AnchorIndex], C, eSmall);
+            AddLine(TargetDoc, RightLaneX, MinAnchorY,
+                RightLaneX, MaxAnchorY, C, eSmall);
+        End
+        Else
+        Begin
+            ModeText := 'SPLIT_TOP_RAIL';
+            MinEscapeX := RightLaneX;
+            MaxEscapeX := LeftLaneX;
+            For AnchorIndex := 0 To AnchorCount - 1 Do
+            Begin
+                If AnchorXs[AnchorIndex] <= CellCenter Then
+                    EscapeX := LeftLaneX
+                Else
+                    EscapeX := RightLaneX;
+                AddLine(TargetDoc, AnchorXs[AnchorIndex],
+                    AnchorYs[AnchorIndex], EscapeX,
+                    AnchorYs[AnchorIndex], C, eSmall);
+                AddLine(TargetDoc, EscapeX, AnchorYs[AnchorIndex],
+                    EscapeX, RailY, C, eSmall);
+                If EscapeX < MinEscapeX Then MinEscapeX := EscapeX;
+                If EscapeX > MaxEscapeX Then MaxEscapeX := EscapeX;
+            End;
+            AddLine(TargetDoc, MinEscapeX, RailY,
+                MaxEscapeX, RailY, C, eSmall);
+        End;
+
+        RoutedNetCount := RoutedNetCount + 1;
+        RoutedAnchorCount := RoutedAnchorCount + AnchorCount;
+        Audit.Add(IntToStr(SheetNumber) + ',' + NetName + ',' +
+            IntToStr(AnchorCount) + ',' + ModeText + ',PASS');
+    End;
+    Names.Free;
+End;
+
 Procedure AddConnectivityMatrix(Doc : ISch_Document; Rows : TStringList);
 Var
     I, S           : Integer;
@@ -976,12 +1155,14 @@ Var
     SourcePaths    : TStringList;
     Verification   : TStringList;
     LayoutAudit    : TStringList;
+    LocalAudit     : TStringList;
     BasePath       : String;
     TargetPath     : String;
     SourcePath     : String;
     SourceName     : String;
     VerificationPath : String;
     LayoutAuditPath : String;
+    LocalAuditPath : String;
     I              : Integer;
     NetIndex       : Integer;
     SheetNo        : Integer;
@@ -1036,6 +1217,8 @@ Var
     TrunkSlotIndex : Integer;
     DirectDrop     : Boolean;
     FoundOnSheet   : Boolean;
+    LocalRoutedNets : Integer;
+    LocalRoutedAnchors : Integer;
 Begin
     If SchServer = Nil Then Exit;
     Project := FindR9Project;
@@ -1095,6 +1278,10 @@ Begin
     Verification.Add('Net,ExpectedSheets,SheetsFound,Status,AnchorsRouted');
     LayoutAudit := TStringList.Create;
     LayoutAudit.Add('Sheet,MinXmm,MinYmm,MaxXmm,MaxYmm,WidthMm,HeightMm');
+    LocalAudit := TStringList.Create;
+    LocalAudit.Add('Sheet,Net,Anchors,RouteMode,Status');
+    LocalRoutedNets := 0;
+    LocalRoutedAnchors := 0;
     MissingAnchors := 0;
 
     SchServer.ProcessControl.PreProcess(TargetDoc, '');
@@ -1206,11 +1393,24 @@ Begin
             If GroupMaxYs[SheetNo] > RowTopYs[RowIndex] Then
                 RowTopYs[RowIndex] := GroupMaxYs[SheetNo];
             PrimitiveCount := PrimitiveCount +
-                ReplicateSheet(SourceDoc, TargetDoc, OffsetX, OffsetY);
+                ReplicateSheet(SourceDoc, TargetDoc, OffsetX, OffsetY,
+                    (MinX + MaxX) Div 2);
         End;
 
         AddCompactRfAntennaTile(TargetDoc, 2180.0, 30.0);
         ApplyKnownPinDirections(TargetDoc, PinTypeCorrected);
+
+        { Add a visible overview route for every repeated same-sheet label.
+          Electrical identity remains defined by the replicated net labels;
+          graphical lines avoid accidental junctions at dense crossings. }
+        For SheetNo := 1 To 31 Do
+            If SourceDocs[SheetNo] <> Nil Then
+                RouteLocalExplicitNets(SourceDocs[SheetNo], TargetDoc,
+                    OffsetXs[SheetNo], OffsetYs[SheetNo],
+                    GroupMinXs[SheetNo], GroupMinYs[SheetNo],
+                    GroupMaxXs[SheetNo], GroupMaxYs[SheetNo], SheetNo,
+                    Connectivity, LocalAudit, LocalRoutedNets,
+                    LocalRoutedAnchors);
 
         { Allocate only the row lanes that are actually used. Cross-row
           trunks are distributed through the seven clear gaps between the
@@ -1343,7 +1543,7 @@ Begin
                        (UpperCase(NetName) = 'TI_AGND') Then
                     Begin
                         If Not DirectDrop Then
-                            AddWire(TargetDoc, AnchorXmm, AnchorYmm,
+                            AddLine(TargetDoc, AnchorXmm, AnchorYmm,
                                 EscapeX, AnchorYmm, C, eMedium);
                         AddLine(TargetDoc, EscapeX, AnchorYmm,
                             EscapeX, RowRailY, C, eMedium);
@@ -1351,7 +1551,7 @@ Begin
                     Else
                     Begin
                         If Not DirectDrop Then
-                            AddWire(TargetDoc, AnchorXmm, AnchorYmm,
+                            AddLine(TargetDoc, AnchorXmm, AnchorYmm,
                                 EscapeX, AnchorYmm, C, eSmall);
                         AddLine(TargetDoc, EscapeX, AnchorYmm,
                             EscapeX, RowRailY, C, eSmall);
@@ -1402,9 +1602,10 @@ Begin
                                 RowMaxRailXs[RowIndex],
                                 RowRailYs[RowIndex], C, eSmall);
                     End;
-                    { GOST ESKD: the filled dot identifies every intentional
-                      rail-to-trunk electrical junction. Geometrical crossings
-                      of unrelated nets remain unmarked and unconnected. }
+                    { The filled dot marks the intended visual rail-to-trunk
+                      continuation. Electrical identity is defined by the net
+                      labels at every source anchor; unrelated graphical route
+                      crossings remain unconnected. }
                     If NetCrossRows[NetIndex] Then
                         AddRectangle(TargetDoc,
                             TrunkX - 0.55, RowRailYs[RowIndex] - 0.55,
@@ -1461,6 +1662,10 @@ Begin
     Verification.SaveToFile(VerificationPath);
     LayoutAuditPath := BasePath + 'R9_unified_flat_layout_bounds.csv';
     LayoutAudit.SaveToFile(LayoutAuditPath);
+    LocalAuditPath := BasePath +
+        'R9_local_explicit_connectivity_verification.csv';
+    LocalAudit.SaveToFile(LocalAuditPath);
+    LocalAudit.Free;
     LayoutAudit.Free;
     Verification.Free;
     Connectivity.Free;
@@ -1482,7 +1687,9 @@ Begin
             'Audited NC directives: ' + IntToStr(NcApplied + NcExisting) +
             '. Audited passive-input directives: ' +
             IntToStr(NoDriverApplied + NoDriverExisting) +
-            '. Corrected pin directions: ' + IntToStr(PinTypeCorrected) + '.')
+            '. Corrected pin directions: ' + IntToStr(PinTypeCorrected) +
+            '. Explicit local nets: ' + IntToStr(LocalRoutedNets) +
+            ' using ' + IntToStr(LocalRoutedAnchors) + ' anchors.')
     Else
         ShowMessage('Flat schematic generated but NOT accepted. Missing net anchors: ' +
             IntToStr(MissingAnchors) + '. Missing NC pins: ' +
