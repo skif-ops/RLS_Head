@@ -241,9 +241,11 @@ Begin
     WireX0 := UnMm(SnapCoordToMils(Mm(Xmm + 31.0), 10));
     WireX1 := UnMm(SnapCoordToMils(Mm(Xmm + 39.0), 10));
     WireY := UnMm(SnapCoordToMils(Mm(Ymm), 10));
-    AddWire(Doc, WireX0, WireY, WireX1, WireY,
+    { The antenna tile is a physical-layout illustration. Its electrical
+      endpoints remain the AWR2944P RF pins and the PCB copper geometry. }
+    AddLine(Doc, WireX0, WireY, WireX1, WireY,
         ChannelColor, eSmall);
-    AddNetLabel(Doc, NetName, WireX0, WireY, 5, ChannelColor);
+    AddLabel(Doc, NetName, WireX0, WireY + 2.0, 5, False, ChannelColor);
     For I := 0 To 7 Do
         AddRectangle(Doc,
             Xmm + 41.0 + I * 4.6, Ymm - 1.5,
@@ -418,6 +420,63 @@ Begin
     End;
 End;
 
+Function PinElectricalPoint(Pin : ISch_Pin) : TLocation;
+Begin
+    Result := Pin.Location;
+    Case Pin.Orientation Of
+        0 : Result.X := Result.X + Pin.PinLength;
+        1 : Result.Y := Result.Y + Pin.PinLength;
+        2 : Result.X := Result.X - Pin.PinLength;
+        3 : Result.Y := Result.Y - Pin.PinLength;
+    End;
+End;
+
+Function IsPinNoERC(Doc : ISch_Document; P : TLocation) : Boolean;
+Var
+    Components : ISch_Iterator;
+    Pins       : ISch_Iterator;
+    Component  : ISch_Component;
+    Pin        : ISch_Pin;
+    Hotspot    : TLocation;
+Begin
+    Result := False;
+    Components := Doc.SchIterator_Create;
+    If Components = Nil Then Exit;
+    Components.SetState_IterationDepth(eIterateFirstLevel);
+    Components.AddFilter_ObjectSet(MkSet(eSchComponent));
+    Try
+        Component := Components.FirstSchObject;
+        While Component <> Nil Do
+        Begin
+            Pins := Component.SchIterator_Create;
+            If Pins <> Nil Then
+            Begin
+                Pins.SetState_IterationDepth(eIterateFirstLevel);
+                Pins.AddFilter_ObjectSet(MkSet(ePin));
+                Try
+                    Pin := Pins.FirstSchObject;
+                    While Pin <> Nil Do
+                    Begin
+                        Hotspot := PinElectricalPoint(Pin);
+                        If (Abs(Hotspot.X - P.X) <= MilsToCoord(1)) And
+                           (Abs(Hotspot.Y - P.Y) <= MilsToCoord(1)) Then
+                        Begin
+                            Result := True;
+                            Exit;
+                        End;
+                        Pin := Pins.NextSchObject;
+                    End;
+                Finally
+                    Component.SchIterator_Destroy(Pins);
+                End;
+            End;
+            Component := Components.NextSchObject;
+        End;
+    Finally
+        Doc.SchIterator_Destroy(Components);
+    End;
+End;
+
 Function ReplicateSheet(SourceDoc, TargetDoc : ISch_Document;
     OffsetX, OffsetY, SourceCenterX : TCoord) : Integer;
 Var
@@ -426,6 +485,7 @@ Var
     NewObj   : ISch_BasicContainer;
     NewGraph : ISch_GraphicalObject;
     NewNetLabel : ISch_NetLabel;
+    CopyObject : Boolean;
 Begin
     Result := 0;
     Iterator := SourceDoc.SchIterator_Create;
@@ -435,10 +495,16 @@ Begin
         Obj := Iterator.FirstSchObject;
         While Obj <> Nil Do
         Begin
-            { No ERC directives are recreated from the audited disposition
-              manifest. Copying source directives can leave stale floating
-              markers after the sheet is moved into the master drawing. }
-            If Obj.ObjectID <> eNoERC Then
+            { Copy source No ERC directives only when they are attached to an
+              actual electrical pin hotspot. Net-level exceptions are rebuilt
+              from reviewed disposition manifests below. }
+            CopyObject := True;
+            If Obj.ObjectID = eNoERC Then
+            Begin
+                NewGraph := Obj;
+                CopyObject := IsPinNoERC(SourceDoc, NewGraph.Location);
+            End;
+            If CopyObject Then
             Begin
                 NewObj := Obj.Replicate;
                 If NewObj <> Nil Then
@@ -504,6 +570,43 @@ Begin
                                     Pin.I_ObjectAddress, c_BroadCast,
                                     SCHM_BeginModify, c_NoEventData);
                                 Pin.SetState_Electrical(eElectricOutput);
+                                SchServer.RobotManager.SendMessage(
+                                    Pin.I_ObjectAddress, c_BroadCast,
+                                    SCHM_EndModify, c_NoEventData);
+                                Pin.GraphicallyInvalidate;
+                                CorrectedCount := CorrectedCount + 1;
+                            End;
+                            Pin := Pins.NextSchObject;
+                        End;
+                    Finally
+                        Component.SchIterator_Destroy(Pins);
+                    End;
+                End;
+            End;
+            If UpperCase(Component.Designator.Text) = 'U1' Then
+            Begin
+                Pins := Component.SchIterator_Create;
+                If Pins <> Nil Then
+                Begin
+                    Pins.AddFilter_ObjectSet(MkSet(ePin));
+                    Try
+                        Pin := Pins.FirstSchObject;
+                        While Pin <> Nil Do
+                        Begin
+                            { These MCU inputs receive signals from active
+                              external sources and are not bidirectional on
+                              this board. Correcting their symbol electrical
+                              types removes false output-to-IO ERC warnings. }
+                            If ((Pin.Designator = '29') Or
+                                (Pin.Designator = '80') Or
+                                (Pin.Designator = '94') Or
+                                (Pin.Designator = '142')) And
+                               (Pin.Electrical <> eElectricInput) Then
+                            Begin
+                                SchServer.RobotManager.SendMessage(
+                                    Pin.I_ObjectAddress, c_BroadCast,
+                                    SCHM_BeginModify, c_NoEventData);
+                                Pin.SetState_Electrical(eElectricInput);
                                 SchServer.RobotManager.SendMessage(
                                     Pin.I_ObjectAddress, c_BroadCast,
                                     SCHM_EndModify, c_NoEventData);
@@ -600,8 +703,7 @@ Var
     Pins       : ISch_Iterator;
     Component  : ISch_Component;
     Pin        : ISch_Pin;
-    AnchorX    : TCoord;
-    AnchorY    : TCoord;
+    PinHotspot : TLocation;
 Begin
     Result := False;
     For SheetNo := 1 To 31 Do
@@ -627,22 +729,14 @@ Begin
                             Begin
                                 If Pin.Designator = PinNumber Then
                                 Begin
-                                    { ERC attaches a named single-pin-net
-                                      violation to the net-label/wire anchor,
-                                      not necessarily to the symbol pin body.
-                                      Use that source anchor and the exact sheet
-                                      translation used by the primitive copier. }
-                                    If FindNetAnchor(GSourceDocs[SheetNo],
-                                        NetName, AnchorX, AnchorY) Then
-                                        AnchorPoint := Point(
-                                            AnchorX + GOffsetXs[SheetNo],
-                                            AnchorY + GOffsetYs[SheetNo])
-                                    Else
-                                        AnchorPoint := Point(
-                                            Pin.Location.X +
-                                                GOffsetXs[SheetNo],
-                                            Pin.Location.Y +
-                                                GOffsetYs[SheetNo]);
+                                    { Attach the reviewed exception to the
+                                      electrical pin hotspot. A directive on a
+                                      nearby label can hide an unrelated net
+                                      error and does not prove pin disposition. }
+                                    PinHotspot := PinElectricalPoint(Pin);
+                                    AnchorPoint := Point(
+                                        PinHotspot.X + GOffsetXs[SheetNo],
+                                        PinHotspot.Y + GOffsetYs[SheetNo]);
                                     Result := True;
                                     Exit;
                                 End;
@@ -1255,6 +1349,29 @@ Begin
         Exit;
     End;
 
+    { Never clear the accepted master until every source document can be
+      loaded and its bounds can be read. This prevents a partial 13-of-31
+      rebuild when the Altium document session is exhausted. }
+    For I := 0 To SourcePaths.Count - 1 Do
+    Begin
+        SourcePath := SourcePaths[I];
+        SourceDoc := LoadSchDocument(SourcePath);
+        If SourceDoc = Nil Then
+        Begin
+            ShowMessage('Source preflight failed to load: ' +
+                ExtractFileName(SourcePath) + '. Master sheet was not changed.');
+            SourcePaths.Free;
+            Exit;
+        End;
+        If Not CollectBounds(SourceDoc, MinX, MinY, MaxX, MaxY) Then
+        Begin
+            ShowMessage('Source preflight found no schematic bounds: ' +
+                ExtractFileName(SourcePath) + '. Master sheet was not changed.');
+            SourcePaths.Free;
+            Exit;
+        End;
+    End;
+
     ConnectivityPath := BasePath +
         'R9_master_inter_sheet_connectivity.csv';
     If Not FileExists(ConnectivityPath) Then
@@ -1302,29 +1419,8 @@ Begin
         TargetDoc.VisibleGridSize := Mm(10);
 
         AddLabel(TargetDoc,
-            'RADAR D79 24 V / FLAT CONNECTED ELEMENT SCHEMATIC / PCB v0.8.0 R9',
+            'RADAR D79 24 V / COMPLETE ELECTRICAL SCHEMATIC / PCB v0.8.0 R9',
             10, 2275, 18, True, $00202020);
-        AddLabel(TargetDoc,
-            'All source elements are placed on one electrical sheet. Inter-block nets use short Manhattan paths in distributed row and column corridors.',
-            10, 2261, 10, False, $00404040);
-        AddLabel(TargetDoc,
-            'Civil drone tracking system. Measurement and object-state output only. Production authority: NOT_AUTHORIZED.',
-            10, 2249, 9, False, $00404040);
-        AddLabel(TargetDoc,
-            'GOST ESKD ROUTING: orthogonal conductors; every electrical junction has a filled dot; a crossing without a dot is not a connection.',
-            10, 2237, 8, False, $00404040);
-        AddLabel(TargetDoc,
-            'TI_AGND joins GND only through RAD_NT1, RAD_NT2, RAD_NT3 and RAD_NT4 net-tie components.',
-            10, 2227, 8, False, $00008000);
-        AddLabel(TargetDoc,
-            'DISTRIBUTED INTER-BLOCK ROUTING',
-            1980, 2275, 8, True, $00303030);
-        AddLabel(TargetDoc,
-            'Cross-row nets are spread across seven clear inter-column corridors.',
-            1980, 2265, 6, False, $00505050);
-        AddLabel(TargetDoc,
-            'Crossings without a junction are not electrical connections.',
-            1980, 2256, 6, False, $00505050);
 
         PrimitiveCount := 0;
         For SheetNo := 1 To 31 Do

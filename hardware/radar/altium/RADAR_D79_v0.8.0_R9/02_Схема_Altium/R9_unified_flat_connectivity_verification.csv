@@ -1,5 +1,5 @@
 Net,ExpectedSheets,SheetsFound,Status,AnchorsRouted
-GND,28,28,PASS,363
+GND,28,28,PASS,383
 3V3,12,12,PASS,56
 5V_GNSS,5,5,PASS,5
 RADAR_12V,3,3,PASS,9

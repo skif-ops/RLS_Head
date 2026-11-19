@@ -1,0 +1,17 @@
+R9 unified master full pin audit
+Document: C:\Users\skifn\.codex\.chatgpt-projects\g-p-6a9feb917c48819182ec25e1ef55310c\RLS_Head-git\hardware\radar\altium\RADAR_D79_v0.8.0_R9\02_Схема_Altium\00_UNIFIED_CONNECTED_SCHEMATIC.SchDoc
+Wire endpoint count: 2288
+Net label anchor count: 1144
+Port anchor count: 0
+No-connect marker count: 264
+Total pins: 1321
+Connected pins: 1144
+Explicitly marked NC pins: 177
+Unmarked open pins: 0
+Connected pins with reviewed ERC directives: 87
+Connected pins with unexpected NC/ERC directives: 0
+Dangling wire endpoints: 0
+Unattached net labels: 0
+Non-orthogonal wire segments: 0
+Zero-length wire segments: 0
+Result: PASS

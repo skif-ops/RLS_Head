@@ -1,0 +1,181 @@
+Ref,Pin,PinName,Disposition,Suppress,Reason,Source
+U8,7,NC,CONNECT_GND,NO,Required ground connection; do not suppress,Manufacturer pin assignment and thermal or shield requirement
+U8,11,SS/TRK,INTENTIONAL_NC,YES,SS/TRK may float to select internal soft start,TI LM76002 or LM76003 datasheet
+U8,23,NC,CONNECT_GND,NO,Required ground connection; do not suppress,Manufacturer pin assignment and thermal or shield requirement
+U6,12,SHDN,INTENTIONAL_NC,YES,Optional control or monitor pin allowed open,TI TPS2663 datasheet
+U6,13,IMON,INTENTIONAL_NC,YES,Optional control or monitor pin allowed open,TI TPS2663 datasheet
+U6,19,NC,INTENTIONAL_NC,YES,Device NC pin,TI TPS2663 datasheet
+U6,20,NC,INTENTIONAL_NC,YES,Device NC pin,TI TPS2663 datasheet
+U6,21,NC,INTENTIONAL_NC,YES,Device NC pin,TI TPS2663 datasheet
+U6,22,NC,INTENTIONAL_NC,YES,Device NC pin,TI TPS2663 datasheet
+U6,23,NC,INTENTIONAL_NC,YES,Device NC pin,TI TPS2663 datasheet
+U6,24,NC,INTENTIONAL_NC,YES,Device NC pin,TI TPS2663 datasheet
+U5,7,FSW,INTENTIONAL_NC,YES,Optional strap pin uses internal default bias,TI TPS62150 datasheet
+U5,8,DEF,INTENTIONAL_NC,YES,Optional strap pin uses internal default bias,TI TPS62150 datasheet
+U9,7,FSW,INTENTIONAL_NC,YES,Optional strap pin uses internal default bias,TI TPS62150 datasheet
+U9,8,DEF,INTENTIONAL_NC,YES,Optional strap pin uses internal default bias,TI TPS62150 datasheet
+U7,3,AUXOFF,INTENTIONAL_NC,YES,Optional status or timing pin allowed open,TI TPS25947 datasheet
+U7,10,ITIMER,INTENTIONAL_NC,YES,Optional status or timing pin allowed open,TI TPS25947 datasheet
+J1,Un1,Un1,MECHANICAL_NC,YES,Mechanical or alignment pad with no electrical function,Connector manufacturer footprint
+D3,6,NC,INTENTIONAL_NC,YES,Package NC pin,TI TPD4E05U06 datasheet
+D3,7,NC,INTENTIONAL_NC,YES,Package NC pin,TI TPD4E05U06 datasheet
+D3,9,NC,INTENTIONAL_NC,YES,Package NC pin,TI TPD4E05U06 datasheet
+D3,10,NC,INTENTIONAL_NC,YES,Package NC pin,TI TPD4E05U06 datasheet
+J6,Un1,Un1,MECHANICAL_NC,YES,Mechanical or alignment pad with no electrical function,Connector manufacturer footprint
+D8,5,D2-,INTENTIONAL_NC,YES,Unused ESD protection channel,TI TPD4E05U06 datasheet
+D8,6,NC,INTENTIONAL_NC,YES,Package NC pin,TI TPD4E05U06 datasheet
+D8,7,NC,INTENTIONAL_NC,YES,Package NC pin,TI TPD4E05U06 datasheet
+D8,9,NC,INTENTIONAL_NC,YES,Package NC pin,TI TPD4E05U06 datasheet
+D8,10,NC,INTENTIONAL_NC,YES,Package NC pin,TI TPD4E05U06 datasheet
+J8,5,Pin_5,INTENTIONAL_NC,YES,Reserved connector contact not used in EVT,JST GH connector assignment
+J8,MP,MP,INTENTIONAL_NC,YES,Mechanical pad with no electrical function,JST GH connector assignment
+U1,3,PE4,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,4,PE5,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,5,PE6,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,7,PI8,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,8,PC13,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,9,PC14,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,10,PC15,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,11,PI9,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,12,PI10,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,13,PI11,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,16,PF0,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,17,PF1,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,18,PF2,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,19,PF3,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,20,PF4,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,21,PF5,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,24,PF6,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,25,PF7,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,26,PF8,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,27,PF9,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,28,PF10,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,30,PH1,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,32,PC0,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,33,PC1,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,34,PC2_C,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,35,PC3_C,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,41,PA1,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,42,PA2,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,43,PH2,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,44,PH3,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,45,PH4,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,46,PH5,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,47,PA3,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,50,PA4,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,51,PA5,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,52,PA6,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,53,PA7,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,54,PC4,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,55,PC5,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,56,PB0,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,57,PB1,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,58,PB2,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,59,PF11,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,60,PF12,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,63,PF13,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,64,PF14,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,65,PF15,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,66,PG0,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,67,PG1,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,68,PE7,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,69,PE8,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,70,PE9,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,73,PE10,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,74,PE11,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,75,PE12,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,76,PE13,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,77,PE14,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,78,PE15,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,83,PH6,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,84,PH7,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,85,PH8,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,86,PH9,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,87,PH10,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,88,PH11,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,89,PH12,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,98,PD10,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,99,PD11,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,100,PD12,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,101,PD13,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,104,PD14,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,105,PD15,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,106,PG2,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,107,PG3,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,108,PG4,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,109,PG5,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,110,PG6,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,111,PG7,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,112,PG8,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,115,PC6,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,116,PC7,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,117,PC8,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,118,PC9,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,119,PA8,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,122,PA11,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,123,PA12,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,128,PH13,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,129,PH14,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,130,PH15,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,131,PI0,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,132,PI1,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,133,PI2,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,134,PI3,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,138,PA15,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,139,PC10,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,140,PC11,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,141,PC12,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,144,PD2,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,145,PD3,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,146,PD4,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,151,PD7,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,152,PG9,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,153,PG10,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,154,PG11,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,155,PG12,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,156,PG13,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,157,PG14,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,160,PG15,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,162,PB4,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,163,PB5,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,164,PB6,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,165,PB7,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,167,PB8,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,168,PB9,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,169,PE0,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,170,PE1,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,173,PI4,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,174,PI5,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,175,PI6,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+U1,176,PI7,INTENTIONAL_NC,YES,Unused MCU GPIO; firmware shall configure analog mode with no pull after reset,ST STM32H753 datasheet and reference manual
+J10,Un1,Un1,MECHANICAL_NC,YES,Mechanical or alignment pad with no electrical function,Connector manufacturer footprint
+J10,Un2,Un2,MECHANICAL_NC,YES,Mechanical or alignment pad with no electrical function,Connector manufacturer footprint
+J10,Un3,Un3,MECHANICAL_NC,YES,Mechanical or alignment pad with no electrical function,Connector manufacturer footprint
+Y1,1,TRI_STATE,INTENTIONAL_NC,YES,TRI_STATE may remain open for enabled oscillator output,ECS-2520MV datasheet
+U2,2,RESV,INTENTIONAL_NC,YES,Reserved pin may be left unconnected,TDK ICM-42688-P datasheet
+U2,3,RESV,INTENTIONAL_NC,YES,Reserved pin may be left unconnected,TDK ICM-42688-P datasheet
+U2,10,RESV,INTENTIONAL_NC,YES,Reserved pin may be left unconnected,TDK ICM-42688-P datasheet
+U2,11,RESV,INTENTIONAL_NC,YES,Reserved pin may be left unconnected,TDK ICM-42688-P datasheet
+U_FRAME,1,1,INTENTIONAL_NC,YES,Package NC pin,TI SN74LVC1G17 pinout
+U_USB,1,GPIO1,INTENTIONAL_NC,YES,Unused optional GPIO or modem status output,Silicon Labs CP2102N datasheet
+U_USB,2,GPIO0,INTENTIONAL_NC,YES,Unused optional GPIO or modem status output,Silicon Labs CP2102N datasheet
+U_USB,10,NC,INTENTIONAL_NC,YES,Package NC pin,Silicon Labs CP2102N datasheet
+U_USB,11,SUSPEND_N,INTENTIONAL_NC,YES,Unused optional GPIO or modem status output,Silicon Labs CP2102N datasheet
+U_USB,14,SUSPEND,INTENTIONAL_NC,YES,Unused optional GPIO or modem status output,Silicon Labs CP2102N datasheet
+U_USB,16,RTS,INTENTIONAL_NC,YES,Unused optional GPIO or modem status output,Silicon Labs CP2102N datasheet
+U_USB,19,GPIO3,INTENTIONAL_NC,YES,Unused optional GPIO or modem status output,Silicon Labs CP2102N datasheet
+U_USB,20,GPIO2,INTENTIONAL_NC,YES,Unused optional GPIO or modem status output,Silicon Labs CP2102N datasheet
+JUSB1,4,4,INTENTIONAL_NC,YES,USB Micro-B ID contact is unused,Molex 105017-0001 pin assignment
+JUSB1,7,7,CONNECT_GND,NO,Required ground connection; do not suppress,Manufacturer pin assignment and thermal or shield requirement
+JUSB1,8,8,CONNECT_GND,NO,Required ground connection; do not suppress,Manufacturer pin assignment and thermal or shield requirement
+D_USB,5,5,INTENTIONAL_NC,YES,Unused ESD protection channel,TI TPD4E05U06 datasheet
+D_USB,6,6,INTENTIONAL_NC,YES,Package NC pin,TI TPD4E05U06 datasheet
+D_USB,7,7,INTENTIONAL_NC,YES,Package NC pin,TI TPD4E05U06 datasheet
+D_USB,9,9,INTENTIONAL_NC,YES,Package NC pin,TI TPD4E05U06 datasheet
+D_USB,10,10,INTENTIONAL_NC,YES,Package NC pin,TI TPD4E05U06 datasheet
+RAD_U2,11,NC,INTENTIONAL_NC,YES,Package NC pin,Manufacturer pinout
+RAD_U9,3,ALERT,INTENTIONAL_NC,YES,INA226 ALERT output is not used in EVT,TI INA226 datasheet
+RAD_U11,3,ALERT,INTENTIONAL_NC,YES,INA226 ALERT output is not used in EVT,TI INA226 datasheet
+RAD_U12,3,ALERT,INTENTIONAL_NC,YES,INA226 ALERT output is not used in EVT,TI INA226 datasheet
+RAD_U22,3,ALERT,INTENTIONAL_NC,YES,INA226 ALERT output is not used in EVT,TI INA226 datasheet
+RAD_U27,4,NC,INTENTIONAL_NC,YES,Package NC pin,Manufacturer pinout
