@@ -1,0 +1,10 @@
+[Design]
+Version=1.0
+HierarchyMode=0
+
+[Document1]
+DocumentPath=R9_Create_Unified_Connected_Schematic.pas
+AnnotationEnabled=1
+
+[Generic_ScriptingSystem]
+StartProcName=R9_Create_Unified_Connected_Schematic.pas>PrepareFullElementSheet

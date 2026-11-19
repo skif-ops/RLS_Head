@@ -1,0 +1,5 @@
+Net,Ref,Pin,Reason,Application,NoERC_X_mil,NoERC_Y_mil
+USB_BRIDGE_RESET_N,U_USB,9,CP2102N reset input is biased by R_USB_RESET and requires no active logic driver,APPLIED,69450.001,57120.001
+USB_CTS_N,U_USB,15,CP2102N CTS input is biased by R_USB_CTS and requires no active logic driver,APPLIED,76270.001,57870.001
+USB_VBUS_SENSE,U_USB,8,CP2102N VBUS sense input is fed through the passive R_USB_VBUS_H and R_USB_VBUS_L divider,APPLIED,69450.001,57270.001
+USB_WAKE_N,U_USB,13,CP2102N wake input is biased by R_USB_WAKE and requires no active logic driver,APPLIED,76270.001,58170.001
