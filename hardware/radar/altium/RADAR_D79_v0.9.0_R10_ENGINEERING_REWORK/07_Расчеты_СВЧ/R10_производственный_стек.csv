@@ -1,0 +1,20 @@
+﻿item,kind,thickness_mm,material
+L1,copper,0.018,RO3003G2 VLP base copper
+D1,dielectric,0.127,RO3003G2 standard 5 mil
+L2,copper,0.018,copper
+D2,dielectric,0.115,FR-4 Tg150 prepreg 2116
+L3,copper,0.035,copper
+D3,dielectric,0.3,FR-4 Tg150 core
+L4,copper,0.035,copper
+D4,dielectric,0.193,FR-4 Tg150 prepreg 7628
+L5,copper,0.035,copper
+D5,dielectric,0.25,FR-4 Tg150 core
+L6,copper,0.035,copper
+D6,dielectric,0.193,FR-4 Tg150 prepreg 7628
+L7,copper,0.035,copper
+D7,dielectric,0.3,FR-4 Tg150 core
+L8,copper,0.035,copper
+D8,dielectric,0.115,FR-4 Tg150 prepreg 2116
+L9,copper,0.018,copper
+D9,dielectric,0.127,RO3003G2 standard 5 mil
+L10,copper,0.018,RO3003G2 VLP base copper

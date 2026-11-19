@@ -1,0 +1,98 @@
+{
+  "schema": "R10-DRC-PASS-RECEIPT-001",
+  "revision": "R10.3.36",
+  "checked_at_local": "2026-11-20T01:25:00+03:00",
+  "native_board": {
+    "path": "hardware/radar/altium/RADAR_D79_v0.9.0_R10_ENGINEERING_REWORK/01_Исходник_Altium/RADAR_D79_POWER_24V_v0.9.3.36_R10_3_36_IMPEDANCE_CLEAR_ROUTE_NATIVE.PcbDoc",
+    "size_bytes": 5935616,
+    "sha256": "BD4936D195EE98AA45486C16046102DF2C35CA009024FB32327ABA712ADF3DF4"
+  },
+  "ascii_board": {
+    "path": "hardware/radar/altium/RADAR_D79_v0.9.0_R10_ENGINEERING_REWORK/01_Исходник_Altium/RADAR_D79_POWER_24V_v0.9.3.36_R10_3_36_IMPEDANCE_CLEAR_ROUTE_ASCII.PcbDoc",
+    "size_bytes": 7789315,
+    "sha256": "07DE86E588B7233B118C5C123209E4EC8B3AFEC7F326DC0C4D3CF001A31DC57C"
+  },
+  "altium_drc_report": {
+    "path": "hardware/radar/altium/RADAR_D79_v0.9.0_R10_ENGINEERING_REWORK/01_Исходник_Altium/Design Rule Check - RADAR_D79_POWER_24V_v0.9.3.html",
+    "size_bytes": 15698,
+    "sha256": "60645CF11D58C161C0673F3B87601D10AEF15FF33A1FAEA5B28C4706DBD83D89",
+    "warnings": 0,
+    "rule_violations": 0,
+    "elapsed": "00:00:02"
+  },
+  "impedance_profile_source": {
+    "path": "hardware/radar/altium/RADAR_D79_v0.9.0_R10_ENGINEERING_REWORK/07_Расчеты_СВЧ/R10_профили_импеданса.csv",
+    "sha256": "B10AD6EF643931BBAD250130CE6FFC3A2BACDD9D29CDB70D5E4667D60B9F1E62"
+  },
+  "verified_rule_groups": [
+    "RF feed clearance to ground vias",
+    "RF feed mutual clearance",
+    "general clearance",
+    "RF feed clearance to coplanar polygon",
+    "polygon clearance",
+    "short circuit",
+    "unrouted nets",
+    "modified polygons",
+    "CAN width on SIG_B0 over DIGITAL_GND",
+    "USB width on SIG_B0 over DIGITAL_GND",
+    "RF top-layer width",
+    "CAN bottom-layer width over DIGITAL_GND",
+    "USB bottom-layer width over DIGITAL_GND",
+    "general width",
+    "routing topology",
+    "power plane connection",
+    "hole size",
+    "hole-to-hole clearance",
+    "minimum solder mask sliver",
+    "silkscreen to solder mask",
+    "silkscreen to silkscreen",
+    "net antennae",
+    "component height"
+  ],
+  "controlled_impedance_profiles": {
+    "RF50_OPEN": {
+      "target_ohm": 50,
+      "width_mm": 0.29624,
+      "reference": "L2 RF_GND",
+      "scope": "chip launch and RF feed only"
+    },
+    "USB90_L8_L9": {
+      "target_diff_ohm": 90,
+      "width_mm": 0.1851,
+      "gap_mm": 0.15,
+      "reference": "L9 DIGITAL_GND"
+    },
+    "USB90_L10_L9": {
+      "target_diff_ohm": 90,
+      "width_mm": 0.26663,
+      "gap_mm": 0.15,
+      "reference": "L9 DIGITAL_GND"
+    },
+    "CAN120_L8_L9": {
+      "target_diff_ohm": 120,
+      "width_mm": 0.11184,
+      "gap_mm": 0.2,
+      "reference": "L9 DIGITAL_GND"
+    },
+    "CAN120_L10_L9": {
+      "target_diff_ohm": 120,
+      "width_mm": 0.1736014,
+      "gap_mm": 0.2,
+      "reference": "L9 DIGITAL_GND"
+    }
+  },
+  "stack_contract": {
+    "layer_count": 10,
+    "total_thickness_mm": 2.0,
+    "top_copper_um": 17.78,
+    "rf_dielectric": "RO3003G2 0.127 mm, Dk 3.07",
+    "rf_reference": "L2 RF_GND continuous",
+    "digital_reference": "L9 DIGITAL_GND continuous"
+  },
+  "fabricator_release_conditions": [
+    "Confirm the final stack and dielectric thicknesses with the selected fabricator",
+    "Recalculate controlled impedances with the fabricator field solver",
+    "Add and measure controlled-impedance coupons"
+  ],
+  "production_authority": "NOT_AUTHORIZED"
+}
