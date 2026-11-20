@@ -1,0 +1,30 @@
+{
+  "compile": {
+    "errors": 0,
+    "layout_authority": "NOT_AUTHORIZED",
+    "notes": [
+      "Counts are recorded from the native Altium compile/ERC result and cryptographically bound to the archived raw report.",
+      "PASS is compile evidence only; layout authority remains controlled by ALTIUM_EQUIVALENCE_GATE."
+    ],
+    "production_authority": "NOT_AUTHORIZED",
+    "schema": "ALTIUM-COMPILE-REPORT-001",
+    "source_project": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
+    "source_project_sha256": "59284024bdb3184601c17657c14d78c81da3352848f81fbe023bc74b25fc41bd",
+    "source_report": "hardware/system_carrier/altium/equivalence/compile_report_raw.txt",
+    "source_report_sha256": "151ec63f9ed78059cd4cdac8b030ae85b5780a0f0487b98972a53637cc06e3fc",
+    "source_schematic": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
+    "source_schematic_sha256": "cd169feb69c055050beee9c3a1cf66b971c66615dbdc507b2709c53ec9e1bbfe",
+    "status": "PASS",
+    "warnings": 0
+  },
+  "compile_report_sha256": "6da439c66d1267e7c666943bcd1cd828059d8bac76e7dc24ff0dd9bd7f62dc06",
+  "errors": [],
+  "reason_codes": [],
+  "schema": "ALTIUM-COMPILE-EVIDENCE-VALIDATION-001",
+  "source_hashes": {
+    "source_project": "59284024bdb3184601c17657c14d78c81da3352848f81fbe023bc74b25fc41bd",
+    "source_report": "151ec63f9ed78059cd4cdac8b030ae85b5780a0f0487b98972a53637cc06e3fc",
+    "source_schematic": "cd169feb69c055050beee9c3a1cf66b971c66615dbdc507b2709c53ec9e1bbfe"
+  },
+  "status": "PASS"
+}

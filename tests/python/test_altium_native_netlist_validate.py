@@ -76,3 +76,37 @@ def test_native_netlist_validator_detects_rewired_endpoint(tmp_path):
         item.startswith("missing_connectivity_groups:")
         for item in result["errors"]
     )
+
+
+def test_native_netlist_validator_excludes_only_explicit_unconnected_pins(tmp_path):
+    baseline = tmp_path / "baseline.csv"
+    _write(
+        baseline,
+        ["designator", "pin", "net_name"],
+        [
+            {"designator": "U1", "pin": "1", "net_name": "NET_A"},
+            {"designator": "R1", "pin": "1", "net_name": "NET_A"},
+            {"designator": "U1", "pin": "2", "net_name": "unconnected-(U1-NC-Pad2)"},
+        ],
+    )
+    actual = tmp_path / "pad_net_inventory.csv"
+    _write(
+        actual,
+        ["designator", "pad_name", "net_name"],
+        [
+            {"designator": "U1", "pad_name": "1", "net_name": "Altium_A"},
+            {"designator": "R1", "pad_name": "1", "net_name": "Altium_A"},
+        ],
+    )
+    assert validate(baseline_csv=baseline, pad_net_inventory=actual)["status"] == "PASS"
+
+    _write(
+        baseline,
+        ["designator", "pin", "net_name"],
+        [
+            {"designator": "U1", "pin": "1", "net_name": "NET_A"},
+            {"designator": "R1", "pin": "1", "net_name": "NET_A"},
+            {"designator": "U1", "pin": "2", "net_name": "NAMED_SINGLETON"},
+        ],
+    )
+    assert validate(baseline_csv=baseline, pad_net_inventory=actual)["status"] == "FAIL"

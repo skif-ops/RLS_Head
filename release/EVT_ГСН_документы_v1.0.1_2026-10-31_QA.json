@@ -1,0 +1,211 @@
+{
+  "version": "1.0.1",
+  "status": "PASS",
+  "documents": 13,
+  "pages": 39,
+  "heading_styles": "Times New Roman, first line 709 twips",
+  "source_documents_text_preserved": 11,
+  "new_administrative_documents": 2,
+  "zip_integrity": "PASS",
+  "registered_archive_hashes": "PASS",
+  "published_release_overwrite_guard": true,
+  "archive_sha256": "165dde82aa381e87357110661f28acef0c944520ac41babe26913ee36a0397c6",
+  "visual_verification": "39 pages reviewed; final render pixel-identical to reviewed pages",
+  "page_comparisons": [
+    {
+      "document": "00_Версии_и_шаблон/Правила_учета_версий_документов_v1.0.1.docx",
+      "page": "page-1.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "00_Версии_и_шаблон/Шаблон_текстового_документа_v1.0.1.docx",
+      "page": "page-1.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "00_Опись_и_статус/Опись_и_статус_комплекта_EVT_v1.0.1.docx",
+      "page": "page-1.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "00_Опись_и_статус/Опись_и_статус_комплекта_EVT_v1.0.1.docx",
+      "page": "page-2.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "00_Опись_и_статус/Опись_и_статус_комплекта_EVT_v1.0.1.docx",
+      "page": "page-3.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "01_Технический_проект/Протокол_TargetState_V1_v1.0.1.docx",
+      "page": "page-1.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "01_Технический_проект/Протокол_TargetState_V1_v1.0.1.docx",
+      "page": "page-2.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "01_Технический_проект/Протокол_TargetState_V1_v1.0.1.docx",
+      "page": "page-3.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "01_Технический_проект/Протокол_TargetState_V1_v1.0.1.docx",
+      "page": "page-4.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "01_Технический_проект/Технический_проект_EVT_ГСН_v1.0.1.docx",
+      "page": "page-1.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "01_Технический_проект/Технический_проект_EVT_ГСН_v1.0.1.docx",
+      "page": "page-2.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "01_Технический_проект/Технический_проект_EVT_ГСН_v1.0.1.docx",
+      "page": "page-3.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "01_Технический_проект/Технический_проект_EVT_ГСН_v1.0.1.docx",
+      "page": "page-4.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "01_Технический_проект/Технический_проект_EVT_ГСН_v1.0.1.docx",
+      "page": "page-5.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "01_Технический_проект/Технический_проект_EVT_ГСН_v1.0.1.docx",
+      "page": "page-6.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "01_Технический_проект/Технический_проект_EVT_ГСН_v1.0.1.docx",
+      "page": "page-7.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "02_Техническое_задание/Техническое_задание_EVT_ГСН_v1.0.1.docx",
+      "page": "page-1.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "02_Техническое_задание/Техническое_задание_EVT_ГСН_v1.0.1.docx",
+      "page": "page-2.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "02_Техническое_задание/Техническое_задание_EVT_ГСН_v1.0.1.docx",
+      "page": "page-3.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "03_Заказ_ПП_и_монтажа/Заявка_на_изготовление_ПП_и_монтаж_v1.0.1.docx",
+      "page": "page-1.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "03_Заказ_ПП_и_монтажа/Заявка_на_изготовление_ПП_и_монтаж_v1.0.1.docx",
+      "page": "page-2.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "03_Заказ_ПП_и_монтажа/Заявка_на_изготовление_ПП_и_монтаж_v1.0.1.docx",
+      "page": "page-3.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "05_Прошивка_контроллера/Инструкция_по_сборке_прошивке_и_настройке_v1.0.1.docx",
+      "page": "page-1.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "05_Прошивка_контроллера/Инструкция_по_сборке_прошивке_и_настройке_v1.0.1.docx",
+      "page": "page-2.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "05_Прошивка_контроллера/Инструкция_по_сборке_прошивке_и_настройке_v1.0.1.docx",
+      "page": "page-3.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "06_Жгуты_и_кабели/Схема_соединений_и_задание_на_жгуты_v1.0.1.docx",
+      "page": "page-1.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "06_Жгуты_и_кабели/Схема_соединений_и_задание_на_жгуты_v1.0.1.docx",
+      "page": "page-2.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "06_Жгуты_и_кабели/Схема_соединений_и_задание_на_жгуты_v1.0.1.docx",
+      "page": "page-3.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "07_Инструкции/Инструкция_монтажнику_и_наладчику_v1.0.1.docx",
+      "page": "page-1.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "07_Инструкции/Инструкция_монтажнику_и_наладчику_v1.0.1.docx",
+      "page": "page-2.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "07_Инструкции/Руководство_пользователя_EVT_v1.0.1.docx",
+      "page": "page-1.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "07_Инструкции/Руководство_пользователя_EVT_v1.0.1.docx",
+      "page": "page-2.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "07_Инструкции/Руководство_пользователя_EVT_v1.0.1.docx",
+      "page": "page-3.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "08_Контроль_и_приемка/Программа_и_методики_EVT_v1.0.1.docx",
+      "page": "page-1.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "08_Контроль_и_приемка/Программа_и_методики_EVT_v1.0.1.docx",
+      "page": "page-2.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "08_Контроль_и_приемка/Программа_и_методики_EVT_v1.0.1.docx",
+      "page": "page-3.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "10_Отчетные_материалы/Форма_отчета_EVT_v1.0.1.docx",
+      "page": "page-1.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "10_Отчетные_материалы/Форма_отчета_EVT_v1.0.1.docx",
+      "page": "page-2.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    },
+    {
+      "document": "10_Отчетные_материалы/Форма_отчета_EVT_v1.0.1.docx",
+      "page": "page-3.png",
+      "pixel_identical_to_visually_reviewed_page": true
+    }
+  ]
+}

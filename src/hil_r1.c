@@ -995,6 +995,31 @@ HilRuntimeResult hil_runtime_process_packet(
     size_t response_capacity,
     size_t *response_len)
 {
+    return hil_runtime_process_packet_ex(
+        rt,
+        packet,
+        packet_len,
+        receive_time_us,
+        publish_time_us,
+        NULL,
+        NULL,
+        response,
+        response_capacity,
+        response_len);
+}
+
+HilRuntimeResult hil_runtime_process_packet_ex(
+    HilRuntime *rt,
+    const uint8_t *packet,
+    size_t packet_len,
+    uint64_t receive_time_us,
+    uint64_t publish_time_us,
+    HilTargetStateTransform transform,
+    void *transform_context,
+    uint8_t *response,
+    size_t response_capacity,
+    size_t *response_len)
+{
     if (rt == NULL || packet == NULL || response == NULL || response_len == NULL) {
         return HIL_RUNTIME_PARSE_ERROR;
     }
@@ -1037,19 +1062,30 @@ HilRuntimeResult hil_runtime_process_packet(
     rt->last_sequence = frame.sequence;
     rt->have_sequence = true;
 
-    if (frame.detection_count > 1u) {
-        return HIL_RUNTIME_MULTI_DET_UNSUPPORTED;
-    }
-
     bool measurement_used = false;
     bool reacquired = false;
 
-    if (frame.detection_count == 1u) {
+    if (frame.detection_count > 0u) {
+        uint16_t selected = 0u;
+        for (uint16_t i = 1u; i < frame.detection_count; ++i) {
+            const HilDetectionDecoded *candidate = &frame.detections[i];
+            const HilDetectionDecoded *current = &frame.detections[selected];
+            if (candidate->quality > current->quality
+                || (candidate->quality == current->quality
+                    && candidate->snr_db > current->snr_db)
+                || (candidate->quality == current->quality
+                    && candidate->snr_db == current->snr_db
+                    && candidate->detection_id < current->detection_id)) {
+                selected = i;
+            }
+        }
+        rt->diag.detections_discarded += frame.detection_count - 1u;
+
         RadarMeasurement measurement;
 
         if (!radar_measurement_from_hil(
                 &frame,
-                &frame.detections[0],
+                &frame.detections[selected],
                 receive_time_us,
                 &measurement)) {
             ++rt->diag.numeric_errors;
@@ -1133,6 +1169,10 @@ HilRuntimeResult hil_runtime_process_packet(
             publish_time_us,
             &target_state)) {
         return HIL_RUNTIME_TIME_ERROR;
+    }
+
+    if (transform != NULL && !transform(&target_state, transform_context)) {
+        return HIL_RUNTIME_TRANSFORM_ERROR;
     }
 
     if (!targetstate_v1_serialize(

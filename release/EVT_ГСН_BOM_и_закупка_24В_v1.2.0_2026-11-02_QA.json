@@ -1,0 +1,16 @@
+{
+  "schema": "EVT-GSN-BOM-RELEASE-QA-002",
+  "version": "1.2.0",
+  "date": "2026-11-02",
+  "status": "PASS",
+  "source_rows": 105,
+  "native_rows": 105,
+  "native_match": "105/105",
+  "grouped_rows": 57,
+  "fit_groups": 52,
+  "dnp_pcb_only_groups": 5,
+  "formula_errors": [],
+  "output": "release/EVT_ГСН_BOM_и_закупка_24В_v1.2.0_2026-11-02.xlsx",
+  "preview_dir": ".codex-temp/bom_v120_previews",
+  "production_authority": "NOT_AUTHORIZED"
+}

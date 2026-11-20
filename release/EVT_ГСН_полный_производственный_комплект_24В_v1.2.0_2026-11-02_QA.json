@@ -1,0 +1,47 @@
+{
+  "schema": "EVT-GSN-24V-MANUFACTURING-BUNDLE-QA-001",
+  "version": "1.2.0",
+  "release_date": "2026-11-02",
+  "status": "PASS",
+  "full_package": {
+    "archive": "release/EVT_ГСН_полный_производственный_комплект_24В_v1.2.0_2026-11-02.zip",
+    "sha256": "081e8e8301a79355b67cece960e2a862a91d359f74dff3331f19439ff1bdf206",
+    "bytes": 47886106,
+    "zip_integrity": "PASS",
+    "required_files": "PASS",
+    "manifest_files_verified": 606,
+    "stale_backup_paths": 0
+  },
+  "pcb_order_package": {
+    "archive": "release/EVT_ГСН_заказ_ПП_и_монтажа_24В_v1.2.0_2026-11-02.zip",
+    "sha256": "3a81768a1881a05212ff37fc4693e388a2d02d2794f050b5864f1524baa4f719",
+    "bytes": 4206213,
+    "zip_integrity": "PASS",
+    "required_files": "PASS",
+    "manifest_files_verified": 94,
+    "stale_backup_paths": 0
+  },
+  "payload": {
+    "canonical_pcb_sha256": "518041a570b405a429a70d968ee54b62df126cb0091b9af08e067152c5aa8735",
+    "gerber_files": 21,
+    "nc_drill_files": 4,
+    "pick_place_rows": 105,
+    "pdf_pages": {
+      "schematic": 8,
+      "fabrication": 5,
+      "assembly": 2
+    },
+    "firmware_artifacts": 4,
+    "firmware_host_tests_passed": 20,
+    "digital_twin": "PASS",
+    "production_authority": "NOT_AUTHORIZED"
+  },
+  "bom_csv_rows": {
+    "procurement": 57,
+    "detailed": 105,
+    "system": 7,
+    "dnp": 5
+  },
+  "download_copies": "PASS",
+  "production_authority": "NOT_AUTHORIZED"
+}

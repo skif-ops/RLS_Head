@@ -1,0 +1,60 @@
+{
+  "release": "v2.2.2 RC4",
+  "content_revision": "v2.2.0 RC2",
+  "date": "2026-11-09",
+  "purpose": "Полный комплект заказа EVT и стендовых испытаний после очистки PcbDoc",
+  "civil_tracking_only": true,
+  "evt_order_authorized": true,
+  "production_authority": "NOT_AUTHORIZED",
+  "checks": {
+    "native_drc_warnings": 0,
+    "native_drc_violations": 0,
+    "unrouted_connections": 0,
+    "removed_unintended_free_text_objects": 2,
+    "polygons_repoured": true,
+    "pick_place_rows_reconciled": "300/300",
+    "stm32h753_digital_tests": "21/21 PASS",
+    "awr2944p_digital_tests": "22/22 PASS",
+    "gerber_x2_files": 24,
+    "drill_output_files": 11,
+    "descriptions_and_instructions": 22,
+    "all_readable_document_files": 75,
+    "required_files_present": 15,
+    "native_pcbdoc_sha256": "508fcf79324964875aa90920dc00e5e0c36c5ec0dc6b5dc8efab2991f361c510",
+    "native_drc_report_sha256": "5a9556e7c4f7e9a42a5efdcd7c6c8a1a933a2260875f95ebe8209beefd20ef84"
+  },
+  "packaging": {
+    "old_revisions_removed": true,
+    "temporary_files_removed": true,
+    "windows_programs_extracted": true,
+    "stm32_vendor_sources_not_duplicated": true,
+    "stm32_vendor_dependency_manifest_included": true
+  },
+  "archives": {
+    "full": {
+      "name": "EVT_GSN_full_EVT_R9_24V_v2.2.2_RC4_2026-11-09.zip",
+      "size_bytes": 43272929,
+      "sha256": "a012cc3f3d0750f27852852e00f9d11483213c715d1df5504728efa858d2e54c",
+      "file_entries": 451,
+      "zip_test": "PASS",
+      "entry_hash_verification": "PASS"
+    },
+    "factory": {
+      "name": "EVT_GSN_EVT_R9_factory_v2.2.2_RC4_2026-11-09.zip",
+      "size_bytes": 2710264,
+      "sha256": "2d2423b5292b544457eedee2e58cecea050d62cf4fd0e67b5a0bca08e0b1ea97",
+      "file_entries": 76,
+      "zip_test": "PASS",
+      "entry_hash_verification": "PASS"
+    },
+    "firmware_bench": {
+      "name": "EVT_GSN_EVT_R9_firmware_bench_v2.2.2_RC4_2026-11-09.zip",
+      "size_bytes": 41376773,
+      "sha256": "817a2ee3914bdf001d1ae6ff7cffc47eb70e672644901e832ba984908f1e6307",
+      "file_entries": 395,
+      "zip_test": "PASS",
+      "entry_hash_verification": "PASS"
+    }
+  },
+  "generated_at": "2026-11-09T15:34:01"
+}

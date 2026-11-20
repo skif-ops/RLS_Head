@@ -1,0 +1,19 @@
+Release cross-build completed with xPack GNU Arm Embedded GCC 14.2.1.
+Target: STM32H753IIT6
+Configuration: Release
+Clean cross-build passes: 2
+Loadable BIN and HEX payloads: BYTE-IDENTICAL
+Host verification: 21/21 tests PASS
+Digital twin: PASS
+
+Memory region         Used Size  Region Size  Percent Used
+FLASH                   53000 B         2 MB         2.53
+DTCM                      16 KB       128 KB        12.50
+AXI                       3168 B       512 KB         0.60
+SRAM1                      288 B       128 KB         0.22
+SRAM2                      544 B       128 KB         0.42
+SRAM4                       96 B        64 KB         0.15
+
+text=52904 data=96 bss=20384 total=73384
+Hardware bench validation: NOT_RUN
+Production authority: NOT_AUTHORIZED

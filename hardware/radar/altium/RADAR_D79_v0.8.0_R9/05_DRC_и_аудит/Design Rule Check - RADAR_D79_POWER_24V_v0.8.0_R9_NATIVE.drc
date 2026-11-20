@@ -1,0 +1,69 @@
+Protel Design System Design Rule Check
+PCB File : C:\Users\skifn\.codex\.chatgpt-projects\g-p-6a9feb917c48819182ec25e1ef55310c\RADAR_D65_integrated\RADAR_v0.8.0\RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE.PcbDoc
+Date     : 09.11.2026
+Time     : 15:24:49
+
+Processing Rule : Clearance Constraint (Gap=10mil) (OnLayer('Top Layer') AND (IsTrack OR IsArc) AND (InNet('TI_TX1') OR InNet('TI_TX2') OR InNet('TI_TX3') OR InNet('TI_TX4') OR InNet('TI_RX1') OR InNet('TI_RX2') OR InNet('TI_RX3') OR InNet('TI_RX4'))),(IsVia AND InNet('GND'))
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=5.906mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=7.874mil) (InPolygon),(All)
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=4.5mil) (OnLayer('Top Layer') AND (IsTrack OR IsArc) AND (InNet('TI_RX1') OR InNet('TI_RX2') OR InNet('TI_RX3') OR InNet('TI_RX4') OR InNet('TI_TX1') OR InNet('TI_TX2') OR InNet('TI_TX3') OR InNet('TI_TX4'))),(OnLayer('Top Layer') AND (IsTrack OR IsArc) AND (InNet('TI_RX1') OR InNet('TI_RX2') OR InNet('TI_RX3') OR InNet('TI_RX4') OR InNet('TI_TX1') OR InNet('TI_TX2') OR InNet('TI_TX3') OR InNet('TI_TX4')))
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=10mil) (OnLayer('Top Layer') AND (IsTrack OR IsArc) AND (InNet('TI_TX1') OR InNet('TI_TX2') OR InNet('TI_TX3') OR InNet('TI_TX4') OR InNet('TI_RX1') OR InNet('TI_RX2') OR InNet('TI_RX3') OR InNet('TI_RX4'))),(InNamedPolygon('GND_COPLANAR_FEED_REFERENCE'))
+Rule Violations :0
+
+Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
+Rule Violations :0
+
+Processing Rule : Un-Routed Net Constraint ( (All) )
+Rule Violations :0
+
+Processing Rule : Modified Polygon (Allow modified: No), (Allow shelved: No)
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=4mil) (Max=8.402mil) (Preferred=4mil) (OnLayer('Top Layer') AND (IsTrack OR IsArc) AND (InNet('TI_RX1') OR InNet('TI_RX2') OR InNet('TI_RX3') OR InNet('TI_RX4') OR InNet('TI_TX1') OR InNet('TI_TX2') OR InNet('TI_TX3') OR InNet('TI_TX4')))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=5.906mil) (Max=157.48mil) (Preferred=7.087mil) (All)
+Rule Violations :0
+
+Processing Rule : Routing Topology Rule(Topology=Shortest) (All)
+Rule Violations :0
+
+Processing Rule : Power Plane Connect Rule(Relief Connect )(Expansion=20mil) (Conductor Width=10mil) (Air Gap=10mil) (Entries=4) (All)
+Rule Violations :0
+
+Processing Rule : Hole Size Constraint (Min=1mil) (Max=100mil) (All)
+Rule Violations :0
+
+Processing Rule : Hole Size Constraint (Min=116.142mil) (Max=120.079mil) (IsPad AND AsMils(Hole) > 100)
+Rule Violations :0
+
+Processing Rule : Hole To Hole Clearance (Gap=7.874mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Minimum Solder Mask Sliver (Gap=3.937mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Silk To Solder Mask (Clearance=3mil) (IsPad),(All)
+Rule Violations :0
+
+Processing Rule : Silk to Silk (Clearance=3mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Net Antennae (Tolerance=0mil) (All)
+Rule Violations :0
+
+Processing Rule : Height Constraint (Min=0mil) (Max=1000mil) (Prefered=500mil) (All)
+Rule Violations :0
+
+
+Violations Detected : 0
+Waived Violations : 0
+Time Elapsed        : 00:00:02

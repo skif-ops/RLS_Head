@@ -575,8 +575,10 @@ def build_job_pack(
                 "reset_boot": "PENDING",
                 "timing_capture": "PENDING",
                 "imu": "PENDING",
-                "ethernet": "PENDING",
+                "host_uart": "PENDING",
+                "external_gnss": "PENDING",
                 "can_fd": "PENDING",
+                "no_obsolete_interfaces": "PENDING",
             },
         }
         _write_json(

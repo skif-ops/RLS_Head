@@ -112,8 +112,11 @@ def evaluate_power_budget(path: str | Path) -> dict:
     if "RADAR_12V" not in results:
         errors.append("missing_rail:RADAR_12V")
 
-    if "12V_IN" not in results:
-        errors.append("missing_rail:12V_IN")
+    if "24V_IN" not in results:
+        errors.append("missing_rail:24V_IN")
+
+    if "V12_SYS" not in results:
+        errors.append("missing_rail:V12_SYS")
 
     status = "FAIL" if errors else ("WARNING" if warnings else "PASS")
 
@@ -132,7 +135,7 @@ def evaluate_power_budget(path: str | Path) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Evaluate System Carrier Rev.A power allocation headroom"
+        description="Evaluate System Carrier power allocation headroom"
     )
     parser.add_argument("csv")
     parser.add_argument("--output", required=True)

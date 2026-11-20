@@ -1,0 +1,55 @@
+{
+  "release": "v2.2.1 RC3",
+  "content_revision": "v2.2.0 RC2",
+  "date": "2026-11-09",
+  "purpose": "Полный комплект заказа EVT и стендовых испытаний",
+  "civil_tracking_only": true,
+  "evt_order_authorized": true,
+  "production_authority": "NOT_AUTHORIZED",
+  "checks": {
+    "native_drc_violations": 0,
+    "unrouted_connections": 0,
+    "pick_place_rows_reconciled": "300/300",
+    "stm32h753_digital_tests": "21/21 PASS",
+    "awr2944p_digital_tests": "22/22 PASS",
+    "gerber_x2_files": 24,
+    "drill_output_files": 11,
+    "descriptions_and_instructions": 22,
+    "all_readable_document_files": 75,
+    "required_files_present": 15
+  },
+  "packaging": {
+    "old_revisions_removed": true,
+    "temporary_files_removed": true,
+    "windows_programs_extracted": true,
+    "stm32_vendor_sources_not_duplicated": true,
+    "stm32_vendor_dependency_manifest_included": true
+  },
+  "archives": {
+    "full": {
+      "name": "EVT_GSN_full_EVT_R9_24V_v2.2.1_RC3_2026-11-09.zip",
+      "size_bytes": 43394065,
+      "sha256": "ebb34cb466048b784248f0becc1b2cbb1f70b8e1241257e4a793f139e822cb0f",
+      "file_entries": 451,
+      "zip_test": "PASS",
+      "entry_hash_verification": "PASS"
+    },
+    "factory": {
+      "name": "EVT_GSN_EVT_R9_factory_v2.2.1_RC3_2026-11-09.zip",
+      "size_bytes": 2813971,
+      "sha256": "c3528dca90f856ec4e41d52e9b234ad4cd0fe165b759f0978f0abf823702a30f",
+      "file_entries": 76,
+      "zip_test": "PASS",
+      "entry_hash_verification": "PASS"
+    },
+    "firmware_bench": {
+      "name": "EVT_GSN_EVT_R9_firmware_bench_v2.2.1_RC3_2026-11-09.zip",
+      "size_bytes": 41395829,
+      "sha256": "14c0787f28c02b577207daa4a3d7cfeb86b2d8644b8e67930ee627b9cccbfd55",
+      "file_entries": 395,
+      "zip_test": "PASS",
+      "entry_hash_verification": "PASS"
+    }
+  },
+  "generated_at": "2026-11-09T14:10:27"
+}

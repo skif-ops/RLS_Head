@@ -1,0 +1,502 @@
+{
+  "revision": "R10.3.37_REZONIT_DOCUMENT_RECALC",
+  "source_checked_at": "2026-11-20",
+  "production_authority": "NOT_AUTHORIZED",
+  "material_source": "Rogers RO3003G2 data sheet",
+  "material_source_url": "https://www.rogerscorp.com/-/media/project/rogerscorp/documents/advanced-electronics-solutions/english/data-sheets/ro3003g2--data-sheet.pdf",
+  "material_data": {
+    "process_dk_10ghz": "3.00 +/- 0.04",
+    "design_dk_77ghz_g2": 3.07,
+    "rezonit_article_rld_dk_76_81ghz": 3.03,
+    "rezonit_article_ed_dk_76_81ghz": 3.16,
+    "dissipation_factor_10ghz": 0.0011,
+    "measured_insertion_loss_db_per_in_77ghz_5mil": 1.3,
+    "standard_thickness": "0.005 in nominal; 0.127 mm exact conversion; Rogers table rounds to 0.13 mm",
+    "copper": "Rezonit typical process values are 45 um finished external and 15 um finished signal/reference internal copper; PWR_A and PWR_B remain 105 um for the verified 24 V current screen",
+    "solder_mask": "25 um, Dk 3.5; excluded from the controlled RF and bottom microstrip segments in this screening model"
+  },
+  "fabricator_source_url": "https://www.rezonit.ru/directory/v-pomoshch-konstruktoru/proektirovanie-elementov-konstrukcii-pechatnoj-platy-proizvodstva-v-rezonit/tipovye-sborki-i-konstruktsii-pechatnykh-plat/",
+  "fabricator_impedance_source_url": "https://www.rezonit.ru/directory/v-pomoshch-konstruktoru/kontrol-volnovogo-soprotivleniya/bazovye-materialy-izmerennye-znacheniya/",
+  "fabricator_copper_source_url": "https://www.rezonit.ru/directory/v-pomoshch-konstruktoru/kontrol-volnovogo-soprotivleniya/tolshchina-medi-dlya-raschetov/",
+  "fabricator_order_source_url": "https://www.rezonit.ru/directory/v-pomoshch-konstruktoru/voprosy-i-otvety/kak-pravilno-ukazyvat-v-zakaze-trebovaniya-k-impedansu/",
+  "fabricator_77ghz_article_url": "https://www.rezonit.ru/articles/analiz-vliyaniya-tekhnologicheskikh-parametrov-pechatnykh-plat-na-kharakteristiki-antennogo-elementa/",
+  "fabricator_construction_rules_url": "https://www.rezonit.ru/directory/v-pomoshch-konstruktoru/proektirovanie-elementov-konstrukcii-pechatnoj-platy-proizvodstva-v-rezonit/rekomendatsii-k-elementam-konstruktsii/",
+  "target_finished_thickness_mm": 2.0,
+  "nominal_stack_thickness_before_mask_finish_mm": 2.032,
+  "native_validation": {
+    "native_pcbdoc": {
+      "path": "hardware/radar/altium/RADAR_D79_v0.9.0_R10_ENGINEERING_REWORK/01_Исходник_Altium/RADAR_D79_POWER_24V_v0.9.3.37_R10_3_37_REZONIT_IMPEDANCE_RECALC_NATIVE.PcbDoc",
+      "size_bytes": 5935104,
+      "sha256": "E1DF7F2F05DBDA1C68276562AC1A42A1430F15D9F8374A3D19BD77D5CBC87AD8"
+    },
+    "drc_html": {
+      "path": "hardware/radar/altium/RADAR_D79_v0.9.0_R10_ENGINEERING_REWORK/01_Исходник_Altium/Design Rule Check - RADAR_D79_POWER_24V_v0.9.3.html",
+      "size_bytes": 15701,
+      "sha256": "CC3CC0A8583EF0416453AF7632FB071136457C1D18D2757A6A5F1F35C5BBAD3E"
+    },
+    "drc_machine_report": {
+      "path": "hardware/radar/altium/RADAR_D79_v0.9.0_R10_ENGINEERING_REWORK/01_Исходник_Altium/Design Rule Check - RADAR_D79_POWER_24V_v0.9.3.drc",
+      "size_bytes": 4115,
+      "sha256": "C967A1783786A7D355105CC6AB93D078BC06C64A2077B5A69D44D3C102E8D9B9"
+    },
+    "warnings": 0,
+    "rule_violations": 0,
+    "unrouted_net_violations": 0,
+    "polygon_repour_saved": true
+  },
+  "routing_culture_validation": {
+    "report": {
+      "path": "hardware/radar/altium/RADAR_D79_v0.9.0_R10_ENGINEERING_REWORK/05_DRC_и_аудит/R10_3_37/routing_culture_gate/R10_3_37_аудит_инженерной_культуры.json",
+      "size_bytes": 924,
+      "sha256": "B9D66C8D0297DB123B6167B0D80743580B08BA05DCCB841113EB8D6491BB4267"
+    },
+    "gate": "FAIL",
+    "counts": {
+      "tracks": 8395,
+      "junctions_total_review": 697,
+      "junctions_hard_rework": 437,
+      "power_junctions_review": 232,
+      "dangling_or_stub_ends": 1600,
+      "long_off_angle_segments": 151,
+      "coincident_segment_groups": 112
+    },
+    "interpretation": "The strict geometric gate is not closed. DRC 0 does not establish complete GOST, IPC or engineering-culture conformity."
+  },
+  "stackup": [
+    {
+      "item": "L1",
+      "kind": "copper",
+      "thickness_mm": 0.045,
+      "material": "Готовая внешняя медь 45 мкм из базовой фольги 18 мкм по типовому процессу Резонита; обработку поверхности СВЧ подтвердить"
+    },
+    {
+      "item": "D1",
+      "kind": "dielectric",
+      "thickness_mm": 0.127,
+      "material": "RO3003G2, стандарт 5 mil"
+    },
+    {
+      "item": "L2",
+      "kind": "copper",
+      "thickness_mm": 0.015,
+      "material": "Готовая внутренняя медь 15 мкм из базовой фольги 18 мкм по типовому процессу Резонита"
+    },
+    {
+      "item": "D2",
+      "kind": "dielectric",
+      "thickness_mm": 0.115,
+      "material": "FR-4 Tg150, препрег 2116"
+    },
+    {
+      "item": "L3",
+      "kind": "copper",
+      "thickness_mm": 0.015,
+      "material": "Готовая внутренняя медь 15 мкм из базовой фольги 18 мкм по типовому процессу Резонита"
+    },
+    {
+      "item": "D3",
+      "kind": "dielectric",
+      "thickness_mm": 0.1,
+      "material": "FR-4 Tg150, ядро 0,100 мм из номенклатуры Резонита"
+    },
+    {
+      "item": "L4",
+      "kind": "copper",
+      "thickness_mm": 0.015,
+      "material": "Готовая внутренняя медь 15 мкм из базовой фольги 18 мкм по типовому процессу Резонита"
+    },
+    {
+      "item": "D4",
+      "kind": "dielectric",
+      "thickness_mm": 0.255,
+      "material": "FR-4 Tg150, препреги 2116 0,115 мм + 2116 0,140 мм; не менее 0,240 мм по правилу заполнения меди Резонита"
+    },
+    {
+      "item": "L5",
+      "kind": "copper",
+      "thickness_mm": 0.105,
+      "material": "Силовой слой PWR_A, медь 105 мкм; сохранен расчетный запас для 24 В"
+    },
+    {
+      "item": "D5",
+      "kind": "dielectric",
+      "thickness_mm": 0.448,
+      "material": "FR-4 Tg150, препреги 2116 0,115 мм + 2116 0,140 мм + 7628 0,193 мм; не менее 0,420 мм между слоями 105 мкм"
+    },
+    {
+      "item": "L6",
+      "kind": "copper",
+      "thickness_mm": 0.105,
+      "material": "Силовой слой PWR_B, медь 105 мкм; сохранен расчетный запас для 24 В"
+    },
+    {
+      "item": "D6",
+      "kind": "dielectric",
+      "thickness_mm": 0.255,
+      "material": "FR-4 Tg150, препреги 2116 0,115 мм + 2116 0,140 мм; не менее 0,240 мм по правилу заполнения меди Резонита"
+    },
+    {
+      "item": "L7",
+      "kind": "copper",
+      "thickness_mm": 0.015,
+      "material": "Готовая внутренняя медь 15 мкм из базовой фольги 18 мкм по типовому процессу Резонита"
+    },
+    {
+      "item": "D7",
+      "kind": "dielectric",
+      "thickness_mm": 0.1,
+      "material": "FR-4 Tg150, ядро 0,100 мм из номенклатуры Резонита"
+    },
+    {
+      "item": "L8",
+      "kind": "copper",
+      "thickness_mm": 0.015,
+      "material": "Готовая внутренняя медь 15 мкм из базовой фольги 18 мкм по типовому процессу Резонита"
+    },
+    {
+      "item": "D8",
+      "kind": "dielectric",
+      "thickness_mm": 0.115,
+      "material": "FR-4 Tg150, препрег 2116"
+    },
+    {
+      "item": "L9",
+      "kind": "copper",
+      "thickness_mm": 0.015,
+      "material": "Готовая внутренняя медь 15 мкм из базовой фольги 18 мкм по типовому процессу Резонита"
+    },
+    {
+      "item": "D9",
+      "kind": "dielectric",
+      "thickness_mm": 0.127,
+      "material": "RO3003G2, стандарт 5 mil"
+    },
+    {
+      "item": "L10",
+      "kind": "copper",
+      "thickness_mm": 0.045,
+      "material": "Готовая внешняя медь 45 мкм из базовой фольги 18 мкм по типовому процессу Резонита"
+    }
+  ],
+  "profiles": [
+    {
+      "profile": "RF50_FACTORY_ED45_L1_L2",
+      "target_ohm": 50.0,
+      "layer": "L1",
+      "reference": "L2_RF_GND",
+      "material": "RO3003G2, Rezonit published standard-process assumption",
+      "design_er": 3.16,
+      "height_mm": 0.127,
+      "copper_mm": 0.045,
+      "width_mm": 0.27217,
+      "gap_mm": "",
+      "calculated_ohm": 50.0,
+      "effective_er": 2.5392,
+      "mask": "none",
+      "topology": "open microstrip L1 over continuous L2 RF_GND",
+      "method": "Hammerstad-Jensen with finite copper thickness correction",
+      "status": "REZONIT_DOCUMENT_RECALC_FIELD_SOLVER_AND_COUPON_REQUIRED"
+    },
+    {
+      "profile": "RF50_SPECIAL_RLD15_L1_L2",
+      "target_ohm": 50.0,
+      "layer": "L1",
+      "reference": "L2_RF_GND",
+      "material": "RO3003G2, special low-profile or rolled copper option",
+      "design_er": 3.03,
+      "height_mm": 0.127,
+      "copper_mm": 0.015,
+      "width_mm": 0.30145,
+      "gap_mm": "",
+      "calculated_ohm": 50.0,
+      "effective_er": 2.4482,
+      "mask": "none",
+      "topology": "open microstrip L1 over continuous L2 RF_GND",
+      "method": "Hammerstad-Jensen cross-check against Rezonit 76 to 81 GHz article",
+      "status": "ALTERNATIVE_ONLY_WRITTEN_FABRICATOR_CONFIRMATION_REQUIRED"
+    },
+    {
+      "profile": "CLOCK50_L3_L2",
+      "target_ohm": 50.0,
+      "layer": "L3",
+      "reference": "L2_RF_GND",
+      "material": "FR-4 Tg150 nominal",
+      "design_er": 4.2,
+      "height_mm": 0.115,
+      "copper_mm": 0.015,
+      "width_mm": 0.21358,
+      "gap_mm": "",
+      "calculated_ohm": 50.0,
+      "effective_er": 3.2126,
+      "mask": "internal",
+      "topology": "embedded asymmetric line between L2 and L4",
+      "method": "screening estimate using the nearest reference plane; not an asymmetric-stripline solution",
+      "status": "SCREENING_ONLY_FACTORY_STACK_AND_FIELD_SOLVER_REQUIRED"
+    },
+    {
+      "profile": "USB90_L8_L9",
+      "target_ohm": 90.0,
+      "layer": "L8",
+      "reference": "L9_DIGITAL_GND",
+      "material": "FR-4 Tg150 nominal",
+      "design_er": 4.2,
+      "height_mm": 0.115,
+      "copper_mm": 0.015,
+      "width_mm": 0.19808,
+      "gap_mm": 0.15,
+      "calculated_ohm": 90.0,
+      "effective_er": 3.1941,
+      "mask": "internal",
+      "topology": "embedded edge-coupled pair between L7 and L9",
+      "method": "screening estimate using the nearest reference plane and closed-form coupling; not an asymmetric-stripline solution",
+      "status": "SCREENING_ONLY_FACTORY_STACK_AND_FIELD_SOLVER_REQUIRED"
+    },
+    {
+      "profile": "CAN120_L8_L9",
+      "target_ohm": 120.0,
+      "layer": "L8",
+      "reference": "L9_DIGITAL_GND",
+      "material": "FR-4 Tg150 nominal",
+      "design_er": 4.2,
+      "height_mm": 0.115,
+      "copper_mm": 0.015,
+      "width_mm": 0.12471,
+      "gap_mm": 0.2,
+      "calculated_ohm": 120.0,
+      "effective_er": 3.0924,
+      "mask": "internal",
+      "topology": "embedded edge-coupled pair between L7 and L9",
+      "method": "screening estimate using the nearest reference plane and closed-form coupling; not an asymmetric-stripline solution",
+      "status": "SCREENING_ONLY_FACTORY_STACK_AND_FIELD_SOLVER_REQUIRED"
+    },
+    {
+      "profile": "USB90_L10_L9",
+      "target_ohm": 90.0,
+      "layer": "L10",
+      "reference": "L9_DIGITAL_GND",
+      "material": "RO3003G2, Rezonit published standard-process assumption",
+      "design_er": 3.16,
+      "height_mm": 0.127,
+      "copper_mm": 0.045,
+      "width_mm": 0.24301,
+      "gap_mm": 0.15,
+      "calculated_ohm": 90.0,
+      "effective_er": 2.5209,
+      "mask": "none in controlled segment",
+      "topology": "bottom microstrip differential pair over continuous L9 DIGITAL_GND",
+      "method": "Hammerstad-Jensen screening estimate with finite copper thickness and closed-form coupling",
+      "status": "REZONIT_DOCUMENT_RECALC_FIELD_SOLVER_AND_COUPON_REQUIRED"
+    },
+    {
+      "profile": "CAN120_L10_L9",
+      "target_ohm": 120.0,
+      "layer": "L10",
+      "reference": "L9_DIGITAL_GND",
+      "material": "RO3003G2, Rezonit published standard-process assumption",
+      "design_er": 3.16,
+      "height_mm": 0.127,
+      "copper_mm": 0.045,
+      "width_mm": 0.15152,
+      "gap_mm": 0.2,
+      "calculated_ohm": 120.0,
+      "effective_er": 2.4529,
+      "mask": "none in controlled segment",
+      "topology": "bottom microstrip differential pair over continuous L9 DIGITAL_GND",
+      "method": "Hammerstad-Jensen screening estimate with finite copper thickness and closed-form coupling",
+      "status": "REZONIT_DOCUMENT_RECALC_FIELD_SOLVER_AND_COUPON_REQUIRED"
+    }
+  ],
+  "rf_sensitivity": [
+    {
+      "profile": "RF50_FACTORY_ED45_L1_L2",
+      "case": "nominal",
+      "target_ohm": 50.0,
+      "width_mm": 0.27217,
+      "height_mm": 0.127,
+      "copper_mm": 0.045,
+      "er": 3.16,
+      "calculated_ohm": 50.0,
+      "effective_er": 2.5392,
+      "deviation_pct": 0.0
+    },
+    {
+      "profile": "RF50_FACTORY_ED45_L1_L2",
+      "case": "etch_minus_0.015mm",
+      "target_ohm": 50.0,
+      "width_mm": 0.25717,
+      "height_mm": 0.127,
+      "copper_mm": 0.045,
+      "er": 3.16,
+      "calculated_ohm": 51.603,
+      "effective_er": 2.5299,
+      "deviation_pct": 3.206
+    },
+    {
+      "profile": "RF50_FACTORY_ED45_L1_L2",
+      "case": "etch_plus_0.015mm",
+      "target_ohm": 50.0,
+      "width_mm": 0.28717,
+      "height_mm": 0.127,
+      "copper_mm": 0.045,
+      "er": 3.16,
+      "calculated_ohm": 48.499,
+      "effective_er": 2.5482,
+      "deviation_pct": -3.002
+    },
+    {
+      "profile": "RF50_FACTORY_ED45_L1_L2",
+      "case": "dielectric_minus_10pct",
+      "target_ohm": 50.0,
+      "width_mm": 0.27217,
+      "height_mm": 0.1143,
+      "copper_mm": 0.045,
+      "er": 3.16,
+      "calculated_ohm": 46.812,
+      "effective_er": 2.5592,
+      "deviation_pct": -6.377
+    },
+    {
+      "profile": "RF50_FACTORY_ED45_L1_L2",
+      "case": "dielectric_plus_10pct",
+      "target_ohm": 50.0,
+      "width_mm": 0.27217,
+      "height_mm": 0.1397,
+      "copper_mm": 0.045,
+      "er": 3.16,
+      "calculated_ohm": 52.986,
+      "effective_er": 2.5216,
+      "deviation_pct": 5.972
+    },
+    {
+      "profile": "RF50_FACTORY_ED45_L1_L2",
+      "case": "dk_rld_3.03",
+      "target_ohm": 50.0,
+      "width_mm": 0.27217,
+      "height_mm": 0.127,
+      "copper_mm": 0.045,
+      "er": 3.03,
+      "calculated_ohm": 50.886,
+      "effective_er": 2.4473,
+      "deviation_pct": 1.772
+    },
+    {
+      "profile": "RF50_FACTORY_ED45_L1_L2",
+      "case": "dk_ed_3.16",
+      "target_ohm": 50.0,
+      "width_mm": 0.27217,
+      "height_mm": 0.127,
+      "copper_mm": 0.045,
+      "er": 3.16,
+      "calculated_ohm": 50.0,
+      "effective_er": 2.5392,
+      "deviation_pct": 0.0
+    },
+    {
+      "profile": "RF50_FACTORY_ED45_L1_L2",
+      "case": "finished_copper_33um",
+      "target_ohm": 50.0,
+      "width_mm": 0.27217,
+      "height_mm": 0.127,
+      "copper_mm": 0.033,
+      "er": 3.16,
+      "calculated_ohm": 50.773,
+      "effective_er": 2.5331,
+      "deviation_pct": 1.547
+    },
+    {
+      "profile": "RF50_FACTORY_ED45_L1_L2",
+      "case": "finished_copper_15um",
+      "target_ohm": 50.0,
+      "width_mm": 0.27217,
+      "height_mm": 0.127,
+      "copper_mm": 0.015,
+      "er": 3.16,
+      "calculated_ohm": 52.214,
+      "effective_er": 2.5217,
+      "deviation_pct": 4.427
+    }
+  ],
+  "guided_wavelengths": [
+    {
+      "frequency_ghz": 76.0,
+      "lambda0_mm": 3.94464,
+      "lambda_g_mm": 2.47546,
+      "quarter_wave_mm": 0.61886
+    },
+    {
+      "frequency_ghz": 77.0,
+      "lambda0_mm": 3.89341,
+      "lambda_g_mm": 2.44331,
+      "quarter_wave_mm": 0.61083
+    },
+    {
+      "frequency_ghz": 78.5,
+      "lambda0_mm": 3.81901,
+      "lambda_g_mm": 2.39662,
+      "quarter_wave_mm": 0.59916
+    },
+    {
+      "frequency_ghz": 81.0,
+      "lambda0_mm": 3.70114,
+      "lambda_g_mm": 2.32265,
+      "quarter_wave_mm": 0.58066
+    }
+  ],
+  "insertion_loss_length_estimate": [
+    {
+      "length_mm": 5,
+      "datasheet_loss_db_per_in_at_77ghz": 1.3,
+      "estimated_loss_db": 0.2559
+    },
+    {
+      "length_mm": 10,
+      "datasheet_loss_db_per_in_at_77ghz": 1.3,
+      "estimated_loss_db": 0.5118
+    },
+    {
+      "length_mm": 20,
+      "datasheet_loss_db_per_in_at_77ghz": 1.3,
+      "estimated_loss_db": 1.0236
+    },
+    {
+      "length_mm": 30,
+      "datasheet_loss_db_per_in_at_77ghz": 1.3,
+      "estimated_loss_db": 1.5354
+    }
+  ],
+  "r10_3_37_rf_routing_observation": {
+    "rf_nets": [
+      "TI_RX1",
+      "TI_RX2",
+      "TI_RX3",
+      "TI_RX4",
+      "TI_TX1",
+      "TI_TX2",
+      "TI_TX3",
+      "TI_TX4"
+    ],
+    "layers": [
+      "TOP"
+    ],
+    "observed_width_groups_mm": [
+      0.1016,
+      0.21336,
+      0.2134
+    ],
+    "non_gnd_vias_penetrating_L2_within_0_30_mm": 0,
+    "interpretation": "The observed antenna feed widths are synthesized array sections. They must be mapped to the EM model before any width is replaced by the RF50 screening value."
+  },
+  "limitations": [
+    "The formulas are closed-form engineering estimates, not a 2D or 3D field solver.",
+    "The internal CLOCK50, USB90 and CAN120 calculations use a nearest-plane screening approximation. Their real embedded asymmetric-stripline geometry requires the fabricator field solver.",
+    "The differential formula is suitable for screening only and must not be released as production geometry.",
+    "FR-4 Dk 4.20 is a screening assumption. The fabricator published value may be specified at 1 MHz and is not sufficient for final USB or CAN field solving.",
+    "The nominal material sum is about 2.03 mm before mask and finish. The order target remains 2.00 mm and the fabricator must finalize the pressed construction within its published finished-board tolerance.",
+    "The D4, D5 and D6 prepreg packages were increased so that the published Rezonit copper-fill rule is met around the 105 um power foils.",
+    "Final dimensions require the fabricator stack, copper etch model, roughness model and impedance coupon.",
+    "Antenna series-feed sections are synthesized impedances and must not be replaced by the RF50 profile.",
+    "The RF50_FACTORY_ED45 profile is a conservative document-based process assumption, not permission to change every antenna track to one width.",
+    "Public Rezonit data does not confirm procurement or processing of this exact ten-layer RO3003G2 hybrid stack. Written fabricator confirmation remains mandatory.",
+    "The strict routing-culture gate is FAIL. Its findings require contextual review and correction before routing can be declared complete."
+  ]
+}

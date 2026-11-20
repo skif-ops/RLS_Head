@@ -1,0 +1,73 @@
+{
+  "release": "EVT_OBSERVER_R1",
+  "version": "0.1.0",
+  "date": "2026-11-08",
+  "device": "AWR2944P",
+  "scope": "civilian airborne-drone observation and tracking measurements only",
+  "excluded_functions": [
+    "interception",
+    "lead-point calculation",
+    "convergence-course calculation",
+    "movement commands",
+    "actuator commands",
+    "external-control commands"
+  ],
+  "production_authority": "NOT_AUTHORIZED",
+  "toolchain": {
+    "mmwave_mcuplus_sdk": "04.07.02.01",
+    "mcu_plus_sdk_awr2x44p": "10.02.00.04",
+    "mmwave_dfp": "02.04.18.01",
+    "sysconfig": "1.23.0",
+    "ti_arm_clang": "4.0.2 LTS",
+    "ti_c6000": "8.3.13",
+    "code_composer_studio": "20.1.0"
+  },
+  "can_fd": {
+    "awr_to_carrier_id": "0x320",
+    "carrier_to_awr_id": "0x321",
+    "arbitration_bitrate_bit_s": 500000,
+    "data_bitrate_bit_s": 2500000,
+    "payload_bytes": 64,
+    "endianness": "little",
+    "integrity": "CRC32C",
+    "awr_mcan_rx_pin": "PAD_BO (B18)",
+    "awr_mcan_tx_pin": "PAD_BN (C18)"
+  },
+  "verification": {
+    "host_unit_tests": "PASS, 21 of 21",
+    "sysconfig_generation": "PASS",
+    "r5f_compile_and_link": "PASS",
+    "c66x_compile_and_link": "PASS",
+    "gp_appimage_generation": "PASS",
+    "high_security_appimage": "NOT_BUILT, OpenSSL executable absent",
+    "hardware_bench": "NOT_RUN",
+    "rf_calibration": "NOT_RUN"
+  },
+  "outputs": [
+    {
+      "path": "AWR2944P_OBSERVER_EVT_R1.appimage",
+      "size": 412332,
+      "sha256": "8768d29167ea3484a1b22d5a1e43caad1d85bfe4c3e702ed9b7b1371200aa88e"
+    },
+    {
+      "path": "AWR2944P_OBSERVER_EVT_R1_MSS.xer5f",
+      "size": 1485144,
+      "sha256": "3d518b7cc6772e1a19db421bfea302ac13fd3f2c3f732a43139327752ba57efc"
+    },
+    {
+      "path": "AWR2944P_OBSERVER_EVT_R1_DSS.xe66",
+      "size": 1822924,
+      "sha256": "08b9ed1ac936e8a73eba6bc280d0dc12a48f25e1a50fb38a2be6687725035c24"
+    },
+    {
+      "path": "AWR2944P_OBSERVER_EVT_R1_MSS.map",
+      "size": 225185,
+      "sha256": "e4563e3105b11cb2a3fec7722f69b0ebe727bdcac003118c31d137b6d6e26f1e"
+    },
+    {
+      "path": "AWR2944P_OBSERVER_EVT_R1_DSS.map",
+      "size": 209203,
+      "sha256": "a007488b12c7a15475170e2d2e6065ff80f77f95fc48e469c309352bdbfddbae"
+    }
+  ]
+}

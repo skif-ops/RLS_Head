@@ -1,0 +1,14 @@
+kind,id,x_raw,y_raw,width_raw,height_raw,diameter_raw,plated,details
+outline,board,0,0,35433071,27559055,,,
+vertex,0,1181102,0,,,1181102,,arc
+vertex,1,0,1181102,,,,,line
+vertex,2,0,26377953,,,1181102,,arc
+vertex,3,1181102,27559055,,,,,line
+vertex,4,34251969,27559055,,,1181102,,arc
+vertex,5,35433071,26377953,,,,,line
+vertex,6,35433071,1181102,,,1181102,,arc
+vertex,7,34251969,0,,,,,line
+free_hole,"H4",33464567,25590551,,,1259843,false,
+free_hole,"H3",1968504,25590551,,,1259843,false,
+free_hole,"H2",33464567,1968504,,,1259843,false,
+free_hole,"H1",1968504,1968504,,,1259843,false,

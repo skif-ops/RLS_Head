@@ -1,23 +1,7 @@
 # System Carrier Review A readiness
 
-`tools.carrier_review_a_readiness` is the hard precondition between the
-generated KiCad capture scaffold and the real `CARRIER_REVIEW_A` gate.
+`tools.carrier_review_a_readiness` checks the generated import baseline before native Altium work. It rejects symbol placeholders, unresolved external-document blockers and unparseable KiCad sheets. Footprint issues remain manufacturing blockers even if schematic parsing succeeds.
 
-It blocks Review A when any of the following remain:
+For the current ECO, the exact JST-GH J8 footprint and external simpleRTK3B Pro pinout are bound in the source contracts. Their native Altium footprint, 3D and connector-access checks are completed during the compact-board mechanical audit.
 
-- `SYMBOL_PENDING` placeholders;
-- explicit external-document blockers;
-- unparseable KiCad sheets.
-
-Unresolved footprint locks are reported separately as warnings because some
-custom footprints can be completed in parallel with schematic capture, but
-they remain manufacturing blockers.
-
-The first explicit external-document blocker is the Bel
-`P01-0006-01` MagJack drawing/pinout. The part itself remains active and
-appropriate for 10/100BASE-T, but its integrated magnetics/LED pin mapping
-must come from the manufacturer drawing or a verified CAD model rather than
-being guessed.
-
-This gate is intentionally conservative: `READY_FOR_REVIEW_A` is only
-permission to run the real schematic/ERC review, not a Review A PASS.
+`READY_FOR_REVIEW_A` permits the native review to run. It is not a Review A PASS, routing authority or production authority.

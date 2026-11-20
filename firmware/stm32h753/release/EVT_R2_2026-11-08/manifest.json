@@ -1,0 +1,57 @@
+{
+  "schema": "evt-stm32h753-firmware-release-v1",
+  "release": "EVT_R2_2026-11-08",
+  "target": "STM32H753IIT6",
+  "board": "EVT_SYS_CARRIER_24V",
+  "configuration": "config/evt_carrier_firmware_v1.json",
+  "configuration_sha256": "5a2775abcab7750565de8672684197849d217bf40fc5552cadc04c3b536d3f34",
+  "configuration_crc32c": "156c3c5e",
+  "toolchain": "xPack GNU Arm Embedded GCC x86_64 14.2.1 20241119",
+  "binutils": "2.43.1.20241119",
+  "stm32cubeh7": "v1.13.0",
+  "build_type": "Release",
+  "flash_origin": "0x08000000",
+  "entry_point": "0x08000299",
+  "flash_used_bytes": 53000,
+  "ram_static_and_stack_bytes": 20384,
+  "host_tests": {
+    "passed": 21,
+    "failed": 0
+  },
+  "reproducibility": {
+    "clean_cross_builds": 2,
+    "bin_byte_identical": true,
+    "hex_byte_identical": true,
+    "elf_byte_identical": false,
+    "elf_note": "ELF and MAP contain build-directory metadata; the loadable BIN and HEX payloads are byte-identical."
+  },
+  "digital_twin": {
+    "status": "PASS",
+    "report": "digital_twin_report.json",
+    "scope": "CAN-FD transport, observer-only AWR2944P link, HIL, tracker, IMU/time uncertainty, GNSS quarantine, TargetState-V1 and CRC"
+  },
+  "artifacts": [
+    {
+      "file": "EVT_SYS_CARRIER_STM32H753_R2.elf",
+      "bytes": 1868848,
+      "sha256": "9ba223f97b607c9760b11b09cb3a955eb79401ab72c64f127e2453a8a164b45b"
+    },
+    {
+      "file": "EVT_SYS_CARRIER_STM32H753_R2.hex",
+      "bytes": 149133,
+      "sha256": "df929d44325adcd64a1d52a392de6739bdf966323c6da2f9dc604838a05d301c"
+    },
+    {
+      "file": "EVT_SYS_CARRIER_STM32H753_R2.bin",
+      "bytes": 53000,
+      "sha256": "9e857872469f4a2aec982753bfbd6f94bf253ef48985fb8c1b6854f872453ef5"
+    },
+    {
+      "file": "EVT_SYS_CARRIER_STM32H753_R2.map",
+      "bytes": 260280,
+      "sha256": "dff3bd40a35d0b5b5f79021e70af6412685332a3339701496c7c45fb10c87a71"
+    }
+  ],
+  "hardware_bench_validation": "NOT_RUN",
+  "production_authority": "NOT_AUTHORIZED"
+}

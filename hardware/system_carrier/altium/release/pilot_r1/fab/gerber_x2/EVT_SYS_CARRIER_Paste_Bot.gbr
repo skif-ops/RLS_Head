@@ -1,0 +1,27 @@
+%TF.GenerationSoftware,Altium Limited,Altium Designer,26.10.1 (5)*%
+G04 Layer_Color=128*
+G04 Board_Origin=0|0*
+%FSLAX45Y45*%
+%MOMM*%
+%TF.SameCoordinates,E046F24D-33A7-4A9B-B816-928CD59FF686*%
+%TF.FilePolarity,Positive*%
+%TF.FileFunction,Paste,Bot*%
+%TF.Part,Single*%
+G01*
+G75*
+%TA.AperFunction,SMDPad,CuDef*%
+G04:AMPARAMS|DCode=20|XSize=1.5mm|YSize=1.75mm|CornerRadius=0.375mm|HoleSize=0mm|Usage=FLASHONLY|Rotation=0.000|XOffset=0mm|YOffset=0mm|HoleType=Round|Shape=RoundedRectangle|*
+%AMROUNDEDRECTD20*
+21,1,1.50000,1.00000,0,0,0.0*
+21,1,0.75000,1.75000,0,0,0.0*
+1,1,0.75000,0.37500,-0.50000*
+1,1,0.75000,-0.37500,-0.50000*
+1,1,0.75000,-0.37500,0.50000*
+1,1,0.75000,0.37500,0.50000*
+%
+%ADD20ROUNDEDRECTD20*%
+D20*
+X7100000Y2900000D02*
+D03*
+%TF.MD5,d9b473a20c2f96e5c017b099dc672de5*%
+M02*

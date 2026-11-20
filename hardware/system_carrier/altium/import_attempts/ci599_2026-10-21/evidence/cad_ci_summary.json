@@ -1,0 +1,11 @@
+{
+  "erc_violation_count": 0,
+  "kicad_version": "9.0.9",
+  "local_symbol_count": 8,
+  "placeholder_count": 0,
+  "review_a_closed": true,
+  "review_a_result": "PASS",
+  "schema": "SYSTEM-CARRIER-CAD-CI-001",
+  "sheet_count": 8,
+  "status": "REVIEW_A_PASS"
+}

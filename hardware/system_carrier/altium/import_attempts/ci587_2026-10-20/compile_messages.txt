@@ -1,0 +1,163 @@
+Class	Document	Source	Message	Time	Date	No.
+
+[Error]	60_ETHERNET.SchDoc	Compiler	Net NetD3_6 contains floating input pins (Pin D3-6)	0:19:19	21.10.2026	1
+[Error]	60_ETHERNET.SchDoc	Compiler	Net NetD3_7 contains floating input pins (Pin D3-7)	0:19:19	21.10.2026	2
+[Error]	60_ETHERNET.SchDoc	Compiler	Net NetD3_9 contains floating input pins (Pin D3-9)	0:19:19	21.10.2026	3
+[Error]	60_ETHERNET.SchDoc	Compiler	Net NetD3_10 contains floating input pins (Pin D3-10)	0:19:19	21.10.2026	4
+[Error]	60_ETHERNET.SchDoc	Compiler	Net NetJ6_7 contains floating input pins (Pin J6-7)	0:19:19	21.10.2026	5
+[Error]	10_POWER_INPUT.SchDoc	Compiler	RADAR_12V contains Power Pin and Output Port objects (Pin U7-6, Port RADAR_12V).	0:19:19	21.10.2026	6
+[Warning]	20_MCU_CORE.SchDoc	Compiler	BOOT0 contains Input Port and Unspecified Port objects (Port BOOT0, Port BOOT0).	0:19:19	21.10.2026	7
+[Warning]	EVT_SYS_CARRIER.SchDoc	Compiler	BOOT0 contains Input Sheet Entry and Unspecified Sheet Entry objects (Sheet Entry MCU_CORE-BOOT0(Input), Sheet Entry DEBUG_BOOT-BOOT0(Passive)).	0:19:19	21.10.2026	8
+[Warning]	20_MCU_CORE.SchDoc	Compiler	CAN_RX contains IO Pin and Input Port objects (Pin U1-142, Port CAN_RX).	0:19:19	21.10.2026	9
+[Warning]	20_MCU_CORE.SchDoc	Compiler	CAN_RX contains IO Pin and Output Pin objects (Pin U1-142, Pin U4-4).	0:19:19	21.10.2026	10
+[Warning]	20_MCU_CORE.SchDoc	Compiler	CAN_TX contains IO Pin and Output Port objects (Pin U1-143, Port CAN_TX).	0:19:19	21.10.2026	11
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_50M contains IO Pin and Input Port objects (Pin U1-41, Port ETH_50M).	0:19:19	21.10.2026	12
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_50M contains IO Pin and Output Pin objects (Pin U1-41, Pin Y2-3).	0:19:19	21.10.2026	13
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_CRS_DV contains IO Pin and Input Port objects (Pin U1-53, Port ETH_CRS_DV).	0:19:19	21.10.2026	14
+[Warning]	60_ETHERNET.SchDoc	Compiler	ETH_CRS_DV contains IO Pin and Output Port objects (Pin U3-11, Port ETH_CRS_DV).	0:19:19	21.10.2026	15
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_MDC contains IO Pin and Output Port objects (Pin U1-33, Port ETH_MDC).	0:19:19	21.10.2026	16
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_NRST contains IO Pin and Output Port objects (Pin U1-3, Port ETH_NRST).	0:19:19	21.10.2026	17
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_RXD0 contains IO Pin and Input Port objects (Pin U1-54, Port ETH_RXD0).	0:19:19	21.10.2026	18
+[Warning]	60_ETHERNET.SchDoc	Compiler	ETH_RXD0 contains IO Pin and Output Port objects (Pin U3-8, Port ETH_RXD0).	0:19:19	21.10.2026	19
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_RXD1 contains IO Pin and Input Port objects (Pin U1-55, Port ETH_RXD1).	0:19:19	21.10.2026	20
+[Warning]	60_ETHERNET.SchDoc	Compiler	ETH_RXD1 contains IO Pin and Output Port objects (Pin U3-7, Port ETH_RXD1).	0:19:19	21.10.2026	21
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_TX_EN contains IO Pin and Output Port objects (Pin U1-154, Port ETH_TX_EN).	0:19:19	21.10.2026	22
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_TXD0 contains IO Pin and Output Port objects (Pin U1-156, Port ETH_TXD0).	0:19:19	21.10.2026	23
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_TXD1 contains IO Pin and Output Port objects (Pin U1-157, Port ETH_TXD1).	0:19:19	21.10.2026	24
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Floating Net Label 3V3 at (1100mil,15600mil)	0:19:19	21.10.2026	25
+[Warning]	10_POWER_INPUT.SchDoc	Compiler	Floating Net Label GND at (750mil,13000mil)	0:19:19	21.10.2026	26
+[Warning]	30_TIME_GNSS.SchDoc	Compiler	Floating Net Label GNSS_BCKP_LOCAL at (3200mil,13850mil)	0:19:19	21.10.2026	27
+[Warning]	30_TIME_GNSS.SchDoc	Compiler	Floating Net Label GNSS_VUSB_LOCAL at (3200mil,14100mil)	0:19:19	21.10.2026	28
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Floating Net Label VDDA_FILTERED at (2000mil,15600mil)	0:19:19	21.10.2026	29
+[Warning]	10_POWER_INPUT.SchDoc	Compiler	Floating Net Label VIN_RAW at (1000mil,15100mil)	0:19:19	21.10.2026	30
+[Warning]	20_MCU_CORE.SchDoc	Compiler	GNSS_PPS contains IO Pin and Input Port objects (Pin U1-40, Port GNSS_PPS).	0:19:19	21.10.2026	31
+[Warning]	20_MCU_CORE.SchDoc	Compiler	GNSS_PPS contains IO Pin and Output Pin objects (Pin U1-40, Pin U8-3).	0:19:19	21.10.2026	32
+[Warning]	20_MCU_CORE.SchDoc	Compiler	GNSS_RX_EXT contains IO Pin and Output Port objects (Pin U1-96, Port GNSS_RX_EXT).	0:19:19	21.10.2026	33
+[Warning]	20_MCU_CORE.SchDoc	Compiler	GNSS_TX_EXT contains IO Pin and Input Port objects (Pin U1-97, Port GNSS_TX_EXT).	0:19:19	21.10.2026	34
+[Warning]	20_MCU_CORE.SchDoc	Compiler	GNSS_TX_EXT contains IO Pin and Output Pin objects (Pin U1-97, Pin U8-20).	0:19:19	21.10.2026	35
+[Warning]	20_MCU_CORE.SchDoc	Compiler	IMU_DRDY contains IO Pin and Input Port objects (Pin U1-80, Port IMU_DRDY).	0:19:19	21.10.2026	36
+[Warning]	20_MCU_CORE.SchDoc	Compiler	IMU_DRDY contains IO Pin and Output Pin objects (Pin U1-80, Pin U2-4).	0:19:19	21.10.2026	37
+[Warning]	20_MCU_CORE.SchDoc	Compiler	IMU_MISO contains IO Pin and Input Port objects (Pin U1-94, Port IMU_MISO).	0:19:19	21.10.2026	38
+[Warning]	20_MCU_CORE.SchDoc	Compiler	IMU_MISO contains IO Pin and Output Pin objects (Pin U1-94, Pin U2-1).	0:19:19	21.10.2026	39
+[Warning]	20_MCU_CORE.SchDoc	Compiler	IMU_MOSI contains IO Pin and Output Port objects (Pin U1-95, Port IMU_MOSI).	0:19:19	21.10.2026	40
+[Warning]	20_MCU_CORE.SchDoc	Compiler	IMU_NSS contains IO Pin and Output Port objects (Pin U1-92, Port IMU_NSS).	0:19:19	21.10.2026	41
+[Warning]	20_MCU_CORE.SchDoc	Compiler	IMU_SCK contains IO Pin and Output Port objects (Pin U1-93, Port IMU_SCK).	0:19:19	21.10.2026	42
+[Warning]	20_MCU_CORE.SchDoc	Compiler	MCU_HSE_25M contains IO Pin and Output Pin objects (Pin U1-29, Pin Y1-3).	0:19:19	21.10.2026	43
+[Warning]	30_TIME_GNSS.SchDoc	Compiler	Net GNSS_RF has no driving source (Pin D8-1, Pin J8-1, Pin L80-2, Pin U8-11)	0:19:19	21.10.2026	44
+[Warning]	60_ETHERNET.SchDoc	Compiler	Net NetD3_6 has no driving source (Pin D3-6)	0:19:19	21.10.2026	45
+[Warning]	60_ETHERNET.SchDoc	Compiler	Net NetD3_7 has no driving source (Pin D3-7)	0:19:19	21.10.2026	46
+[Warning]	60_ETHERNET.SchDoc	Compiler	Net NetD3_9 has no driving source (Pin D3-9)	0:19:19	21.10.2026	47
+[Warning]	60_ETHERNET.SchDoc	Compiler	Net NetD3_10 has no driving source (Pin D3-10)	0:19:19	21.10.2026	48
+[Warning]	60_ETHERNET.SchDoc	Compiler	Net NetJ6_7 has no driving source (Pin J6-7)	0:19:19	21.10.2026	49
+[Warning]	50_RADAR_IO_CAN.SchDoc	Compiler	Net NetR41_1 has no driving source (Pin R41-1, Pin U4-8)	0:19:19	21.10.2026	50
+[Warning]	50_RADAR_IO_CAN.SchDoc	Compiler	Net NetR42_1 has no driving source (Pin R42-1, Pin U4-5)	0:19:19	21.10.2026	51
+[Warning]	10_POWER_INPUT.SchDoc	Compiler	Net U5_SS_LOCAL has no driving source (Pin C3-1, Pin U5-9)	0:19:19	21.10.2026	52
+[Warning]	10_POWER_INPUT.SchDoc	Compiler	Net U6_OVLO_LOCAL has no driving source (Pin R62-2, Pin R63-1, Pin U6-2)	0:19:19	21.10.2026	53
+[Warning]	10_POWER_INPUT.SchDoc	Compiler	Net U6_UVLO_LOCAL has no driving source (Pin R61-2, Pin R62-1, Pin U6-1)	0:19:19	21.10.2026	54
+[Warning]	10_POWER_INPUT.SchDoc	Compiler	Net U7_OVLO_LOCAL has no driving source (Pin R72-2, Pin R73-1, Pin U7-2)	0:19:19	21.10.2026	55
+[Warning]	10_POWER_INPUT.SchDoc	Compiler	Net U7_UVLO_LOCAL has no driving source (Pin R71-2, Pin R72-1, Pin U7-1)	0:19:19	21.10.2026	56
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label 3V3 at 1200mil,18350mil	0:19:19	21.10.2026	57
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label 3V3 at 1800mil,19350mil	0:19:19	21.10.2026	58
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label 3V3 at 1900mil,19350mil	0:19:19	21.10.2026	59
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label 3V3 at 2000mil,19350mil	0:19:19	21.10.2026	60
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label 3V3 at 2100mil,19350mil	0:19:19	21.10.2026	61
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label 3V3 at 2200mil,19350mil	0:19:19	21.10.2026	62
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label 3V3 at 2300mil,19350mil	0:19:19	21.10.2026	63
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label 3V3 at 2400mil,19350mil	0:19:19	21.10.2026	64
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label 3V3 at 2500mil,19350mil	0:19:19	21.10.2026	65
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label 3V3 at 2600mil,19350mil	0:19:19	21.10.2026	66
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label 3V3 at 2700mil,19350mil	0:19:19	21.10.2026	67
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label 3V3 at 2800mil,19350mil	0:19:19	21.10.2026	68
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label 3V3 at 2900mil,19350mil	0:19:19	21.10.2026	69
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label 3V3 at 3000mil,19350mil	0:19:19	21.10.2026	70
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label 3V3 at 3100mil,19350mil	0:19:19	21.10.2026	71
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label 3V3 at 3200mil,19350mil	0:19:19	21.10.2026	72
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label 3V3 at 3300mil,19350mil	0:19:19	21.10.2026	73
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label BOOT0 at 1200mil,18750mil	0:19:19	21.10.2026	74
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label ETH_50M at 4000mil,18850mil	0:19:19	21.10.2026	75
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label ETH_CRS_DV at 4000mil,18250mil	0:19:19	21.10.2026	76
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label ETH_MDIO at 4000mil,18750mil	0:19:19	21.10.2026	77
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label GNSS_PPS at 4000mil,18950mil	0:19:19	21.10.2026	78
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label MCU_HSE_25M at 1200mil,16850mil	0:19:19	21.10.2026	79
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label NRST at 1200mil,18950mil	0:19:19	21.10.2026	80
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label SWCLK at 4000mil,17550mil	0:19:19	21.10.2026	81
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label SWDIO at 4000mil,17650mil	0:19:19	21.10.2026	82
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label SWO at 4000mil,16950mil	0:19:19	21.10.2026	83
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label VDDA_FILTERED at 1200mil,18550mil	0:19:19	21.10.2026	84
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Net Label VDDA_FILTERED at 3400mil,19350mil	0:19:19	21.10.2026	85
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 1200mil,16550mil	0:19:19	21.10.2026	86
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 1200mil,16650mil	0:19:19	21.10.2026	87
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 1200mil,16750mil	0:19:19	21.10.2026	88
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 1200mil,17050mil	0:19:19	21.10.2026	89
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 1200mil,17150mil	0:19:19	21.10.2026	90
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 1200mil,17250mil	0:19:19	21.10.2026	91
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 1200mil,17350mil	0:19:19	21.10.2026	92
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 1200mil,17450mil	0:19:19	21.10.2026	93
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 1200mil,17550mil	0:19:19	21.10.2026	94
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 1200mil,17650mil	0:19:19	21.10.2026	95
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 1200mil,17750mil	0:19:19	21.10.2026	96
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 1200mil,17850mil	0:19:19	21.10.2026	97
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 1200mil,17950mil	0:19:19	21.10.2026	98
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 1200mil,18050mil	0:19:19	21.10.2026	99
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 1200mil,18150mil	0:19:19	21.10.2026	100
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 4000mil,16550mil	0:19:19	21.10.2026	101
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 4000mil,16650mil	0:19:19	21.10.2026	102
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 4000mil,16750mil	0:19:19	21.10.2026	103
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 4000mil,16850mil	0:19:19	21.10.2026	104
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 4000mil,17050mil	0:19:19	21.10.2026	105
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 4000mil,17150mil	0:19:19	21.10.2026	106
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 4000mil,17250mil	0:19:19	21.10.2026	107
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 4000mil,17450mil	0:19:19	21.10.2026	108
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 4000mil,17750mil	0:19:19	21.10.2026	109
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 4000mil,17850mil	0:19:19	21.10.2026	110
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 4000mil,17950mil	0:19:19	21.10.2026	111
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 4000mil,18050mil	0:19:19	21.10.2026	112
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 4000mil,18150mil	0:19:19	21.10.2026	113
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 4000mil,18350mil	0:19:19	21.10.2026	114
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 4000mil,18450mil	0:19:19	21.10.2026	115
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 4000mil,18550mil	0:19:19	21.10.2026	116
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet No ERC at 4000mil,18650mil	0:19:19	21.10.2026	117
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-6 at 1800mil,19350mil	0:19:19	21.10.2026	118
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-15 at 1900mil,19350mil	0:19:19	21.10.2026	119
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-23 at 2000mil,19350mil	0:19:19	21.10.2026	120
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-29 at 1200mil,16850mil	0:19:19	21.10.2026	121
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-31 at 1200mil,18950mil	0:19:19	21.10.2026	122
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-36 at 2100mil,19350mil	0:19:19	21.10.2026	123
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-38 at 1200mil,18550mil	0:19:19	21.10.2026	124
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-39 at 3400mil,19350mil	0:19:19	21.10.2026	125
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-40 at 4000mil,18950mil	0:19:19	21.10.2026	126
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-41 at 4000mil,18850mil	0:19:19	21.10.2026	127
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-42 at 4000mil,18750mil	0:19:19	21.10.2026	128
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-49 at 2200mil,19350mil	0:19:19	21.10.2026	129
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-53 at 4000mil,18250mil	0:19:19	21.10.2026	130
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-62 at 2300mil,19350mil	0:19:19	21.10.2026	131
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-72 at 2400mil,19350mil	0:19:19	21.10.2026	132
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-82 at 2500mil,19350mil	0:19:19	21.10.2026	133
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-91 at 2600mil,19350mil	0:19:19	21.10.2026	134
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-103 at 2700mil,19350mil	0:19:19	21.10.2026	135
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-114 at 3300mil,19350mil	0:19:19	21.10.2026	136
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-124 at 4000mil,17650mil	0:19:19	21.10.2026	137
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-127 at 2800mil,19350mil	0:19:19	21.10.2026	138
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-136 at 2900mil,19350mil	0:19:19	21.10.2026	139
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-137 at 4000mil,17550mil	0:19:19	21.10.2026	140
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-149 at 3000mil,19350mil	0:19:19	21.10.2026	141
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-159 at 3100mil,19350mil	0:19:19	21.10.2026	142
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-161 at 4000mil,16950mil	0:19:19	21.10.2026	143
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-166 at 1200mil,18750mil	0:19:19	21.10.2026	144
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-171 at 1200mil,18350mil	0:19:19	21.10.2026	145
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Pin U1-172 at 3200mil,19350mil	0:19:19	21.10.2026	146
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Port 3V3 at 2000mil,19400mil	0:19:19	21.10.2026	147
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Port BOOT0 at 1200mil,18800mil	0:19:19	21.10.2026	148
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Port ETH_50M at 4000mil,18900mil	0:19:19	21.10.2026	149
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Port ETH_CRS_DV at 4000mil,18300mil	0:19:19	21.10.2026	150
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Port ETH_MDIO at 4000mil,18800mil	0:19:19	21.10.2026	151
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Port GNSS_PPS at 4000mil,19000mil	0:19:19	21.10.2026	152
+[Warning]	20_MCU_CORE.SchDoc	Compiler	Off sheet Port NRST at 1200mil,19000mil	0:19:19	21.10.2026	153
+[Warning]	20_MCU_CORE.SchDoc	Compiler	RADAR_EFUSE_FLT contains IO Pin and Input Port objects (Pin U1-2, Port RADAR_EFUSE_FLT).	0:19:19	21.10.2026	154
+[Warning]	20_MCU_CORE.SchDoc	Compiler	RADAR_REF contains IO Pin and Input Port objects (Pin U1-79, Port RADAR_REF).	0:19:19	21.10.2026	155
+[Warning]	20_MCU_CORE.SchDoc	Compiler	SYS_EFUSE_FLT contains IO Pin and Input Port objects (Pin U1-1, Port SYS_EFUSE_FLT).	0:19:19	21.10.2026	156
+[Warning]	60_ETHERNET.SchDoc	Compiler	Unconnected Pin D3-6 at 4100mil,14600mil	0:19:19	21.10.2026	157
+[Warning]	60_ETHERNET.SchDoc	Compiler	Unconnected Pin D3-7 at 3100mil,14500mil	0:19:19	21.10.2026	158
+[Warning]	60_ETHERNET.SchDoc	Compiler	Unconnected Pin D3-9 at 3100mil,14400mil	0:19:19	21.10.2026	159
+[Warning]	60_ETHERNET.SchDoc	Compiler	Unconnected Pin D3-10 at 4100mil,14400mil	0:19:19	21.10.2026	160
+[Warning]	60_ETHERNET.SchDoc	Compiler	Unconnected Pin J6-7 at 5200mil,14950mil	0:19:19	21.10.2026	161

@@ -1,0 +1,11 @@
+{
+  "schema": "EVT-GSN-DOCUMENT-RELEASE-QA-002",
+  "version": "1.2.0",
+  "status": "PASS",
+  "document_count": 15,
+  "archive": "release/EVT_ГСН_документы_v1.2.0_2026-11-02.zip",
+  "archive_sha256": "a533d5a5bb5a4246e080d8a84eeab1caec7442f1ecb6fcb9c9f34c4b1bf2c417",
+  "methods_archive": "release/EVT_ГСН_ПМ_EVT_и_отчетные_материалы_v1.2.0_2026-11-02.zip",
+  "methods_archive_sha256": "38a728b02b82ca24a919214167b67400a1d424a187d52659e85164dbc2eb49c1",
+  "production_authority": "NOT_AUTHORIZED"
+}

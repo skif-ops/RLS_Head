@@ -1,0 +1,36 @@
+{
+  "documented_symbol_count": 21,
+  "errors": [],
+  "notes": [
+    "PASS proves repository contract coverage and read-only static policy only; it does not prove DelphiScript execution in Altium.",
+    "RUNTIME_VERIFY symbols and both exporter procedures must be validated on the target Altium Designer installation."
+  ],
+  "runtime_gate_status": "REQUIRED_IN_ALTIUM_DESIGNER",
+  "runtime_validation_required": true,
+  "runtime_verify_symbol_count": 3,
+  "schema": "ALTIUM-SCRIPT-API-COMPAT-RESULT-001",
+  "scripts": {
+    "pcb_native_audit": {
+      "error_count": 0,
+      "expected_output_count": 5,
+      "path": "hardware/system_carrier/altium/scripts/EVT_SYS_CARRIER_Audit.pas",
+      "required_symbol_count": 12,
+      "status": "PASS",
+      "warning_count": 0
+    },
+    "schematic_hierarchy_audit": {
+      "error_count": 0,
+      "expected_output_count": 1,
+      "path": "hardware/system_carrier/altium/scripts/EVT_SYS_CARRIER_Hierarchy_Audit.pas",
+      "required_symbol_count": 12,
+      "status": "PASS",
+      "warning_count": 3
+    }
+  },
+  "status": "PASS",
+  "warnings": [
+    "schematic_hierarchy_audit:runtime_verify:Iterator.SetState_IterationDepth",
+    "schematic_hierarchy_audit:runtime_verify:Project.DM_Compile",
+    "schematic_hierarchy_audit:runtime_verify:Project.DM_NeedsCompile"
+  ]
+}

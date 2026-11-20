@@ -1,0 +1,20 @@
+{
+  "schema": "EVT-GSN-MANUFACTURING-BUNDLE-QA-001",
+  "version": "1.1.1",
+  "archive": "release/EVT_ГСН_производственные_материалы_v1.1.1_2026-10-31.zip",
+  "download_copy": "release/downloads/EVT_GSN_manufacturing_package_v1.1.1.zip",
+  "archive_sha256": "bec25f978054f504a8d40ff4b86d7611d2218031481212590873c40e22abef8c",
+  "archive_bytes": 12888338,
+  "zip_integrity": "PASS",
+  "manifest_files_verified": 604,
+  "required_files": "PASS",
+  "bom": "PASS",
+  "pdf": "PASS",
+  "altium_source_binding": "PASS",
+  "firmware_release_hashes": "PASS",
+  "firmware_release_rebuild": {
+    "status": "PASS",
+    "scope": "HEX and BIN byte-for-byte SHA-256 equivalence"
+  },
+  "production_authority": "NOT_AUTHORIZED"
+}

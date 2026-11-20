@@ -1,0 +1,35 @@
+{
+  "schema": "EVT-DOCUMENT-QA-001",
+  "version": "1.1.0",
+  "date": "2026-10-31",
+  "status": "PASS",
+  "production_authority": "NOT_AUTHORIZED",
+  "checks": {
+    "docx_documents": 14,
+    "rendered_pages": 52,
+    "paragraphs": 1932,
+    "table_paragraphs": 1490,
+    "forbidden_en_or_em_dashes": 0,
+    "unchanged_source_documents_compared": 10,
+    "unchanged_source_text_preserved": true,
+    "docx_style_audit": "PASS",
+    "archive_integrity": "PASS",
+    "python_compile": "PASS",
+    "visual_review": "PASS",
+    "visual_review_scope": "Все 14 DOCX, включая широкие таблицы, программу и методики EVT, инструкцию первого включения и форму отчета",
+    "first_power_on_instruction_included": true,
+    "first_power_on_instruction_steps": 21
+  },
+  "archives": [
+    {
+      "name": "EVT_ГСН_документы_v1.1.0_2026-10-31.zip",
+      "bytes": 579087,
+      "sha256": "59b65bc397113fab2738ed0f8212156efabda8f776b634aa546b05f0c6d69fa3"
+    },
+    {
+      "name": "EVT_ГСН_ПМ_EVT_и_отчетные_материалы_v1.1.0_2026-10-31.zip",
+      "bytes": 131883,
+      "sha256": "2788f763261165eeb11ce0f10d44945ca112cd4032165ecdfca45a7090ead608"
+    }
+  ]
+}

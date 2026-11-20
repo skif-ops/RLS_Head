@@ -1,0 +1,354 @@
+{
+  "schema": "CI616-PLACEMENT-ANCHOR-DIFF-001",
+  "before_commit": "f1645f04446edb0165569d4d5db24dada178ecaa",
+  "status": "PASS",
+  "before_board_sha256": "f0c6f30b5a65c0eede9ac934c9d318be639f018fb15165f85cb1130926c08c9a",
+  "after_board_sha256": "853a1d37f848be8dce328e63070ad795c2d77a669ebe053431f70d6cf6d97da2",
+  "before_inventory_sha256": "fb462ec58348928fd6f1ad25f555afddcbb30e5b001fd876be43075a317e9003",
+  "after_inventory_sha256": "e35e60d9bd74f9dbce12b09aaa3e5562acb93d5d2ea69caed4fe3ee95150b26d",
+  "hard_anchor_count": 22,
+  "unchanged_component_count": 70,
+  "other_inventory_equal": {
+    "class_inventory.csv": true,
+    "diff_pair_inventory.csv": true,
+    "layer_stack_inventory.csv": true,
+    "mechanical_inventory.csv": true,
+    "net_inventory.csv": true,
+    "pad_net_inventory.csv": true,
+    "rule_constraint_inventory.csv": true,
+    "rule_inventory.csv": true
+  },
+  "changes": [
+    {
+      "ref": "D1",
+      "before_mm": [
+        307.21299999999997,
+        29.718
+      ],
+      "after_mm": [
+        12.999999399999998,
+        13.9999974
+      ],
+      "contract_mm": [
+        13.0,
+        14.0
+      ]
+    },
+    {
+      "ref": "D3",
+      "before_mm": [
+        235.331,
+        115.57
+      ],
+      "after_mm": [
+        84.0000098,
+        60.000007
+      ],
+      "contract_mm": [
+        84.0,
+        60.0
+      ]
+    },
+    {
+      "ref": "D4",
+      "before_mm": [
+        222.504,
+        101.34599999999999
+      ],
+      "after_mm": [
+        87.0000038,
+        29.999990800000003
+      ],
+      "contract_mm": [
+        87.0,
+        30.0
+      ]
+    },
+    {
+      "ref": "D8",
+      "before_mm": [
+        234.188,
+        72.517
+      ],
+      "after_mm": [
+        11.0000034,
+        65.999995
+      ],
+      "contract_mm": [
+        11.0,
+        66.0
+      ]
+    },
+    {
+      "ref": "FB1",
+      "before_mm": [
+        362.839,
+        41.275
+      ],
+      "after_mm": [
+        64.999997,
+        39.9999962
+      ],
+      "contract_mm": [
+        65.0,
+        40.0
+      ]
+    },
+    {
+      "ref": "J1",
+      "before_mm": [
+        288.28999999999996,
+        27.051
+      ],
+      "after_mm": [
+        4.9999899999999995,
+        13.9999974
+      ],
+      "contract_mm": [
+        5.0,
+        14.0
+      ]
+    },
+    {
+      "ref": "J10",
+      "before_mm": [
+        223.393,
+        44.577
+      ],
+      "after_mm": [
+        50.0000016,
+        4.9999899999999995
+      ],
+      "contract_mm": [
+        50.0,
+        5.0
+      ]
+    },
+    {
+      "ref": "J4",
+      "before_mm": [
+        229.99699999999999,
+        102.616
+      ],
+      "after_mm": [
+        94.9999878,
+        29.999990800000003
+      ],
+      "contract_mm": [
+        95.0,
+        30.0
+      ]
+    },
+    {
+      "ref": "J5",
+      "before_mm": [
+        183.134,
+        99.949
+      ],
+      "after_mm": [
+        94.9999878,
+        13.9999974
+      ],
+      "contract_mm": [
+        95.0,
+        14.0
+      ]
+    },
+    {
+      "ref": "J6",
+      "before_mm": [
+        275.082,
+        131.064
+      ],
+      "after_mm": [
+        96.00001119999999,
+        60.000007
+      ],
+      "contract_mm": [
+        96.0,
+        60.0
+      ]
+    },
+    {
+      "ref": "J8",
+      "before_mm": [
+        240.15699999999998,
+        74.422
+      ],
+      "after_mm": [
+        4.9999899999999995,
+        65.999995
+      ],
+      "contract_mm": [
+        5.0,
+        66.0
+      ]
+    },
+    {
+      "ref": "L1",
+      "before_mm": [
+        300.736,
+        27.813
+      ],
+      "after_mm": [
+        41.999992199999994,
+        13.9999974
+      ],
+      "contract_mm": [
+        42.0,
+        14.0
+      ]
+    },
+    {
+      "ref": "U1",
+      "before_mm": [
+        192.91299999999998,
+        54.229
+      ],
+      "after_mm": [
+        51.99999759999999,
+        39.9999962
+      ],
+      "contract_mm": [
+        52.0,
+        40.0
+      ]
+    },
+    {
+      "ref": "U2",
+      "before_mm": [
+        198.12,
+        94.36099999999999
+      ],
+      "after_mm": [
+        51.99999759999999,
+        58.000011
+      ],
+      "contract_mm": [
+        52.0,
+        58.0
+      ]
+    },
+    {
+      "ref": "U3",
+      "before_mm": [
+        203.962,
+        115.951
+      ],
+      "after_mm": [
+        72.0000084,
+        58.000011
+      ],
+      "contract_mm": [
+        72.0,
+        58.0
+      ]
+    },
+    {
+      "ref": "U4",
+      "before_mm": [
+        217.17,
+        100.33
+      ],
+      "after_mm": [
+        79.9999924,
+        29.999990800000003
+      ],
+      "contract_mm": [
+        80.0,
+        30.0
+      ]
+    },
+    {
+      "ref": "U5",
+      "before_mm": [
+        248.92,
+        27.686
+      ],
+      "after_mm": [
+        34.0000082,
+        13.9999974
+      ],
+      "contract_mm": [
+        34.0,
+        14.0
+      ]
+    },
+    {
+      "ref": "U6",
+      "before_mm": [
+        259.969,
+        27.051
+      ],
+      "after_mm": [
+        22.0000068,
+        13.9999974
+      ],
+      "contract_mm": [
+        22.0,
+        14.0
+      ]
+    },
+    {
+      "ref": "U7",
+      "before_mm": [
+        198.24699999999999,
+        27.051
+      ],
+      "after_mm": [
+        62.000003,
+        13.9999974
+      ],
+      "contract_mm": [
+        62.0,
+        14.0
+      ]
+    },
+    {
+      "ref": "U8",
+      "before_mm": [
+        197.358,
+        80.264
+      ],
+      "after_mm": [
+        24.000002799999997,
+        62.000003
+      ],
+      "contract_mm": [
+        24.0,
+        62.0
+      ]
+    },
+    {
+      "ref": "Y1",
+      "before_mm": [
+        344.678,
+        42.545
+      ],
+      "after_mm": [
+        36.0000042,
+        39.9999962
+      ],
+      "contract_mm": [
+        36.0,
+        40.0
+      ]
+    },
+    {
+      "ref": "Y2",
+      "before_mm": [
+        291.973,
+        115.31599999999999
+      ],
+      "after_mm": [
+        64.999997,
+        50.0000016
+      ],
+      "contract_mm": [
+        65.0,
+        50.0
+      ]
+    }
+  ],
+  "errors": []
+}

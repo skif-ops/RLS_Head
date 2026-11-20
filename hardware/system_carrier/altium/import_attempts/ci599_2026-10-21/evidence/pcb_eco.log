@@ -1,0 +1,397 @@
+Change component parameters: Designator = "D3" ("D3"); Footprint = "USON-10_2.5x1.0mm_P0.5mm"; UniqueID = "\YGGJGPKG" ("\YGGJGPKG")
+Change component parameters (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/d0e4cb0b-310f-4e8a-9a2f-3a4bcfa75188"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "TPD4E05U06DQAR"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "TPD4E05U06DQAR"; VariantName = "[No Variations]"
+Change component parameters: Designator = "D4" ("D4"); Footprint = "SOT-23"; UniqueID = "\GMFBHAYF" ("\GMFBHAYF")
+Change component parameters (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/337840cd-3a7e-4401-9d28-d23a335d9e78"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "ESD2CANFD24DBZRQ1"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "ESD2CANFD24-Q1"; VariantName = "[No Variations]"
+Change component parameters: Designator = "D8" ("D8"); Footprint = "ESD0P2RF-02LS_PG-TSSLP-2-1"; UniqueID = "\TIHFSDFT" ("\TIHFSDFT")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b78ef022-ef9f-4274-a87c-1bce56b9a8f5"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "ESD0P2RF-02LS"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "ESD0P2RF-02LS"; VariantName = "[No Variations]"
+Change component parameters: Designator = "FB1" ("FB1"); Footprint = "L_0603_1608Metric"; UniqueID = "\WVVGXVNO" ("\WVVGXVNO")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "BLM18BD601SH1"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "BLM18BD601SH1"; VariantName = "[No Variations]"
+Change component parameters: Designator = "J6" ("J6"); Footprint = "RJ45_Bel_SI-60062-F"; UniqueID = "\YUJCXSQI" ("\YUJCXSQI")
+Change component parameters (AddParameter): Name = "Compatibility_Basis"; Value = "Bel_SI-60182-F_vs_SI-60062-F_verified"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/d0e4cb0b-310f-4e8a-9a2f-3a4bcfa75188"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "SI-60182-F"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "SI-60182-F"; VariantName = "[No Variations]"
+Change component parameters: Designator = "U1" ("U1"); Footprint = "LQFP-176_24x24mm_P0.5mm"; UniqueID = "\NCAHFDAF" ("\NCAHFDAF")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "STM32H753IIT6"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "STM32H753IIT6"; VariantName = "[No Variations]"
+Change component parameters: Designator = "U2" ("U2"); Footprint = "ICM-42688-P_LGA14_2.5x3mm_P0.5mm"; UniqueID = "\SPWXSKCU" ("\SPWXSKCU")
+Change component parameters (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/78018483-f5fa-476c-be43-fa727552722e"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "ICM-42688-P"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "ICM-42688-P"; VariantName = "[No Variations]"
+Change component parameters: Designator = "U3" ("U3"); Footprint = "QFN-24-1EP_4x4mm_P0.5mm_EP2.6x2.6mm"; UniqueID = "\KOFWQLZL" ("\KOFWQLZL")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/d0e4cb0b-310f-4e8a-9a2f-3a4bcfa75188"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "LAN8742Ai-CZ-TR"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "LAN8742Ai-CZ-TR"; VariantName = "[No Variations]"
+Change component parameters: Designator = "U4" ("U4"); Footprint = "Texas_DRB0008A"; UniqueID = "\KSGNAWRV" ("\KSGNAWRV")
+Change component parameters (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/337840cd-3a7e-4401-9d28-d23a335d9e78"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "TCAN3404DRBRQ1"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "TCAN3404DRBRQ1"; VariantName = "[No Variations]"
+Change component parameters: Designator = "U5" ("U5"); Footprint = "VQFN-16-1EP_3x3mm_P0.5mm_EP1.68x1.68mm"; UniqueID = "\KDBGNXKG" ("\KDBGNXKG")
+Change component parameters (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "TPS62132RGTR"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "TPS62132RGTR_3V3"; VariantName = "[No Variations]"
+Change component parameters: Designator = "U6" ("U6"); Footprint = "TPS259470A_RPW0010A_VQFN-HR-10_2x2mm_P0.475mm"; UniqueID = "\NKRBNTHX" ("\NKRBNTHX")
+Change component parameters (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "TPS259470ARPWR"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "TPS259470ARPWR_SYS"; VariantName = "[No Variations]"
+Change component parameters: Designator = "U7" ("U7"); Footprint = "TPS259470A_RPW0010A_VQFN-HR-10_2x2mm_P0.475mm"; UniqueID = "\JKXWUEKQ" ("\JKXWUEKQ")
+Change component parameters (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "TPS259470ARPWR"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "TPS259470ARPWR_RADAR"; VariantName = "[No Variations]"
+Change component parameters: Designator = "U8" ("U8"); Footprint = "NEO-M9N_LCC24_12.2x16mm"; UniqueID = "\ZEGJXRWY" ("\ZEGJXRWY")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b78ef022-ef9f-4274-a87c-1bce56b9a8f5"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "NEO-M9N-00B"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "NEO-M9N-00B"; VariantName = "[No Variations]"
+Change component parameters: Designator = "Y1" ("Y1"); Footprint = "Oscillator_SMD_ECS_2520MV-xxx-xx-4Pin_2.5x2.0mm"; UniqueID = "\EJYDOLBJ" ("\EJYDOLBJ")
+Change component parameters (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "ECS-2520S33-250-FN-TR"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "ECS-2520S33-250-FN-TR"; VariantName = "[No Variations]"
+Change component parameters: Designator = "Y2" ("Y2"); Footprint = "Oscillator_SMD_ECS_2520MV-xxx-xx-4Pin_2.5x2.0mm"; UniqueID = "\CSIXOAUQ" ("\CSIXOAUQ")
+Change component parameters (AddParameter): Name = "Capture_Status"; Value = "LOCAL_CONTRACT_SYMBOL"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/d0e4cb0b-310f-4e8a-9a2f-3a4bcfa75188"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "ECS-2520S33-500-FN-TR"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "ECS-2520S33-500-FN-TR"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C1" ("C1"); Footprint = "C_1206_3216Metric"; UniqueID = "\NPLTALPE" ("\NPLTALPE")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "10uF_25V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "10uF/25V"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C2" ("C2"); Footprint = "C_1206_3216Metric"; UniqueID = "\ANZQQVAS" ("\ANZQQVAS")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "22uF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "22uF/6.3V"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C3" ("C3"); Footprint = "C_0603_1608Metric"; UniqueID = "\LGDVWKIO" ("\LGDVWKIO")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "3.3nF_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "3.3nF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C4" ("C4"); Footprint = "C_0603_1608Metric"; UniqueID = "\VQOQMFDF" ("\VQOQMFDF")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_25V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF/25V"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C6D" ("C6D"); Footprint = "C_0603_1608Metric"; UniqueID = "\IKCUHTZS" ("\IKCUHTZS")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "3.3nF_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "3.3nF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C7D" ("C7D"); Footprint = "C_0603_1608Metric"; UniqueID = "\BJPKEYIE" ("\BJPKEYIE")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "3.3nF_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "3.3nF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C10" ("C10"); Footprint = "C_0603_1608Metric"; UniqueID = "\DCNOGPNK" ("\DCNOGPNK")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "2.2uF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "2.2uF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C11" ("C11"); Footprint = "C_0603_1608Metric"; UniqueID = "\YAYWMYSF" ("\YAYWMYSF")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "2.2uF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "2.2uF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C12" ("C12"); Footprint = "C_0805_2012Metric"; UniqueID = "\PQRZLOMJ" ("\PQRZLOMJ")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "4.7uF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "4.7uF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C13" ("C13"); Footprint = "C_0402_1005Metric"; UniqueID = "\LVSCBJCZ" ("\LVSCBJCZ")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C14" ("C14"); Footprint = "C_0603_1608Metric"; UniqueID = "\JKPKZDSK" ("\JKPKZDSK")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "1uF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "1uF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C15" ("C15"); Footprint = "C_0402_1005Metric"; UniqueID = "\KBMRQLCU" ("\KBMRQLCU")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C20" ("C20"); Footprint = "C_0402_1005Metric"; UniqueID = "\VKVHCPQU" ("\VKVHCPQU")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/78018483-f5fa-476c-be43-fa727552722e"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C21" ("C21"); Footprint = "C_0603_1608Metric"; UniqueID = "\FLNFYUGP" ("\FLNFYUGP")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/78018483-f5fa-476c-be43-fa727552722e"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "2.2uF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "2.2uF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C22" ("C22"); Footprint = "C_0402_1005Metric"; UniqueID = "\FYUDTEUV" ("\FYUDTEUV")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/78018483-f5fa-476c-be43-fa727552722e"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "10nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "10nF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C40" ("C40"); Footprint = "C_0402_1005Metric"; UniqueID = "\SXQALQIN" ("\SXQALQIN")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/337840cd-3a7e-4401-9d28-d23a335d9e78"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C60" ("C60"); Footprint = "C_0603_1608Metric"; UniqueID = "\KRXCIRKD" ("\KRXCIRKD")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/d0e4cb0b-310f-4e8a-9a2f-3a4bcfa75188"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "1uF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "1uF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C61" ("C61"); Footprint = "C_0402_1005Metric"; UniqueID = "\JBBKIUAN" ("\JBBKIUAN")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/d0e4cb0b-310f-4e8a-9a2f-3a4bcfa75188"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "470pF_C0G"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "470pF C0G"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C62" ("C62"); Footprint = "C_0402_1005Metric"; UniqueID = "\OWUZCLYD" ("\OWUZCLYD")
+Change component parameters (AddParameter): Name = "Decouples_U3_Pin"; Value = "1"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/d0e4cb0b-310f-4e8a-9a2f-3a4bcfa75188"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C63" ("C63"); Footprint = "C_0603_1608Metric"; UniqueID = "\VGDQAMTV" ("\VGDQAMTV")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/d0e4cb0b-310f-4e8a-9a2f-3a4bcfa75188"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "22nF_C0G"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "22nF C0G"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C64" ("C64"); Footprint = "C_0402_1005Metric"; UniqueID = "\DHLCKKBV" ("\DHLCKKBV")
+Change component parameters (AddParameter): Name = "Decouples_U3_Pin"; Value = "9"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/d0e4cb0b-310f-4e8a-9a2f-3a4bcfa75188"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C65" ("C65"); Footprint = "C_0402_1005Metric"; UniqueID = "\KPPUKANX" ("\KPPUKANX")
+Change component parameters (AddParameter): Name = "Decouples_U3_Pin"; Value = "19"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/d0e4cb0b-310f-4e8a-9a2f-3a4bcfa75188"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C80" ("C80"); Footprint = "C_0402_1005Metric"; UniqueID = "\CYSTDBPA" ("\CYSTDBPA")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b78ef022-ef9f-4274-a87c-1bce56b9a8f5"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_16V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C81" ("C81"); Footprint = "C_0805_2012Metric"; UniqueID = "\AOOUFPCZ" ("\AOOUFPCZ")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b78ef022-ef9f-4274-a87c-1bce56b9a8f5"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "10uF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "10uF"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C82" ("C82"); Footprint = "C_0402_1005Metric"; UniqueID = "\OWNIIDIP" ("\OWNIIDIP")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b78ef022-ef9f-4274-a87c-1bce56b9a8f5"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_16V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF DNP_OPTION"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C100" ("C100"); Footprint = "C_0402_1005Metric"; UniqueID = "\IQYLEJJY" ("\IQYLEJJY")
+Change component parameters (AddParameter): Name = "Decouples_U1_Pin"; Value = "15"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C101" ("C101"); Footprint = "C_0402_1005Metric"; UniqueID = "\JDCYETQZ" ("\JDCYETQZ")
+Change component parameters (AddParameter): Name = "Decouples_U1_Pin"; Value = "23"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C102" ("C102"); Footprint = "C_0402_1005Metric"; UniqueID = "\CAKVCPRP" ("\CAKVCPRP")
+Change component parameters (AddParameter): Name = "Decouples_U1_Pin"; Value = "36"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C103" ("C103"); Footprint = "C_0402_1005Metric"; UniqueID = "\QHUDHILB" ("\QHUDHILB")
+Change component parameters (AddParameter): Name = "Decouples_U1_Pin"; Value = "49"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C104" ("C104"); Footprint = "C_0402_1005Metric"; UniqueID = "\CTECLXEZ" ("\CTECLXEZ")
+Change component parameters (AddParameter): Name = "Decouples_U1_Pin"; Value = "62"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C105" ("C105"); Footprint = "C_0402_1005Metric"; UniqueID = "\ABGRPMFZ" ("\ABGRPMFZ")
+Change component parameters (AddParameter): Name = "Decouples_U1_Pin"; Value = "72"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C106" ("C106"); Footprint = "C_0402_1005Metric"; UniqueID = "\TUBZFNXM" ("\TUBZFNXM")
+Change component parameters (AddParameter): Name = "Decouples_U1_Pin"; Value = "82"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C107" ("C107"); Footprint = "C_0402_1005Metric"; UniqueID = "\YZJRODIK" ("\YZJRODIK")
+Change component parameters (AddParameter): Name = "Decouples_U1_Pin"; Value = "91"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C108" ("C108"); Footprint = "C_0402_1005Metric"; UniqueID = "\XOPXTNUE" ("\XOPXTNUE")
+Change component parameters (AddParameter): Name = "Decouples_U1_Pin"; Value = "103"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C109" ("C109"); Footprint = "C_0402_1005Metric"; UniqueID = "\JAEQUNNN" ("\JAEQUNNN")
+Change component parameters (AddParameter): Name = "Decouples_U1_Pin"; Value = "127"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C110" ("C110"); Footprint = "C_0402_1005Metric"; UniqueID = "\IAEBCYHB" ("\IAEBCYHB")
+Change component parameters (AddParameter): Name = "Decouples_U1_Pin"; Value = "136"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C111" ("C111"); Footprint = "C_0402_1005Metric"; UniqueID = "\IEOQDIAI" ("\IEOQDIAI")
+Change component parameters (AddParameter): Name = "Decouples_U1_Pin"; Value = "149"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C112" ("C112"); Footprint = "C_0402_1005Metric"; UniqueID = "\WGXRYYNL" ("\WGXRYYNL")
+Change component parameters (AddParameter): Name = "Decouples_U1_Pin"; Value = "159"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C113" ("C113"); Footprint = "C_0402_1005Metric"; UniqueID = "\BKNQLNDF" ("\BKNQLNDF")
+Change component parameters (AddParameter): Name = "Decouples_U1_Pin"; Value = "172"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF VDD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C114" ("C114"); Footprint = "C_0402_1005Metric"; UniqueID = "\GVMPKRPW" ("\GVMPKRPW")
+Change component parameters (AddParameter): Name = "Decouples_U1_Pin"; Value = "114"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF VDD33_USB"; VariantName = "[No Variations]"
+Change component parameters: Designator = "C115" ("C115"); Footprint = "C_0402_1005Metric"; UniqueID = "\RNHDDBTM" ("\RNHDDBTM")
+Change component parameters (AddParameter): Name = "Filters_U1_Pin"; Value = "31"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100nF_6.3V_X7R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100nF NRST"; VariantName = "[No Variations]"
+Change component parameters: Designator = "D1" ("D1"); Footprint = "D_SMA"; UniqueID = "\WJNKZVJI" ("\WJNKZVJI")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "SMAJ15CA"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "SMAJ15CA"; VariantName = "[No Variations]"
+Change component parameters: Designator = "J1" ("J1"); Footprint = "Molex_43650-0200_RA_THT_2P"; UniqueID = "\AIDQEEKV" ("\AIDQEEKV")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "43650-0200"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "12V_IN"; VariantName = "[No Variations]"
+Change component parameters: Designator = "J4" ("J4"); Footprint = "Molex_43045-0600_RA_THT_6P"; UniqueID = "\POGJNMFS" ("\POGJNMFS")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/337840cd-3a7e-4401-9d28-d23a335d9e78"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "43045-0600"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "RADAR_IO"; VariantName = "[No Variations]"
+Change component parameters: Designator = "J5" ("J5"); Footprint = "Molex_43650-0200_RA_THT_2P"; UniqueID = "\TNKMUOIF" ("\TNKMUOIF")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/337840cd-3a7e-4401-9d28-d23a335d9e78"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "43650-0200"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "RADAR_PWR"; VariantName = "[No Variations]"
+Change component parameters: Designator = "J8" ("J8"); Footprint = "Hirose_UFL_R_SMT_K"; UniqueID = "\LSWKMTAW" ("\LSWKMTAW")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b78ef022-ef9f-4274-a87c-1bce56b9a8f5"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "U.FL-R-SMT-K(800)"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "GNSS_UFL"; VariantName = "[No Variations]"
+Change component parameters: Designator = "J10" ("J10"); Footprint = "TagConnect_TC2030_NL"; UniqueID = "\BLQVHQMW" ("\BLQVHQMW")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "TC2030-NL_TARGET"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "TC2030_SWD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "L1" ("L1"); Footprint = "Coilcraft_XFL4020_4x4"; UniqueID = "\RTPBZVMO" ("\RTPBZVMO")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "XFL4020-222MEC"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "2.2uH"; VariantName = "[No Variations]"
+Change component parameters: Designator = "L80" ("L80"); Footprint = "L_0402_1005Metric"; UniqueID = "\RSQVVJOK" ("\RSQVVJOK")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b78ef022-ef9f-4274-a87c-1bce56b9a8f5"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "27nH_0402"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "27nH DNP_OPTION"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R1" ("R1"); Footprint = "R_0603_1608Metric"; UniqueID = "\FGECBYQE" ("\FGECBYQE")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "665R_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "665R 1%"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R2" ("R2"); Footprint = "R_0603_1608Metric"; UniqueID = "\CZNKAUYS" ("\CZNKAUYS")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "1.05k_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "1.05k 1%"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R5P" ("R5P"); Footprint = "R_0603_1608Metric"; UniqueID = "\BSHVFWGK" ("\BSHVFWGK")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100k_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100k 1% PG_PU"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R6F" ("R6F"); Footprint = "R_0603_1608Metric"; UniqueID = "\NAVZMQDG" ("\NAVZMQDG")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "10k_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "10k 1% FLT_PU"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R7F" ("R7F"); Footprint = "R_0603_1608Metric"; UniqueID = "\CSPIEXDX" ("\CSPIEXDX")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "10k_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "10k 1% FLT_PU"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R10" ("R10"); Footprint = "R_0603_1608Metric"; UniqueID = "\BZMXYYFV" ("\BZMXYYFV")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "10k_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "10k 1%"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R40" ("R40"); Footprint = "R_0603_1608Metric"; UniqueID = "\KXIIZULJ" ("\KXIIZULJ")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/337840cd-3a7e-4401-9d28-d23a335d9e78"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "120R_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "120R 1% DNP_DEFAULT"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R41" ("R41"); Footprint = "R_0603_1608Metric"; UniqueID = "\VFLJVGNG" ("\VFLJVGNG")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/337840cd-3a7e-4401-9d28-d23a335d9e78"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "10k_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "10k 1% STB_PD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R42" ("R42"); Footprint = "R_0603_1608Metric"; UniqueID = "\ZFSSVVWJ" ("\ZFSSVVWJ")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/337840cd-3a7e-4401-9d28-d23a335d9e78"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "10k_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "10k 1% SHDN_PD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R61" ("R61"); Footprint = "R_0603_1608Metric"; UniqueID = "\RIOQDTRZ" ("\RIOQDTRZ")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "470k_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "470k 1%"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R62" ("R62"); Footprint = "R_0603_1608Metric"; UniqueID = "\GUQVUOOH" ("\GUQVUOOH")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "36.0k_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "36.0k 1%"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R63" ("R63"); Footprint = "R_0603_1608Metric"; UniqueID = "\UWXKSVQO" ("\UWXKSVQO")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "41.2k_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "41.2k 1%"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R70" ("R70"); Footprint = "R_0603_1608Metric"; UniqueID = "\WPBAKHUN" ("\WPBAKHUN")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/dc3b6991-36b2-4910-bcdb-56ee1ddb4184"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "0R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "0R DNP_BOOT_OVERRIDE"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R71" ("R71"); Footprint = "R_0603_1608Metric"; UniqueID = "\EMDFFZEC" ("\EMDFFZEC")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "470k_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "470k 1%"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R72" ("R72"); Footprint = "R_0603_1608Metric"; UniqueID = "\WNJETQCE" ("\WNJETQCE")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "16.9k_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "16.9k 1%"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R73" ("R73"); Footprint = "R_0603_1608Metric"; UniqueID = "\GNLXGNYQ" ("\GNLXGNYQ")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b624852f-1277-4a55-b4fa-960468381384"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "43.7k_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "43.7k 1%"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R80" ("R80"); Footprint = "R_0805_2012Metric"; UniqueID = "\ZROGSMER" ("\ZROGSMER")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b78ef022-ef9f-4274-a87c-1bce56b9a8f5"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "10R_0.25W"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "10R 0.25W DNP_OPTION"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R81" ("R81"); Footprint = "R_0603_1608Metric"; UniqueID = "\KTXVLUKI" ("\KTXVLUKI")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b78ef022-ef9f-4274-a87c-1bce56b9a8f5"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "100k_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "100k 1% VUSB_PD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R82" ("R82"); Footprint = "R_0603_1608Metric"; UniqueID = "\AXFKPIDN" ("\AXFKPIDN")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/b78ef022-ef9f-4274-a87c-1bce56b9a8f5"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "0R"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "0R V_BCKP"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R600" ("R600"); Footprint = "R_0603_1608Metric"; UniqueID = "\SKNVABNO" ("\SKNVABNO")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/d0e4cb0b-310f-4e8a-9a2f-3a4bcfa75188"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "12.1k_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "12.1k 1%"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R601" ("R601"); Footprint = "R_0402_1005Metric"; UniqueID = "\NVJFEJRC" ("\NVJFEJRC")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/d0e4cb0b-310f-4e8a-9a2f-3a4bcfa75188"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "49.9R_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "49.9R 1%"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R602" ("R602"); Footprint = "R_0402_1005Metric"; UniqueID = "\HHJMYPNX" ("\HHJMYPNX")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/d0e4cb0b-310f-4e8a-9a2f-3a4bcfa75188"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "49.9R_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "49.9R 1%"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R603" ("R603"); Footprint = "R_0402_1005Metric"; UniqueID = "\ZJCQDFUY" ("\ZJCQDFUY")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/d0e4cb0b-310f-4e8a-9a2f-3a4bcfa75188"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "49.9R_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "49.9R 1%"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R604" ("R604"); Footprint = "R_0402_1005Metric"; UniqueID = "\VRKUPQMP" ("\VRKUPQMP")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/d0e4cb0b-310f-4e8a-9a2f-3a4bcfa75188"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "49.9R_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "49.9R 1%"; VariantName = "[No Variations]"
+Change component parameters: Designator = "R605" ("R605"); Footprint = "R_0603_1608Metric"; UniqueID = "\OTOWQKTR" ("\OTOWQKTR")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/d0e4cb0b-310f-4e8a-9a2f-3a4bcfa75188"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "10k_1%"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "10k 1% NRST_PD"; VariantName = "[No Variations]"
+Change component parameters: Designator = "SW1" ("SW1"); Footprint = "ESwitch_TL3301_GullWing_6x6"; UniqueID = "\HRUEUFET" ("\HRUEUFET")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/dc3b6991-36b2-4910-bcdb-56ee1ddb4184"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "TL3301NF160QG"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "NRST"; VariantName = "[No Variations]"
+Change component parameters: Designator = "TP1" ("TP1"); Footprint = "TestPoint_Pad_D1.0mm"; UniqueID = "\ORAVGKAO" ("\ORAVGKAO")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "DEBUG_TX"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "DEBUG_TX"; VariantName = "[No Variations]"
+Change component parameters: Designator = "TP2" ("TP2"); Footprint = "TestPoint_Pad_D1.0mm"; UniqueID = "\VIUOPQBE" ("\VIUOPQBE")
+Change component parameters (AddParameter): Name = "hierarchy_path"; Value = "/bb847286-0d74-45ea-ae19-a7a9011f1e25/aa1f510d-c66e-4213-83c2-72045df318bd"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MPN"; Value = "DEBUG_RX"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = "DEBUG_RX"; VariantName = "[No Variations]"

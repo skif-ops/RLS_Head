@@ -23,25 +23,28 @@ REQUIRED_AUDITS = {
     "reset_boot",
     "timing_capture",
     "imu",
-    "ethernet",
+    "host_uart",
+    "external_gnss",
     "can_fd",
+    "no_obsolete_interfaces",
 }
 
 EXPECTED_TIMING = {
-    "GNSS_PPS": ("PA0", "TIM2_CH1"),
-    "RADAR_REF": ("PB10", "TIM2_CH3"),
-    "IMU_DRDY": ("PB11", "TIM2_CH4"),
+    "GNSS_PPS": ("PA0", "TIM2_CH1", "P1"),
+    "RADAR_REF": ("PB10", "TIM2_CH3", "P0"),
+    "IMU_DRDY": ("PB11", "TIM2_CH4", "P0"),
 }
 
 REQUIRED_MPNS = {
     "STM32H753IIT6",
     "ICM-42688-P",
-    "LAN8742Ai-CZ-TR",
     "TCAN3404DRBRQ1",
     "TPS62132RGTR",
+    "TPS62133RGTR",
     "TPS259470ARPWR",
-    "NEO-M9N-00B",
-    "SI-60182-F",
+    "TPD4E05U06DQAR",
+    "43045-0600",
+    "SM06B-GHS-TB(LF)(SN)",
 }
 
 
@@ -158,7 +161,7 @@ def validate_pinmap(path: Path) -> dict:
 
     findings: list[str] = []
 
-    for signal, (expected_pin, expected_peripheral) in (
+    for signal, (expected_pin, expected_peripheral, expected_criticality) in (
         EXPECTED_TIMING.items()
     ):
         row = rows.get(signal)
@@ -182,9 +185,9 @@ def validate_pinmap(path: Path) -> dict:
                 f"{peripheral}!={expected_peripheral}"
             )
 
-        if criticality != "P0":
+        if criticality != expected_criticality:
             findings.append(
-                f"{signal}:criticality:{criticality}!=P0"
+                f"{signal}:criticality:{criticality}!={expected_criticality}"
             )
 
     return {

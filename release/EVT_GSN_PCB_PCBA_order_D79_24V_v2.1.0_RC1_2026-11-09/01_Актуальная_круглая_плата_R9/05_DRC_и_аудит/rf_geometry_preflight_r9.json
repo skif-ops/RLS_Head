@@ -1,0 +1,79 @@
+{
+  "schema": "radar_wide_elevation_antenna_preflight_v1",
+  "revision": "0.8.0",
+  "status": "PASS",
+  "pcb": "C:\\Users\\skifn\\.codex\\.chatgpt-projects\\g-p-6a9feb917c48819182ec25e1ef55310c\\RADAR_D65_integrated\\RADAR_v0.8.0\\RADAR_D79_POWER_24V_v0.8.0_R9_ASCII.PcbDoc",
+  "pcb_sha256": "338f80463936e970346cfec232ae6c6ee9e60cce601608807e9b974a24a353cb",
+  "manifest_hash_matches": true,
+  "required_elements_per_channel": 8,
+  "channel_count": 8,
+  "total_radiator_count": 64,
+  "channels": [
+    {
+      "net": "TI_RX1",
+      "radiator_count": 8,
+      "generated_feed_track_count": 59,
+      "single_connected_component": true
+    },
+    {
+      "net": "TI_RX2",
+      "radiator_count": 8,
+      "generated_feed_track_count": 59,
+      "single_connected_component": true
+    },
+    {
+      "net": "TI_RX3",
+      "radiator_count": 8,
+      "generated_feed_track_count": 59,
+      "single_connected_component": true
+    },
+    {
+      "net": "TI_RX4",
+      "radiator_count": 8,
+      "generated_feed_track_count": 59,
+      "single_connected_component": true
+    },
+    {
+      "net": "TI_TX1",
+      "radiator_count": 8,
+      "generated_feed_track_count": 59,
+      "single_connected_component": true
+    },
+    {
+      "net": "TI_TX2",
+      "radiator_count": 8,
+      "generated_feed_track_count": 59,
+      "single_connected_component": true
+    },
+    {
+      "net": "TI_TX3",
+      "radiator_count": 8,
+      "generated_feed_track_count": 59,
+      "single_connected_component": true
+    },
+    {
+      "net": "TI_TX4",
+      "radiator_count": 8,
+      "generated_feed_track_count": 59,
+      "single_connected_component": true
+    }
+  ],
+  "rf_zone_mm": {
+    "left": 35.36070806,
+    "bottom": 49.325054019999996,
+    "right": 65.86433967999999,
+    "top": 65.4097889
+  },
+  "non_antenna_top_copper_in_rf_zone": [],
+  "required_rf_copper_to_via_clearance_mm": 0.3,
+  "non_antenna_vias_inside_rf_copper_clearance": [],
+  "obsolete_two_element_track_indices": [],
+  "duplicate_indices": [],
+  "errors": [],
+  "native_pcbdoc": "RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE.PcbDoc",
+  "native_pcbdoc_sha256": "e27047d120cd8be94e2d62b7d2fda1e0294e1e4950f3d80a5675cece04dc22bb",
+  "native_altium_drc": "PASS_0_VIOLATIONS",
+  "native_altium_drc_report": "Design Rule Check - RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE.html",
+  "full_wave_em": "REQUIRED_NOT_PERFORMED",
+  "production_authority": "NOT_AUTHORIZED"
+}

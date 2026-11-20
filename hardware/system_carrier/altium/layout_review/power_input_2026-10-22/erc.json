@@ -1,0 +1,71 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-22T18:25:25",
+    "ignored_checks": [
+        {
+            "description": "Global label only appears once in the schematic",
+            "key": "single_global_label"
+        },
+        {
+            "description": "Four connection points are joined together",
+            "key": "four_way_junction"
+        },
+        {
+            "description": "SPICE model issue",
+            "key": "simulation_model_issue"
+        },
+        {
+            "description": "Assigned footprint doesn't match footprint filters",
+            "key": "footprint_filter"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning"
+    ],
+    "kicad_version": "10.0.6",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/37637d47-3604-43dd-836e-89f29b5ad4c1",
+            "violations": []
+        },
+        {
+            "path": "/POWER_INPUT/",
+            "uuid_path": "/37637d47-3604-43dd-836e-89f29b5ad4c1/ffb37ff3-fa76-4dec-a315-ff8e69047960",
+            "violations": []
+        },
+        {
+            "path": "/MCU_CORE/",
+            "uuid_path": "/37637d47-3604-43dd-836e-89f29b5ad4c1/9502ff61-556e-44b1-81ce-3fbb77669736",
+            "violations": []
+        },
+        {
+            "path": "/TIME_GNSS/",
+            "uuid_path": "/37637d47-3604-43dd-836e-89f29b5ad4c1/bf9f0918-b1ef-4347-a274-f3664236613a",
+            "violations": []
+        },
+        {
+            "path": "/IMU/",
+            "uuid_path": "/37637d47-3604-43dd-836e-89f29b5ad4c1/c7235c8c-793e-4330-a334-c61854f2bd84",
+            "violations": []
+        },
+        {
+            "path": "/RADAR_IO_CAN/",
+            "uuid_path": "/37637d47-3604-43dd-836e-89f29b5ad4c1/9042fdab-eaaa-4b48-8a7f-a65c7ae5433b",
+            "violations": []
+        },
+        {
+            "path": "/ETHERNET/",
+            "uuid_path": "/37637d47-3604-43dd-836e-89f29b5ad4c1/5bee623e-b5bf-49a9-9f72-4707808d3e62",
+            "violations": []
+        },
+        {
+            "path": "/DEBUG_BOOT/",
+            "uuid_path": "/37637d47-3604-43dd-836e-89f29b5ad4c1/0d6db95c-015e-46cd-bc63-646356622ce4",
+            "violations": []
+        }
+    ],
+    "source": "EVT_SYS_CARRIER.kicad_sch"
+}

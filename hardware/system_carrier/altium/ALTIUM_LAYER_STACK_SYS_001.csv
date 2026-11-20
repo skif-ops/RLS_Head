@@ -1,5 +1,5 @@
 order,altium_layer,type,role,criticality,thickness_status,notes
-1,Top Layer,signal,L1 signal/component,P0,FAB_STACK_TO_BE_BOUND,High-speed and power placement on top where practical
-2,Mid-Layer 1,plane,L2 continuous solid GND,P0,FAB_STACK_TO_BE_BOUND,No splits under RMII MDI clocks timing or GNSS RF
-3,Mid-Layer 2,mixed-plane,L3 power and slow signals,P0,FAB_STACK_TO_BE_BOUND,Keep fast return paths on L2
-4,Bottom Layer,signal,L4 signal/component,P0,FAB_STACK_TO_BE_BOUND,Use return vias when changing layer
+1,Top Layer,signal,L1 signal/component,P0,PILOT_REZONIT_BASELINE,Components critical signals and compact power loops on top where practical
+2,Mid-Layer 1,plane,L2 continuous solid GND,P0,PILOT_REZONIT_BASELINE,No splits under clocks timing CAN SPI UART or switch-current loops
+3,Mid-Layer 2,mixed-plane,L3 power and slow signals,P0,PILOT_REZONIT_BASELINE,Keep signal return paths on continuous L2
+4,Bottom Layer,signal,L4 signal/component,P0,PILOT_REZONIT_BASELINE,Use nearby GND return vias when changing layer

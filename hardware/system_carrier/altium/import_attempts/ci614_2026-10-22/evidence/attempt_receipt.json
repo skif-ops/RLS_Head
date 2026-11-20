@@ -1,0 +1,88 @@
+{
+  "schema": "ALTIUM-IMPORT-ATTEMPT-DIAGNOSTIC-001",
+  "board_id": "EVT-SYS-CARRIER",
+  "date": "2026-10-22",
+  "branch": "issue-216-footprint-binding",
+  "source_branch_head": "36748be8b4b35e509c5ba9d13e388eb0f852600d",
+  "ci_run_id": 39787477019,
+  "ci_conclusion": "success",
+  "artifact_name": "system-carrier-altium-import",
+  "artifact_id": 12428539103,
+  "artifact_zip_sha256": "0a2e283912cb14e48957fdc3f56fbfb86efdf72530460e4cd9abacc00be348da",
+  "package_verification": "PASS: 117/117 files",
+  "current_source_binding": "PASS: 57/57 files",
+  "altium_version": "26.10.1 Trial",
+  "import_wizard_result": "COMPLETED",
+  "native_schematic_count": 8,
+  "native_pcb_provenance": "Byte-identical carry-forward of CI606 audited diagnostic PcbDoc",
+  "native_project": "native_snapshot/EVT_SYS_CARRIER_CI614.PrjPcb",
+  "native_compile": "SUCCESS_WITH_WARNINGS: 0 errors, 49 warnings",
+  "schematic_protel_netlist": "PASS: 335 assigned pins, 67 connectivity groups, no missing connected pins, merges or splits",
+  "pin_type_eco": "U7-6 Power to Output; D3-6/7/9/10 and J6-7 Input to Passive",
+  "altium_equivalence_gate": "NOT_RUN",
+  "ready_for_routing": false,
+  "routing_authority": "NOT_AUTHORIZED",
+  "production_authority": "NOT_AUTHORIZED",
+  "native_files": [
+    {
+      "name": "10_POWER_INPUT.SchDoc",
+      "bytes": 137216,
+      "sha256": "3b0f50f80d65bde846bd298369810f20d3d40d4f7816093c99b79f3e59793dbd"
+    },
+    {
+      "name": "20_MCU_CORE.SchDoc",
+      "bytes": 278528,
+      "sha256": "1f5c0af1ef3d76273a8772b44e741d02580a16c07b76dce549dea084cd9306c3"
+    },
+    {
+      "name": "30_TIME_GNSS.SchDoc",
+      "bytes": 80896,
+      "sha256": "d2201fe4e5c7e8b5352761e964c118c95a346381e9711143dc83c17975ceb017"
+    },
+    {
+      "name": "40_IMU.SchDoc",
+      "bytes": 46592,
+      "sha256": "21b094a8f32653432f051dd8f3b2aceb78ce277cf1af49f44b4623749bb248f2"
+    },
+    {
+      "name": "50_RADAR_IO_CAN.SchDoc",
+      "bytes": 62976,
+      "sha256": "e0ece903d7d7b2aeceff703006c76d3a788aa046743cd5bdeab19197ea67ebd8"
+    },
+    {
+      "name": "60_ETHERNET.SchDoc",
+      "bytes": 146944,
+      "sha256": "5ab1e675392b42d7899bd29db19539dcd47e598e3875e4d78d0056482f2013a6"
+    },
+    {
+      "name": "70_DEBUG_BOOT.SchDoc",
+      "bytes": 29184,
+      "sha256": "45086133b0a52b98ae1d7878904c8354102a1d0bd65420751d47f8b308ef4bd1"
+    },
+    {
+      "name": "EVT_SYS_CARRIER_CI614.PrjPcb",
+      "bytes": 36777,
+      "sha256": "4f64027b2ca4a3d4e85c317e9a4b4a71de0d9a8d88308bec35dfa90a7596e912"
+    },
+    {
+      "name": "EVT_SYS_CARRIER.PcbDoc",
+      "bytes": 1674752,
+      "sha256": "f0c6f30b5a65c0eede9ac934c9d318be639f018fb15165f85cb1130926c08c9a"
+    },
+    {
+      "name": "EVT_SYS_CARRIER.SchDoc",
+      "bytes": 64000,
+      "sha256": "ed796020226eb6919c948f44b3ceb48104bda278ff0b69dd1fe9ea379f4894f2"
+    },
+    {
+      "name": "EVT_SYS_CARRIER.SchLib",
+      "bytes": 131584,
+      "sha256": "8ceebcbc333a5fe569a289e27cf6945a8db176bbc3eb56cbf5c567e3045e330c"
+    },
+    {
+      "name": "SystemCarrier_Local.SchLib",
+      "bytes": 41472,
+      "sha256": "9a4200504c2c88a173453ea455e0beea24b218db26c13f367b5031c5caf11f4c"
+    }
+  ]
+}

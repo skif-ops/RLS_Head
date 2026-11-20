@@ -1,0 +1,23 @@
+{
+  "schema": "R10-ROUTING-CULTURE-GATE-001",
+  "revision": "R10.3.37",
+  "source": "hardware/radar/altium/RADAR_D79_v0.9.0_R10_ENGINEERING_REWORK/01_Исходник_Altium/RADAR_D79_POWER_24V_v0.9.3.37_R10_3_37_REZONIT_IMPEDANCE_RECALC_ASCII.PcbDoc",
+  "production_authority": "NOT_AUTHORIZED",
+  "criteria": {
+    "star_or_crossing": "effective degree >= 4",
+    "acute_branch": "minimum non-collinear angle < 30 degrees",
+    "abrupt_width_change": "width ratio >= 1.8 at a shared vertex",
+    "off_angle": "track >= 1 mm and > 5 degrees from 0/45/90 geometry",
+    "dangling_end": "single-degree track end not landing on a same-net pad or via"
+  },
+  "counts": {
+    "tracks": 8395,
+    "junctions_total_review": 697,
+    "junctions_hard_rework": 437,
+    "power_junctions_review": 232,
+    "dangling_or_stub_ends": 1600,
+    "long_off_angle_segments": 151,
+    "coincident_segment_groups": 112
+  },
+  "gate": "FAIL"
+}

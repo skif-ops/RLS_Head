@@ -1,0 +1,82 @@
+{
+  "schema": "SYSTEM-CARRIER-POWER-INPUT-24V-001",
+  "status": "DESIGN_CONTRACT",
+  "input": {
+    "minimum_v": 18.0,
+    "nominal_v": 24.0,
+    "maximum_continuous_v": 32.0,
+    "connector": "J1",
+    "reverse_polarity_protection": true
+  },
+  "surge_protection": {
+    "device": "SMCJ36CA",
+    "standoff_v": 36.0,
+    "maximum_clamp_v": 58.1,
+    "protected_device_transient_limit_v": 65.0
+  },
+  "efuse": {
+    "reference": "U6",
+    "device": "TPS26630RGER",
+    "uvlo_target_v": 18.0,
+    "ovp_target_v": 33.54,
+    "divider_ohm": {
+      "r1": 887000.0,
+      "r2": 29400.0,
+      "r3": 34000.0
+    },
+    "ilim_resistor_ohm": 4020.0,
+    "ilim_equation_numerator": 18000.0,
+    "ilim_tolerance_fraction": 0.07,
+    "dvdt_capacitor_f": 1e-7,
+    "reverse_blocking_fet": "CSD19537Q3",
+    "reverse_blocking_fet_vds_v": 100.0,
+    "fast_pulldown_fet": "BSS138"
+  },
+  "intermediate_bus": {
+    "net": "V12_SYS",
+    "regulator_reference": "U8",
+    "regulator": "LM76005RNPR",
+    "output_v": 12.0,
+    "output_current_a": 5.0,
+    "switching_frequency_hz": 400000.0,
+    "minimum_efficiency_fraction": 0.9,
+    "feedback_top_ohm": 100000.0,
+    "feedback_bottom_ohm": 9090.0,
+    "feedback_reference_v": 1.0,
+    "inductor": "XAL7070-103MEC",
+    "inductance_h": 1e-5,
+    "inductor_saturation_a": 11.5,
+    "inductor_rms_a": 7.5,
+    "output_capacitor_count": 4,
+    "output_capacitor_each_f": 4.7e-5,
+    "output_capacitor_voltage_v": 25.0,
+    "input_capacitor_count": 2,
+    "input_capacitor_each_f": 4.7e-6,
+    "input_capacitor_voltage_v": 100.0
+  },
+  "downstream": {
+    "required_source_net": "V12_SYS",
+    "forbidden_direct_input_devices": [
+      "TPS62132RGTR",
+      "TPS62133RGTR",
+      "TPS259470ARPWR"
+    ],
+    "rails": [
+      "3V3",
+      "5V_GNSS",
+      "RADAR_12V"
+    ]
+  },
+  "authority": {
+    "routing_authority": "NOT_AUTHORIZED",
+    "production_authority": "NOT_AUTHORIZED",
+    "native_altium_equivalence_required": true,
+    "bench_validation_required": true
+  },
+  "sources": [
+    "TI TPS2663x datasheet SLVSE94G",
+    "TI LM76005 datasheet SNVSBK5A",
+    "TI CSD19537Q3 datasheet SLPS549B",
+    "Coilcraft XAL7070 series specifications"
+  ]
+}

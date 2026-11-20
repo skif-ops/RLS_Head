@@ -1,0 +1,1546 @@
+Importer Log Report
+Document: C:\Users\skifn\.codex\.chatgpt-projects\g-p-6a9feb917c48819182ec25e1ef55310c\RLS_Head-git\build\ci577-native\SystemCarrier_Import.pretty
+    Section : Analyze Document from - C:\Users\skifn\.codex\.chatgpt-projects\g-p-6a9feb917c48819182ec25e1ef55310c\RLS_Head-git\build\ci577-native\SystemCarrier_Import.pretty
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child generator_version of footprint.
+        Warning: Unknown child uuid of property.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child uuid of fp_text.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child generator_version of footprint.
+        Warning: Unknown child uuid of property.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child uuid of fp_text.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child stroke of fp_circle.
+        Warning: Unknown child generator_version of footprint.
+        Warning: Unknown child uuid of property.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child uuid of fp_rect.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child uuid of fp_rect.
+        Warning: Unknown child stroke of fp_circle.
+        Warning: Unknown child uuid of fp_circle.
+        Warning: Unknown child uuid of fp_text.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child generator_version of footprint.
+        Warning: Unknown child uuid of property.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child uuid of fp_rect.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child uuid of fp_text.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child zone of footprint.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_circle.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_poly.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_poly.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Pad name is empty, autogenerated name 'Un1' assigned to pad pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Pad name is empty, autogenerated name 'Un1' assigned to pad pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_circle.
+        Warning: Unknown child generator_version of footprint.
+        Warning: Unknown child uuid of property.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_arc.
+        Warning: Unknown child uuid of fp_arc.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child uuid of fp_text.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_poly.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_poly.
+        Warning: Pad name is empty, autogenerated name 'Un1' assigned to pad pad.
+        Warning: Pad name is empty, autogenerated name 'Un2' assigned to pad pad.
+        Warning: Pad name is empty, autogenerated name 'Un3' assigned to pad pad.
+        Warning: Pad name is empty, autogenerated name 'Un4' assigned to pad pad.
+        Warning: Unknown child property of pad.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child generator_version of footprint.
+        Warning: Unknown child uuid of property.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child uuid of fp_text.
+        Warning: Unknown child uuid of pad.
+        Warning: Pad name is empty, autogenerated name 'Un1' assigned to pad pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Pad name is empty, autogenerated name 'Un2' assigned to pad pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_poly.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_poly.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child generator_version of footprint.
+        Warning: Unknown child uuid of property.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child uuid of fp_text.
+        Warning: Unknown child uuid of fp_text.
+        Warning: Unknown child uuid of pad.
+        Warning: Pad name is empty, autogenerated name 'Un1' assigned to pad pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Pad name is empty, autogenerated name 'Un2' assigned to pad pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Pad name is empty, autogenerated name 'Un3' assigned to pad pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child zone of footprint.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child generator_version of footprint.
+        Warning: Unknown child uuid of property.
+        Warning: Unknown child stroke of fp_circle.
+        Warning: Unknown child uuid of fp_circle.
+        Warning: Unknown child stroke of fp_circle.
+        Warning: Unknown child uuid of fp_circle.
+        Warning: Unknown child uuid of fp_text.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child generator_version of footprint.
+        Warning: Unknown child uuid of property.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_poly.
+        Warning: Unknown child uuid of fp_poly.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child uuid of fp_text.
+        Warning: Unknown child uuid of pad.
+        Warning: Pad name is empty, autogenerated name 'Un1' assigned to pad pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Pad name is empty, autogenerated name 'Un2' assigned to pad pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Pad name is empty, autogenerated name 'Un3' assigned to pad pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Pad name is empty, autogenerated name 'Un4' assigned to pad pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Pad name is empty, autogenerated name 'Un5' assigned to pad pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child property of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child property of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child property of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child property of pad.
+        Warning: Unknown child remove_unused_layers of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child stroke of fp_poly.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Unknown child stroke of fp_rect.
+        Warning: Pad name is empty, autogenerated name 'Un1' assigned to pad pad.
+        Warning: Pad name is empty, autogenerated name 'Un2' assigned to pad pad.
+        Warning: Pad name is empty, autogenerated name 'Un3' assigned to pad pad.
+        Warning: Pad name is empty, autogenerated name 'Un4' assigned to pad pad.
+        Warning: Unknown child generator_version of footprint.
+        Warning: Unknown child uuid of property.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_poly.
+        Warning: Unknown child uuid of fp_poly.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child uuid of fp_line.
+        Warning: Unknown child uuid of fp_text.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child uuid of pad.
+        Warning: Unknown child embedded_fonts of footprint.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_poly.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_line.
+        Warning: Unknown child stroke of fp_poly.
+        Warning: Pad name is empty, autogenerated name 'Un1' assigned to pad pad.
+        Warning: Pad name is empty, autogenerated name 'Un2' assigned to pad pad.
+        Warning: Pad name is empty, autogenerated name 'Un3' assigned to pad pad.
+        Warning: Pad name is empty, autogenerated name 'Un4' assigned to pad pad.
+        Warning: Unknown child property of pad.
+        Warning: Unknown child embedded_fonts of footprint.
+    EndSection
+    Section : Import Document - C:\Users\skifn\.codex\.chatgpt-projects\g-p-6a9feb917c48819182ec25e1ef55310c\RLS_Head-git\build\ci577-footprints-native\Imported C_0402_1005Metric\SystemCarrier_Import.PcbLib
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Event: Component REF** was successfully imported.
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [-0,48,-0] was successfully imported.
+            Event: Pad 2 on [0,48,-0] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [-0,775,-0] was successfully imported.
+            Event: Pad 2 on [0,775,-0] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [-0,95,-0] was successfully imported.
+            Event: Pad 2 on [0,95,-0] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [-1,475,-0] was successfully imported.
+            Event: Pad 2 on [1,475,-0] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [-1,185,-0] was successfully imported.
+            Event: Pad 2 on [1,185,-0] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [-2,-0] was successfully imported.
+            Event: Pad 2 on [2,-0] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Rect was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Pad 1 on [0,0,19] was successfully imported.
+            Event: Pad 2 on [0,-0,19] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [-4,55,2,25] was successfully imported.
+            Event: Pad 1 on [4,55,2,25] was successfully imported.
+            Event: Pad 2 on [-4,55,-2,25] was successfully imported.
+            Event: Pad 2 on [4,55,-2,25] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Rect was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [-1,05,-0] was successfully imported.
+            Event: Pad 2 on [0,475,1,475] was successfully imported.
+            Event: Pad 2 on [0,475,-1,475] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Rect was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Pad 1 on [-1,0125,-0,75] was successfully imported.
+            Event: Pad 2 on [-1,0125,-0,25] was successfully imported.
+            Event: Pad 3 on [-1,0125,0,25] was successfully imported.
+            Event: Pad 4 on [-1,0125,0,75] was successfully imported.
+            Event: Pad 5 on [-0,5,1,2625] was successfully imported.
+            Event: Pad 6 on [0,1,2625] was successfully imported.
+            Event: Pad 7 on [0,5,1,2625] was successfully imported.
+            Event: Pad 8 on [1,0125,0,75] was successfully imported.
+            Event: Pad 9 on [1,0125,0,25] was successfully imported.
+            Event: Pad 10 on [1,0125,-0,25] was successfully imported.
+            Event: Pad 11 on [1,0125,-0,75] was successfully imported.
+            Event: Pad 12 on [0,5,-1,2625] was successfully imported.
+            Event: Pad 13 on [0,-1,2625] was successfully imported.
+            Event: Pad 14 on [-0,5,-1,2625] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Rect was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [-0,485,-0] was successfully imported.
+            Event: Pad 2 on [0,485,-0] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [-0,7875,-0] was successfully imported.
+            Event: Pad 2 on [0,7875,-0] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Graphical polygone with 3 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Graphical polygone with 5 vertices was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [-12,675,10,75] was successfully imported.
+            Event: Pad 2 on [-12,675,10,25] was successfully imported.
+            Event: Pad 3 on [-12,675,9,75] was successfully imported.
+            Event: Pad 4 on [-12,675,9,25] was successfully imported.
+            Event: Pad 5 on [-12,675,8,75] was successfully imported.
+            Event: Pad 6 on [-12,675,8,25] was successfully imported.
+            Event: Pad 7 on [-12,675,7,75] was successfully imported.
+            Event: Pad 8 on [-12,675,7,25] was successfully imported.
+            Event: Pad 9 on [-12,675,6,75] was successfully imported.
+            Event: Pad 10 on [-12,675,6,25] was successfully imported.
+            Event: Pad 11 on [-12,675,5,75] was successfully imported.
+            Event: Pad 12 on [-12,675,5,25] was successfully imported.
+            Event: Pad 13 on [-12,675,4,75] was successfully imported.
+            Event: Pad 14 on [-12,675,4,25] was successfully imported.
+            Event: Pad 15 on [-12,675,3,75] was successfully imported.
+            Event: Pad 16 on [-12,675,3,25] was successfully imported.
+            Event: Pad 17 on [-12,675,2,75] was successfully imported.
+            Event: Pad 18 on [-12,675,2,25] was successfully imported.
+            Event: Pad 19 on [-12,675,1,75] was successfully imported.
+            Event: Pad 20 on [-12,675,1,25] was successfully imported.
+            Event: Pad 21 on [-12,675,0,75] was successfully imported.
+            Event: Pad 22 on [-12,675,0,25] was successfully imported.
+            Event: Pad 23 on [-12,675,-0,25] was successfully imported.
+            Event: Pad 24 on [-12,675,-0,75] was successfully imported.
+            Event: Pad 25 on [-12,675,-1,25] was successfully imported.
+            Event: Pad 26 on [-12,675,-1,75] was successfully imported.
+            Event: Pad 27 on [-12,675,-2,25] was successfully imported.
+            Event: Pad 28 on [-12,675,-2,75] was successfully imported.
+            Event: Pad 29 on [-12,675,-3,25] was successfully imported.
+            Event: Pad 30 on [-12,675,-3,75] was successfully imported.
+            Event: Pad 31 on [-12,675,-4,25] was successfully imported.
+            Event: Pad 32 on [-12,675,-4,75] was successfully imported.
+            Event: Pad 33 on [-12,675,-5,25] was successfully imported.
+            Event: Pad 34 on [-12,675,-5,75] was successfully imported.
+            Event: Pad 35 on [-12,675,-6,25] was successfully imported.
+            Event: Pad 36 on [-12,675,-6,75] was successfully imported.
+            Event: Pad 37 on [-12,675,-7,25] was successfully imported.
+            Event: Pad 38 on [-12,675,-7,75] was successfully imported.
+            Event: Pad 39 on [-12,675,-8,25] was successfully imported.
+            Event: Pad 40 on [-12,675,-8,75] was successfully imported.
+            Event: Pad 41 on [-12,675,-9,25] was successfully imported.
+            Event: Pad 42 on [-12,675,-9,75] was successfully imported.
+            Event: Pad 43 on [-12,675,-10,25] was successfully imported.
+            Event: Pad 44 on [-12,675,-10,75] was successfully imported.
+            Event: Pad 45 on [-10,75,-12,675] was successfully imported.
+            Event: Pad 46 on [-10,25,-12,675] was successfully imported.
+            Event: Pad 47 on [-9,75,-12,675] was successfully imported.
+            Event: Pad 48 on [-9,25,-12,675] was successfully imported.
+            Event: Pad 49 on [-8,75,-12,675] was successfully imported.
+            Event: Pad 50 on [-8,25,-12,675] was successfully imported.
+            Event: Pad 51 on [-7,75,-12,675] was successfully imported.
+            Event: Pad 52 on [-7,25,-12,675] was successfully imported.
+            Event: Pad 53 on [-6,75,-12,675] was successfully imported.
+            Event: Pad 54 on [-6,25,-12,675] was successfully imported.
+            Event: Pad 55 on [-5,75,-12,675] was successfully imported.
+            Event: Pad 56 on [-5,25,-12,675] was successfully imported.
+            Event: Pad 57 on [-4,75,-12,675] was successfully imported.
+            Event: Pad 58 on [-4,25,-12,675] was successfully imported.
+            Event: Pad 59 on [-3,75,-12,675] was successfully imported.
+            Event: Pad 60 on [-3,25,-12,675] was successfully imported.
+            Event: Pad 61 on [-2,75,-12,675] was successfully imported.
+            Event: Pad 62 on [-2,25,-12,675] was successfully imported.
+            Event: Pad 63 on [-1,75,-12,675] was successfully imported.
+            Event: Pad 64 on [-1,25,-12,675] was successfully imported.
+            Event: Pad 65 on [-0,75,-12,675] was successfully imported.
+            Event: Pad 66 on [-0,25,-12,675] was successfully imported.
+            Event: Pad 67 on [0,25,-12,675] was successfully imported.
+            Event: Pad 68 on [0,75,-12,675] was successfully imported.
+            Event: Pad 69 on [1,25,-12,675] was successfully imported.
+            Event: Pad 70 on [1,75,-12,675] was successfully imported.
+            Event: Pad 71 on [2,25,-12,675] was successfully imported.
+            Event: Pad 72 on [2,75,-12,675] was successfully imported.
+            Event: Pad 73 on [3,25,-12,675] was successfully imported.
+            Event: Pad 74 on [3,75,-12,675] was successfully imported.
+            Event: Pad 75 on [4,25,-12,675] was successfully imported.
+            Event: Pad 76 on [4,75,-12,675] was successfully imported.
+            Event: Pad 77 on [5,25,-12,675] was successfully imported.
+            Event: Pad 78 on [5,75,-12,675] was successfully imported.
+            Event: Pad 79 on [6,25,-12,675] was successfully imported.
+            Event: Pad 80 on [6,75,-12,675] was successfully imported.
+            Event: Pad 81 on [7,25,-12,675] was successfully imported.
+            Event: Pad 82 on [7,75,-12,675] was successfully imported.
+            Event: Pad 83 on [8,25,-12,675] was successfully imported.
+            Event: Pad 84 on [8,75,-12,675] was successfully imported.
+            Event: Pad 85 on [9,25,-12,675] was successfully imported.
+            Event: Pad 86 on [9,75,-12,675] was successfully imported.
+            Event: Pad 87 on [10,25,-12,675] was successfully imported.
+            Event: Pad 88 on [10,75,-12,675] was successfully imported.
+            Event: Pad 89 on [12,675,-10,75] was successfully imported.
+            Event: Pad 90 on [12,675,-10,25] was successfully imported.
+            Event: Pad 91 on [12,675,-9,75] was successfully imported.
+            Event: Pad 92 on [12,675,-9,25] was successfully imported.
+            Event: Pad 93 on [12,675,-8,75] was successfully imported.
+            Event: Pad 94 on [12,675,-8,25] was successfully imported.
+            Event: Pad 95 on [12,675,-7,75] was successfully imported.
+            Event: Pad 96 on [12,675,-7,25] was successfully imported.
+            Event: Pad 97 on [12,675,-6,75] was successfully imported.
+            Event: Pad 98 on [12,675,-6,25] was successfully imported.
+            Event: Pad 99 on [12,675,-5,75] was successfully imported.
+            Event: Pad 100 on [12,675,-5,25] was successfully imported.
+            Event: Pad 101 on [12,675,-4,75] was successfully imported.
+            Event: Pad 102 on [12,675,-4,25] was successfully imported.
+            Event: Pad 103 on [12,675,-3,75] was successfully imported.
+            Event: Pad 104 on [12,675,-3,25] was successfully imported.
+            Event: Pad 105 on [12,675,-2,75] was successfully imported.
+            Event: Pad 106 on [12,675,-2,25] was successfully imported.
+            Event: Pad 107 on [12,675,-1,75] was successfully imported.
+            Event: Pad 108 on [12,675,-1,25] was successfully imported.
+            Event: Pad 109 on [12,675,-0,75] was successfully imported.
+            Event: Pad 110 on [12,675,-0,25] was successfully imported.
+            Event: Pad 111 on [12,675,0,25] was successfully imported.
+            Event: Pad 112 on [12,675,0,75] was successfully imported.
+            Event: Pad 113 on [12,675,1,25] was successfully imported.
+            Event: Pad 114 on [12,675,1,75] was successfully imported.
+            Event: Pad 115 on [12,675,2,25] was successfully imported.
+            Event: Pad 116 on [12,675,2,75] was successfully imported.
+            Event: Pad 117 on [12,675,3,25] was successfully imported.
+            Event: Pad 118 on [12,675,3,75] was successfully imported.
+            Event: Pad 119 on [12,675,4,25] was successfully imported.
+            Event: Pad 120 on [12,675,4,75] was successfully imported.
+            Event: Pad 121 on [12,675,5,25] was successfully imported.
+            Event: Pad 122 on [12,675,5,75] was successfully imported.
+            Event: Pad 123 on [12,675,6,25] was successfully imported.
+            Event: Pad 124 on [12,675,6,75] was successfully imported.
+            Event: Pad 125 on [12,675,7,25] was successfully imported.
+            Event: Pad 126 on [12,675,7,75] was successfully imported.
+            Event: Pad 127 on [12,675,8,25] was successfully imported.
+            Event: Pad 128 on [12,675,8,75] was successfully imported.
+            Event: Pad 129 on [12,675,9,25] was successfully imported.
+            Event: Pad 130 on [12,675,9,75] was successfully imported.
+            Event: Pad 131 on [12,675,10,25] was successfully imported.
+            Event: Pad 132 on [12,675,10,75] was successfully imported.
+            Event: Pad 133 on [10,75,12,675] was successfully imported.
+            Event: Pad 134 on [10,25,12,675] was successfully imported.
+            Event: Pad 135 on [9,75,12,675] was successfully imported.
+            Event: Pad 136 on [9,25,12,675] was successfully imported.
+            Event: Pad 137 on [8,75,12,675] was successfully imported.
+            Event: Pad 138 on [8,25,12,675] was successfully imported.
+            Event: Pad 139 on [7,75,12,675] was successfully imported.
+            Event: Pad 140 on [7,25,12,675] was successfully imported.
+            Event: Pad 141 on [6,75,12,675] was successfully imported.
+            Event: Pad 142 on [6,25,12,675] was successfully imported.
+            Event: Pad 143 on [5,75,12,675] was successfully imported.
+            Event: Pad 144 on [5,25,12,675] was successfully imported.
+            Event: Pad 145 on [4,75,12,675] was successfully imported.
+            Event: Pad 146 on [4,25,12,675] was successfully imported.
+            Event: Pad 147 on [3,75,12,675] was successfully imported.
+            Event: Pad 148 on [3,25,12,675] was successfully imported.
+            Event: Pad 149 on [2,75,12,675] was successfully imported.
+            Event: Pad 150 on [2,25,12,675] was successfully imported.
+            Event: Pad 151 on [1,75,12,675] was successfully imported.
+            Event: Pad 152 on [1,25,12,675] was successfully imported.
+            Event: Pad 153 on [0,75,12,675] was successfully imported.
+            Event: Pad 154 on [0,25,12,675] was successfully imported.
+            Event: Pad 155 on [-0,25,12,675] was successfully imported.
+            Event: Pad 156 on [-0,75,12,675] was successfully imported.
+            Event: Pad 157 on [-1,25,12,675] was successfully imported.
+            Event: Pad 158 on [-1,75,12,675] was successfully imported.
+            Event: Pad 159 on [-2,25,12,675] was successfully imported.
+            Event: Pad 160 on [-2,75,12,675] was successfully imported.
+            Event: Pad 161 on [-3,25,12,675] was successfully imported.
+            Event: Pad 162 on [-3,75,12,675] was successfully imported.
+            Event: Pad 163 on [-4,25,12,675] was successfully imported.
+            Event: Pad 164 on [-4,75,12,675] was successfully imported.
+            Event: Pad 165 on [-5,25,12,675] was successfully imported.
+            Event: Pad 166 on [-5,75,12,675] was successfully imported.
+            Event: Pad 167 on [-6,25,12,675] was successfully imported.
+            Event: Pad 168 on [-6,75,12,675] was successfully imported.
+            Event: Pad 169 on [-7,25,12,675] was successfully imported.
+            Event: Pad 170 on [-7,75,12,675] was successfully imported.
+            Event: Pad 171 on [-8,25,12,675] was successfully imported.
+            Event: Pad 172 on [-8,75,12,675] was successfully imported.
+            Event: Pad 173 on [-9,25,12,675] was successfully imported.
+            Event: Pad 174 on [-9,75,12,675] was successfully imported.
+            Event: Pad 175 on [-10,25,12,675] was successfully imported.
+            Event: Pad 176 on [-10,75,12,675] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad Un1 on [3,4,32] was successfully imported.
+            Event: Pad 1 on [0,-0] was successfully imported.
+            Event: Pad 2 on [3,-0] was successfully imported.
+            Event: Pad 3 on [6,-0] was successfully imported.
+            Event: Pad 4 on [0,-3] was successfully imported.
+            Event: Pad 5 on [3,-3] was successfully imported.
+            Event: Pad 6 on [6,-3] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad Un1 on [1,5,4,32] was successfully imported.
+            Event: Pad 1 on [0,-0] was successfully imported.
+            Event: Pad 2 on [3,-0] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Rect was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Pad 1 on [5,6,7] was successfully imported.
+            Event: Pad 2 on [5,6,5,9] was successfully imported.
+            Event: Pad 3 on [5,6,4,8] was successfully imported.
+            Event: Pad 4 on [5,6,3,7] was successfully imported.
+            Event: Pad 5 on [5,6,2,6] was successfully imported.
+            Event: Pad 6 on [5,6,1,5] was successfully imported.
+            Event: Pad 7 on [5,6,-1,5] was successfully imported.
+            Event: Pad 8 on [5,6,-2,6] was successfully imported.
+            Event: Pad 9 on [5,6,-3,7] was successfully imported.
+            Event: Pad 10 on [5,6,-4,8] was successfully imported.
+            Event: Pad 11 on [5,6,-5,9] was successfully imported.
+            Event: Pad 12 on [5,6,-7] was successfully imported.
+            Event: Pad 13 on [-5,6,-7] was successfully imported.
+            Event: Pad 14 on [-5,6,-5,9] was successfully imported.
+            Event: Pad 15 on [-5,6,-4,8] was successfully imported.
+            Event: Pad 16 on [-5,6,-3,7] was successfully imported.
+            Event: Pad 17 on [-5,6,-2,6] was successfully imported.
+            Event: Pad 18 on [-5,6,-1,5] was successfully imported.
+            Event: Pad 19 on [-5,6,1,5] was successfully imported.
+            Event: Pad 20 on [-5,6,2,6] was successfully imported.
+            Event: Pad 21 on [-5,6,3,7] was successfully imported.
+            Event: Pad 22 on [-5,6,4,8] was successfully imported.
+            Event: Pad 23 on [-5,6,5,9] was successfully imported.
+            Event: Pad 24 on [-5,6,7] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 1 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [-0,725,0,925] was successfully imported.
+            Event: Pad 2 on [-0,725,-0,925] was successfully imported.
+            Event: Pad 3 on [0,725,-0,925] was successfully imported.
+            Event: Pad 4 on [0,725,0,925] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Graphical polygone with 3 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Graphical polygone with 5 vertices was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad Un1 on [-0,65,0,65] was successfully imported.
+            Event: Pad Un2 on [-0,65,-0,65] was successfully imported.
+            Event: Pad Un3 on [0,65,0,65] was successfully imported.
+            Event: Pad Un4 on [0,65,-0,65] was successfully imported.
+            Event: Pad 1 on [-1,9375,1,25] was successfully imported.
+            Event: Pad 2 on [-1,9375,0,75] was successfully imported.
+            Event: Pad 3 on [-1,9375,0,25] was successfully imported.
+            Event: Pad 4 on [-1,9375,-0,25] was successfully imported.
+            Event: Pad 5 on [-1,9375,-0,75] was successfully imported.
+            Event: Pad 6 on [-1,9375,-1,25] was successfully imported.
+            Event: Pad 7 on [-1,25,-1,9375] was successfully imported.
+            Event: Pad 8 on [-0,75,-1,9375] was successfully imported.
+            Event: Pad 9 on [-0,25,-1,9375] was successfully imported.
+            Event: Pad 10 on [0,25,-1,9375] was successfully imported.
+            Event: Pad 11 on [0,75,-1,9375] was successfully imported.
+            Event: Pad 12 on [1,25,-1,9375] was successfully imported.
+            Event: Pad 13 on [1,9375,-1,25] was successfully imported.
+            Event: Pad 14 on [1,9375,-0,75] was successfully imported.
+            Event: Pad 15 on [1,9375,-0,25] was successfully imported.
+            Event: Pad 16 on [1,9375,0,25] was successfully imported.
+            Event: Pad 17 on [1,9375,0,75] was successfully imported.
+            Event: Pad 18 on [1,9375,1,25] was successfully imported.
+            Event: Pad 19 on [1,25,1,9375] was successfully imported.
+            Event: Pad 20 on [0,75,1,9375] was successfully imported.
+            Event: Pad 21 on [0,25,1,9375] was successfully imported.
+            Event: Pad 22 on [-0,25,1,9375] was successfully imported.
+            Event: Pad 23 on [-0,75,1,9375] was successfully imported.
+            Event: Pad 24 on [-1,25,1,9375] was successfully imported.
+            Event: Pad 25 on [0,-0] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [-0,51,-0] was successfully imported.
+            Event: Pad 2 on [0,51,-0] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [-0,825,-0] was successfully imported.
+            Event: Pad 2 on [0,825,-0] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [-0,9125,-0] was successfully imported.
+            Event: Pad 2 on [0,9125,-0] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad Un1 on [-1,27,-6,35] was successfully imported.
+            Event: Pad Un2 on [10,16,-6,35] was successfully imported.
+            Event: Pad 1 on [0,-0] was successfully imported.
+            Event: Pad 2 on [1,27,2,54] was successfully imported.
+            Event: Pad 3 on [2,54,-0] was successfully imported.
+            Event: Pad 4 on [3,81,2,54] was successfully imported.
+            Event: Pad 5 on [5,08,-0] was successfully imported.
+            Event: Pad 6 on [6,35,2,54] was successfully imported.
+            Event: Pad 7 on [7,62,-0] was successfully imported.
+            Event: Pad 8 on [8,89,2,54] was successfully imported.
+            Event: Pad L1 on [-2,18,-10,41] was successfully imported.
+            Event: Pad L2 on [0,36,-10,41] was successfully imported.
+            Event: Pad L3 on [8,53,-10,41] was successfully imported.
+            Event: Pad L4 on [11,07,-10,41] was successfully imported.
+            Event: Pad SH on [-3,3,-3,3] was successfully imported.
+            Event: Pad SH on [12,19,-3,3] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Graphical polygone with 3 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Graphical polygone with 5 vertices was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [-0,9375,0,95] was successfully imported.
+            Event: Pad 2 on [-0,9375,-0,95] was successfully imported.
+            Event: Pad 3 on [0,9375,-0] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Text 'user KEEPOUT' was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad Un1 on [-2,54,-0] was successfully imported.
+            Event: Pad Un2 on [2,54,1,016] was successfully imported.
+            Event: Pad Un3 on [2,54,-1,016] was successfully imported.
+            Event: Pad 1 on [-1,27,-0,635] was successfully imported.
+            Event: Pad 2 on [-1,27,0,635] was successfully imported.
+            Event: Pad 3 on [0,-0,635] was successfully imported.
+            Event: Pad 4 on [0,0,635] was successfully imported.
+            Event: Pad 5 on [1,27,-0,635] was successfully imported.
+            Event: Pad 6 on [1,27,0,635] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Rect was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [0,-0] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Graphical polygone with 4 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad Un1 on [-0,325,1,337] was successfully imported.
+            Event: Pad Un2 on [-0,325,-1,337] was successfully imported.
+            Event: Pad Un3 on [0,-0] was successfully imported.
+            Event: Pad Un4 on [0,325,1,337] was successfully imported.
+            Event: Pad Un5 on [0,325,-1,337] was successfully imported.
+            Event: Pad 1 on [-1,4,0,975] was successfully imported.
+            Event: Pad 2 on [-1,4,0,325] was successfully imported.
+            Event: Pad 3 on [-1,4,-0,325] was successfully imported.
+            Event: Pad 4 on [-1,4,-0,975] was successfully imported.
+            Event: Pad 5 on [1,4,-0,975] was successfully imported.
+            Event: Pad 6 on [1,4,-0,325] was successfully imported.
+            Event: Pad 7 on [1,4,0,325] was successfully imported.
+            Event: Pad 8 on [1,4,0,975] was successfully imported.
+            Event: Pad 9 on [-0,5,-0] was successfully imported.
+            Event: Pad 9 on [-0,325,1,1875] was successfully imported.
+            Event: Pad 9 on [-0,325,-1,1875] was successfully imported.
+            Event: Pad 9 on [0,0,625] was successfully imported.
+            Event: Pad 9 on [0,-0] was successfully imported.
+            Event: Pad 9 on [0,-0] was successfully imported.
+            Event: Pad 9 on [0,-0,625] was successfully imported.
+            Event: Pad 9 on [0,325,1,1875] was successfully imported.
+            Event: Pad 9 on [0,325,-1,1875] was successfully imported.
+            Event: Pad 9 on [0,5,-0] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Graphical polygone with 4 vertices was successfully imported.
+            Event: Rect was successfully imported.
+            Event: Rect was successfully imported.
+            Warning: Custom pad '1' shape 'anchor circle' translated to 'eRounded'
+            Event: Pad 1 on [-0,725,0,875] was successfully imported.
+            Event: Pad 2 on [-0,9,0,225] was successfully imported.
+            Event: Pad 3 on [-0,9,-0,225] was successfully imported.
+            Warning: Custom pad '4' shape 'anchor circle' translated to 'eRounded'
+            Event: Pad 4 on [-0,725,-0,875] was successfully imported.
+            Event: Pad 5 on [-0,25,-0] was successfully imported.
+            Event: Pad 6 on [0,25,-0] was successfully imported.
+            Warning: Custom pad '7' shape 'anchor circle' translated to 'eRounded'
+            Event: Pad 7 on [0,725,-0,875] was successfully imported.
+            Event: Pad 8 on [0,9,-0,225] was successfully imported.
+            Event: Pad 9 on [0,9,0,225] was successfully imported.
+            Warning: Custom pad '10' shape 'anchor circle' translated to 'eRounded'
+            Event: Pad 10 on [0,725,0,875] was successfully imported.
+            Event: Pad Un1 on [-0,25,0,675] was successfully imported.
+            Event: Pad Un2 on [-0,25,-0,675] was successfully imported.
+            Event: Pad Un3 on [0,25,0,675] was successfully imported.
+            Event: Pad Un4 on [0,25,-0,675] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Graphical polygone with 4 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad 1 on [-0,385,1] was successfully imported.
+            Event: Pad 2 on [-0,385,0,5] was successfully imported.
+            Event: Pad 3 on [-0,385,-0] was successfully imported.
+            Event: Pad 4 on [-0,385,-0,5] was successfully imported.
+            Event: Pad 5 on [-0,385,-1] was successfully imported.
+            Event: Pad 6 on [0,385,-1] was successfully imported.
+            Event: Pad 7 on [0,385,-0,5] was successfully imported.
+            Event: Pad 8 on [0,385,-0] was successfully imported.
+            Event: Pad 9 on [0,385,0,5] was successfully imported.
+            Event: Pad 10 on [0,385,1] was successfully imported.
+        EndSection
+        Section : Component REF** importing.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Graphical polygone with 3 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Line with 2 vertices was successfully imported.
+            Event: Graphical polygone with 5 vertices was successfully imported.
+            Event: Text 'user ${REFERENCE}' was successfully imported.
+            Event: Pad Un1 on [-0,42,0,42] was successfully imported.
+            Event: Pad Un2 on [-0,42,-0,42] was successfully imported.
+            Event: Pad Un3 on [0,42,0,42] was successfully imported.
+            Event: Pad Un4 on [0,42,-0,42] was successfully imported.
+            Event: Pad 1 on [-1,4625,0,75] was successfully imported.
+            Event: Pad 2 on [-1,4625,0,25] was successfully imported.
+            Event: Pad 3 on [-1,4625,-0,25] was successfully imported.
+            Event: Pad 4 on [-1,4625,-0,75] was successfully imported.
+            Event: Pad 5 on [-0,75,-1,4625] was successfully imported.
+            Event: Pad 6 on [-0,25,-1,4625] was successfully imported.
+            Event: Pad 7 on [0,25,-1,4625] was successfully imported.
+            Event: Pad 8 on [0,75,-1,4625] was successfully imported.
+            Event: Pad 9 on [1,4625,-0,75] was successfully imported.
+            Event: Pad 10 on [1,4625,-0,25] was successfully imported.
+            Event: Pad 11 on [1,4625,0,25] was successfully imported.
+            Event: Pad 12 on [1,4625,0,75] was successfully imported.
+            Event: Pad 13 on [0,75,1,4625] was successfully imported.
+            Event: Pad 14 on [0,25,1,4625] was successfully imported.
+            Event: Pad 15 on [-0,25,1,4625] was successfully imported.
+            Event: Pad 16 on [-0,75,1,4625] was successfully imported.
+            Event: Pad 17 on [0,-0] was successfully imported.
+        EndSection
+    EndSection

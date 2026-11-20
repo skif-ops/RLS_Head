@@ -1,0 +1,38 @@
+{
+  "schema": "EVT-SYS-CARRIER-MDI-PROMOTION-001",
+  "status": "PASS",
+  "production_authority": "NOT_AUTHORIZED",
+  "source_candidate": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER_mdi_drc_candidate.PcbDoc",
+  "promoted_canonical": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "previous_canonical_sha256": "3ea321c0c4fbbadd556fe5f07af521ee4f87a8a0db2e51e57ba262f2639fb05f",
+  "candidate_sha256": "fc3404b281f3ca76123a8dd68b6076a4e50f5d867ed9fc9582fb6f6ef248ba44",
+  "promoted_canonical_sha256": "fc3404b281f3ca76123a8dd68b6076a4e50f5d867ed9fc9582fb6f6ef248ba44",
+  "byte_identical_promotion": true,
+  "native_drc": {
+    "executed_on": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER_mdi_drc_candidate.PcbDoc",
+    "evidence": "hardware/system_carrier/altium/routing/mdi_drc_candidate/native_drc_report.drc",
+    "evidence_sha256": "cb89be749e2742e53c8db7efa72bc943a15dab3e985f83e4ea7ec1d5e3745aef",
+    "total_violations": 75,
+    "mdi_clearance_violations": 0,
+    "unrouted_net_violations": 0,
+    "routing_topology_violations": 0,
+    "hole_to_hole_violations": 0,
+    "net_antennae_violations": 0
+  },
+  "routing": {
+    "plan": "hardware/system_carrier/altium/routing/mdi_drc_candidate/mdi_routing_plan.json",
+    "plan_sha256": "f0a11d68f4e02c0177f9d441ad7a8d77a6217b1f1498c9ba72a10a78940d3e74",
+    "mdi_track_count": 74,
+    "mdi_via_count": 16,
+    "tx_skew_mm": 0.000051,
+    "rx_skew_mm": 0.000013
+  },
+  "validation": {
+    "native_file_preflight": "PASS",
+    "native_file_preflight_sha256": "1247237af948dc21a95bc2fb48a62c49614c0880c4b353a9641b17014cb68ddc",
+    "native_connection_audit": "PASS",
+    "native_connection_audit_sha256": "758ac1d95d3e210bf66f1b9d7217cc20605fe921e06a29efdd4650913b993023",
+    "structural_equivalence": "PASS",
+    "structural_equivalence_sha256": "1aad704fdcd16a316d725e6d07c06a6c5022c95f1ec699d8e89805ba65726fd2"
+  }
+}

@@ -1,0 +1,3 @@
+net_name,layer,left_mil,bottom_mil,right_mil,top_mil
+"GND",2,0,0,3543.307,2755.905
+"3V3",3,0,0,3543.307,2755.905

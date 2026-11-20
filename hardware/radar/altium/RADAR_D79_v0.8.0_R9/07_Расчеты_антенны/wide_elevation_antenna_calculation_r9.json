@@ -1,0 +1,503 @@
+{
+  "schema": "radar_wide_elevation_antenna_candidate_v1",
+  "revision": "0.8.0",
+  "purpose": "civilian airborne-drone observation and tracking",
+  "source_ascii_pcbdoc": "C:\\Users\\skifn\\.codex\\.chatgpt-projects\\g-p-6a9feb917c48819182ec25e1ef55310c\\RADAR_D65_integrated\\RADAR_v0.7.232\\RADAR_D79_POWER_24V_v0.7.232_ASCII.PcbDoc",
+  "output_ascii_pcbdoc": "C:\\Users\\skifn\\.codex\\.chatgpt-projects\\g-p-6a9feb917c48819182ec25e1ef55310c\\RADAR_D65_integrated\\RADAR_v0.8.0\\RADAR_D79_POWER_24V_v0.8.0_R9_ASCII.PcbDoc",
+  "source_sha256": "fe65936a48449e031a4a6ebaab2fc715b9ad03b1546b6aca838f9ead707a968e",
+  "output_sha256": "338f80463936e970346cfec232ae6c6ee9e60cce601608807e9b974a24a353cb",
+  "target_frequency_ghz": 78.5,
+  "checked_frequencies_ghz": [
+    76.0,
+    78.5,
+    81.0
+  ],
+  "element_count_per_channel": 8,
+  "channel_count": 8,
+  "patch_pitch_mm": 1.5276048815286625,
+  "patch_pitch_lambda_0_at_target": 0.4,
+  "patch_length_mm": 1.08,
+  "patch_widths_mm": [
+    1.35,
+    1.05,
+    0.82,
+    0.65,
+    0.65,
+    0.82,
+    1.05,
+    1.35
+  ],
+  "target_phase_inner_to_outer_deg": [
+    0.0,
+    -25.51088403,
+    -67.98073466,
+    -140.98684564
+  ],
+  "phase_increment_deg": [
+    25.51088403,
+    42.469850629999996,
+    73.00611098000002
+  ],
+  "phase_section_lengths_mm": [
+    2.725458473677073,
+    2.8453538155195606,
+    3.0612369798424655
+  ],
+  "array_shift_y_mm": 0.0,
+  "phase_center_contract": "Preserve all RX/TX x coordinates and every relative RX/TX vertical offset. Move all eight-element apertures upward by the recorded common offset to establish the RF keepout.",
+  "sections": [
+    {
+      "net_id": 204,
+      "net_name": "TI_RX1",
+      "x_center_mm": 36.535708,
+      "phase_center_y_mm": 55.711671,
+      "patch_centers_y_mm": [
+        50.365054,
+        51.892659,
+        53.420264,
+        54.947869,
+        56.475474,
+        58.003079,
+        59.530683,
+        61.058288
+      ],
+      "patch_widths_mm": [
+        1.35,
+        1.05,
+        0.82,
+        0.65,
+        0.65,
+        0.82,
+        1.05,
+        1.35
+      ],
+      "patch_length_mm": 1.08,
+      "target_element_phase_deg_bottom_to_top": [
+        -140.98684564,
+        -67.98073466,
+        -25.51088403,
+        0.0,
+        0.0,
+        -25.51088403,
+        -67.98073466,
+        -140.98684564
+      ],
+      "phase_section_lengths_mm_inner_to_outer": [
+        2.725458,
+        2.845354,
+        3.061237
+      ],
+      "feed_handoff_mm": [
+        36.535708,
+        46.970295
+      ],
+      "feed_topology": "center-fed symmetric two-branch series array"
+    },
+    {
+      "net_id": 205,
+      "net_name": "TI_RX2",
+      "x_center_mm": 38.435709,
+      "phase_center_y_mm": 55.711671,
+      "patch_centers_y_mm": [
+        50.365054,
+        51.892659,
+        53.420264,
+        54.947869,
+        56.475474,
+        58.003079,
+        59.530683,
+        61.058288
+      ],
+      "patch_widths_mm": [
+        1.35,
+        1.05,
+        0.82,
+        0.65,
+        0.65,
+        0.82,
+        1.05,
+        1.35
+      ],
+      "patch_length_mm": 1.08,
+      "target_element_phase_deg_bottom_to_top": [
+        -140.98684564,
+        -67.98073466,
+        -25.51088403,
+        0.0,
+        0.0,
+        -25.51088403,
+        -67.98073466,
+        -140.98684564
+      ],
+      "phase_section_lengths_mm_inner_to_outer": [
+        2.725458,
+        2.845354,
+        3.061237
+      ],
+      "feed_handoff_mm": [
+        38.435709,
+        46.970295
+      ],
+      "feed_topology": "center-fed symmetric two-branch series array"
+    },
+    {
+      "net_id": 206,
+      "net_name": "TI_RX3",
+      "x_center_mm": 40.335708,
+      "phase_center_y_mm": 55.711671,
+      "patch_centers_y_mm": [
+        50.365054,
+        51.892659,
+        53.420264,
+        54.947869,
+        56.475474,
+        58.003079,
+        59.530683,
+        61.058288
+      ],
+      "patch_widths_mm": [
+        1.35,
+        1.05,
+        0.82,
+        0.65,
+        0.65,
+        0.82,
+        1.05,
+        1.35
+      ],
+      "patch_length_mm": 1.08,
+      "target_element_phase_deg_bottom_to_top": [
+        -140.98684564,
+        -67.98073466,
+        -25.51088403,
+        0.0,
+        0.0,
+        -25.51088403,
+        -67.98073466,
+        -140.98684564
+      ],
+      "phase_section_lengths_mm_inner_to_outer": [
+        2.725458,
+        2.845354,
+        3.061237
+      ],
+      "feed_handoff_mm": [
+        40.335708,
+        46.970295
+      ],
+      "feed_topology": "center-fed symmetric two-branch series array"
+    },
+    {
+      "net_id": 207,
+      "net_name": "TI_RX4",
+      "x_center_mm": 42.235709,
+      "phase_center_y_mm": 55.711671,
+      "patch_centers_y_mm": [
+        50.365054,
+        51.892659,
+        53.420264,
+        54.947869,
+        56.475474,
+        58.003079,
+        59.530683,
+        61.058288
+      ],
+      "patch_widths_mm": [
+        1.35,
+        1.05,
+        0.82,
+        0.65,
+        0.65,
+        0.82,
+        1.05,
+        1.35
+      ],
+      "patch_length_mm": 1.08,
+      "target_element_phase_deg_bottom_to_top": [
+        -140.98684564,
+        -67.98073466,
+        -25.51088403,
+        0.0,
+        0.0,
+        -25.51088403,
+        -67.98073466,
+        -140.98684564
+      ],
+      "phase_section_lengths_mm_inner_to_outer": [
+        2.725458,
+        2.845354,
+        3.061237
+      ],
+      "feed_handoff_mm": [
+        42.235709,
+        46.970295
+      ],
+      "feed_topology": "center-fed symmetric two-branch series array"
+    },
+    {
+      "net_id": 220,
+      "net_name": "TI_TX1",
+      "x_center_mm": 49.01534,
+      "phase_center_y_mm": 55.888172,
+      "patch_centers_y_mm": [
+        50.541555,
+        52.06916,
+        53.596765,
+        55.12437,
+        56.651975,
+        58.179579,
+        59.707184,
+        61.234789
+      ],
+      "patch_widths_mm": [
+        1.35,
+        1.05,
+        0.82,
+        0.65,
+        0.65,
+        0.82,
+        1.05,
+        1.35
+      ],
+      "patch_length_mm": 1.08,
+      "target_element_phase_deg_bottom_to_top": [
+        -140.98684564,
+        -67.98073466,
+        -25.51088403,
+        0.0,
+        0.0,
+        -25.51088403,
+        -67.98073466,
+        -140.98684564
+      ],
+      "phase_section_lengths_mm_inner_to_outer": [
+        2.725458,
+        2.845354,
+        3.061237
+      ],
+      "feed_handoff_mm": [
+        49.01534,
+        47.170284
+      ],
+      "feed_topology": "center-fed symmetric two-branch series array"
+    },
+    {
+      "net_id": 221,
+      "net_name": "TI_TX2",
+      "x_center_mm": 52.933341,
+      "phase_center_y_mm": 59.023172,
+      "patch_centers_y_mm": [
+        53.676555,
+        55.20416,
+        56.731765,
+        58.25937,
+        59.786975,
+        61.314579,
+        62.842184,
+        64.369789
+      ],
+      "patch_widths_mm": [
+        1.35,
+        1.05,
+        0.82,
+        0.65,
+        0.65,
+        0.82,
+        1.05,
+        1.35
+      ],
+      "patch_length_mm": 1.08,
+      "target_element_phase_deg_bottom_to_top": [
+        -140.98684564,
+        -67.98073466,
+        -25.51088403,
+        0.0,
+        0.0,
+        -25.51088403,
+        -67.98073466,
+        -140.98684564
+      ],
+      "phase_section_lengths_mm_inner_to_outer": [
+        2.725458,
+        2.845354,
+        3.061237
+      ],
+      "feed_handoff_mm": [
+        52.933341,
+        50.305284
+      ],
+      "feed_topology": "center-fed symmetric two-branch series array"
+    },
+    {
+      "net_id": 222,
+      "net_name": "TI_TX3",
+      "x_center_mm": 56.85234,
+      "phase_center_y_mm": 55.888172,
+      "patch_centers_y_mm": [
+        50.541555,
+        52.06916,
+        53.596765,
+        55.12437,
+        56.651975,
+        58.179579,
+        59.707184,
+        61.234789
+      ],
+      "patch_widths_mm": [
+        1.35,
+        1.05,
+        0.82,
+        0.65,
+        0.65,
+        0.82,
+        1.05,
+        1.35
+      ],
+      "patch_length_mm": 1.08,
+      "target_element_phase_deg_bottom_to_top": [
+        -140.98684564,
+        -67.98073466,
+        -25.51088403,
+        0.0,
+        0.0,
+        -25.51088403,
+        -67.98073466,
+        -140.98684564
+      ],
+      "phase_section_lengths_mm_inner_to_outer": [
+        2.725458,
+        2.845354,
+        3.061237
+      ],
+      "feed_handoff_mm": [
+        56.85234,
+        47.170284
+      ],
+      "feed_topology": "center-fed symmetric two-branch series array"
+    },
+    {
+      "net_id": 223,
+      "net_name": "TI_TX4",
+      "x_center_mm": 64.68934,
+      "phase_center_y_mm": 55.888172,
+      "patch_centers_y_mm": [
+        50.541555,
+        52.06916,
+        53.596765,
+        55.12437,
+        56.651975,
+        58.179579,
+        59.707184,
+        61.234789
+      ],
+      "patch_widths_mm": [
+        1.35,
+        1.05,
+        0.82,
+        0.65,
+        0.65,
+        0.82,
+        1.05,
+        1.35
+      ],
+      "patch_length_mm": 1.08,
+      "target_element_phase_deg_bottom_to_top": [
+        -140.98684564,
+        -67.98073466,
+        -25.51088403,
+        0.0,
+        0.0,
+        -25.51088403,
+        -67.98073466,
+        -140.98684564
+      ],
+      "phase_section_lengths_mm_inner_to_outer": [
+        2.725458,
+        2.845354,
+        3.061237
+      ],
+      "feed_handoff_mm": [
+        64.68934,
+        47.170284
+      ],
+      "feed_topology": "center-fed symmetric two-branch series array"
+    }
+  ],
+  "rf_zone_route_relocations": {
+    "TI_NetR59_1": "The RF-zone section is transferred from Top to Mid6 through a Top-to-Mid6 escape via outside the aperture.",
+    "CAN_TX": "The Top route detours around the right edge of the aperture and transfers to Mid6 outside the RF zone."
+  },
+  "rf_non_top_via_spans": {
+    "789": {
+      "start_layer": "MID6",
+      "end_layer": "BOTTOM"
+    },
+    "793": {
+      "start_layer": "MID6",
+      "end_layer": "BOTTOM"
+    },
+    "840": {
+      "start_layer": "MID8",
+      "end_layer": "BOTTOM"
+    },
+    "914": {
+      "start_layer": "MID6",
+      "end_layer": "BOTTOM"
+    },
+    "1011": {
+      "start_layer": "MID6",
+      "end_layer": "MID7"
+    },
+    "1013": {
+      "start_layer": "MID6",
+      "end_layer": "MID7"
+    },
+    "1044": {
+      "start_layer": "MID7",
+      "end_layer": "BOTTOM"
+    },
+    "1334": {
+      "start_layer": "MID3",
+      "end_layer": "MID5"
+    }
+  },
+  "array_factor_summary": [
+    {
+      "frequency_ghz": 76.0,
+      "half_power_angle_deg": 21.7,
+      "full_3db_beamwidth_deg": 43.4,
+      "power_at_plus_minus_20_deg_db": -2.8463237786108975
+    },
+    {
+      "frequency_ghz": 78.5,
+      "half_power_angle_deg": 23.0,
+      "full_3db_beamwidth_deg": 46.0,
+      "power_at_plus_minus_20_deg_db": -2.4466448065641373
+    },
+    {
+      "frequency_ghz": 81.0,
+      "half_power_angle_deg": 23.5,
+      "full_3db_beamwidth_deg": 47.0,
+      "power_at_plus_minus_20_deg_db": -2.0811914720439866
+    }
+  ],
+  "geometry_validation": {
+    "status": "PASS",
+    "errors": [],
+    "board_diameter_mm": 79.0,
+    "minimum_board_edge_margin_mm": 0.25,
+    "calculated_old_array_factor_directivity_db": 2.839966563652008,
+    "calculated_new_array_factor_directivity_db": 4.913883702760949,
+    "calculated_relative_gain_change_db": 2.073917139108941,
+    "calculation_limit": "The result is an eight-element array-factor and first-order microstrip phase-length calculation. Patch coupling tapers and meander sections require full-wave tuning with the actual stackup. The calculation does not replace a full-wave model of feeds, mutual coupling, radome or losses."
+  },
+  "altium_native_pcbdoc": "RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE.PcbDoc",
+  "altium_native_sha256": "508fcf79324964875aa90920dc00e5e0c36c5ec0dc6b5dc8efab2991f361c510",
+  "altium_native_import_status": "PASS",
+  "altium_drc_report": "Design Rule Check - RADAR_D79_POWER_24V_v0.8.0_R9_NATIVE.html",
+  "altium_drc_report_sha256": "5a9556e7c4f7e9a42a5efdcd7c6c8a1a933a2260875f95ebe8209beefd20ef84",
+  "altium_drc_status": "PASS_0_VIOLATIONS",
+  "full_wave_em_status": "REQUIRED_NOT_PERFORMED",
+  "physical_measurement_status": "REQUIRED_NOT_PERFORMED",
+  "production_authority": "NOT_AUTHORIZED"
+}

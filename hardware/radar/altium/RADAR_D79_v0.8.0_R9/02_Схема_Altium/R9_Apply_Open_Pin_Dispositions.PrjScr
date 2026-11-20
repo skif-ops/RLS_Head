@@ -1,0 +1,10 @@
+[Design]
+Version=1.0
+HierarchyMode=0
+
+[Document1]
+DocumentPath=R9_Apply_Open_Pin_Dispositions.pas
+AnnotationEnabled=1
+
+[Generic_ScriptingSystem]
+StartProcName=R9_Apply_Open_Pin_Dispositions.pas>ApplyR9OpenPinDispositions

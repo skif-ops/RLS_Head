@@ -1,0 +1,34 @@
+{
+  "errors": [],
+  "evt_routing_stack_locked": true,
+  "field_solver_required": true,
+  "impedance_models": [
+    {
+      "calculated_ohm": 49.928,
+      "error_pct": -0.144,
+      "model_id": "IMP-001",
+      "pair_gap_mm": null,
+      "target_ohm": 50.0,
+      "trace_width_mm": 0.36
+    },
+    {
+      "calculated_ohm": 100.45,
+      "error_pct": 0.45,
+      "model_id": "IMP-002",
+      "pair_gap_mm": 0.2,
+      "target_ohm": 100.0,
+      "trace_width_mm": 0.26
+    }
+  ],
+  "notes": [
+    "PASS locks only the repository EVT routing stack and trace geometry baseline; it does not bind a production fabricator.",
+    "Source stack rows intentionally remain EVT_PROVISIONAL and impedance rows EVT_CALCULATED to preserve production semantics.",
+    "Production release still requires selected-fabricator stack binding and final field-solver/impedance control evidence."
+  ],
+  "production_binding_required": true,
+  "production_stack_locked": false,
+  "schema": "ALTIUM-EVT-ROUTING-STACK-GATE-001",
+  "stack_total_mm": 1.6,
+  "status": "PASS",
+  "warnings": []
+}

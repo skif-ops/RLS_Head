@@ -99,6 +99,13 @@ def validate(
         baseline_rows,
         pin_field="pin",
     )
+    # KiCad includes deliberately unconnected physical pins as synthetic
+    # one-pin nets. Altium omits those pins from the PCB net inventory.
+    baseline = {
+        key: net
+        for key, net in baseline.items()
+        if not net.startswith("unconnected-(")
+    }
     actual_all, actual_conflicts = endpoint_map(
         actual_rows,
         pin_field="pad_name",
@@ -186,6 +193,7 @@ def validate(
             "netlist_equivalence": status,
         },
         "notes": [
+            "KiCad's synthetic unconnected-(...) pins are excluded.",
             (
                 "Connectivity is compared as endpoint partitions, so "
                 "equivalence does not depend on internal net naming."

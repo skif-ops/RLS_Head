@@ -1,0 +1,41 @@
+{
+  "component_count": 92,
+  "errors": [
+    "layer_stack_mismatch:Top Layer|Mid-Layer 1|Mid-Layer 2|Bottom Layer!=Top Layer|Bottom Layer",
+    "missing_p0_p1_nets:CAN_RX,CAN_TX,ETH_CRS_DV,ETH_MDC,ETH_MDIO,ETH_RXD0,ETH_RXD1,ETH_TXD0,ETH_TXD1,ETH_TX_EN,GNSS_PPS,GNSS_RX_EXT,GNSS_TX_EXT,IMU_DRDY,IMU_MISO,IMU_MOSI,IMU_NSS,IMU_SCK",
+    "missing_rules:R_3V3_TRUNK_WIDTH,R_CAN_DIFF,R_ETH_MDI_CLEARANCE,R_ETH_MDI_DIFF,R_GENERAL_CLEARANCE,R_GENERAL_WIDTH,R_GNSS_RF_WIDTH,R_RADAR_12V_WIDTH,R_TIMING_TO_SW_CLEARANCE,R_VIN_HIGH_CURRENT",
+    "pinmap_net_mismatch:U1.142:CAN_RX!=NetU1_142,U1.143:CAN_TX!=NetU1_143,U1.154:ETH_TX_EN!=NetU1_154,U1.156:ETH_TXD0!=NetU1_156,U1.157:ETH_TXD1!=NetU1_157,U1.33:ETH_MDC!=NetU1_33,U1.40:GNSS_PPS!=NetU1_40,U1.42:ETH_MDIO!=NetU1_42,U1.53:ETH_CRS_DV!=NetU1_53,U1.54:ETH_RXD0!=NetU1_54,U1.55:ETH_RXD1!=NetU1_55,U1.80:IMU_DRDY!=NetU1_80,U1.92:IMU_NSS!=NetU1_92,U1.93:IMU_SCK!=NetU1_93,U1.94:IMU_MISO!=NetU1_94,U1.95:IMU_MOSI!=NetU1_95,U1.96:GNSS_RX_EXT!=NetU1_96,U1.97:GNSS_TX_EXT!=NetU1_97",
+    "symbol_pin_net_mismatch:U2.12:IMU_NSS!=NetU1_92,U2.13:IMU_SCK!=NetU1_93,U2.14:IMU_MOSI!=NetU1_95,U2.1:IMU_MISO!=NetU1_94,U2.4:IMU_DRDY!=NetU1_80,U3.11:ETH_CRS_DV!=NetU1_53,U3.12:ETH_MDIO!=NetU1_42,U3.13:ETH_MDC!=NetU1_33,U3.16:ETH_TX_EN!=NetU1_154,U3.17:ETH_TXD0!=NetU1_156,U3.18:ETH_TXD1!=NetU1_157,U3.24:R_ETH_RBIAS_TO_GND!=NetR600_1,U3.6:C_ETH_VDDCR_TO_GND!=NetC60_1,U3.7:ETH_RXD1!=NetU1_55,U3.8:ETH_RXD0!=NetU1_54,U4.1:CAN_TX!=NetU1_143,U4.4:CAN_RX!=NetU1_142,U4.5:R_CAN_SHDN_TO_GND!=NetR42_1,U4.8:R_CAN_STB_TO_GND!=NetR41_1,U4.9:GND!=MISSING,U5.17:GND!=MISSING,U5.4:R_U5_PG_TO_3V3!=U5_PG,U5.9:C_U5_SS_TO_GND!=U5_SS_LOCAL,U6.1:SYS_UVLO_DIV!=U6_UVLO_LOCAL,U6.2:SYS_OVLO_DIV!=U6_OVLO_LOCAL,U6.7:C_U6_DVDT_TO_GND!=U6_DVDT,U6.9:R_U6_ILIM_TO_GND!=U6_ILIM_LOCAL,U7.1:RADAR_UVLO_DIV!=U7_UVLO_LOCAL,U7.2:RADAR_OVLO_DIV!=U7_OVLO_LOCAL,U7.7:C_U7_DVDT_TO_GND!=U7_DVDT,U7.9:R_U7_ILIM_TO_GND!=U7_ILIM_LOCAL,U8.20:GNSS_TX_EXT!=NetU1_97,U8.21:GNSS_RX_EXT!=NetU1_96,U8.22:3V3_VIA_R_GNSS_BCKP!=GNSS_BCKP_LOCAL,U8.3:GNSS_PPS!=NetU1_40,U8.7:GND_VIA_100K_IF_USB_UNUSED!=GNSS_VUSB_LOCAL"
+  ],
+  "expected_component_count": 92,
+  "expected_layer_stack_count": 4,
+  "input_sha256": {
+    "component_inventory": "fb462ec58348928fd6f1ad25f555afddcbb30e5b001fd876be43075a317e9003",
+    "layer_stack_inventory": "2a38717e15b5a595a2225a361367aaaffc8e222da8f70642ff324b3469df8ff1",
+    "net_inventory": "c30700741e9b79313ac63aaa55a56540dc88060e41b2360e16628fc28240d789",
+    "pad_net_inventory": "8ac50f478ddc38fea7df8bd2acfb6ea93879f3d859f0242aba6ad79dce8b7cdd",
+    "rule_inventory": "f0bfe8853c1a6b6796c83d387e7d67f17fecb6be6509acdd68a2702596c603b5"
+  },
+  "layer_stack_count": 2,
+  "net_count": 67,
+  "notes": [
+    "PASS cross-checks native components, P0/P1 net names, rule names/families, MCU pin-to-net assignments, direct symbol pin contracts and the four-layer copper stack.",
+    "Exact footprint equivalence, hierarchy/port semantics, connector aggregate semantics and full rule scope/value equivalence remain controlled by dedicated evidence.",
+    "The full ALTIUM_EQUIVALENCE_GATE still controls layout authority."
+  ],
+  "pad_record_count": 512,
+  "pinmap_checked_count": 29,
+  "required_p0_p1_net_count": 32,
+  "required_rule_count": 10,
+  "rule_count": 35,
+  "schema": "ALTIUM-NATIVE-AUDIT-RESULT-001",
+  "status": "FAIL",
+  "symbol_pin_checked_count": 81,
+  "verified_checks": {
+    "native_pcb_audit": "FAIL",
+    "pinmap_equivalence": "FAIL",
+    "rules_equivalence": "FAIL",
+    "stackup_equivalence": "FAIL"
+  },
+  "warnings": []
+}

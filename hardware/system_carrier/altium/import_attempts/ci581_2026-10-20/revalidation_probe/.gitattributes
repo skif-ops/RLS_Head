@@ -1,0 +1,3 @@
+# Keep the captured Altium exports byte-for-byte.
+*.NET binary
+compile_cold_reload_automatic.txt binary

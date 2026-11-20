@@ -129,6 +129,54 @@ static size_t make_frame(
     return (size_t)(p - dst);
 }
 
+static void write_detection(
+    uint8_t **p,
+    uint32_t detection_id,
+    float range_m,
+    float snr_db,
+    float quality)
+{
+    wr_u32_le(p, detection_id);
+    wr_f32_le(p, range_m);
+    wr_f32_le(p, 0.0f);
+    wr_f32_le(p, 0.0f);
+    wr_f32_le(p, 0.0f);
+    for (unsigned i = 0u; i < 16u; ++i) {
+        wr_f32_le(p, (i == 0u || i == 5u) ? 0.25f :
+            (i == 10u || i == 15u) ? 1.0e-6f : 0.0f);
+    }
+    wr_f32_le(p, snr_db);
+    wr_f32_le(p, quality);
+    wr_f32_le(p, 10.0f);
+    wr_u32_le(p, VALID_ALL);
+    wr_u32_le(p, 0u);
+}
+
+static size_t make_multi_detection_frame(uint8_t *dst, size_t capacity)
+{
+    const uint16_t count = 2u;
+    const size_t total = HIL_HEADER_WIRE_SIZE
+        + count * HIL_DETECTION_WIRE_SIZE + HIL_CRC_WIRE_SIZE;
+    if (capacity < total) {
+        return 0u;
+    }
+
+    uint8_t *p = dst;
+    wr_u32_le(&p, HIL_PROTOCOL_MAGIC);
+    wr_u16_le(&p, HIL_SCHEMA_MAJOR);
+    wr_u16_le(&p, HIL_SCHEMA_MINOR);
+    wr_u32_le(&p, 1u);
+    wr_u32_le(&p, 1u);
+    wr_u64_le(&p, 1000000u);
+    wr_u16_le(&p, count);
+    wr_u16_le(&p, 0u);
+    wr_u32_le(&p, count * HIL_DETECTION_WIRE_SIZE);
+    write_detection(&p, 20u, 50.0f, 30.0f, 0.5f);
+    write_detection(&p, 10u, 100.0f, 20.0f, 0.9f);
+    wr_u32_le(&p, crc32c_compute(dst, total - HIL_CRC_WIRE_SIZE));
+    return (size_t)(p - dst);
+}
+
 static bool process_frame(
     HilRuntime *runtime,
     uint32_t sequence,
@@ -518,6 +566,28 @@ static bool test_r1_010_reboot(void)
     return true;
 }
 
+static bool test_r1_011_primary_detection_selection(void)
+{
+    uint8_t frame[
+        HIL_HEADER_WIRE_SIZE + 2u * HIL_DETECTION_WIRE_SIZE + HIL_CRC_WIRE_SIZE];
+    const size_t frame_length = make_multi_detection_frame(frame, sizeof(frame));
+    CHECK(frame_length == sizeof(frame));
+
+    HilRuntime runtime;
+    hil_runtime_init(&runtime, 1u, 11u);
+    uint8_t response[TARGETSTATE_PACKET_SIZE];
+    size_t response_length = 0u;
+    const HilRuntimeResult result = hil_runtime_process_packet(
+        &runtime, frame, frame_length, 1000100u, 1000200u,
+        response, sizeof(response), &response_length);
+
+    CHECK(result == HIL_RUNTIME_OK);
+    CHECK(response_length == TARGETSTATE_PACKET_SIZE);
+    CHECK(nearf_abs(runtime.track.x[0], 100.0f, 1.0e-4f));
+    CHECK(runtime.diag.detections_discarded == 1u);
+    return true;
+}
+
 typedef bool (*TestFn)(void);
 
 typedef struct {
@@ -538,7 +608,8 @@ int main(void)
         {"R1-007 covariance weighting", test_r1_007_covariance_weighting},
         {"R1-008 coordinate transform", test_r1_008_coordinates},
         {"R1-009 long replay", test_r1_009_long_replay},
-        {"R1-010 reboot", test_r1_010_reboot}
+        {"R1-010 reboot", test_r1_010_reboot},
+        {"R1-011 primary detection selection", test_r1_011_primary_detection_selection}
     };
 
     const size_t count = sizeof(tests) / sizeof(tests[0]);
