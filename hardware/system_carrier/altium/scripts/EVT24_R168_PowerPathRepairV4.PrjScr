@@ -1,0 +1,16 @@
+[Design]
+Version=1.0
+HierarchyMode=0
+DefaultConfiguration=Sources
+
+[Document1]
+DocumentPath=EVT24_R168_PowerPathRepairV4.pas
+AnnotationEnabled=1
+
+[Configuration1]
+Name=Sources
+ParameterCount=0
+ConstraintFileCount=0
+
+[Generic_ScriptingSystem]
+StartProcName=EVT24_R168_PowerPathRepairV4.pas>ApplyR168PowerPathRepairV4
