@@ -1,0 +1,10 @@
+[Design]
+Version=1.0
+HierarchyMode=0
+
+[Document1]
+DocumentPath=EVT24_R116_DetailedExport.pas
+AnnotationEnabled=1
+
+[Generic_ScriptingSystem]
+StartProcName=EVT24_R116_DetailedExport.pas>ExportR116Details

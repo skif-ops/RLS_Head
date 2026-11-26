@@ -1,0 +1,174 @@
+{
+  "schema": "EVT-GSN-NATIVE-OUTPUTS-MANIFEST-001",
+  "version": "1.2.0",
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "518041a570b405a429a70d968ee54b62df126cb0091b9af08e067152c5aa8735",
+  "production_authority": "NOT_AUTHORIZED",
+  "files": [
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER-macro.APR_LIB",
+      "size_bytes": 22925,
+      "sha256": "f94047ae665e06a8dee382d980925be9e7255f54f3530dc98febf57d505d1824"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.apr",
+      "size_bytes": 3675,
+      "sha256": "4fd1ea986b49cd2d4eb3c001f803bd0ad692921a0526e87068eba339ffc41d7c"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.EXTREP",
+      "size_bytes": 1595,
+      "sha256": "4c1c56d501b9759ebd367c80cdca7b2f6a66568a1cf952dda35109c2666d3554"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.G1",
+      "size_bytes": 68552,
+      "sha256": "d7bc37bc561fd5a8d405a5f1fa3a1d0a4e11a3d787a24fee7fa6776f6a877d1b"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.G2",
+      "size_bytes": 63017,
+      "sha256": "35b68bfc5283eb2250dd2bf524652f999dad5602cc0887a5ff9fad7f6cdd6283"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.GBL",
+      "size_bytes": 12261,
+      "sha256": "7613c1dc4667790ab0e400d0aa8404bc483d222aad2a2a1206791c8bccf4c5f4"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.GBO",
+      "size_bytes": 307,
+      "sha256": "90db86bd48200f88009e8eb81a1a9bb4786b40c355650d74a36b122412de2bab"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.GBP",
+      "size_bytes": 755,
+      "sha256": "7cb41c97ab749a77a3f51e7e1e294aef0ca9e4ad790b704c1a4b6c76c3519e48"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.GBS",
+      "size_bytes": 7924,
+      "sha256": "808784f8b4bc962429d825bebbcd1d9b83eabbd99bc0a26c1ae5e9995a744c90"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.GKO",
+      "size_bytes": 310,
+      "sha256": "3d94772da00fc81436b6b2b6089f928e75fa721ff55d4b211df82144ceccc111"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.GM1",
+      "size_bytes": 1274,
+      "sha256": "7ca47f76d236ffed37b4a9381c4c10c68340e9e10d19b600c62bee630cb1f27c"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.GM15",
+      "size_bytes": 841,
+      "sha256": "da7aebc864ac1f9dfaf3fe21ac8e0012562d694416893fa75507de4817b076f4"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.GM7",
+      "size_bytes": 1392,
+      "sha256": "34c5a0f9a25c472e16267b1fa6330834e82efe8e47de34c446d1f2b0d179c03f"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.GPB",
+      "size_bytes": 3245,
+      "sha256": "b12a0003b965f2f8e2c311836f942d2f0decd9ffecd3638bfaef71ba861878c5"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.GPT",
+      "size_bytes": 34050,
+      "sha256": "16703ed9981fb615798d28f6f0df2d843e6d0d847f050560b76868b46f65363a"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.GTL",
+      "size_bytes": 52834,
+      "sha256": "917f5a3af6b47cec943f266b371870f5a596054a48da95170a2cb7ffc71058e4"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.GTO",
+      "size_bytes": 54631,
+      "sha256": "8be775c875110d7735d925c5bedb77bc9fda787a4846d1cb8cd55c01f37aa1d6"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.GTP",
+      "size_bytes": 37380,
+      "sha256": "52330d49e1a56eb655f6d60ccec94596f998a0580f0af5aa3ec103fba1323c19"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.GTS",
+      "size_bytes": 40833,
+      "sha256": "8d69d33f53229f87f80c50a10a78342ac499bdbcf77c2906d5b2feba2fcb28e8"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.REP",
+      "size_bytes": 7887,
+      "sha256": "9ec60b54f2c5b789d0fa7ebcd348fcb839e78b21012340a1bd8b724d1129f5d8"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Gerber/EVT_SYS_CARRIER.RUL",
+      "size_bytes": 1185,
+      "sha256": "4c50d7fa4d32695b1ac9e9de37c845b51df0aa4f9469a3d899a9be2e988d47f6"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/NC Drill/EVT_SYS_CARRIER.DRR",
+      "size_bytes": 2853,
+      "sha256": "8dd7028b4c54a11e455701f16e1fd79512c6c35a9093a9ad32cebf4105c7761a"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/NC Drill/EVT_SYS_CARRIER.LDP",
+      "size_bytes": 360,
+      "sha256": "03f8402180df9d442924f5481ce2e18bc608fb5a66dceea5b4a94668f1f87b25"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/NC Drill/EVT_SYS_CARRIER.TX1",
+      "size_bytes": 196,
+      "sha256": "dc90f52b78d119f96031bae16714b1d7e5a14a6b8295be8d7d3ba4e2008f9e68"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/NC Drill/EVT_SYS_CARRIER.TXT",
+      "size_bytes": 4186,
+      "sha256": "732ffc2205abe8af7f631e84ce864507db51342a90aa9c3e3a5c9df279b971c5"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/IPC-2581 Files/EVT_SYS_CARRIER.cvg",
+      "size_bytes": 7237990,
+      "sha256": "6b9706c1831880085c8cda43525d55dc9e3fba81ccececd925f4a2c155ed2ad3"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Pick Place/Pick Place for EVT_SYS_CARRIER.csv",
+      "size_bytes": 9397,
+      "sha256": "939378a6e8f77afd392dc89803774c461d551a1b6d659b908a6cd60d47f96cc3"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Pick Place/Pick Place for EVT_SYS_CARRIER.txt",
+      "size_bytes": 16956,
+      "sha256": "e6c018796de5db3455aa2b1fb10f4080738223aca53c6a44f9caa8c46c054e9a"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/AssemblyDrawing.pdf",
+      "size_bytes": 833172,
+      "sha256": "0d0478084820b95e34b1433faa86c1eea7ecb6392e0d6cbffb0fa7e915bf1613"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Fabrication_PILOT_R1.pdf",
+      "size_bytes": 2459715,
+      "sha256": "cbd968c51e3fce0a59c90fe709258865f373201d2b92abfd40b6d78d5a8d39e3"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/ExportSTEP/EVT_SYS_CARRIER.step",
+      "size_bytes": 89370,
+      "sha256": "56de3f71130047365b59229b2ad5630dc859d4506012970d373e3dea56c4a339"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Schematic Prints.PDF",
+      "size_bytes": 1220251,
+      "sha256": "58538834df5c9d4643749a73b4846759299b6ea98a187f8e725623da7b26b529"
+    },
+    {
+      "path": "hardware/system_carrier/altium/native/Design Rule Check - EVT_SYS_CARRIER.drc",
+      "size_bytes": 1993,
+      "sha256": "0a1b315c09099d334cc81d2f65673a11ccc4b8f4c406e9092a3c1b182bbc82e0"
+    }
+  ]
+}

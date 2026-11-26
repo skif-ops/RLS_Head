@@ -1,0 +1,114 @@
+Protel Design System Design Rule Check
+PCB File : C:\Users\skifn\.codex\.chatgpt-projects\g-p-6a9feb917c48819182ec25e1ef55310c\RLS_Head-git\hardware\system_carrier\altium\native\EVT24_REWORK_R167.PcbDoc
+Date     : 26.11.2026
+Time     : 8:35:40
+
+Processing Rule : Clearance Constraint (Gap=39.37mil) (InNetClass('NC_TIMING')),(InNet('U8_SW') Or InNet('BUCK_SW') Or InNet('BUCK5_SW'))
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=10mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=5.118mil) ((InComponent('U6') Or InComponent('U7') Or InComponent('U8') Or InComponent('Q6') Or InComponent('D8'))),((InComponent('U6') Or InComponent('U7') Or InComponent('U8') Or InComponent('Q6') Or InComponent('D8')))
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=39.37mil) (InNetClass('NC_HOST_UART') Or InNetClass('NC_GNSS_UART')),(InNet('U8_SW') Or InNet('BUCK_SW') Or InNet('BUCK5_SW'))
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=2.953mil) ((InComponent('U5') Or InComponent('U6') Or InComponent('U7') Or InComponent('U8') Or InComponent('U9') Or InComponent('Q6') Or InComponent('D8'))),(All)
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=5.906mil) (InComponent('U1')),(IsVia And InNet('GND'))
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=5.906mil) (IsVia And InNet('GND')),(InComponent('U1'))
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=2.953mil) (All),((InComponent('U5') Or InComponent('U6') Or InComponent('U7') Or InComponent('U8') Or InComponent('U9') Or InComponent('Q6') Or InComponent('D8')))
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=7.874mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
+Rule Violations :0
+
+Processing Rule : Un-Routed Net Constraint ( (All) )
+Rule Violations :0
+
+Processing Rule : Modified Polygon (Allow modified: No), (Allow shelved: No)
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=14.173mil) (Max=14.173mil) (Preferred=14.173mil) (InNet('GNSS_RF'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=5.906mil) (Max=39.37mil) (Preferred=7.874mil) (All)
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=3.937mil) (Max=196.85mil) (Preferred=59.055mil) (InNet('VIN_RAW') Or InNet('VIN_PROTECTED_24V'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=5.906mil) (Max=118.11mil) (Preferred=29.528mil) (InNet('V12_SYS'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=3.937mil) (Max=5.906mil) (Preferred=3.937mil) ((InComponent('U5') Or InComponent('U6') Or InComponent('U7') Or InComponent('U8') Or InComponent('U9') Or InComponent('Q6') Or InComponent('D8')))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=9.842mil) (Max=59.055mil) (Preferred=11.811mil) (InNet('5V_GNSS'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=5.906mil) (Max=118.11mil) (Preferred=39.37mil) (InNet('RADAR_12V'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=5.906mil) (Max=78.74mil) (Preferred=11.811mil) (InNet('3V3'))
+Rule Violations :0
+
+Processing Rule : Routing Topology Rule(Topology=Shortest) (All)
+Rule Violations :0
+
+Processing Rule : Routing Layers(All)
+Rule Violations :0
+
+Processing Rule : Routing Via (MinHoleWidth=7.874mil) (MaxHoleWidth=11.811mil) (PreferredHoleWidth=11.811mil) (MinWidth=15.748mil) (MaxWidth=23.622mil) (PreferedWidth=23.622mil) (All)
+Rule Violations :0
+
+Processing Rule : Differential Pairs Uncoupled Length using the Gap Constraints (Min=7.874mil) (Max=11.811mil) (Prefered=7.874mil)  and Width Constraints (Min=7.874mil) (Max=11.811mil) (Prefered=7.874mil) (InDifferentialPairClass('DP_CAN'))
+Rule Violations :0
+
+Processing Rule : Differential Pairs Uncoupled Length using the Gap Constraints (Min=10mil) (Max=10mil) (Prefered=10mil)  and Width Constraints (Min=15mil) (Max=15mil) (Prefered=15mil) (All)
+Rule Violations :0
+
+Processing Rule : Power Plane Connect Rule(Relief Connect )(Expansion=20mil) (Conductor Width=10mil) (Air Gap=10mil) (Entries=4) (All)
+Rule Violations :0
+
+Processing Rule : Hole Size Constraint (Min=7.874mil) (Max=129.921mil) (All)
+Rule Violations :0
+
+Processing Rule : Pads and Vias to follow the Drill pairs settings
+Rule Violations :0
+
+Processing Rule : Hole To Hole Clearance (Gap=10mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Minimum Solder Mask Sliver (Gap=3.937mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Silk To Solder Mask (Clearance=5.906mil) (IsPad),(All)
+Rule Violations :0
+
+Processing Rule : Silk to Silk (Clearance=5.906mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Net Antennae (Tolerance=0mil) (All)
+Rule Violations :0
+
+Processing Rule : Component Clearance Constraint ( Horizontal Gap = 7.874mil, Vertical Gap = 7.874mil ) (All),(All) 
+Rule Violations :0
+
+Processing Rule : Height Constraint (Min=0mil) (Max=1000mil) (Prefered=500mil) (All)
+Rule Violations :0
+
+
+Violations Detected : 0
+Waived Violations : 0
+Time Elapsed        : 00:00:01

@@ -1,0 +1,3 @@
+net,layer,left_mm,bottom_mm,right_mm,top_mm
+"GND",2,0,0,90,70
+"3V3",3,0,0,90,70

@@ -1,0 +1,18 @@
+output_id,altium_output,type,required,scope,notes
+OUT-001,Gerber X2,FAB,YES,All copper mask silkscreen and mechanical fabrication layers,Primary baseline if fabricator does not accept ODB++ or IPC-2581
+OUT-002,NC Drill,FAB,YES,Plated and non-plated drills,Separate PTH and NPTH when supported
+OUT-003,IPC-2581,FAB,YES,Full manufacturing exchange,Preferred rich-data manufacturing output when assembler supports it
+OUT-004,ODB++,FAB,OPTIONAL,Full manufacturing exchange,Generate when selected fabricator requests ODB++
+OUT-005,Pick and Place,ASSEMBLY,YES,Top and bottom component positions,Use machine origin and component rotations verified against assembly drawing
+OUT-006,BOM,ASSEMBLY,YES,Assembly BOM,Export designator quantity MPN manufacturer and DNP status
+OUT-007,Assembly Drawing Top,ASSEMBLY,YES,Top overlay assembly drawing,Show designators polarity pin-1 and DNP markings
+OUT-008,Assembly Drawing Bottom,ASSEMBLY,YES,Bottom overlay assembly drawing,Generate even if bottom population is empty
+OUT-009,Fabrication Drawing,FAB,YES,Board outline dimensions compact-board notes stackup and drill table,Generate from the final native PcbDoc with no obsolete impedance callouts
+OUT-010,STEP,MECHANICAL,YES,3D board solid and hole geometry,Populated assembly and enclosure verification are outside the current pilot scope
+OUT-011,PDF Schematic,DOCUMENTATION,YES,Compiled color schematic PDF,Use readable color output with every sheet fitted to page and no overlapping or clipped labels
+OUT-012,DRC Report,VALIDATION,YES,PCB rule-check report,Must be zero blocking errors at release
+OUT-013,ERC/Compile Report,VALIDATION,YES,Altium compile/ERC report,Must satisfy equivalence gate
+OUT-014,Netlist Comparison,VALIDATION,YES,Altium-vs-baseline electrical equivalence,Required before first Altium PCB authority
+OUT-015,PCB Layer PDF,DOCUMENTATION,YES,Color multilayer PCB print set,Plot every copper mask overlay drill and mechanical layer as separately identified color pages
+OUT-016,Composite PCB PDF,DOCUMENTATION,YES,Color top bottom and multilayer composite views,Use consistent layer colors and include outline mounting holes and designators
+OUT-017,Release Manifest,VALIDATION,YES,Hashes source binding authority and generated-output list,Identify native Altium outputs and supplemental evidence and state that production authority is NOT_AUTHORIZED

@@ -2,13 +2,13 @@ order,domain,nets_or_objects,altium_rule,criticality,completion_criterion
 1,STACKUP,Board and L2 GND,LayerStack/Plane,P0,Four-layer roles loaded and L2 continuous GND defined
 2,POWER_HOT_LOOP,U5/L1/C1/C2/C4,Width/Polygon/Placement,P0,CIN-SW-L1-COUT loop compact with direct PGND return
 3,POWER_PROTECTION,J1-D1-U6-U7-J5,Width/Polygon,P0,VIN and RADAR_12V paths short and sized for branch currents
-4,GNSS_RF,GNSS_RF,50ohm ControlledImpedance,P0,J8-D8-U8 shortest no-stub route over solid GND
-5,ETH_MDI,ETH_TXP/TXN/RXP/RXN,100ohm DifferentialPair,P0,U3-D3-J6 continuous diff pairs over solid GND
-6,CLOCKS,MCU_HSE_25M/ETH_50M,RoutingTopology,P0,25MHz direct no stub; 50MHz branches short and balanced
-7,TIMING,GNSS_PPS/RADAR_REF/IMU_DRDY,RoutingClearance,P0,No parallel coupling to SW or MDI; direct routes
+4,POWER_5V_GNSS,U9/L9/C90/C91/C92/C93/R90/J8,Width/Polygon/Placement,P0,Compact U9 hot loop and short 5V_GNSS route to J8
+5,HOST_UART,HOST_UART1_TX/RX and HOST_UART2_TX/RX,RoutingTopology,P0,MCU-R601/R604-D3-J6 routes short over solid GND
+6,CLOCKS,MCU_HSE_25M,RoutingTopology,P0,25MHz direct route with no stub and no layer change
+7,TIMING,GNSS_PPS/RADAR_REF/IMU_DRDY,RoutingClearance,P0,No parallel coupling to BUCK_SW or BUCK5_SW; direct routes
 8,CAN,RADAR_CANH/RADAR_CANL,DifferentialPair,P1,J4-D4-U4 paired route with connector-side ESD
 9,IMU,IMU_NSS/IMU_SCK/IMU_MISO/IMU_MOSI,RoutingTopology,P1,Short routes over solid GND
-10,RMII,ETH_MDIO/ETH_MDC/ETH_CRS_DV/ETH_RXD0/ETH_RXD1/ETH_TX_EN/ETH_TXD0/ETH_TXD1/ETH_NRST,RoutingTopology,P1,Short routes with minimized layer changes and return vias
+10,GNSS_UART,GNSS_RX_EXT/GNSS_TX_EXT/GNSS_PPS,RoutingTopology,P1,MCU-D8-J8 routes short with minimized layer changes and return vias
 11,POWER_3V3,3V3/VDDA_FILTERED,Width/Polygon,P0,Low impedance 3V3 distribution; FB1 analog branch isolated
 12,DEBUG,SWDIO/SWCLK/SWO/DEBUG_TX/DEBUG_RX/NRST/BOOT0,Signal,P2,Service routes complete and accessible
 13,GENERAL,Remaining signals,Signal,P2,All unrouted nets zero

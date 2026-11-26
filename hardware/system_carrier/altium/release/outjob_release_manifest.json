@@ -1,0 +1,126 @@
+{
+  "schema": "ALTIUM-OUTJOB-RELEASE-MANIFEST-001",
+  "status": "PASS",
+  "required_outputs_complete": true,
+  "source_is_native_altium": true,
+  "all_schematics_from_native_altium": true,
+  "all_production_outputs_from_native_altium": true,
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "518041a570b405a429a70d968ee54b62df126cb0091b9af08e067152c5aa8735",
+  "outputs": [
+    {
+      "output_id": "OUT-001",
+      "path": "hardware/system_carrier/altium/release/evt24_v120/EVT_SYS_CARRIER_Gerber.zip",
+      "sha256": "b9c593f4e1f8ff870b50865c0890fd3315a8b462067501d48442252588d70876",
+      "status": "PASS",
+      "notes": "Canonical 24 V Gerber set, 21 files."
+    },
+    {
+      "output_id": "OUT-002",
+      "path": "hardware/system_carrier/altium/release/evt24_v120/EVT_SYS_CARRIER_NC_Drill.zip",
+      "sha256": "108257469fe2e39b1413ec86efe1c9ca47481d83ef6171adfbee3897e348f77e",
+      "status": "PASS",
+      "notes": "Canonical 24 V NC Drill set, four files."
+    },
+    {
+      "output_id": "OUT-003",
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/IPC-2581 Files/EVT_SYS_CARRIER.cvg",
+      "sha256": "6b9706c1831880085c8cda43525d55dc9e3fba81ccececd925f4a2c155ed2ad3",
+      "status": "PASS"
+    },
+    {
+      "output_id": "OUT-005",
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Pick Place/Pick Place for EVT_SYS_CARRIER.csv",
+      "sha256": "939378a6e8f77afd392dc89803774c461d551a1b6d659b908a6cd60d47f96cc3",
+      "status": "PASS",
+      "notes": "105 native Altium placement rows in metric units."
+    },
+    {
+      "output_id": "OUT-006",
+      "path": "release/EVT_ГСН_BOM_и_закупка_24В_v1.2.0_2026-11-02.xlsx",
+      "sha256": "0feec0ea5726b6fbe2adc5f9f4d90e14b43a0a6036ccfdbdd5ea3d06d65aaf78",
+      "status": "PASS",
+      "notes": "105 of 105 native Altium BOM positions reconciled with the procurement contract."
+    },
+    {
+      "output_id": "OUT-007",
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/AssemblyDrawing.pdf",
+      "sha256": "0d0478084820b95e34b1433faa86c1eea7ecb6392e0d6cbffb0fa7e915bf1613",
+      "status": "PASS",
+      "notes": "Native Altium top and bottom assembly drawing, two pages."
+    },
+    {
+      "output_id": "OUT-008",
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/AssemblyDrawing.pdf",
+      "sha256": "0d0478084820b95e34b1433faa86c1eea7ecb6392e0d6cbffb0fa7e915bf1613",
+      "status": "PASS",
+      "notes": "Bottom assembly view is present in the two-page native drawing."
+    },
+    {
+      "output_id": "OUT-009",
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Fabrication_PILOT_R1.pdf",
+      "sha256": "cbd968c51e3fce0a59c90fe709258865f373201d2b92abfd40b6d78d5a8d39e3",
+      "status": "PASS",
+      "notes": "Five-page native color multilayer fabrication print."
+    },
+    {
+      "output_id": "OUT-010",
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/ExportSTEP/EVT_SYS_CARRIER.step",
+      "sha256": "56de3f71130047365b59229b2ad5630dc859d4506012970d373e3dea56c4a339",
+      "status": "PASS"
+    },
+    {
+      "output_id": "OUT-011",
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Schematic Prints.PDF",
+      "sha256": "58538834df5c9d4643749a73b4846759299b6ea98a187f8e725623da7b26b529",
+      "status": "PASS",
+      "notes": "Eight-sheet compiled native color schematic PDF."
+    },
+    {
+      "output_id": "OUT-012",
+      "path": "hardware/system_carrier/altium/native/Design Rule Check - EVT_SYS_CARRIER.drc",
+      "sha256": "0a1b315c09099d334cc81d2f65673a11ccc4b8f4c406e9092a3c1b182bbc82e0",
+      "status": "PASS",
+      "notes": "Zero violations, zero waived violations."
+    },
+    {
+      "output_id": "OUT-013",
+      "path": "hardware/system_carrier/altium/equivalence/compile_report.json",
+      "sha256": "6da439c66d1267e7c666943bcd1cd828059d8bac76e7dc24ff0dd9bd7f62dc06",
+      "status": "PASS"
+    },
+    {
+      "output_id": "OUT-014",
+      "path": "hardware/system_carrier/altium/equivalence/netlist_validation_result.json",
+      "sha256": "6440759235dbafbe2d075e1268a319f3a2671c1c187b722fabfea053c884ece5",
+      "status": "PASS"
+    },
+    {
+      "output_id": "OUT-015",
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Fabrication_PILOT_R1.pdf",
+      "sha256": "cbd968c51e3fce0a59c90fe709258865f373201d2b92abfd40b6d78d5a8d39e3",
+      "status": "PASS",
+      "notes": "Color pages cover top, bottom and internal layers."
+    },
+    {
+      "output_id": "OUT-016",
+      "path": "hardware/system_carrier/altium/native/Project Outputs for EVT_SYS_CARRIER/Fabrication_PILOT_R1.pdf",
+      "sha256": "cbd968c51e3fce0a59c90fe709258865f373201d2b92abfd40b6d78d5a8d39e3",
+      "status": "PASS",
+      "notes": "Composite and individual layer views share the final board outline."
+    },
+    {
+      "output_id": "OUT-017",
+      "path": "hardware/system_carrier/altium/release/evt24_v120/native_outputs_manifest.json",
+      "sha256": "8a3ed4c52dcfa8e9cd76de0e83cf2744c9a680ab33f2f2f0c98df8e1a65fe234",
+      "status": "PASS",
+      "notes": "Hash inventory bound to the canonical 24 V PcbDoc."
+    }
+  ],
+  "missing_required_output_ids": [],
+  "notes": [
+    "All required outputs were regenerated from the canonical 24 V native Altium project.",
+    "Rezonit published four-layer data is the working pilot baseline; order-specific feedback remains a later correction input.",
+    "Production authority remains NOT_AUTHORIZED."
+  ]
+}

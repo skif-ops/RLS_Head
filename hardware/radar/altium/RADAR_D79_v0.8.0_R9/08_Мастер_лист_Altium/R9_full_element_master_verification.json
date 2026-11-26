@@ -1,0 +1,66 @@
+{
+  "artifact": "RADAR_D79_R9_FULL_ELEMENT_MASTER",
+  "revision": "PCB v0.8.0 R9 / release v2.2.7 RC9",
+  "native_schdoc": {
+    "file": "00_FULL_ELEMENT_SCHEMATIC.SchDoc",
+    "bytes": 1886720,
+    "sha256": "23ae07610dd2bf948be98a804bf1260a3f31013dcaa65d3d8945b361b1120860",
+    "format": "Altium Advanced Schematic binary",
+    "saved_by_altium": true
+  },
+  "connectivity": {
+    "file": "R9_master_inter_sheet_connectivity.csv",
+    "bytes": 2839,
+    "sha256": "832eb603337c458c81867670be53284b77e0aabc91508a604edf06c9598e0455",
+    "cross_sheet_nets": 145,
+    "native_wire_objects_added": 145,
+    "native_net_label_objects_added": 145
+  },
+  "pad_binding": {
+    "file": "R9_pad_binding.csv",
+    "bytes": 32635,
+    "sha256": "6ad8482ef729f45918466abb786e1389fea509f2b4d90c0de16476b6e8b90a5f",
+    "designator_pad_rows": 1408,
+    "net_assignments": 1181,
+    "unnetted_pads": 227
+  },
+  "pdf": {
+    "file": "RADAR_D79_R9_FULL_ELEMENT_MASTER.pdf",
+    "bytes": 689959,
+    "sha256": "e9f059bd63329e276113cffefc475b6495fa416a1626eb63ffebaaa9d4b0d3ee",
+    "pages": 1,
+    "page_width_points": 6740,
+    "page_height_points": 3800,
+    "connectivity_matrix_nets": 145
+  },
+  "layout": {
+    "source_detail_sheets": 31,
+    "master_cells": 32,
+    "replicated_native_primitives": 3497,
+    "local_component_wires_preserved": true,
+    "component_pin_data_preserved": true,
+    "visual_checks": [
+      "full-page overview",
+      "cross-sheet connectivity matrix",
+      "RF tract tile",
+      "10 POWER INPUT tile",
+      "31 Radar VPP service tile"
+    ],
+    "clipping_or_frame_overlap_observed": false
+  },
+  "rf_tract": {
+    "device": "AWR2944P",
+    "channels": {
+      "TX1": "TI_TX1 / B3 / 8 printed elements",
+      "TX2": "TI_TX2 / B5 / 8 printed elements",
+      "TX3": "TI_TX3 / B7 / 8 printed elements",
+      "TX4": "TI_TX4 / B9 / 8 printed elements",
+      "RX1": "TI_RX1 / M2 / 8 printed elements",
+      "RX2": "TI_RX2 / K2 / 8 printed elements",
+      "RX3": "TI_RX3 / H2 / 8 printed elements",
+      "RX4": "TI_RX4 / F2 / 8 printed elements"
+    },
+    "required_text_markers_found_in_pdf": true
+  },
+  "production_authority": "NOT_AUTHORIZED"
+}

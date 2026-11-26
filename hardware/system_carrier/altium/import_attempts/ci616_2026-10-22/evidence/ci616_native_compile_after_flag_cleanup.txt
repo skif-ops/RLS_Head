@@ -1,0 +1,46 @@
+Class	Document	Source	Message	Time	Date	No.
+
+[Warning]	EVT_SYS_CARRIER.SchDoc	Compiler	BOOT0 contains Input Sheet Entry and Unspecified Sheet Entry objects (Sheet Entry MCU_CORE-BOOT0(Input), Sheet Entry DEBUG_BOOT-BOOT0(Passive)).	9:53:12	23.10.2026	1
+[Warning]	20_MCU_CORE.SchDoc	Compiler	CAN_RX contains IO Pin and Input Port objects (Pin U1-142, Port CAN_RX).	9:53:12	23.10.2026	2
+[Warning]	20_MCU_CORE.SchDoc	Compiler	CAN_RX contains IO Pin and Output Pin objects (Pin U1-142, Pin U4-4).	9:53:12	23.10.2026	3
+[Warning]	20_MCU_CORE.SchDoc	Compiler	CAN_TX contains IO Pin and Output Port objects (Pin U1-143, Port CAN_TX).	9:53:12	23.10.2026	4
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_50M contains IO Pin and Input Port objects (Pin U1-41, Port ETH_50M).	9:53:12	23.10.2026	5
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_50M contains IO Pin and Output Pin objects (Pin U1-41, Pin Y2-3).	9:53:12	23.10.2026	6
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_CRS_DV contains IO Pin and Input Port objects (Pin U1-53, Port ETH_CRS_DV).	9:53:12	23.10.2026	7
+[Warning]	60_ETHERNET.SchDoc	Compiler	ETH_CRS_DV contains IO Pin and Output Port objects (Pin U3-11, Port ETH_CRS_DV).	9:53:12	23.10.2026	8
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_MDC contains IO Pin and Output Port objects (Pin U1-33, Port ETH_MDC).	9:53:12	23.10.2026	9
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_NRST contains IO Pin and Output Port objects (Pin U1-3, Port ETH_NRST).	9:53:12	23.10.2026	10
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_RXD0 contains IO Pin and Input Port objects (Pin U1-54, Port ETH_RXD0).	9:53:12	23.10.2026	11
+[Warning]	60_ETHERNET.SchDoc	Compiler	ETH_RXD0 contains IO Pin and Output Port objects (Pin U3-8, Port ETH_RXD0).	9:53:12	23.10.2026	12
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_RXD1 contains IO Pin and Input Port objects (Pin U1-55, Port ETH_RXD1).	9:53:12	23.10.2026	13
+[Warning]	60_ETHERNET.SchDoc	Compiler	ETH_RXD1 contains IO Pin and Output Port objects (Pin U3-7, Port ETH_RXD1).	9:53:12	23.10.2026	14
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_TX_EN contains IO Pin and Output Port objects (Pin U1-154, Port ETH_TX_EN).	9:53:12	23.10.2026	15
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_TXD0 contains IO Pin and Output Port objects (Pin U1-156, Port ETH_TXD0).	9:53:12	23.10.2026	16
+[Warning]	20_MCU_CORE.SchDoc	Compiler	ETH_TXD1 contains IO Pin and Output Port objects (Pin U1-157, Port ETH_TXD1).	9:53:12	23.10.2026	17
+[Warning]	20_MCU_CORE.SchDoc	Compiler	GNSS_PPS contains IO Pin and Input Port objects (Pin U1-40, Port GNSS_PPS).	9:53:12	23.10.2026	18
+[Warning]	20_MCU_CORE.SchDoc	Compiler	GNSS_PPS contains IO Pin and Output Pin objects (Pin U1-40, Pin U8-3).	9:53:12	23.10.2026	19
+[Warning]	20_MCU_CORE.SchDoc	Compiler	GNSS_RX_EXT contains IO Pin and Output Port objects (Pin U1-96, Port GNSS_RX_EXT).	9:53:12	23.10.2026	20
+[Warning]	20_MCU_CORE.SchDoc	Compiler	GNSS_TX_EXT contains IO Pin and Input Port objects (Pin U1-97, Port GNSS_TX_EXT).	9:53:12	23.10.2026	21
+[Warning]	20_MCU_CORE.SchDoc	Compiler	GNSS_TX_EXT contains IO Pin and Output Pin objects (Pin U1-97, Pin U8-20).	9:53:12	23.10.2026	22
+[Warning]	20_MCU_CORE.SchDoc	Compiler	IMU_DRDY contains IO Pin and Input Port objects (Pin U1-80, Port IMU_DRDY).	9:53:12	23.10.2026	23
+[Warning]	20_MCU_CORE.SchDoc	Compiler	IMU_DRDY contains IO Pin and Output Pin objects (Pin U1-80, Pin U2-4).	9:53:12	23.10.2026	24
+[Warning]	20_MCU_CORE.SchDoc	Compiler	IMU_MISO contains IO Pin and Input Port objects (Pin U1-94, Port IMU_MISO).	9:53:12	23.10.2026	25
+[Warning]	20_MCU_CORE.SchDoc	Compiler	IMU_MISO contains IO Pin and Output Pin objects (Pin U1-94, Pin U2-1).	9:53:12	23.10.2026	26
+[Warning]	20_MCU_CORE.SchDoc	Compiler	IMU_MOSI contains IO Pin and Output Port objects (Pin U1-95, Port IMU_MOSI).	9:53:12	23.10.2026	27
+[Warning]	20_MCU_CORE.SchDoc	Compiler	IMU_NSS contains IO Pin and Output Port objects (Pin U1-92, Port IMU_NSS).	9:53:12	23.10.2026	28
+[Warning]	20_MCU_CORE.SchDoc	Compiler	IMU_SCK contains IO Pin and Output Port objects (Pin U1-93, Port IMU_SCK).	9:53:12	23.10.2026	29
+[Warning]	20_MCU_CORE.SchDoc	Compiler	MCU_HSE_25M contains IO Pin and Output Pin objects (Pin U1-29, Pin Y1-3).	9:53:12	23.10.2026	30
+[Warning]	EVT_SYS_CARRIER.SchDoc	Compiler	Net BOOT0 has no driving source (Pin R10-1, Pin R70-1, Pin U1-166)	9:53:12	23.10.2026	31
+[Warning]	30_TIME_GNSS.SchDoc	Compiler	Net GNSS_RF has no driving source (Pin D8-1, Pin J8-1, Pin L80-2, Pin U8-11)	9:53:12	23.10.2026	32
+[Warning]	50_RADAR_IO_CAN.SchDoc	Compiler	Net NetR41_1 has no driving source (Pin R41-1, Pin U4-8)	9:53:12	23.10.2026	33
+[Warning]	50_RADAR_IO_CAN.SchDoc	Compiler	Net NetR42_1 has no driving source (Pin R42-1, Pin U4-5)	9:53:12	23.10.2026	34
+[Warning]	EVT_SYS_CARRIER.SchDoc	Compiler	Net NRST has no driving source (Pin C115-1, Pin SW1-1, Pin U1-31)	9:53:12	23.10.2026	35
+[Warning]	10_POWER_INPUT.SchDoc	Compiler	Net U5_SS_LOCAL has no driving source (Pin C3-1, Pin U5-9)	9:53:12	23.10.2026	36
+[Warning]	10_POWER_INPUT.SchDoc	Compiler	Net U6_OVLO_LOCAL has no driving source (Pin R62-2, Pin R63-1, Pin U6-2)	9:53:12	23.10.2026	37
+[Warning]	10_POWER_INPUT.SchDoc	Compiler	Net U6_UVLO_LOCAL has no driving source (Pin R61-2, Pin R62-1, Pin U6-1)	9:53:12	23.10.2026	38
+[Warning]	10_POWER_INPUT.SchDoc	Compiler	Net U7_OVLO_LOCAL has no driving source (Pin R72-2, Pin R73-1, Pin U7-2)	9:53:12	23.10.2026	39
+[Warning]	10_POWER_INPUT.SchDoc	Compiler	Net U7_UVLO_LOCAL has no driving source (Pin R71-2, Pin R72-1, Pin U7-1)	9:53:12	23.10.2026	40
+[Warning]	20_MCU_CORE.SchDoc	Compiler	RADAR_EFUSE_FLT contains IO Pin and Input Port objects (Pin U1-2, Port RADAR_EFUSE_FLT).	9:53:12	23.10.2026	41
+[Warning]	20_MCU_CORE.SchDoc	Compiler	RADAR_REF contains IO Pin and Input Port objects (Pin U1-79, Port RADAR_REF).	9:53:12	23.10.2026	42
+[Warning]	20_MCU_CORE.SchDoc	Compiler	SYS_EFUSE_FLT contains IO Pin and Input Port objects (Pin U1-1, Port SYS_EFUSE_FLT).	9:53:12	23.10.2026	43
+[Info]	EVT_SYS_CARRIER_CI616.PrjPcb	Compiler	Compile successful, no errors found.	9:53:12	23.10.2026	44

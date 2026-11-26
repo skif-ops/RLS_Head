@@ -1,0 +1,10 @@
+[Design]
+Version=1.0
+HierarchyMode=0
+
+[Document1]
+DocumentPath=ci623_pad_net_eco.pas
+AnnotationEnabled=1
+
+[Generic_ScriptingSystem]
+StartProcName=ci623_pad_net_eco.pas>RepairCI623U8UnconnectedPads

@@ -1,0 +1,17 @@
+{
+  "schema": "ALTIUM-NATIVE-DRC-RESULT-001",
+  "status": "PASS",
+  "blocking_errors": 0,
+  "unrouted_nets": 0,
+  "routing_topology_violations": 0,
+  "net_antennae_violations": 0,
+  "source_report": "hardware/system_carrier/altium/native/Design Rule Check - EVT_SYS_CARRIER.drc",
+  "source_report_sha256": "0a1b315c09099d334cc81d2f65673a11ccc4b8f4c406e9092a3c1b182bbc82e0",
+  "notes": [
+    "Native Altium DRC completed with 0 violations and 0 waived violations.",
+    "The disabled component-clearance rule is reported explicitly and contributes no violations.",
+    "Production authority remains NOT_AUTHORIZED until every release review passes."
+  ],
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "518041a570b405a429a70d968ee54b62df126cb0091b9af08e067152c5aa8735"
+}

@@ -1,9 +1,10 @@
 ref,qty,manufacturer,mpn,description
 U1,1,STMicroelectronics,STM32H753IIT6,System MCU
 U2,1,TDK InvenSense,ICM-42688-P,IMU
-U3,1,Microchip,LAN8742Ai-CZ-TR,RMII PHY
 U4,1,Texas Instruments,TCAN3404DRBRQ1,CAN FD transceiver
 U5,1,Texas Instruments,TPS62132RGTR,3V3 buck
 U6,1,Texas Instruments,TPS259470ARPWR,eFuse
-U8,1,u-blox,NEO-M9N-00B,GNSS timing receiver
-J_ETH,1,Bel,SI-60182-F,10/100BASE-T extended-temperature MagJack
+U9,1,Texas Instruments,TPS62133RGTR,5V GNSS buck
+D3,1,Texas Instruments,TPD4E05U06DQAR,Host UART ESD
+J6,1,Molex,43045-0600,Dual host UART connector
+J8,1,JST,SM06B-GHS-TB(LF)(SN),External GNSS connector

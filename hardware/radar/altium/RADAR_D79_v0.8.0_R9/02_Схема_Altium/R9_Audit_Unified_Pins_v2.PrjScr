@@ -1,0 +1,10 @@
+[Design]
+Version=1.0
+HierarchyMode=0
+
+[Document1]
+DocumentPath=R9_Audit_Unified_Pins_v2.pas
+AnnotationEnabled=1
+
+[Generic_ScriptingSystem]
+StartProcName=R9_Audit_Unified_Pins_v2.pas>AuditUnifiedPinsV2

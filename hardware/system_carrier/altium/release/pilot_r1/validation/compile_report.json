@@ -1,0 +1,18 @@
+{
+  "errors": 0,
+  "layout_authority": "NOT_AUTHORIZED",
+  "notes": [
+    "Counts are recorded from the native Altium compile/ERC result and cryptographically bound to the archived raw report.",
+    "PASS is compile evidence only; layout authority remains controlled by ALTIUM_EQUIVALENCE_GATE."
+  ],
+  "production_authority": "NOT_AUTHORIZED",
+  "schema": "ALTIUM-COMPILE-REPORT-001",
+  "source_project": "hardware/system_carrier/altium/EVT_SYS_CARRIER.PrjPcb",
+  "source_project_sha256": "59284024bdb3184601c17657c14d78c81da3352848f81fbe023bc74b25fc41bd",
+  "source_report": "hardware/system_carrier/altium/equivalence/compile_report_raw.txt",
+  "source_report_sha256": "27331d6c58c3850a55f7d5c13d9486040f8e5cf8d835235124d9855e5ef629f9",
+  "source_schematic": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.SchDoc",
+  "source_schematic_sha256": "85b458cc95d32704a9a9dced80f2f8514bf2f9d3065e0f91c18ab57091dc9166",
+  "status": "PASS",
+  "warnings": 0
+}

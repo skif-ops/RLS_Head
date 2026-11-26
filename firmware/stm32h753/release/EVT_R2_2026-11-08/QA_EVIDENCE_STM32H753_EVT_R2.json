@@ -1,0 +1,38 @@
+{
+  "schema": "evt-stm32h753-qa-evidence-v1",
+  "release": "EVT_R2_2026-11-08",
+  "date": "2026-11-08",
+  "result": "PASS_SOFTWARE_ONLY",
+  "cross_build": {
+    "toolchain": "xPack GNU Arm Embedded GCC x86_64 14.2.1 20241119",
+    "clean_passes": 2,
+    "pass_1_directory": ".work/stm32h753_evt_r2_20261108",
+    "pass_2_directory": ".work/stm32h753_evt_r2_repro_20261108",
+    "bin_sha256_pass_1": "9e857872469f4a2aec982753bfbd6f94bf253ef48985fb8c1b6854f872453ef5",
+    "bin_sha256_pass_2": "9e857872469f4a2aec982753bfbd6f94bf253ef48985fb8c1b6854f872453ef5",
+    "hex_sha256_pass_1": "df929d44325adcd64a1d52a392de6739bdf966323c6da2f9dc604838a05d301c",
+    "hex_sha256_pass_2": "df929d44325adcd64a1d52a392de6739bdf966323c6da2f9dc604838a05d301c",
+    "loadable_payload_reproducible": true
+  },
+  "host_verification": {
+    "configuration": "Release",
+    "tests_total": 21,
+    "tests_passed": 21,
+    "tests_failed": 0
+  },
+  "elf_inspection": {
+    "format": "ELF32 little-endian ARM executable",
+    "abi": "EABI5 hard-float",
+    "entry_point": "0x08000299",
+    "text_bytes": 52904,
+    "data_bytes": 96,
+    "bss_bytes": 20384
+  },
+  "scope_limitations": [
+    "No programming or read-back was performed on an assembled board.",
+    "No electrical, thermal, RF or environmental bench validation was performed.",
+    "This evidence does not authorize production."
+  ],
+  "hardware_bench_validation": "NOT_RUN",
+  "production_authority": "NOT_AUTHORIZED"
+}

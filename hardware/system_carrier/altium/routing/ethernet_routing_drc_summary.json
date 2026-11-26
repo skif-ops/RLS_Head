@@ -1,0 +1,71 @@
+{
+  "altium_version": "26.10.1 Trial",
+  "board_id": "EVT-SYS-CARRIER",
+  "connectivity": {
+    "ETH_RXN": ["U3-22", "R604-1", "D3-5", "J6-6"],
+    "ETH_RXP": ["U3-23", "R603-1", "D3-4", "J6-4"],
+    "ETH_TXN": ["U3-20", "R602-1", "D3-2", "J6-3"],
+    "ETH_TXP": ["U3-21", "R601-1", "D3-1", "J6-1"]
+  },
+  "drc_timestamp": "2026-10-24T18:20:29+03:00",
+  "geometry": {
+    "ethernet_pair_center_spacing_mm": 0.459994,
+    "ethernet_pair_gap_mm": 0.2,
+    "ethernet_trace_width_mil": 10.236,
+    "ethernet_trace_width_mm": 0.26,
+    "ethernet_track_count": 65,
+    "ethernet_via_count": 11,
+    "fill_count": 67,
+    "main_path_mm": {
+      "ETH_RXN": 40.93305,
+      "ETH_RXP": 40.933074,
+      "ETH_TXN": 38.663045,
+      "ETH_TXP": 38.703926
+    },
+    "pad_count": 529,
+    "pair_skew_mm": {
+      "RX": 0.000024,
+      "TX": 0.040881
+    },
+    "track_count": 1127,
+    "tree_length_mm": {
+      "ETH_RXN": 58.529361,
+      "ETH_RXP": 66.838102,
+      "ETH_TXN": 52.868046,
+      "ETH_TXP": 64.527804
+    },
+    "via_count": 34,
+    "via_drill_mm": 0.3,
+    "via_pad_mm": 0.6
+  },
+  "input_sha256": {
+    "fill_inventory": "2ba0d89d16eaebcbf7e9495cac76b059861b895d089e908010b90287b0370928",
+    "pad_geometry": "ea9f066ab4f74c70f91d5af113e03913fa7aa46625b4d44828d6b492ae0e7551",
+    "review_render": "904bb5a2ed41393b39f9270dc2307971394f7fdfc3d497dc8cba441245aa4827",
+    "review_render_script": "40b071db089dfddbe69e465998d4559ca23b70775db63bac4446c7a4dc53cfb6",
+    "routing_audit_script": "b74db3494b61f64d5b525aac816354d412b876bd481b86be28fe8fcf97b9911d",
+    "routing_script": "92292ab99e52e0416ae865f589077175461a934c1fdfc0ada8942931a8478021",
+    "track_inventory": "9a3dc35e1891b294d049fd95023b325067ed60cf245ecf0bf756365c7607461c",
+    "via_inventory": "2157ae51a7dd2cde9ca7d9f96b61609b5a9be246173e3640eb71388851dd550a"
+  },
+  "production_authority": "NOT_AUTHORIZED",
+  "review_status": "PASS",
+  "routing_authority": "AUTHORIZED",
+  "rule_violations": {
+    "component_clearance": 55,
+    "copper_clearance_internal_footprint": 13,
+    "ethernet_route_induced": 0,
+    "height": 0,
+    "hole_size": 9,
+    "hole_to_hole": 0,
+    "net_antennae": 0,
+    "routing_topology": 0,
+    "total": 77,
+    "unrouted_net": 0
+  },
+  "schema": "ALTIUM-ETHERNET-ROUTING-REVIEW-A-001",
+  "source_drc_report": "hardware/system_carrier/altium/routing/ethernet_routing_drc_2026-10-24.drc",
+  "source_drc_report_sha256": "e36aba50ea897d17e842ccb3035ced28c491fa6b37f3cb3979ccf67a32e6d845",
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "4217bdc4caf00ead347d41246ce13576166f6deabafc94e74183ef9debdbb494"
+}

@@ -1,0 +1,19 @@
+{
+  "actual_component_count": 105,
+  "errors": [],
+  "expected_footprint_count": 105,
+  "input_sha256": {
+    "component_inventory": "5ba2caad169488e25ff51c0e587fe9baa0ac540fa0c8455bb47aab2136d4d959",
+    "footprint_contract": "c9ca8e41b869a66c82d21b3d2e804b7c881e2e2f179fa24d4a8594bab4d2f4f3"
+  },
+  "notes": [
+    "Comparison uses the footprint pattern name, stripping library prefixes such as KiCad library-name:pattern.",
+    "IPCB_Component.Pattern is the native PCB footprint name."
+  ],
+  "schema": "ALTIUM-NATIVE-FOOTPRINT-RESULT-001",
+  "status": "PASS",
+  "verified_checks": {
+    "footprint_equivalence": "PASS"
+  },
+  "warnings": []
+}

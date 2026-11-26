@@ -1,0 +1,95 @@
+{
+  "schema": "EVT-GSN-DOCUMENT-SET-002",
+  "version": "1.2.0",
+  "date": "2026-11-02",
+  "power_input": "24V_NOMINAL_18_32V",
+  "production_authority": "NOT_AUTHORIZED",
+  "file_count": 17,
+  "files": [
+    {
+      "path": "00_Версии_и_шаблон/Правила_оформления_и_версий_v1.2.0.docx",
+      "size_bytes": 39922,
+      "sha256": "9b093a29f915da09ad0be9931f926928ff09b687790607f1f4f47fe9fec7a4e8"
+    },
+    {
+      "path": "00_Версии_и_шаблон/Шаблон_текстового_документа_v1.2.0.docx",
+      "size_bytes": 38764,
+      "sha256": "fd8e1ca97a5637be960aab9c2edefccd0acdbebfc5eb3de86cb6ee0382fa2c35"
+    },
+    {
+      "path": "00_Опись_и_статус/Опись_и_статус_комплекта_EVT_v1.2.0.docx",
+      "size_bytes": 42468,
+      "sha256": "58e443f91a60949023fdc80381ab9976d11a0fedecbb013f1f780c8df150e0be"
+    },
+    {
+      "path": "01_Технический_проект/Принципы_работы_и_алгоритмы_функционирования_EVT_ГСН_v1.2.0.docx",
+      "size_bytes": 67392,
+      "sha256": "98825840afdf558080b5771cd4e5d60cb420cd5dde3ebcb98cca51856e4bb4db"
+    },
+    {
+      "path": "01_Технический_проект/Протокол_TargetState_V1_v1.2.0.docx",
+      "size_bytes": 45491,
+      "sha256": "58fda9d51c73e635e508f6567e0ba4e2587bd8b0d291fdd9454281c96ab3815a"
+    },
+    {
+      "path": "01_Технический_проект/Технический_проект_EVT_ГСН_v1.2.0.docx",
+      "size_bytes": 50769,
+      "sha256": "976faddd73879dee3dfd07ceb23421a9487facd3bf7cba491c58b739b55337a1"
+    },
+    {
+      "path": "02_Техническое_задание/Техническое_задание_EVT_ГСН_v1.2.0.docx",
+      "size_bytes": 43233,
+      "sha256": "2cb505c40105506dc21912967d32031e9a12c18fdb19c1a671a34f5cd474c567"
+    },
+    {
+      "path": "03_Заказ_ПП_и_монтажа/Заявка_на_изготовление_ПП_и_монтаж_v1.2.0.docx",
+      "size_bytes": 42220,
+      "sha256": "718e4ecf4eef1fcea3b1cc52c67707aa3a63cb755e04339efff0a89696ba42a2"
+    },
+    {
+      "path": "05_Прошивка_контроллера/Инструкция_по_сборке_прошивке_и_настройке_v1.2.0.docx",
+      "size_bytes": 42353,
+      "sha256": "6b3a0967b5c06969548dbbd51e7572de92a1a0a6e4fe614e55b78b3e3006897d"
+    },
+    {
+      "path": "06_Жгуты_и_кабели/Схема_соединений_и_задание_на_жгуты_v1.2.0.docx",
+      "size_bytes": 44003,
+      "sha256": "2a162fca6b68479aeb070c8ae0f175d76e05ae9e70cc846e33df66d2c7a7f166"
+    },
+    {
+      "path": "07_Инструкции/Инструкция_монтажнику_и_наладчику_v1.2.0.docx",
+      "size_bytes": 41058,
+      "sha256": "4a93ef9e887441e530e3c14aa83abc9ee79b97fb8416605844ebbceb8c8e2222"
+    },
+    {
+      "path": "07_Инструкции/Руководство_пользователя_EVT_v1.2.0.docx",
+      "size_bytes": 41623,
+      "sha256": "66c425ca7ea4ad4199eca19aba1d14c653862b51ece0e84d0e460e53acb3749f"
+    },
+    {
+      "path": "08_Контроль_и_приемка/Инструкция_первого_включения_и_стендовой_проверки_v1.2.0.docx",
+      "size_bytes": 46594,
+      "sha256": "1bf3dc80318854d2a5d14bba1e4e1163156e77ea2804ece9b92df29566ce2189"
+    },
+    {
+      "path": "08_Контроль_и_приемка/Программа_и_методики_EVT_v1.2.0.docx",
+      "size_bytes": 51405,
+      "sha256": "86aba80af4d8b66f07c0e9e8218acab88dada7b5931d7480ab3b09f1e3959ab1"
+    },
+    {
+      "path": "10_Отчетные_материалы/Форма_отчета_EVT_v1.2.0.docx",
+      "size_bytes": 42247,
+      "sha256": "293d8c8c555be00bd189caad3bfbf1690fccf311666575922086ea85471ac686"
+    },
+    {
+      "path": "VERSION.txt",
+      "size_bytes": 141,
+      "sha256": "2dfa003e6252e96add208d88c97ad7268d56645c0ea5a036adc5a25500324ec8"
+    },
+    {
+      "path": "Проверка_оформления.json",
+      "size_bytes": 5586,
+      "sha256": "af56bf2d6e8ad3056f4fe01d3db1bc822e866c74b9817811a6d28c7def2d2215"
+    }
+  ]
+}

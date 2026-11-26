@@ -10,7 +10,6 @@
 #include "rls/measurement_session.h"
 #include "rls/evidence_export.h"
 #include "rls/capture_router.h"
-#include "rls/ethernet_reset.h"
 #include "rls/config_lock.h"
 #include "rls/gnss_service.h"
 #include "rls/imu_service.h"
@@ -157,22 +156,25 @@ int main(void)
             2500000u,
             &disciplined_time);
 
-    rls_radar_link_msg_t radar_msg = {
+    rls_radar_link_frame_t radar_frame = {
         .version = RLS_RADAR_LINK_VERSION,
-        .type = RLS_RADAR_MSG_FRAME_META,
-        .status_flags = 0u,
+        .status_flags = RLS_RADAR_STATUS_TIME_VALID,
         .sequence = 1u,
-        .radar_time_us = 2500000u,
-        .config_crc32 = 0x12345678u,
-        .temperature_cdeg = 2500,
-        .measurement_count = 0u,
+        .timestamp_us = 2500000u,
+        .session_id = 1u,
+    };
+    const rls_radar_measurement_t radar_measurement = {
+        .track_state = RLS_RADAR_TRACK_NONE,
     };
     uint8_t radar_wire[RLS_RADAR_LINK_WIRE_SIZE] = {0};
     const bool radar_link_ok =
-        rls_radar_link_encode(
-            &radar_msg,
+        rls_radar_measurement_pack(
+            &radar_measurement,
+            &radar_frame) == RLS_RADAR_LINK_OK
+        && rls_radar_link_encode(
+            &radar_frame,
             radar_wire,
-            sizeof(radar_wire)) == 0;
+            sizeof(radar_wire)) == RLS_RADAR_LINK_OK;
 
     rls_carrier_health_state_t carrier_health;
     rls_carrier_health_report_t carrier_report;
@@ -315,19 +317,6 @@ int main(void)
             &imu_report) == 0
         && imu_report.fresh;
 
-    rls_ethernet_reset_t eth_reset;
-    rls_ethernet_reset_init(&eth_reset);
-    const bool eth_reset_ok =
-        rls_ethernet_reset_note_power_ready(
-            &eth_reset,
-            2400000u)
-        && rls_ethernet_reset_update(
-            &eth_reset,
-            2424999u) == RLS_ETH_RESET_ASSERT_LOW
-        && rls_ethernet_reset_update(
-            &eth_reset,
-            2425000u) == RLS_ETH_RESET_DRIVE_HIGH;
-
     TargetStateErrorLedger error_ledger;
     const bool ledger_ok =
         targetstate_syserr_ok &&
@@ -369,9 +358,6 @@ int main(void)
         (capture_router_ok
             ? capture_event.sequence
             : UINT32_C(0x40000000)) ^
-        (eth_reset_ok
-            ? UINT32_C(0x00000080)
-            : UINT32_C(0x08000000)) ^
         (config_lock_ok
             ? config_lock.crc32
             : UINT32_C(0x04000000)) ^

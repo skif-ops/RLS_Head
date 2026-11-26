@@ -1,0 +1,65 @@
+[Error] 60_ETHERNET.SchDoc Compiler Net NetD3_6 contains floating input pins (Pin D3-6)
+[Error] 60_ETHERNET.SchDoc Compiler Net NetD3_7 contains floating input pins (Pin D3-7)
+[Error] 60_ETHERNET.SchDoc Compiler Net NetD3_9 contains floating input pins (Pin D3-9)
+[Error] 60_ETHERNET.SchDoc Compiler Net NetD3_10 contains floating input pins (Pin D3-10)
+[Error] 60_ETHERNET.SchDoc Compiler Net NetJ6_7 contains floating input pins (Pin J6-7)
+[Error] 10_POWER_INPUT.SchDoc Compiler RADAR_12V contains Power Pin and Output Port objects (Pin U7-6, Port RADAR_12V).
+[Warning] EVT_SYS_CARRIER.SchDoc Compiler BOOT0 contains Input Sheet Entry and Unspecified Sheet Entry objects (Sheet Entry MCU_CORE-BOOT0(Input), Sheet Entry DEBUG_BOOT-BOOT0(Passive)).
+[Warning] 20_MCU_CORE.SchDoc Compiler CAN_RX contains IO Pin and Input Port objects (Pin U1-142, Port CAN_RX).
+[Warning] 20_MCU_CORE.SchDoc Compiler CAN_RX contains IO Pin and Output Pin objects (Pin U1-142, Pin U4-4).
+[Warning] 20_MCU_CORE.SchDoc Compiler CAN_TX contains IO Pin and Output Port objects (Pin U1-143, Port CAN_TX).
+[Warning] 20_MCU_CORE.SchDoc Compiler ETH_50M contains IO Pin and Input Port objects (Pin U1-41, Port ETH_50M).
+[Warning] 20_MCU_CORE.SchDoc Compiler ETH_50M contains IO Pin and Output Pin objects (Pin U1-41, Pin Y2-3).
+[Warning] 20_MCU_CORE.SchDoc Compiler ETH_CRS_DV contains IO Pin and Input Port objects (Pin U1-53, Port ETH_CRS_DV).
+[Warning] 60_ETHERNET.SchDoc Compiler ETH_CRS_DV contains IO Pin and Output Port objects (Pin U3-11, Port ETH_CRS_DV).
+[Warning] 20_MCU_CORE.SchDoc Compiler ETH_MDC contains IO Pin and Output Port objects (Pin U1-33, Port ETH_MDC).
+[Warning] 20_MCU_CORE.SchDoc Compiler ETH_NRST contains IO Pin and Output Port objects (Pin U1-3, Port ETH_NRST).
+[Warning] 20_MCU_CORE.SchDoc Compiler ETH_RXD0 contains IO Pin and Input Port objects (Pin U1-54, Port ETH_RXD0).
+[Warning] 60_ETHERNET.SchDoc Compiler ETH_RXD0 contains IO Pin and Output Port objects (Pin U3-8, Port ETH_RXD0).
+[Warning] 20_MCU_CORE.SchDoc Compiler ETH_RXD1 contains IO Pin and Input Port objects (Pin U1-55, Port ETH_RXD1).
+[Warning] 60_ETHERNET.SchDoc Compiler ETH_RXD1 contains IO Pin and Output Port objects (Pin U3-7, Port ETH_RXD1).
+[Warning] 20_MCU_CORE.SchDoc Compiler ETH_TX_EN contains IO Pin and Output Port objects (Pin U1-154, Port ETH_TX_EN).
+[Warning] 20_MCU_CORE.SchDoc Compiler ETH_TXD0 contains IO Pin and Output Port objects (Pin U1-156, Port ETH_TXD0).
+[Warning] 20_MCU_CORE.SchDoc Compiler ETH_TXD1 contains IO Pin and Output Port objects (Pin U1-157, Port ETH_TXD1).
+[Warning] 20_MCU_CORE.SchDoc Compiler Floating Net Label 3V3 at (2300mil,9200mil)
+[Warning] 10_POWER_INPUT.SchDoc Compiler Floating Net Label GND at (3900mil,2850mil)
+[Warning] 30_TIME_GNSS.SchDoc Compiler Floating Net Label GNSS_BCKP_LOCAL at (6350mil,3700mil)
+[Warning] 30_TIME_GNSS.SchDoc Compiler Floating Net Label GNSS_VUSB_LOCAL at (6350mil,3950mil)
+[Warning] 20_MCU_CORE.SchDoc Compiler Floating Net Label VDDA_FILTERED at (3200mil,9200mil)
+[Warning] 10_POWER_INPUT.SchDoc Compiler Floating Net Label VIN_RAW at (4150mil,4950mil)
+[Warning] 20_MCU_CORE.SchDoc Compiler GNSS_PPS contains IO Pin and Input Port objects (Pin U1-40, Port GNSS_PPS).
+[Warning] 20_MCU_CORE.SchDoc Compiler GNSS_PPS contains IO Pin and Output Pin objects (Pin U1-40, Pin U8-3).
+[Warning] 20_MCU_CORE.SchDoc Compiler GNSS_RX_EXT contains IO Pin and Output Port objects (Pin U1-96, Port GNSS_RX_EXT).
+[Warning] 20_MCU_CORE.SchDoc Compiler GNSS_TX_EXT contains IO Pin and Input Port objects (Pin U1-97, Port GNSS_TX_EXT).
+[Warning] 20_MCU_CORE.SchDoc Compiler GNSS_TX_EXT contains IO Pin and Output Pin objects (Pin U1-97, Pin U8-20).
+[Warning] 20_MCU_CORE.SchDoc Compiler IMU_DRDY contains IO Pin and Input Port objects (Pin U1-80, Port IMU_DRDY).
+[Warning] 20_MCU_CORE.SchDoc Compiler IMU_DRDY contains IO Pin and Output Pin objects (Pin U1-80, Pin U2-4).
+[Warning] 20_MCU_CORE.SchDoc Compiler IMU_MISO contains IO Pin and Input Port objects (Pin U1-94, Port IMU_MISO).
+[Warning] 20_MCU_CORE.SchDoc Compiler IMU_MISO contains IO Pin and Output Pin objects (Pin U1-94, Pin U2-1).
+[Warning] 20_MCU_CORE.SchDoc Compiler IMU_MOSI contains IO Pin and Output Port objects (Pin U1-95, Port IMU_MOSI).
+[Warning] 20_MCU_CORE.SchDoc Compiler IMU_NSS contains IO Pin and Output Port objects (Pin U1-92, Port IMU_NSS).
+[Warning] 20_MCU_CORE.SchDoc Compiler IMU_SCK contains IO Pin and Output Port objects (Pin U1-93, Port IMU_SCK).
+[Warning] 20_MCU_CORE.SchDoc Compiler MCU_HSE_25M contains IO Pin and Output Pin objects (Pin U1-29, Pin Y1-3).
+[Warning] EVT_SYS_CARRIER.SchDoc Compiler Net BOOT0 has no driving source (Pin R10-1, Pin R70-1, Pin U1-166)
+[Warning] 30_TIME_GNSS.SchDoc Compiler Net GNSS_RF has no driving source (Pin D8-1, Pin J8-1, Pin L80-2, Pin U8-11)
+[Warning] 60_ETHERNET.SchDoc Compiler Net NetD3_6 has no driving source (Pin D3-6)
+[Warning] 60_ETHERNET.SchDoc Compiler Net NetD3_7 has no driving source (Pin D3-7)
+[Warning] 60_ETHERNET.SchDoc Compiler Net NetD3_9 has no driving source (Pin D3-9)
+[Warning] 60_ETHERNET.SchDoc Compiler Net NetD3_10 has no driving source (Pin D3-10)
+[Warning] 60_ETHERNET.SchDoc Compiler Net NetJ6_7 has no driving source (Pin J6-7)
+[Warning] 50_RADAR_IO_CAN.SchDoc Compiler Net NetR41_1 has no driving source (Pin R41-1, Pin U4-8)
+[Warning] 50_RADAR_IO_CAN.SchDoc Compiler Net NetR42_1 has no driving source (Pin R42-1, Pin U4-5)
+[Warning] EVT_SYS_CARRIER.SchDoc Compiler Net NRST has no driving source (Pin C115-1, Pin SW1-1, Pin U1-31)
+[Warning] 10_POWER_INPUT.SchDoc Compiler Net U5_SS_LOCAL has no driving source (Pin C3-1, Pin U5-9)
+[Warning] 10_POWER_INPUT.SchDoc Compiler Net U6_OVLO_LOCAL has no driving source (Pin R62-2, Pin R63-1, Pin U6-2)
+[Warning] 10_POWER_INPUT.SchDoc Compiler Net U6_UVLO_LOCAL has no driving source (Pin R61-2, Pin R62-1, Pin U6-1)
+[Warning] 10_POWER_INPUT.SchDoc Compiler Net U7_OVLO_LOCAL has no driving source (Pin R72-2, Pin R73-1, Pin U7-2)
+[Warning] 10_POWER_INPUT.SchDoc Compiler Net U7_UVLO_LOCAL has no driving source (Pin R71-2, Pin R72-1, Pin U7-1)
+[Warning] 20_MCU_CORE.SchDoc Compiler RADAR_EFUSE_FLT contains IO Pin and Input Port objects (Pin U1-2, Port RADAR_EFUSE_FLT).
+[Warning] 20_MCU_CORE.SchDoc Compiler RADAR_REF contains IO Pin and Input Port objects (Pin U1-79, Port RADAR_REF).
+[Warning] 20_MCU_CORE.SchDoc Compiler SYS_EFUSE_FLT contains IO Pin and Input Port objects (Pin U1-1, Port SYS_EFUSE_FLT).
+[Warning] 60_ETHERNET.SchDoc Compiler Unconnected Pin D3-6 at 7250mil,4450mil
+[Warning] 60_ETHERNET.SchDoc Compiler Unconnected Pin D3-7 at 6250mil,4350mil
+[Warning] 60_ETHERNET.SchDoc Compiler Unconnected Pin D3-9 at 6250mil,4250mil
+[Warning] 60_ETHERNET.SchDoc Compiler Unconnected Pin D3-10 at 7250mil,4250mil
+[Warning] 60_ETHERNET.SchDoc Compiler Unconnected Pin J6-7 at 8350mil,4800mil

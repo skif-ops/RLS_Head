@@ -3,6 +3,8 @@
   "status": "PENDING",
   "required_outputs_complete": false,
   "source_is_native_altium": false,
+  "all_schematics_from_native_altium": false,
+  "all_production_outputs_from_native_altium": false,
   "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
   "outputs": [],
   "notes": [

@@ -1,0 +1,58 @@
+{
+  "release": "EVT_OBSERVER_R1",
+  "version": "0.1.0",
+  "date": "2026-11-08",
+  "scope": "civilian airborne-drone observation and tracking measurements only",
+  "production_authority": "NOT_AUTHORIZED",
+  "software_verification": {
+    "host_tests": {
+      "status": "PASS",
+      "passed": 21,
+      "total": 21,
+      "command": "ctest --test-dir .work/observer-host -C Release --output-on-failure"
+    },
+    "standalone_archive_source_tests": {
+      "status": "PASS",
+      "passed": 2,
+      "total": 2,
+      "scope": "radar_link_wire and awr2944p_observer_logic",
+      "command": "cmake configure, build Release and ctest on the source copy prepared for the archive"
+    },
+    "sysconfig_generation": "PASS",
+    "r5f_compile_and_link": "PASS",
+    "c66x_compile_and_link": "PASS",
+    "gp_appimage_generation": "PASS",
+    "high_security_appimage": "NOT_BUILT: OpenSSL executable absent"
+  },
+  "document_verification": {
+    "template_sha256": "A71810560EDCCAB807D84736F2BD60BF7CC1E1346D04633E2654D1C2B8E4CAFC",
+    "package_comparison": "PASS: only word/document.xml, word/header1.xml and word/footer1.xml differ from the approved template",
+    "guide_pages_rendered_and_inspected": 6,
+    "can_contract_pages_rendered_and_inspected": 5,
+    "section_audit": "PASS",
+    "heading_audit": "PASS",
+    "page_field_audit": "PASS",
+    "typography_and_indentation_audit": "PASS",
+    "long_dash_audit": "PASS"
+  },
+  "output_hashes": {
+    "AWR2944P_OBSERVER_EVT_R1.appimage": "8768D29167EA3484A1B22D5A1E43CAAD1D85BFE4C3E702ED9B7B1371200AA88E",
+    "AWR2944P_OBSERVER_EVT_R1_MSS.xer5f": "3D518B7CC6772E1A19DB421BFEA302AC13FD3F2C3F732A43139327752BA57EFC",
+    "AWR2944P_OBSERVER_EVT_R1_DSS.xe66": "08B9ED1AC936E8A73EBA6BC280D0DC12A48F25E1A50FB38A2BE6687725035C24",
+    "Руководство_по_сборке_прошивке_и_стендовой_проверке_AWR2944P_v0.1.0_EVT_R1.docx": "D9338F55A4C811E1AB31BD3F2E12C0115B686968734F3C42C4AE270A13519287",
+    "Руководство_по_сборке_прошивке_и_стендовой_проверке_AWR2944P_v0.1.0_EVT_R1.pdf": "82A41DE5FB56ED53344FEC0ED5FA1597E2472708F4315B0953F46F120D9D772E",
+    "Контракт_CAN_FD_AWR2944P_STM32_v1.1.0_EVT_R1.docx": "2EBD917457F37B004CDEC0ED0B9A10BA4C5728B40FCA39161679051CB4317B21",
+    "Контракт_CAN_FD_AWR2944P_STM32_v1.1.0_EVT_R1.pdf": "CEBD01D49BD27A38DEFC68F8F90514DF2A19E58E61CA28B51D116F5BB570BF4F"
+  },
+  "not_run": [
+    "hardware bench test",
+    "RF performance test",
+    "range calibration",
+    "azimuth and elevation calibration",
+    "RCS calibration",
+    "uncertainty calibration",
+    "thermal test",
+    "EMC test"
+  ]
+}
+

@@ -1,0 +1,122 @@
+Protel Design System Design Rule Check
+PCB File : C:\Users\skifn\.codex\.chatgpt-projects\g-p-6a9feb917c48819182ec25e1ef55310c\RLS_Head-git\hardware\system_carrier\altium\native\EVT_SYS_CARRIER_eth_candidate_v6.PcbDoc
+Date     : 24.10.2026
+Time     : 18:20:29
+
+Processing Rule : Clearance Constraint (Gap=7.874mil) (All),(All)
+   Violation between Clearance Constraint: (5.512mil < 7.874mil) Between Pad D8-1(433.071mil,2605.905mil) on Top Layer And Pad D8-2(433.071mil,2590.945mil) on Top Layer
+   Violation between Clearance Constraint: (5.906mil < 7.874mil) Between Pad U6-2(830.709mil,560.039mil) on Top Layer And Pad U6-3(830.709mil,542.323mil) on Top Layer
+   Violation between Clearance Constraint: (6.89mil < 7.874mil) Between Pad U6-2(830.709mil,560.039mil) on Top Layer And Region (0 hole(s)) Top Layer
+   Violation between Clearance Constraint: (6.89mil < 7.874mil) Between Pad U6-3(830.709mil,542.323mil) on Top Layer And Region (0 hole(s)) Top Layer
+   Violation between Clearance Constraint: (5.906mil < 7.874mil) Between Pad U6-8(901.575mil,542.323mil) on Top Layer And Pad U6-9(901.575mil,560.039mil) on Top Layer
+   Violation between Clearance Constraint: (6.89mil < 7.874mil) Between Pad U6-8(901.575mil,542.323mil) on Top Layer And Region (0 hole(s)) Top Layer
+   Violation between Clearance Constraint: (6.89mil < 7.874mil) Between Pad U6-9(901.575mil,560.039mil) on Top Layer And Region (0 hole(s)) Top Layer
+   Violation between Clearance Constraint: (5.906mil < 7.874mil) Between Pad U7-2(2405.512mil,560.039mil) on Top Layer And Pad U7-3(2405.512mil,542.323mil) on Top Layer
+   Violation between Clearance Constraint: (6.89mil < 7.874mil) Between Pad U7-2(2405.512mil,560.039mil) on Top Layer And Region (0 hole(s)) Top Layer
+   Violation between Clearance Constraint: (6.89mil < 7.874mil) Between Pad U7-3(2405.512mil,542.323mil) on Top Layer And Region (0 hole(s)) Top Layer
+   Violation between Clearance Constraint: (5.906mil < 7.874mil) Between Pad U7-8(2476.378mil,542.323mil) on Top Layer And Pad U7-9(2476.378mil,560.039mil) on Top Layer
+   Violation between Clearance Constraint: (6.89mil < 7.874mil) Between Pad U7-8(2476.378mil,542.323mil) on Top Layer And Region (0 hole(s)) Top Layer
+   Violation between Clearance Constraint: (6.89mil < 7.874mil) Between Pad U7-9(2476.378mil,560.039mil) on Top Layer And Region (0 hole(s)) Top Layer
+Rule Violations :13
+
+Processing Rule : Clearance Constraint (Gap=10mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=39.37mil) (InNetClass('NC_TIMING')),(InNet('BUCK_SW'))
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=7.874mil) (InDifferentialPairClass('DP_ETH_MDI')),(Not InDifferentialPairClass('DP_ETH_MDI'))
+Rule Violations :0
+
+Processing Rule : Un-Routed Net Constraint ( (All) )
+Rule Violations :0
+
+Processing Rule : Routing Topology Rule(Topology=Shortest) (All)
+Rule Violations :0
+
+Processing Rule : Power Plane Connect Rule(Relief Connect )(Expansion=20mil) (Conductor Width=10mil) (Air Gap=10mil) (Entries=4) (All)
+Rule Violations :0
+
+Processing Rule : Hole Size Constraint (Min=1mil) (Max=100mil) (All)
+   Violation between Hole Size Constraint: (125.984mil > 100mil) Pad Free-H1(196.85mil,196.85mil) on Multi-Layer Actual Hole Size = 125.984mil
+   Violation between Hole Size Constraint: (125.984mil > 100mil) Pad Free-H2(3740.157mil,196.85mil) on Multi-Layer Actual Hole Size = 125.984mil
+   Violation between Hole Size Constraint: (125.984mil > 100mil) Pad Free-H3(196.85mil,2952.756mil) on Multi-Layer Actual Hole Size = 125.984mil
+   Violation between Hole Size Constraint: (125.984mil > 100mil) Pad Free-H4(3740.157mil,2952.756mil) on Multi-Layer Actual Hole Size = 125.984mil
+   Violation between Hole Size Constraint: (118.11mil > 100mil) Pad J1-Un1(255.905mil,721.26mil) on Multi-Layer Actual Hole Size = 118.11mil
+   Violation between Hole Size Constraint: (118.11mil > 100mil) Pad J4-Un1(3858.268mil,1351.181mil) on Multi-Layer Actual Hole Size = 118.11mil
+   Violation between Hole Size Constraint: (118.11mil > 100mil) Pad J5-Un1(3799.213mil,721.26mil) on Multi-Layer Actual Hole Size = 118.11mil
+   Violation between Hole Size Constraint: (127.953mil > 100mil) Pad J6-Un1(3729.528mil,2112.205mil) on Multi-Layer Actual Hole Size = 127.953mil
+   Violation between Hole Size Constraint: (127.953mil > 100mil) Pad J6-Un2(4179.528mil,2112.205mil) on Multi-Layer Actual Hole Size = 127.953mil
+Rule Violations :9
+
+Processing Rule : Hole To Hole Clearance (Gap=10mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Net Antennae (Tolerance=0mil) (All)
+Rule Violations :0
+
+Processing Rule : Component Clearance Constraint ( Horizontal Gap = 10mil, Vertical Gap = 10mil ) (All),(All)
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between Component U4-TCAN3404DRBRQ1 (3149.606mil,1181.102mil) on Top Layer And SMT Small Component R42-10k 1% SHDN_PD (3188.976mil,1338.583mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between Component Y1-ECS-2520S33-250-FN-TR (1417.323mil,1574.803mil) on Top Layer And SMT Small Component C101-100nF VDD (1476.378mil,1653.543mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between Component Y1-ECS-2520S33-250-FN-TR (1417.323mil,1574.803mil) on Top Layer And SMT Small Component C115-100nF NRST (1476.378mil,1476.378mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between Component Y2-ECS-2520S33-500-FN-TR (2637.795mil,1968.504mil) on Top Layer And LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between Component Y2-ECS-2520S33-500-FN-TR (2637.795mil,1968.504mil) on Top Layer And SMT Small Component C110-100nF VDD (2677.165mil,1889.764mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between Component Y2-ECS-2520S33-500-FN-TR (2637.795mil,1968.504mil) on Top Layer And SMT Small Component R605-10k 1% NRST_PD (2736.22mil,2066.929mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component C100-100nF VDD (1476.378mil,1771.653mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component C101-100nF VDD (1476.378mil,1653.543mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component C10-2.2uF (2303.15mil,964.567mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component C102-100nF VDD (1476.378mil,1377.953mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component C103-100nF VDD (1692.913mil,1003.937mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component C104-100nF VDD (1929.134mil,1003.937mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component C105-100nF VDD (2165.354mil,1003.937mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component C106-100nF VDD (2401.575mil,1003.937mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component C107-100nF VDD (2618.11mil,1220.472mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component C108-100nF VDD (2618.11mil,1377.953mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component C109-100nF VDD (2618.11mil,1692.913mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component C111-100nF VDD (2401.575mil,2145.669mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component C11-2.2uF (2657.48mil,1811.024mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component C112-100nF VDD (2165.354mil,2145.669mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component C113-100nF VDD (1929.134mil,2145.669mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component C115-100nF NRST (1476.378mil,1476.378mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component C15-100nF (1692.913mil,2145.669mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U1-STM32H753IIT6 (2047.244mil,1574.803mil) on Top Layer And SMT Small Component R10-10k 1% (1811.024mil,2185.039mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U3-LAN8742Ai-CZ-TR (2834.646mil,2283.465mil) on Top Layer And SMT Small Component C60-1uF (2696.85mil,2244.095mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U3-LAN8742Ai-CZ-TR (2834.646mil,2283.465mil) on Top Layer And SMT Small Component C61-470pF C0G (2657.48mil,2322.835mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U3-LAN8742Ai-CZ-TR (2834.646mil,2283.465mil) on Top Layer And SMT Small Component C64-100nF (2755.905mil,2165.354mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U3-LAN8742Ai-CZ-TR (2834.646mil,2283.465mil) on Top Layer And SMT Small Component C65-100nF (2716.535mil,2401.575mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U3-LAN8742Ai-CZ-TR (2834.646mil,2283.465mil) on Top Layer And SMT Small Component R600-12.1k 1% (2834.646mil,2125.984mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U5-TPS62132RGTR_3V3 (1338.583mil,551.181mil) on Top Layer And SMT Small Component C2-22uF/6.3V (1515.748mil,413.386mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between LCC Component U5-TPS62132RGTR_3V3 (1338.583mil,551.181mil) on Top Layer And SMT Small Component R5P-100k 1% PG_PU (1456.693mil,688.976mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between Small Component J1-12V_IN (196.85mil,551.181mil) on Top Layer And SMT Small Component D1-SMAJ15CA (511.811mil,551.181mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT SIP Component U6-TPS259470ARPWR_SYS (866.142mil,551.181mil) on Top Layer And SMT Small Component C6D-3.3nF (866.142mil,688.976mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT SIP Component U7-TPS259470ARPWR_RADAR (2440.945mil,551.181mil) on Top Layer And SMT Small Component C7D-3.3nF (2440.945mil,688.976mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component C109-100nF VDD (2618.11mil,1692.913mil) on Top Layer And SMT Small Component C114-100nF VDD33_USB (2657.48mil,1614.173mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component C110-100nF VDD (2677.165mil,1889.764mil) on Top Layer And SMT Small Component C11-2.2uF (2657.48mil,1811.024mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component C114-100nF VDD33_USB (2657.48mil,1614.173mil) on Top Layer And SMT Small Component FB1-BLM18BD601SH1 (2716.535mil,1574.803mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component C13-100nF (2657.48mil,1515.748mil) on Top Layer And SMT Small Component FB1-BLM18BD601SH1 (2716.535mil,1574.803mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component C2-22uF/6.3V (1515.748mil,413.386mil) on Top Layer And SMT Small Component L1-2.2uH (1653.543mil,551.181mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component C3-3.3nF (1338.583mil,688.976mil) on Top Layer And SMT Small Component C4-100nF/25V (1200.787mil,688.976mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component C60-1uF (2696.85mil,2244.095mil) on Top Layer And SMT Small Component C61-470pF C0G (2657.48mil,2322.835mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component C60-1uF (2696.85mil,2244.095mil) on Top Layer And SMT Small Component C64-100nF (2755.905mil,2165.354mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component C64-100nF (2755.905mil,2165.354mil) on Top Layer And SMT Small Component R605-10k 1% NRST_PD (2736.22mil,2066.929mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component C80-100nF (1220.472mil,2598.425mil) on Top Layer And SOIC Component U8-NEO-M9N-00B (944.882mil,2440.945mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component C81-10uF (1259.842mil,2480.315mil) on Top Layer And SOIC Component U8-NEO-M9N-00B (944.882mil,2440.945mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component C82-100nF DNP_OPTION (629.921mil,2421.26mil) on Top Layer And SMT Small Component R80-10R 0.25W DNP_OPTION (590.551mil,2342.52mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component D4-ESD2CANFD24-Q1 (3425.197mil,1181.102mil) on Top Layer And SMT Small Component R40-120R 1% DNP_DEFAULT (3425.197mil,1043.307mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component L1-2.2uH (1653.543mil,551.181mil) on Top Layer And SMT Small Component R5P-100k 1% PG_PU (1456.693mil,688.976mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component R601-49.9R 1% (2992.126mil,2204.724mil) on Top Layer And SMT Small Component R602-49.9R 1% (2992.126mil,2283.465mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component R602-49.9R 1% (2992.126mil,2283.465mil) on Top Layer And SMT Small Component R603-49.9R 1% (2992.126mil,2362.205mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component R603-49.9R 1% (2992.126mil,2362.205mil) on Top Layer And SMT Small Component R604-49.9R 1% (2992.126mil,2440.945mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component R61-470k 1% (787.402mil,413.386mil) on Top Layer And SMT Small Component R62-36.0k 1% (866.142mil,413.386mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component R71-470k 1% (2362.205mil,413.386mil) on Top Layer And SMT Small Component R72-16.9k 1% (2440.945mil,413.386mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component R82-0R V_BCKP (1259.842mil,2362.205mil) on Top Layer And SOIC Component U8-NEO-M9N-00B (944.882mil,2440.945mil) on Top Layer
+   Violation between Component Clearance Constraint: (Collision < 10mil) Between SMT Small Component TP1-DEBUG_TX (2244.095mil,216.535mil) on Top Layer And SMT Small Component TP2-DEBUG_RX (2362.205mil,216.535mil) on Top Layer
+Rule Violations :55
+
+Processing Rule : Height Constraint (Min=0mil) (Max=1000mil) (Prefered=500mil) (All)
+Rule Violations :0
+
+
+Violations Detected : 77
+Waived Violations : 0
+Time Elapsed        : 00:00:00

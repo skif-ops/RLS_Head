@@ -1,0 +1,61 @@
+{
+  "candidate_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "candidate_pcb_sha256": "fc3404b281f3ca76123a8dd68b6076a4e50f5d867ed9fc9582fb6f6ef248ba44",
+  "evidence_sha256": {
+    "fill_inventory.csv": "59382e173fc8d39b00930c2a7d8b53e74a38f19b54b2e86bb6e8d488fd1058ab",
+    "pad_geometry.csv": "019c7b8697194e89818fce206bf8f6c667a533ab62f1731b61fa2d4205f74c9e",
+    "track_inventory.csv": "7f16f63841f72fe73d90df49f1c1e80d3c4d34327f838f9a2c0c2c1a06a497ad",
+    "via_inventory.csv": "56a67436f0a412acd8b529cfd6dd1a8a0dbd961269c18dfd029137759f541026"
+  },
+  "drc_required_zero": {
+    "antennae": 0,
+    "hole_to_hole": 0,
+    "mdi_clearance": 0,
+    "topology": 0,
+    "unrouted": 0
+  },
+  "drc_total": 75,
+  "native_connection_audit_sha256": "758ac1d95d3e210bf66f1b9d7217cc20605fe921e06a29efdd4650913b993023",
+  "native_connection_audit_status": "PASS",
+  "production_authority": "NOT_AUTHORIZED",
+  "schema": "EVT-SYS-CARRIER-MDI-STRUCTURAL-EQUIVALENCE-001",
+  "status": "PASS",
+  "unchanged_inventories": {
+    "fills": {
+      "added_count": 0,
+      "added_sample": [],
+      "candidate_count": 67,
+      "canonical_count": 67,
+      "removed_count": 0,
+      "removed_sample": [],
+      "status": "PASS"
+    },
+    "non_mdi_tracks": {
+      "added_count": 0,
+      "added_sample": [],
+      "candidate_count": 1566,
+      "canonical_count": 1566,
+      "removed_count": 0,
+      "removed_sample": [],
+      "status": "PASS"
+    },
+    "non_mdi_vias": {
+      "added_count": 0,
+      "added_sample": [],
+      "candidate_count": 116,
+      "canonical_count": 116,
+      "removed_count": 0,
+      "removed_sample": [],
+      "status": "PASS"
+    },
+    "pads": {
+      "added_count": 0,
+      "added_sample": [],
+      "candidate_count": 529,
+      "canonical_count": 529,
+      "removed_count": 0,
+      "removed_sample": [],
+      "status": "PASS"
+    }
+  }
+}

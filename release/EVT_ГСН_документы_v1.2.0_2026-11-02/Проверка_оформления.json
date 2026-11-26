@@ -1,0 +1,172 @@
+{
+  "schema": "EVT-DOCX-STYLE-AUDIT-002",
+  "version": "1.2.0",
+  "status": "PASS",
+  "requirements": {
+    "body_and_heading_font": "Times New Roman 14 pt",
+    "table_font": "Times New Roman 12 pt",
+    "header_footer_font": "Times New Roman 12 pt",
+    "header_footer_alignment": "CENTER_NO_INDENT",
+    "line_spacing": "single",
+    "first_line_indent_outside_tables_cm": 1.25,
+    "first_line_indent_in_tables_cm": 0,
+    "heading_first_line_indent_cm": 1.25,
+    "paragraph_spacing_before_after_pt": 0,
+    "heading_color": "black",
+    "heading_lines": "forbidden",
+    "en_and_em_dash": "forbidden",
+    "numbered_subsection_period": "required"
+  },
+  "documents": {
+    "00_Версии_и_шаблон/Правила_оформления_и_версий_v1.2.0.docx": {
+      "status": "PASS",
+      "styles": 164,
+      "paragraphs": 22,
+      "table_paragraphs": 0,
+      "headings": 10,
+      "text_runs": 20,
+      "forbidden_dashes": 0,
+      "failures": []
+    },
+    "00_Версии_и_шаблон/Шаблон_текстового_документа_v1.2.0.docx": {
+      "status": "PASS",
+      "styles": 164,
+      "paragraphs": 16,
+      "table_paragraphs": 6,
+      "headings": 4,
+      "text_runs": 14,
+      "forbidden_dashes": 0,
+      "failures": []
+    },
+    "00_Опись_и_статус/Опись_и_статус_комплекта_EVT_v1.2.0.docx": {
+      "status": "PASS",
+      "styles": 166,
+      "paragraphs": 104,
+      "table_paragraphs": 76,
+      "headings": 7,
+      "text_runs": 100,
+      "forbidden_dashes": 0,
+      "failures": []
+    },
+    "01_Технический_проект/Протокол_TargetState_V1_v1.2.0.docx": {
+      "status": "PASS",
+      "styles": 166,
+      "paragraphs": 297,
+      "table_paragraphs": 262,
+      "headings": 9,
+      "text_runs": 292,
+      "forbidden_dashes": 0,
+      "failures": []
+    },
+    "01_Технический_проект/Технический_проект_EVT_ГСН_v1.2.0.docx": {
+      "status": "PASS",
+      "styles": 166,
+      "paragraphs": 264,
+      "table_paragraphs": 178,
+      "headings": 20,
+      "text_runs": 255,
+      "forbidden_dashes": 0,
+      "failures": []
+    },
+    "02_Техническое_задание/Техническое_задание_EVT_ГСН_v1.2.0.docx": {
+      "status": "PASS",
+      "styles": 166,
+      "paragraphs": 103,
+      "table_paragraphs": 73,
+      "headings": 7,
+      "text_runs": 99,
+      "forbidden_dashes": 0,
+      "failures": []
+    },
+    "03_Заказ_ПП_и_монтажа/Заявка_на_изготовление_ПП_и_монтаж_v1.2.0.docx": {
+      "status": "PASS",
+      "styles": 166,
+      "paragraphs": 98,
+      "table_paragraphs": 64,
+      "headings": 7,
+      "text_runs": 94,
+      "forbidden_dashes": 0,
+      "failures": []
+    },
+    "05_Прошивка_контроллера/Инструкция_по_сборке_прошивке_и_настройке_v1.2.0.docx": {
+      "status": "PASS",
+      "styles": 166,
+      "paragraphs": 78,
+      "table_paragraphs": 38,
+      "headings": 9,
+      "text_runs": 75,
+      "forbidden_dashes": 0,
+      "failures": []
+    },
+    "06_Жгуты_и_кабели/Схема_соединений_и_задание_на_жгуты_v1.2.0.docx": {
+      "status": "PASS",
+      "styles": 166,
+      "paragraphs": 230,
+      "table_paragraphs": 203,
+      "headings": 6,
+      "text_runs": 226,
+      "forbidden_dashes": 0,
+      "failures": []
+    },
+    "07_Инструкции/Инструкция_монтажнику_и_наладчику_v1.2.0.docx": {
+      "status": "PASS",
+      "styles": 166,
+      "paragraphs": 49,
+      "table_paragraphs": 16,
+      "headings": 7,
+      "text_runs": 47,
+      "forbidden_dashes": 0,
+      "failures": []
+    },
+    "07_Инструкции/Руководство_пользователя_EVT_v1.2.0.docx": {
+      "status": "PASS",
+      "styles": 166,
+      "paragraphs": 59,
+      "table_paragraphs": 30,
+      "headings": 8,
+      "text_runs": 56,
+      "forbidden_dashes": 0,
+      "failures": []
+    },
+    "08_Контроль_и_приемка/Инструкция_первого_включения_и_стендовой_проверки_v1.2.0.docx": {
+      "status": "PASS",
+      "styles": 164,
+      "paragraphs": 160,
+      "table_paragraphs": 145,
+      "headings": 7,
+      "text_runs": 158,
+      "forbidden_dashes": 0,
+      "failures": []
+    },
+    "08_Контроль_и_приемка/Программа_и_методики_EVT_v1.2.0.docx": {
+      "status": "PASS",
+      "styles": 166,
+      "paragraphs": 274,
+      "table_paragraphs": 236,
+      "headings": 14,
+      "text_runs": 269,
+      "forbidden_dashes": 0,
+      "failures": []
+    },
+    "10_Отчетные_материалы/Форма_отчета_EVT_v1.2.0.docx": {
+      "status": "PASS",
+      "styles": 166,
+      "paragraphs": 186,
+      "table_paragraphs": 163,
+      "headings": 6,
+      "text_runs": 152,
+      "forbidden_dashes": 0,
+      "failures": []
+    },
+    "01_Технический_проект/Принципы_работы_и_алгоритмы_функционирования_EVT_ГСН_v1.2.0.docx": {
+      "status": "PASS",
+      "styles": 164,
+      "paragraphs": 418,
+      "table_paragraphs": 194,
+      "headings": 78,
+      "text_runs": 410,
+      "forbidden_dashes": 0,
+      "failures": []
+    }
+  }
+}

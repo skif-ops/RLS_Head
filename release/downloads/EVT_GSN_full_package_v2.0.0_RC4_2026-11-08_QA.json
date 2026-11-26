@@ -1,0 +1,53 @@
+{
+  "archive": "EVT_GSN_full_package_v2.0.0_RC4_2026-11-08.zip",
+  "archive_size_bytes": 55742993,
+  "archive_sha256": "58F2A0FC1EFDA39F1A18D9784971832236F05C10196B0E325461EBFCA3F84282",
+  "release": "2.0.0-RC4",
+  "date": "2026-11-08",
+  "purpose": "civilian airborne-drone observation and tracking measurements only",
+  "production_authority": "NOT_AUTHORIZED",
+  "archive_verification": {
+    "re_extraction": "PASS",
+    "top_level_layout": "PASS",
+    "file_count": 622,
+    "verified_internal_sha256_entries": 621,
+    "missing_files": 0,
+    "hash_mismatches": 0
+  },
+  "software_verification": {
+    "rc4_source_configure": "PASS",
+    "rc4_source_release_build": "PASS",
+    "rc4_host_tests": "PASS, 21 of 21",
+    "awr_standalone_source_after_archive_extraction": "PASS",
+    "awr_standalone_profile_tests": "PASS, 2 of 2",
+    "awr_sysconfig_generation": "PASS",
+    "awr_r5f_compile_and_link": "PASS",
+    "awr_c66x_compile_and_link": "PASS",
+    "awr_gp_appimage_generation": "PASS",
+    "awr_appimage_sha256": "8768D29167EA3484A1B22D5A1E43CAAD1D85BFE4C3E702ED9B7B1371200AA88E"
+  },
+  "document_verification": {
+    "new_docx_files": 2,
+    "new_pdf_files": 2,
+    "new_pages_rendered_and_inspected": 11,
+    "approved_template_package_comparison": "PASS",
+    "section_heading_page_field_typography_indentation_audits": "PASS"
+  },
+  "retained_rc3_evidence": {
+    "native_drc_violations": 0,
+    "native_drc_waived": 0,
+    "pcb_revision": "0.7.232",
+    "manufacturing_exports": "PRESENT_NOT_INDEPENDENTLY_VERIFIED"
+  },
+  "not_run_or_open": [
+    "AWR2944P custom board first power-on and flashing",
+    "AWR2944P to STM32 CAN FD bench interoperability",
+    "RF range and angular performance test",
+    "range, azimuth, elevation, RCS and uncertainty calibration",
+    "thermal test",
+    "EMC test",
+    "independent factory CAM review",
+    "rebuild of STM32 target binary from the RC4 shared source"
+  ]
+}
+

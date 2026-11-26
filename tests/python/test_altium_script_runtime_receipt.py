@@ -94,6 +94,30 @@ def test_runtime_receipt_detects_changed_export(tmp_path):
     assert "hash_mismatch:pad_net_inventory" in result["errors"]
 
 
+def test_runtime_receipt_canonicalizes_script_project_line_endings(tmp_path):
+    receipt = _fixture(tmp_path)
+    script_project = tmp_path / CANONICAL["script_project"]
+    script_project.write_bytes(b"line one\r\nline two\r\n")
+    data = json.loads(receipt.read_text(encoding="utf-8"))
+    data["input_sha256"]["script_project"] = hashlib.sha256(
+        b"line one\r\nline two\r\n"
+    ).hexdigest()
+    receipt.write_text(json.dumps(data), encoding="utf-8")
+
+    crlf_result = validate(
+        receipt_json=receipt,
+        repository_root=tmp_path,
+    )
+    script_project.write_bytes(b"line one\nline two\n")
+    lf_result = validate(
+        receipt_json=receipt,
+        repository_root=tmp_path,
+    )
+
+    assert crlf_result["status"] == "PASS"
+    assert lf_result["status"] == "PASS"
+
+
 def test_runtime_receipt_requires_both_procedures_pass(tmp_path):
     receipt = _fixture(tmp_path)
     data = json.loads(receipt.read_text())

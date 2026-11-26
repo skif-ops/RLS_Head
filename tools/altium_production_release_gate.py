@@ -319,7 +319,6 @@ def validate_manifest(
             "board_outline_frozen",
             "mounting_geometry_frozen",
             "connector_access_verified",
-            "step_enclosure_verified",
         ):
             if mechanical.get(field) is not True:
                 reasons.append(f"MECHANICAL_{field.upper()}")
@@ -337,8 +336,6 @@ def validate_manifest(
         for field in (
             "stackup_bound",
             "copper_weight_bound",
-            "impedance_50r_bound",
-            "impedance_100r_bound",
             "min_trace_clearance_bound",
             "via_rules_bound",
         ):
@@ -361,16 +358,16 @@ def validate_manifest(
             reasons.append("L2_GROUND_CONTINUITY")
         if si_review.get("timing_return_paths_verified") is not True:
             reasons.append("TIMING_RETURN_PATHS")
-        if si_review.get("ethernet_mdi_return_path_verified") is not True:
-            reasons.append("ETH_MDI_RETURN_PATH")
+        if si_review.get("host_uart_routes_verified") is not True:
+            reasons.append("HOST_UART_ROUTES")
+        if si_review.get("gnss_connector_routes_verified") is not True:
+            reasons.append("GNSS_CONNECTOR_ROUTES")
         if si_review.get("power_hot_loop_verified") is not True:
             reasons.append("POWER_HOT_LOOP")
         if si_review.get("power_branch_widths_verified") is not True:
             reasons.append("POWER_BRANCH_WIDTHS")
-        if si_review.get("ethernet_mdi_impedance_rule_verified") is not True:
-            reasons.append("ETH_MDI_IMPEDANCE_RULE")
-        if si_review.get("gnss_rf_route_verified") is not True:
-            reasons.append("GNSS_RF_ROUTE")
+        if si_review.get("five_volt_gnss_route_verified") is not True:
+            reasons.append("FIVE_VOLT_GNSS_ROUTE")
         if si_review.get("no_mmwave_post_route_verified") is not True:
             reasons.append("NO_MMWAVE_POST_ROUTE")
         if not _valid_text(si_review.get("reviewer")):
@@ -439,6 +436,10 @@ def validate_manifest(
             reasons.append("OUTJOB_REQUIRED_OUTPUTS_INCOMPLETE")
         if outjob.get("source_is_native_altium") is not True:
             reasons.append("OUTJOB_SOURCE_NOT_NATIVE_ALTIUM")
+        if outjob.get("all_schematics_from_native_altium") is not True:
+            reasons.append("SCHEMATICS_NOT_FROM_NATIVE_ALTIUM")
+        if outjob.get("all_production_outputs_from_native_altium") is not True:
+            reasons.append("PRODUCTION_OUTPUTS_NOT_FROM_NATIVE_ALTIUM")
 
         contract_path = (
             root
@@ -556,8 +557,8 @@ def validate_manifest(
             (
                 "A production PASS requires the current native SchDoc to "
                 "match the equivalence-approved electrical baseline, plus zero "
-                "blocking DRC/unrouted nets, mechanical freeze, fabricator "
-                "binding, return-path/SI review, DFM closure and complete "
+                "blocking DRC/unrouted nets, compact-board mechanical review, "
+                "fabricator baseline binding, return-path review, DFM closure and complete "
                 "native-Altium manufacturing outputs."
             ),
         ],

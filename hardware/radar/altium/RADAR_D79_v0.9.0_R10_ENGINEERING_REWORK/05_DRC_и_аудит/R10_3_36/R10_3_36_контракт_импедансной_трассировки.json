@@ -1,0 +1,65 @@
+{
+  "schema": "R10-IMPEDANCE-CLEAR-ROUTE-001",
+  "revision": "R10.3.36",
+  "source": "hardware/radar/altium/RADAR_D79_v0.9.0_R10_ENGINEERING_REWORK/01_Исходник_Altium/RADAR_D79_POWER_24V_v0.9.3.34_R10_3_34_IMPEDANCE_TRANSITIONS_ASCII.PcbDoc",
+  "output": "hardware/radar/altium/RADAR_D79_v0.9.0_R10_ENGINEERING_REWORK/01_Исходник_Altium/RADAR_D79_POWER_24V_v0.9.3.36_R10_3_36_IMPEDANCE_CLEAR_ROUTE_ASCII.PcbDoc",
+  "production_authority": "NOT_AUTHORIZED",
+  "stack_reference": {
+    "total_thickness_mm": 2,
+    "rf_dielectric": "RO3003G2 0.127 mm",
+    "usb_can_reference": "L9 DIGITAL_GND continuous"
+  },
+  "impedance_profiles": {
+    "USB90_L8_L9": {
+      "target_ohm": 90,
+      "width_mm": 0.1851,
+      "gap_mm": 0.15
+    },
+    "USB90_L10_L9": {
+      "target_ohm": 90,
+      "width_mm": 0.26663,
+      "gap_mm": 0.15
+    },
+    "CAN120_L8_L9": {
+      "target_ohm": 120,
+      "width_mm": 0.11184,
+      "gap_mm": 0.2
+    },
+    "CAN120_L10_L9": {
+      "target_ohm": 120,
+      "width_mm": 0.1736014,
+      "gap_mm": 0.2
+    }
+  },
+  "routing_decisions": [
+    "USB uses parallel L10 segments with matched widths before paired L10-to-L8 transitions",
+    "USB continues on L8 over continuous L9 DIGITAL_GND after the local transition",
+    "CAN L8 entry geometry was opened before the layer transition to remove the local clearance pinch",
+    "All controlled-width rules remain active in the native Altium design"
+  ],
+  "removed_source_tracks": [
+    9574,
+    9575,
+    9576,
+    9577,
+    9578,
+    9579,
+    9580
+  ],
+  "removed_source_vias": [
+    9006,
+    9007
+  ],
+  "modified_source_tracks": [
+    5742,
+    7347,
+    9560,
+    9561
+  ],
+  "validation_required": [
+    "Open the ASCII board in Altium and save a native PcbDoc",
+    "Repour all polygons",
+    "Run batch DRC with clearance, short-circuit, width, differential-pair, net-antennae and un-routed checks",
+    "Obtain fabricator field-solver dimensions and a controlled-impedance coupon before production authority"
+  ]
+}

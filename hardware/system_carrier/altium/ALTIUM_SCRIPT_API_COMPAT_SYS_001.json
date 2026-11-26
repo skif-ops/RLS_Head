@@ -65,14 +65,14 @@
           "access": "READ"
         },
         {
-          "symbol": "Stack.FirstLayer",
+          "symbol": "Stack.LayerObject",
           "interface": "IPCB_LayerStack",
           "status": "DOCUMENTED",
           "access": "READ"
         },
         {
-          "symbol": "Stack.NextLayer",
-          "interface": "IPCB_LayerStack",
+          "symbol": "LayerObj.IsInLayerStack",
+          "interface": "IPCB_LayerObject",
           "status": "DOCUMENTED",
           "access": "READ"
         },

@@ -1,0 +1,46 @@
+{
+  "altium_version": "26.10.1 Trial",
+  "board_id": "EVT-SYS-CARRIER",
+  "drc_timestamp": "2026-10-24T17:21:28+03:00",
+  "geometry": {
+    "fill_count": 67,
+    "gnss_rf_layer": "Top Layer",
+    "gnss_rf_route_length_mm": 28.543,
+    "gnss_rf_track_count": 4,
+    "gnss_rf_trace_width_mm": 0.36,
+    "gnss_rf_via_count": 0,
+    "pad_count": 529,
+    "track_count": 1062,
+    "via_count": 23
+  },
+  "input_sha256": {
+    "fill_inventory": "2ba0d89d16eaebcbf7e9495cac76b059861b895d089e908010b90287b0370928",
+    "pad_geometry": "ea9f066ab4f74c70f91d5af113e03913fa7aa46625b4d44828d6b492ae0e7551",
+    "review_render": "896f9fab6cba90b1bc7d1d4a190230d31015646ab7de9005abfe9a9c5440f67f",
+    "review_render_script": "5e0ac3b92e9d944162b4181b6ceb4cd9f819c73b9b7a285916fdf9546123853c",
+    "routing_audit_script": "b74db3494b61f64d5b525aac816354d412b876bd481b86be28fe8fcf97b9911d",
+    "routing_script": "7276fb4a66f6bf4a5c966a2b2b0726f1a225c44c78081670e57e54a786922507",
+    "track_inventory": "e9cb7a6b5f1b0f2eb2a20fb68b2933c3054cdc9a5bbaf55b8b7390e325f65ee7",
+    "via_inventory": "c1994e04ce6be24d839ece6d01068b0bdc67cb36fe6981bfb0f49e271c38416f"
+  },
+  "production_authority": "NOT_AUTHORIZED",
+  "review_status": "PASS",
+  "routing_authority": "AUTHORIZED",
+  "rule_violations": {
+    "component_clearance": 55,
+    "copper_clearance_internal_footprint": 13,
+    "gnss_route_induced": 0,
+    "height": 0,
+    "hole_size": 9,
+    "hole_to_hole": 0,
+    "net_antennae": 0,
+    "routing_topology": 0,
+    "total": 77,
+    "unrouted_net": 0
+  },
+  "schema": "ALTIUM-GNSS-ROUTING-REVIEW-A-001",
+  "source_drc_report": "hardware/system_carrier/altium/routing/gnss_routing_drc_2026-10-24.drc",
+  "source_drc_report_sha256": "2638a434ac76dea192a9a2fbfe362cf9d147caa02d24cfd8290f22b3c0538eff",
+  "source_pcb": "hardware/system_carrier/altium/native/EVT_SYS_CARRIER.PcbDoc",
+  "source_pcb_sha256": "cd3a115b8bb27d1f827e21a805a0a9a49749b5d61ce0a563cc954bef9cfe1d89"
+}

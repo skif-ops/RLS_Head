@@ -1,0 +1,166 @@
+{
+  "overall_thickness_mm": 1.690322,
+  "layers": [
+    {
+      "sequence": 1,
+      "layer": "Top Paste",
+      "thickness_mm": 0.0,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 2,
+      "layer": "Top Overlay",
+      "thickness_mm": 0.0,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 3,
+      "layer": "Top Solder",
+      "thickness_mm": 0.01016,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 4,
+      "layer": "Top Layer",
+      "thickness_mm": 0.07,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 5,
+      "layer": "Dielectric 2",
+      "thickness_mm": 0.18,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 6,
+      "layer": "Mid-Layer 1",
+      "thickness_mm": 0.035001,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 7,
+      "layer": "Dielectric 1",
+      "thickness_mm": 1.1,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 8,
+      "layer": "Mid-Layer 2",
+      "thickness_mm": 0.035001,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 9,
+      "layer": "Dielectric 3",
+      "thickness_mm": 0.18,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 10,
+      "layer": "Bottom Layer",
+      "thickness_mm": 0.07,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 11,
+      "layer": "Bottom Solder",
+      "thickness_mm": 0.01016,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 12,
+      "layer": "Bottom Overlay",
+      "thickness_mm": 0.0,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 13,
+      "layer": "Bottom Paste",
+      "thickness_mm": 0.0,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 14,
+      "layer": "Keep-Out Layer",
+      "thickness_mm": 0.0,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 15,
+      "layer": "Mechanical 1",
+      "thickness_mm": 0.0,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 16,
+      "layer": "Mechanical 4",
+      "thickness_mm": 0.0,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 17,
+      "layer": "Mechanical 6",
+      "thickness_mm": 0.0,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 18,
+      "layer": "Mechanical 7",
+      "thickness_mm": 0.0,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 19,
+      "layer": "Mechanical 15",
+      "thickness_mm": 0.0,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 20,
+      "layer": "Drill Drawing (Top Layer - Bottom Layer)",
+      "thickness_mm": 0.0,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 21,
+      "layer": "Drill Drawing (Top Layer - Mid-Layer 1)",
+      "thickness_mm": 0.0,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 22,
+      "layer": "Drill Guide (Top Layer - Bottom Layer)",
+      "thickness_mm": 0.0,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    },
+    {
+      "sequence": 23,
+      "layer": "Drill Guide (Top Layer - Mid-Layer 1)",
+      "thickness_mm": 0.0,
+      "tol_plus_mm": 0.0,
+      "tol_minus_mm": 0.0
+    }
+  ]
+}

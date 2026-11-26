@@ -1,0 +1,38 @@
+{
+  "output": "C:\\Users\\skifn\\.codex\\.chatgpt-projects\\g-p-6a9feb917c48819182ec25e1ef55310c\\RLS_Head-git\\hardware\\radar\\altium\\RADAR_D79_v0.9.0_R10_ENGINEERING_REWORK\\07_Расчеты_СВЧ\\R10_расчет_импеданса.docx",
+  "policy": {
+    "paragraphs": 359,
+    "headings": 18,
+    "table_paragraphs": 306,
+    "dash_replacements": 0,
+    "story_parts": [
+      "word/document.xml",
+      "word/footer1.xml",
+      "word/footer2.xml",
+      "word/footer3.xml",
+      "word/header1.xml",
+      "word/header2.xml",
+      "word/header3.xml"
+    ],
+    "audit": {
+      "status": "PASS",
+      "styles": 164,
+      "paragraphs": 359,
+      "table_paragraphs": 306,
+      "headings": 18,
+      "text_runs": 355,
+      "forbidden_dashes": 0,
+      "failures": []
+    }
+  },
+  "audit": {
+    "status": "PASS",
+    "styles": 164,
+    "paragraphs": 359,
+    "table_paragraphs": 306,
+    "headings": 18,
+    "text_runs": 355,
+    "forbidden_dashes": 0,
+    "failures": []
+  }
+}

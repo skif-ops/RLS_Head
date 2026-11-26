@@ -12,7 +12,7 @@
       "30_TIME_GNSS.kicad_sch",
       "40_IMU.kicad_sch",
       "50_RADAR_IO_CAN.kicad_sch",
-      "60_ETHERNET.kicad_sch",
+      "60_HOST_UART.kicad_sch",
       "70_DEBUG_BOOT.kicad_sch"
     ],
     "symbol_library": "SystemCarrier_Local.kicad_sym",

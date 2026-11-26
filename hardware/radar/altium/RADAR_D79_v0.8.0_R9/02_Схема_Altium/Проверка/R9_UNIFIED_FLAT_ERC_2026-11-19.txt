@@ -1,0 +1,11 @@
+Altium Designer 26.11.1 validation result
+Project: RADAR_D79_R9_UNIFIED_FLAT.PrjPcb
+Document: 00_UNIFIED_CONNECTED_SCHEMATIC.SchDoc
+Validation time: 20:14:35 19.11.2026
+
+Result: Compile successful, no errors found.
+Errors: 0
+Warnings: 0
+
+The Altium Messages panel contains only the compiler information entry: "Compile successful, no errors found."
+The independent full-pin audit passed with 0 unmarked open pins, 0 dangling wire endpoints, 0 unattached net labels, 0 non-orthogonal wire segments, and 0 zero-length wire segments.

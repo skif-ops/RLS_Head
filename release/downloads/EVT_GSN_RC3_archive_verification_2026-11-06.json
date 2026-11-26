@@ -1,0 +1,57 @@
+{
+  "schema": "evt-archive-verification-v1",
+  "release": "2.0.0-RC3",
+  "generated_utc": "2026-11-06T19:09:55.606577+00:00",
+  "production_authority": "NOT_AUTHORIZED",
+  "release_file_count": 573,
+  "release_bytes": 138926150,
+  "embedded_archives": [
+    {
+      "path": "02_Проект_Altium/History/RADAR_D79_24V.~(1).PrjPcb.Zip",
+      "file_count": 1,
+      "crc": "PASS"
+    },
+    {
+      "path": "07_Программы_для_ПК/EVT_GSN_digital_twin_windows_v1.0.0.zip",
+      "file_count": 31,
+      "crc": "PASS"
+    },
+    {
+      "path": "07_Программы_для_ПК/EVT_GSN_visualizer_windows_v1.1.0.zip",
+      "file_count": 20,
+      "crc": "PASS"
+    },
+    {
+      "path": "07_Программы_для_ПК/TARGET_STATE_телеметрия_v1.0.0_2026-11-06.zip",
+      "file_count": 27,
+      "crc": "PASS"
+    }
+  ],
+  "archives": [
+    {
+      "path": "EVT_ГСН_полный_комплект_v2.0.0_RC3_2026-11-06.zip",
+      "bytes": 51321179,
+      "sha256": "38dd037094aca301f65be44bfc73ba5c22447b851a0b07162afc93b252cc0913",
+      "file_count": 573,
+      "crc": "PASS",
+      "content_hash_match": "PASS"
+    },
+    {
+      "path": "EVT_ГСН_заказ_платы_и_монтажа_v2.0.0_RC3_2026-11-06.zip",
+      "bytes": 6170074,
+      "sha256": "0f0fbdab9b6c466e4a34004838b56df8a04d4371c307b81a262fa4e20a7022fe",
+      "file_count": 117,
+      "crc": "PASS",
+      "content_hash_match": "PASS"
+    },
+    {
+      "path": "EVT_ГСН_программы_и_методики_v2.0.0_RC3_2026-11-06.zip",
+      "bytes": 45796202,
+      "sha256": "b9c87e04aaed9f23ae8f2264a61e8a86582c4505bbc65939cbc9ffca6ba5c225",
+      "file_count": 494,
+      "crc": "PASS",
+      "content_hash_match": "PASS"
+    }
+  ],
+  "result": "PASS"
+}

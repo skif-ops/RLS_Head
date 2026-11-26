@@ -1,0 +1,26 @@
+{
+  "baseline_shadow_pad_count": 0,
+  "board_height_mm": 70.0,
+  "board_width_mm": 90.0,
+  "canonical_pcb_sha256": "518041a570b405a429a70d968ee54b62df126cb0091b9af08e067152c5aa8735",
+  "counts": {
+    "components": 105,
+    "fills": 21,
+    "pads": 607,
+    "tracks": 1874,
+    "vias": 200
+  },
+  "endpoint_baseline_matches": true,
+  "errors": [],
+  "free_pad_assignments": {},
+  "inferred_free_pad_count": 0,
+  "net_antennae_violations": 0,
+  "outside_board_count": 0,
+  "production_authority": "NOT_AUTHORIZED",
+  "receipt_binding": "PASS",
+  "routing_topology_violations": 0,
+  "schema": "ALTIUM-CONNECTION-INTEGRITY-001",
+  "status": "PASS",
+  "unrouted_net_violations": 0,
+  "warnings": []
+}

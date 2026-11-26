@@ -1,0 +1,16 @@
+{
+  "revision": "R10.3.37_REZONIT_DOCUMENT_RECALC",
+  "status": "PASS",
+  "output": "C:\\Users\\skifn\\.codex\\.chatgpt-projects\\g-p-6a9feb917c48819182ec25e1ef55310c\\RLS_Head-git\\hardware\\radar\\altium\\RADAR_D79_v0.9.0_R10_ENGINEERING_REWORK\\07_Расчеты_СВЧ\\R10_расчет_импеданса.xlsx",
+  "sha256": "BC2E7FDA869AE525CF345441C3FAADBE72C5DACDEAD292229A2BD1091BE2A234",
+  "formula_error_scan": "{\"kind\":\"notice\",\"message\":\"Cell search matched 0 entries.\"}",
+  "reload_error_scan": "{\"kind\":\"notice\",\"message\":\"Cell search matched 0 entries.\"}",
+  "preview_sheets": [
+    "Итоги",
+    "Расчет профилей",
+    "Применимость",
+    "Чувствительность",
+    "Стек 2 мм",
+    "Источники"
+  ]
+}
