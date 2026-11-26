@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "revision": "R168",
+  "production_authority": "NOT_AUTHORIZED",
+  "pcb_sha256": "501cf1e16cc9e084ed49f1f2be61080f58fa8ccdfce2b3215b88eca424919e06",
+  "drc_report_sha256": "26ce38c461cdb62f2efcb2b05ad2b3b21624dfa1fc3cd59852687e333b824603",
+  "designators": 105,
+  "placement_coordinates": "MATCH_PCBDOC_EXPORT",
+  "placement_zero_zero_coordinates": 0,
+  "bom_workbook": "PASS",
+  "docx": {
+    "paragraphs": 33,
+    "tables": 4,
+    "template": "PASS"
+  },
+  "assembly_pdf_pages": 5,
+  "schematic_pdf_pages": 8,
+  "package_files_before_manifest": 53,
+  "maximum_relative_path_length": 63
+}

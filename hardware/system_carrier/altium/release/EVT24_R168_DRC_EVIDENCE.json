@@ -8,7 +8,7 @@
   "source_pcb": "hardware/system_carrier/altium/native/EVT24_REWORK_R168.PcbDoc",
   "source_pcb_sha256": "501cf1e16cc9e084ed49f1f2be61080f58fa8ccdfce2b3215b88eca424919e06",
   "source_report": "hardware/system_carrier/altium/native/Design Rule Check - EVT24_REWORK_R168.html",
-  "source_report_sha256": "d3cfba01c5adadbf079222bb92eb6ecc86fee419b501738ef961e946e313742d",
+  "source_report_sha256": "26ce38c461cdb62f2efcb2b05ad2b3b21624dfa1fc3cd59852687e333b824603",
   "warnings": 0,
   "rule_violations": 0,
   "unrouted_net_violations": 0,
